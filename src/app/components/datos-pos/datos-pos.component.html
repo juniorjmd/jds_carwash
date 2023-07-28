@@ -1,0 +1,22 @@
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: transparent !important;">
+        <a class="navbar-brand" [routerLink]="['/home/inicio']">
+            <i class="fas fa-folder-minus"></i>
+        </a>
+        <a class="navbar-brand" [routerLink]="['generales']">
+            <i class="fas fa-house-user"></i>
+        </a>
+        <!-- <a class=" btn btn-outline-primary my-2 my-sm-0" [routerLink]="['caja']">Cajas<span class="sr-only">(current)</span></a>-->
+
+        <div *ngIf="cajasBtn">
+            <a class=" btn btn-outline-primary my-2 my-sm-0" style="margin-left: 10px;" [routerLink]="['cajaNueva']">
+
+                <i class=" fas fa-cogs  "></i> Caja<span class="sr-only">(current)</span></a>
+
+        </div>
+
+
+
+    </nav>
+    <router-outlet></router-outlet>
+</div>

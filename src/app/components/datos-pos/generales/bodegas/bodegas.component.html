@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class='centrado'>Bodegas de productos</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button" class="btn btn-primary">Nueva Bodega</button>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <table class="table" *ngIf="bodegas.length > 0">
+                <tr>
+
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>estado</th>
+                    <th colspan="2">
+                        opcion
+                    </th>
+                </tr>
+                <tr *ngFor="let categoria of bodegas">
+                    <td>{{categoria.nombre }}</td>
+                    <td>{{categoria.descripcion.trim()}}</td>
+                    <td>{{categoria.nombre_estado }}</td>
+                    <td title="editar categoria"><i class="fas fa-pencil-alt boton_activo" (click)="setActualizacategoria(categoria)"></i> </td>
+
+                    <td title="Asignar caracteristicas de categoria"><i class="fas fa-address-card boton_activo" (click)="setAgregarPerfil(categoria)"></i>
+
+                    </td>
+
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+</div>

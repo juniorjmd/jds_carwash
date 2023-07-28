@@ -1,0 +1,87 @@
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-sm-12  ">
+            <h2 class="centrado">Asignacion de costos de servicios por tipo de vehiculo</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">tipo de Servicio</label>
+                <select [(ngModel)]="tipo_servicio" class=" form-control " (change)="getServiciosVehiculos()">
+                    <option value=0>Escoger tipoServicio</option>
+                    <option *ngFor="let tpServicio of tiposServicio"  value ={{tpServicio.id}}>{{tpServicio.nombre}}</option> 
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Servicio</label>
+                <select [(ngModel)]="servicioSelecionado" (change)="getTiposVehiculos()" class=" form-control ">
+                    <option value=0>Escoger Servicio</option>
+                    <option *ngFor="let Servicio of serviciosAVehiculos"  value ={{Servicio.id}}>{{Servicio.nombre}}</option> 
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Tipo de Vehiculo</label>
+                <select class=" form-control " [(ngModel)]="tipoVehiculo">
+                    <option value=0>Escoger Tipo Vehiculo</option>
+                    <option value=999999999>Todos los vehiculos</option>
+                    <option *ngFor="let vehiculo of tiposVehiculo"  value ={{vehiculo.id}}>{{vehiculo.nombre}}</option> 
+                </select>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Precio General</label>
+                <input type="number" [(ngModel)]="precio" class="form-control" aria-describedby="nombreHelp" placeholder="presio">
+
+            </div>
+
+
+
+        </div>
+        <div class="col-sm-1">
+            <div class="form-group ">
+                <br>
+                <div class="btn-group btn-group-toggle " data-toggle="buttons ">
+                    <button type="button " (click)="enviarRelacionServicioVehiculo()" class="btn btn-success ">Enviar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row " style="height: 300px !important; overflow: auto;" *ngIf="arrServiciosCostos.length> 0">
+        <div class="col-sm-12">
+            <table class="table">
+                <tr>
+
+                    <th>Servicio</th>
+                    <th>Tipo</th>
+                    <th>Vehiculo</th>
+                    <th>Precio</th>
+                    <th colspan="2">
+                        opcion
+                    </th>
+                </tr>
+
+                <tr *ngFor="let costos of arrServiciosCostos">
+                    <td>{{costos.nombreServicio}}</td>
+                    <td>{{costos.nombre_tipo_servicio}}</td>
+                    <td>{{costos.nombreTipoVehiculo }}</td>
+                    <td>{{costos.valor }}</td>
+                    <td title="editar"><i class="fas fa-pencil-alt boton_activo" (click)="setActualiza_costoServicioVehiculo(costos)"></i> </td>
+                    <td title="eliminar"><i class="fas fa-trash boton_activo" (click)="borrarCostoServicioVehiculo(costos)"></i>
+
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+</div>

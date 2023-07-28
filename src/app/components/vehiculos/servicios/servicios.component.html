@@ -1,0 +1,94 @@
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-sm-12  ">
+            <h2 class="centrado">Mantenimiento a servicios a vehiculos</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Nombre</label>
+                <input type="text" [(ngModel)]="newServicioAVehiculo.nombre" class="form-control" aria-describedby="nombreHelp" placeholder="Nombre">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Tipo de servicio</label>
+                <select [(ngModel)]="newServicioAVehiculo.tipo_servicio" (change)="mostrarServicioPorTipo()" class=" form-control ">
+                    <option value=0>Escoger tipoServicio</option>
+                    <option *ngFor="let tpServicio of tiposServicio"  value ={{tpServicio.id}}>{{tpServicio.nombre}}</option> 
+                </select>
+            </div>
+
+
+
+
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Estado</label>
+                <select [(ngModel)]="newServicioAVehiculo.estado" class=" form-control ">
+                    <option value=0>Estado</option>
+                    <option value=1>Activo</option>
+                    <option value=2>Inactivo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Precio General</label>
+                <input type="number" [(ngModel)]="newServicioAVehiculo.precio_general" class="form-control" aria-describedby="nombreHelp" placeholder="Nombre">
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Descripcion</label>
+                <textarea [(ngModel)]="newServicioAVehiculo.descripcion" class="form-control"></textarea> </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group ">
+                <br>
+                <div class="btn-group btn-group-toggle " data-toggle="buttons ">
+                    <button type="button " (click)="manageServicioVehiculo()" class="btn btn-success ">Enviar</button>
+                    <button type="button " (click)="cancelar()" class="btn btn-danger ">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row " style="height: 200px !important; overflow: auto;" *ngIf="serviciosAVehiculos.length> 0">
+        <div class="col-sm-12">
+            <table class="table">
+                <tr>
+
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Estado</th>
+                    <th>Precio</th>
+                    <th>Tipo Servicio</th>
+                    <th colspan="2">
+                        opcion
+                    </th>
+                </tr>
+
+                <tr *ngFor="let servicioAVehiculos of serviciosAmostrar">
+                    <td>{{servicioAVehiculos.nombre}}</td>
+                    <td>{{servicioAVehiculos.descripcion}}</td>
+                    <td>{{servicioAVehiculos.estadoNombre }}</td>
+                    <td>{{servicioAVehiculos.precio_general }}</td>
+                    <td>{{servicioAVehiculos.nombre_tipo_servicio }}</td>
+                    <td title="editar"><i class="fas fa-pencil-alt boton_activo" (click)="setActualiza_servicio_vehiculo(servicioAVehiculos)"></i> </td>
+                    <td title="eliminar"><i class="fas fa-trash boton_activo" (click)="borrarTipoVehiculo(servicioAVehiculos)"></i>
+
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+</div>

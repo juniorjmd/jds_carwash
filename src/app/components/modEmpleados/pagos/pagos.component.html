@@ -1,0 +1,145 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 ">
+            <h1 class="centrado">Pagos a Empleados</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 ">
+            <ul class="nav nav-tabs">
+                <li class="nav-item ">
+                    <a class="nav-link likcontPrd boton_activo active" id="liquidarAcumuladosLink" (click)="removeGetActivo('liquidarAcumuladosLink'); ">Liquidar Servicios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link likcontPrd boton_activo" id="liquidarPorDialink" (click)="removeGetActivo('liquidarPorDialink');  ">Liquidar por Dias</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link likcontPrd boton_activo" id="GenerarAdelantosLink" (click)="removeGetActivo('GenerarAdelantosLink');  ">Generar Adelantos</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>
+
+    <div class="row contPrd" style="display: none; max-height: 500px; overflow-y: auto;" id="liquidarAcumuladosLinkDiv">
+        <div class="col-sm-12 ">
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <h1 class="centrado">liquidar Servicios acumulados a Empleados</h1>
+                </div>
+            </div>
+            <div class="row " *ngFor="let item of empleadosConAcumulados; let i = index">
+                <div class="col-sm-3 ">
+                    <h4> {{item.nombreCompleto}} </h4><br>
+                    <h4>total acumulado :<b> {{item.TotalAcumuladoPendientes | currency: 'USD' }}</b> </h4>
+                    <h4> pagos o anticipos :<b> {{item.TotalAnticiposPendientes | currency: 'USD' }} </b></h4>
+                    <h4>maximo a descontar :<b> {{item.maximoDescuento | currency: 'USD' }} </b></h4>
+                </div>
+                <div class="col-sm-2 ">
+                    <div class="form-group">
+                        <label for="">Valor a descontar</label>
+                        <input type="number" (blur)="validarValor(   i  )" [(ngModel)]="item.valorADescontarEnPago" max="{{item.maximoDescuento}}" min="0" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                        <small id="helpId" class="form-text text-muted">valor a descontar del total que se requiere pagar al empleado este viene condicionado por el total ya que no puede superar ese monto</small>
+                    </div>
+                </div>
+                <div class="col-sm-2 ">
+
+                    <div class="form-group">
+                        <label for="">Desde</label>
+                        <input type="date" class="form-control" [(ngModel)]="fechasBusqueda[i].fechaInicio" min={{item.fechaMinimaAcumulados}} max={{fechasBusqueda[i].fechaFin}}>
+                    </div>
+                </div>
+
+                <div class="col-sm-2 ">
+                    <div class="form-group">
+                        <label for="">Hasta</label>
+                        <input class="form-control" type="date" [(ngModel)]="fechasBusqueda[i].fechaFin" min={{fechasBusqueda[i].fechaInicio}} max={{item.fechaMaximaAcumulados}}>
+                    </div>
+                </div>
+                <div class="col-sm-2 ">
+                    <div class="form-group">
+                        <label for="">&nbsp;</label>
+                        <button type="button" class="btn btn-primary" (click)="liquidarPagos(item , i , fechasBusqueda[i] )"><i class="fas fa-bomb" ></i></button>
+                    </div>
+                </div>
+                <div class="col-sm-6 ">
+                    <table class="table">
+                        <tbody *ngFor="let itemAcumulados of listaAcumulados[i] ; let i2 = index">
+
+                            <tr *ngIf="i2==0">
+                                <td><b>SERVICIO</b></td>
+                                <td><b>FECHA</b></td>
+                                <td><b>VALOR</b></td>
+                            </tr>
+                            <tr>
+                                <td>{{itemAcumulados.nombreServicio}}</td>
+                                <td>{{itemAcumulados.fecha}}</td>
+                                <td>{{itemAcumulados.valor|currency : 'USD'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="col-sm-6 ">
+                    <button type="button" (click)="validarElPago(item , i , fechasBusqueda[i])" class="btn btn-outline-primary">Pagar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row contPrd" style="display: none; max-height: 500px; overflow-y: auto;" id="liquidarPorDialinkDiv">
+        <div class="col-sm-12 ">
+            <h1 class="centrado">liquidar pagos por dias</h1>
+        </div>
+    </div>
+    <div class="row contPrd" style="display: none; max-height: 500px; overflow-y: auto;" id="GenerarAdelantosLinkDiv">
+        <div class="col-sm-12 ">
+            <h1 class="centrado">Generar adelantos a Empleados</h1>
+        </div>
+        <div class="col-sm-12 ">
+            <div class="row">
+                <div class="col-sm-3 ">
+                    <div class="form-group">
+                        <label for="">Empleado</label>
+                        <select [(ngModel)]="indexEmpleado" (change)="validarEmpleado()" class="form-control">
+                         <option *ngFor="let item of empleados, let i = index"  [value] = i   >{{item.nombreCompleto}}</option> 
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-9 ">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            {{empleado.nombreCompleto}}
+                            <hr> total acumulado a la fecha : {{empleado.TotalAcumuladoPendientes|currency:'USD'}} total anticipos sin descontar : {{empleado.TotalAnticiposPendientes|currency:'USD'}}
+
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+
+                        <div class="col-sm-3 ">
+                            <div class="form-group">
+                                <label for="">Valor anticipo</label>
+                                <input class="form-control" type="number" [(ngModel)]="valorAnticipo">
+                            </div>
+                        </div>
+                        <div class="col-sm-4 ">
+                            <div class="form-group">
+                                <label for="">Descipcion anticipo</label>
+                                <input class="form-control" type="text" [(ngModel)]="descripcionAticipo">
+                            </div>
+                        </div>
+                        <div class="col-sm-3 ">
+                            <div class="form-group">
+                                <button type="button" (click)="generarAticipo()" class="btn btn-success">Generar Anticipo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
