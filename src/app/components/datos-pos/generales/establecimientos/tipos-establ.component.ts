@@ -25,12 +25,12 @@ export class TiposEstablComponent implements OnInit {
   getTiposEstablecimiento(){ 
     this.serviceCaja.getAllTiposEstablecimientos()
          .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          this.tiposEsta = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:TiposEstablecimientosModel , index )=>{
+      datos.data.forEach((dato:TiposEstablecimientosModel , index:number )=>{
         this.tiposEsta[index] = new TiposEstablecimientosModel( dato );
       }) 
       console.log(this.tiposEsta);

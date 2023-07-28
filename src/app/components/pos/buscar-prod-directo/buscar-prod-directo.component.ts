@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MaestroClienteServices } from '../../../services/MaestroCliente.services';
 import { loading } from 'src/app/models/app.loading';
-import { dfltAnswOdoo, dfltAnswOdoo2 } from 'src/app/interfaces/clientes-odoo';
-import { select } from 'src/app/interfaces/generales.interface';
+import { dfltAnswOdoo2 } from 'src/app/interfaces/clientes-odoo'; 
 import { ProductoService } from 'src/app/services/producto.service';
-import { OdooPrd, responsePrd } from 'src/app/interfaces/odoo-prd';
+import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProductoModule } from 'src/app/models/producto/producto.module';
-import { CategoriasModel } from 'src/app/models/categorias.model';
-import { MarcasModule } from 'src/app/models/marcas/marcas.module';
-@Component({
+@Component({ 
   selector: 'app-buscar-prod-directo',
   templateUrl: './buscar-prod-directo.component.html',
   styleUrls: ['./buscar-prod-directo.component.css']
@@ -19,17 +16,17 @@ export class BuscarProdDirectoComponent  {
   textFindMarcas:string = '';
   textFindProductos:string = '';
   parceros : ProductoModule[] = [];
-  prdBusqueda :ProductoModule   ;
+  prdBusqueda !:ProductoModule   ;
   listPrdBusqueda :ProductoModule[] = [];
   respuestaDialog:responsePrd = {  "confirmado": false, 
   "datoDevolucion":this.listPrdBusqueda[0]};
-  codPrd:string ;   
-  cantidadPrd:number ;  
-  disabled:boolean[]
+  codPrd!:string ;   
+  cantidadPrd!:number ;  
+  disabled:boolean[] = []
   //--------------------
-  marcas:dfltAnswOdoo2[];
-  marcasAux:dfltAnswOdoo2[];
-  categorias:dfltAnswOdoo2[];
+  marcas:dfltAnswOdoo2[]=[];
+  marcasAux:dfltAnswOdoo2[] = [];
+  categorias:dfltAnswOdoo2[] = [];
   constructor(public loading : loading ,public dialogo: MatDialogRef<BuscarProdDirectoComponent>
     , private prdService : ProductoService,
     private MaestroClienteServices :MaestroClienteServices) {
@@ -42,7 +39,7 @@ export class BuscarProdDirectoComponent  {
      this.loading.show() 
      this.listPrdBusqueda = [];
      this.prdService.getProductosPorNombre( this.textFindProductos ,[0,30] ).subscribe(
-       (respuesta:select)=>{
+       (respuesta:any)=>{
          if (respuesta.error === 'ok'){
             if (respuesta.numdata > 0 ){
               this.listPrdBusqueda =  respuesta.data;
@@ -66,7 +63,7 @@ export class BuscarProdDirectoComponent  {
      this.loading.show() 
      this.listPrdBusqueda = [];
      this.prdService.getProductosGeneral([0,30]).subscribe(
-       (respuesta:select)=>{
+       (respuesta:any)=>{
          if (respuesta.error === 'ok'){
             if (respuesta.numdata > 0 ){
               this.listPrdBusqueda =  respuesta.data;
@@ -90,10 +87,10 @@ export class BuscarProdDirectoComponent  {
      console.log('categoria' , categoria); 
       this.loading.show() 
       this.prdService.getProductosPorCategoria(categoria.dato ).subscribe(
-        (respuesta:select)=>{
+        (respuesta:any)=>{
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){
-              respuesta.data.forEach((value,index) => {  
+              respuesta.data.forEach((value:any,index:number) => {  
                 this.listPrdBusqueda[index] = value ;  
               }); 
    
@@ -123,11 +120,11 @@ export class BuscarProdDirectoComponent  {
     console.log('marca' , marca);
     this.loading.show() 
       this.prdService.getProductosPorMarca(marca.dato ).subscribe(
-        (respuesta:select)=>{
+        (respuesta:any)=>{
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){
 
-              respuesta.data.forEach((value,index) => { 
+              respuesta.data.forEach((value:any,index:number) => { 
                 this.listPrdBusqueda[index] = value ;  
               }); 
    
@@ -149,11 +146,11 @@ export class BuscarProdDirectoComponent  {
    //BUSCAR_MARCAS
    
    getCategorias(){ 
-    this.MaestroClienteServices.setCategoriasPrd().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setCategoriasPrd().subscribe((datos:any)=>{
        console.log('setCategoriasPrd' , JSON.stringify(datos));
       this.loading.show()
       this.categorias = [];
-      datos.data.forEach((value )=>{ 
+      datos.data.forEach((value:any )=>{ 
         console.log('getCategorias',value); 
         this.categorias.push({
           "dato": value.id,
@@ -169,11 +166,11 @@ export class BuscarProdDirectoComponent  {
 
   }
   getMarcas(){ 
-    this.MaestroClienteServices.setMarcas().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setMarcas().subscribe((datos:any)=>{
        console.log('setMarcas ODDO' , JSON.stringify(datos));
       this.loading.show()
       this.marcas = [];
-      datos.data.forEach((value,index)=>{
+      datos.data.forEach((value:any,index:number)=>{
         console.log('value' , value,'index',index);
         
        /* this.categorias[index].dato = value.id;

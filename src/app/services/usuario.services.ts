@@ -33,13 +33,9 @@ export class usuarioService {
         return this.http.post(url.action , datos, httpOptions()) ;
     } 
 
-    guardarUsuarios(usuario : Usuarios|UsuarioModel){
-        let arrayDatos=new Object()  ;
-        for (let key in usuario){
-            if (key !== 'ID'){
-          arrayDatos[key] = usuario[key] ;
-            
-        }}
+    guardarUsuarios(usuario : Usuarios|UsuarioModel){ 
+        const { ID, ...datosRestantes } = usuario; 
+        const arrayDatos = datosRestantes; 
         console.log(arrayDatos);
         
         let datos = {"action": actions.actionInsert ,
@@ -62,17 +58,11 @@ export class usuarioService {
         console.log('servicios de usuarios activo - guardarUsuarioPerfil' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
-    updateUsuarios(usuario : Usuarios){
-        let arrayDatos=new Object()  ;
-        let where:any[] = []
-        for (let key in usuario){
-            if (key !== 'perfil'){
-            if (key !== 'ID'){
-          arrayDatos[key] = usuario[key] ;
-            
-        }else{
-            where=[{"columna" : key , "tipocomp" : '=' , "dato" : usuario[key]}];
-        }}}
+    updateUsuarios(usuario : Usuarios){ 
+        let where:any[] = []  
+        const { ID, perfil, ...datosRestantes } = usuario; 
+        const arrayDatos = datosRestantes;   
+        where = [{"columna": 'ID', "tipocomp": '=', "dato":ID }];
         console.log(arrayDatos);
         
         let datos = {"action": actions.actionUpdate ,

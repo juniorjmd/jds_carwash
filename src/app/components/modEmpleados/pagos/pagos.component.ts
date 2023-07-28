@@ -21,14 +21,14 @@ export class PagosComponent implements OnInit {
   listaAcumulados:any = [this.acumulado];
 
   fechasBusqueda:fechaBusqueda[] = [{
-    fechaInicio:Date(),
-    fechaFin:Date()}]
+    fechaInicio:Date().toString(),
+    fechaFin:Date().toString()}]
   ;
   constructor(private empleadosServices :EmpleadosService ,  private loading : loading ) { 
    this.getEmpleados();
   }
   generarAticipo(){
-    if(this.empleado.id <= 0){Swal.fire('Es necesario escoger un empleado para generar el anticipo','')
+    if(this.empleado.id! <= 0){Swal.fire('Es necesario escoger un empleado para generar el anticipo','')
       return;
     }
     if(this.valorAnticipo <= 0){Swal.fire('Es necesario ingresar un valor mayor a cero para generar el anticipo','')
@@ -54,14 +54,14 @@ this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo
  this.loading.hide(); 
  })
   }
-  validarValor(index ){ 
+  validarValor(index:number ){ 
   console.log(
     this.empleadosConAcumulados[index] ) ;
     /*,item.maximoDescuento, item.valorADescontarEnPago*/
-    if( this.empleadosConAcumulados[index].valorADescontarEnPago < 0 ){
+    if( this.empleadosConAcumulados[index].valorADescontarEnPago! < 0 ){
       this.empleadosConAcumulados[index].valorADescontarEnPago  = 0;
     }
-    if( this.empleadosConAcumulados[index].valorADescontarEnPago >  this.empleadosConAcumulados[index].maximoDescuento  ){
+    if( this.empleadosConAcumulados[index].valorADescontarEnPago! >  this.empleadosConAcumulados[index].maximoDescuento!  ){
       this.empleadosConAcumulados[index].valorADescontarEnPago  =  this.empleadosConAcumulados[index].maximoDescuento;
     }
   }
@@ -70,7 +70,7 @@ this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo
    let pagosHtml:string =  `<h1>empleado :${empleado.nombreCompleto}</h1><hr>
    pago de la liquidacion desde el <b>${fechas.fechaInicio}</b> al <b>${fechas.fechaFin}</b><hr>
    <h3>total acumulado : <b>${empleado.TotalAcumuladoPendientes} </b> menos de anticipos <b> ${empleado.valorADescontarEnPago}</b></h3> <hr>
-    total a Pagar : <h3><b>${empleado.TotalAcumuladoPendientes - empleado.valorADescontarEnPago}</b></h3> 
+    total a Pagar : <h3><b>${empleado.TotalAcumuladoPendientes! - empleado.valorADescontarEnPago!}</b></h3> 
    `; 
   Swal.fire({html:pagosHtml, width: '900px', showConfirmButton:true, confirmButtonText:'Pagar' ,cancelButtonColor:'red', cancelButtonText :'Cancelar',showCancelButton:true}).then(value=>{
     console.log(value);
@@ -109,18 +109,21 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
     let empleadosAux :EmpleadosModule = new EmpleadosModule(); 
      this.loading.show()
      this.empleadosServices.getEmpleados().subscribe(
-       (datos:select)=>{
+      {
+        next :
+      
+       (datos:any)=>{
           console.log(datos);
           
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:any , index )=>{ 
+       datos.data.forEach((dato:any , index:number )=>{ 
         this.empleados.push(dato.objeto);
         empleadosAux = dato.objeto;
-        if(empleadosAux.numeroAcumuladosPendientes > 0 ){
+        if(empleadosAux.numeroAcumuladosPendientes! > 0 ){
           empleadosAux.valorADescontarEnPago =  empleadosAux.maximoDescuento  
             this.empleadosConAcumulados.push(empleadosAux);
-            this.fechasBusqueda[contAcumulados].fechaFin = empleadosAux.fechaMaximaAcumulados ; 
-            this.fechasBusqueda[contAcumulados].fechaInicio = empleadosAux.fechaMinimaAcumulados ;  
+            this.fechasBusqueda[contAcumulados].fechaFin = empleadosAux.fechaMaximaAcumulados! ; 
+            this.fechasBusqueda[contAcumulados].fechaInicio = empleadosAux.fechaMinimaAcumulados! ;  
         }
         if(this.indexEmpleado>0){
           this.empleado  = this.empleados[this.indexEmpleado] ;  
@@ -133,10 +136,10 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
  
          this.loading.hide();
        } ,
-       error => {this.loading.hide();
+       error : (error:any) => {this.loading.hide();
          console.log(error)
          Swal.fire( error.error.error, '', 'error');
-       }
+       }}
        );
    }  
    
@@ -149,16 +152,17 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
     $('#'+a ).addClass('active') 
     $('.contPrd').css('display' , 'none')
     const elemDiv = document.getElementById(a.trim()+'Div') 
-    elemDiv.style.display = 'block'
+    elemDiv!.style.display = 'block'
   }
 
-liquidarPagos(auxiliar:EmpleadosModule , index , fechas:{  fechaInicio:Date,fechaFin:Date }){
+liquidarPagos(auxiliar:EmpleadosModule , index :number , fechas:fechaBusqueda){
   this.acumulado = [] ;  
   let porcDescMaximo : number = 0;
   let totalValorAcumulado : number = 0;
    this.loading.show()
-   this.empleadosServices.getEmpleadosAcumulados(auxiliar.id ,fechas ).subscribe(
-     (datos:select)=>{
+   this.empleadosServices.getEmpleadosAcumulados(auxiliar.id! ,fechas ).subscribe(
+    { next:
+     (datos:any)=>{
         
    if (datos.numdata > 0 ){ 
     
@@ -180,10 +184,10 @@ liquidarPagos(auxiliar:EmpleadosModule , index , fechas:{  fechaInicio:Date,fech
 
        this.loading.hide();
      } ,
-     error => {this.loading.hide();
+     error: ( error) => {this.loading.hide();
        console.log(error)
        Swal.fire( error.error.error, '', 'error');
-     }
+     }}
      );
 }
   

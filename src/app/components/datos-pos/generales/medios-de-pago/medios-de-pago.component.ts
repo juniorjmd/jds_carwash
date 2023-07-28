@@ -13,7 +13,14 @@ import { MediosDePagoModel } from 'src/app/models/medios-de-pago.model';
   styleUrls: ['./medios-de-pago.component.css']
 })
 export class MediosDePagoComponent implements OnInit {
-  newMedioP:MediosDePago;
+  newMedioP:MediosDePago = {
+    id: 0,
+    nombre: '',
+    descripcion: '',
+    estado: 0,
+    cuentaContable: 0,
+    establecimiento: 0
+  };
 MedioP:MediosDePago[] = [] ;
   esta:Establecimientos[] =[] ;
   constructor(private serviceCaja : cajasServices ,    
@@ -85,12 +92,12 @@ MedioP:MediosDePago[] = [] ;
   getEstablecimiento(){ 
     this.serviceCaja.getEstablecimientos()
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          this.esta = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:Establecimientos , index )=>{
+      datos.data.forEach((dato:Establecimientos , index:number )=>{
         this.esta[index] = new establecimientoModel( dato );
       }) 
       console.log(this.esta);
@@ -110,11 +117,11 @@ getMedios(){
   this.loading.show()
   this.serviceCaja.getMedios()
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:MediosDePago , index )=>{
+      datos.data.forEach((dato:MediosDePago , index:number )=>{
         this.MedioP[index] =   dato ;
       }) 
       console.log(this.MedioP);

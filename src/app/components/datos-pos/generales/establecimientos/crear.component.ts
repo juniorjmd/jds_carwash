@@ -18,10 +18,19 @@ import { LocationOdoo } from 'src/app/models/location-odoo.model';
 export class CrearComponent implements OnInit { 
   objIni:LocationOdoo = {id:0, name : 'Sin Asignar'} ; 
   establecimientos :establecimientoModel[]  = [];
-  tiposEsta: TiposEstablecimientosModel[];
-  aLocationFisico:LocationOdoo   ;
-  aLocationPOS:LocationOdoo    ;  
-  aLocationVirtual:LocationOdoo    ;
+  tiposEsta: TiposEstablecimientosModel[] = [];
+  aLocationFisico:LocationOdoo = {
+    id: 0,
+    name: ''
+  }   ;
+  aLocationPOS:LocationOdoo  = {
+    id: 0,
+    name: ''
+  }   ;
+  aLocationVirtual:LocationOdoo = {
+    id: 0,
+    name: ''
+  }   ;
   locationStore:LocationOdoo[]  = [];
   locationPOS:LocationOdoo[]  = [];
   locationVirtual:LocationOdoo[]  = [];
@@ -57,14 +66,14 @@ export class CrearComponent implements OnInit {
 
     this.serviceCaja.getLocacionesFisicas()
     .subscribe(
-     (datos:select)=>{
+     (datos:any)=>{
         console.log(datos);
         this.locationStore = [];   
         this.locationPOS   = [];
       this.locationVirtual  = [];
    if (datos.numdata > 0 ){ 
      
-     datos.data.forEach((dato:LocationOdoo , index )=>{
+     datos.data.forEach((dato:LocationOdoo , index:number )=>{
        this.locationStore[index] = dato;  
 
      }) 
@@ -89,11 +98,11 @@ export class CrearComponent implements OnInit {
     
     this.serviceCaja.getLocacionesSecundarias(id)
     .subscribe(
-     (datos:select)=>{
+     (datos:any)=>{
         console.log(datos);   
         this.locationPOS   = []; 
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:LocationOdoo , index )=>{ 
+       datos.data.forEach((dato:LocationOdoo , index:number )=>{ 
          this.locationPOS[index] = dato; 
          //----------------------------------
          if (this.newEsta.idBodegaStock == this.locationPOS[index].id){ 
@@ -121,11 +130,11 @@ export class CrearComponent implements OnInit {
     
     this.serviceCaja.getLocacionesExistencias(id)
     .subscribe(
-     (datos:select)=>{
+     (datos:any)=>{
         console.log(datos);   
         this.locationPOS   = []; 
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:LocationOdoo , index )=>{ 
+       datos.data.forEach((dato:LocationOdoo , index:number )=>{ 
          this.locationPOS[index] = dato; 
          //----------------------------------
          if (this.newEsta.idBodegaStock == this.locationPOS[index].id){ 
@@ -153,12 +162,12 @@ export class CrearComponent implements OnInit {
     this.locationVirtual  = [];
     
     this.serviceCaja.getLocacionesVirtuales()
-    .subscribe(
-     (datos:select)=>{
+    .subscribe({next:
+     (datos:any)=>{
         console.log(datos);    
       this.locationVirtual  = [];
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:LocationOdoo , index )=>{  
+       datos.data.forEach((dato:LocationOdoo , index:number )=>{  
         this.locationVirtual[index] = dato;
         if (this.newEsta.idBodegaVitual == this.locationVirtual[index].id){ 
          this.aLocationVirtual =  this.locationVirtual[index] ; 
@@ -170,11 +179,11 @@ export class CrearComponent implements OnInit {
 
        this.loading.hide()
      } ,
-     error => {this.loading.hide();
+     error:(error) => {this.loading.hide();
        
    this.locationStore = [];
        alert( error.error.error);
-     }
+     }}
      );
 
   }
@@ -197,12 +206,12 @@ export class CrearComponent implements OnInit {
   getEstablecimiento(){ 
     this.serviceCaja.getAllEstablecimientos()
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          this.establecimientos = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:Establecimientos , index )=>{
+      datos.data.forEach((dato:Establecimientos , index:number )=>{
         this.establecimientos[index] = new establecimientoModel( dato );
       }) 
     //  this.aLocationFisico  = {'id':0};
@@ -225,12 +234,12 @@ export class CrearComponent implements OnInit {
   getTiposEstablecimiento(){ 
     this.serviceCaja.getTiposEstablecimientos()
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          this.tiposEsta = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:TiposEstablecimientos , index )=>{
+      datos.data.forEach((dato:TiposEstablecimientos , index:number )=>{
         this.tiposEsta[index] = new TiposEstablecimientosModel( dato );
       }) 
       console.log(this.tiposEsta);
@@ -251,7 +260,7 @@ export class CrearComponent implements OnInit {
     this.Cancelar();
     this.newEsta = estaActualiza ;  
 
-    this.locationStore.forEach((dato:LocationOdoo , index )=>{
+    this.locationStore.forEach((dato:LocationOdoo , index:number )=>{
       
       if (this.newEsta.idAuxiliar == dato.id){ 
        this.aLocationFisico  =  this.locationStore[index];

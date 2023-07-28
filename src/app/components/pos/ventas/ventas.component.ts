@@ -39,18 +39,18 @@ export class VentasComponent implements AfterViewInit  {
   planSepare = false;
   domicilio = false;
   pagos:pagosModel[] =[]  ;
-  indexEfectivo:number;
-  focus:boolean;
+  indexEfectivo!:number;
+  focus!:boolean;
   MedioP:MediosDePago[]=[];
   buscarClose : boolean = true;
-  codigoProducto:string;
+  codigoProducto!:string;
   vueltas:boolean = false;
-  menusUsuario :RecursoDetalle[];
+  menusUsuario :RecursoDetalle[] = [];
   documentos : DocumentosModel[] = [];
   documentoActivo : DocumentosModel = new DocumentosModel();
   documentoRetorno : DocumentosModel = new DocumentosModel();
   documentoSeleccionadoActivo : DocumentosModel = new DocumentosModel(); 
-  @ViewChild('codProd') codProdlement: ElementRef;
+  @ViewChild('codProd') codProdlement!: ElementRef;
   constructor( public loading : loading,private serviceCaja : cajasServices ,
     private newAbrirDialog : MatDialog,
     private documentoService : DocumentoService,
@@ -72,7 +72,7 @@ export class VentasComponent implements AfterViewInit  {
       this.menusUsuario = this.getMenuImage(usuario) ;
      console.log('estoy en getUsuarioLogeado',this.menusUsuario);
      this.getDocumentos();
-  } catch (error) {
+  } catch (error:any) {
       throw new Error(`Error al leer maestros : ${error}`);
       console.log(error);
       alert( error.error.error);
@@ -143,7 +143,7 @@ export class VentasComponent implements AfterViewInit  {
         if (response.confirmado){
          
           console.log('dato retornado busqueda directa',response.datoDevolucion);
-          this.codigoProducto = response.datoDevolucion.id.toString();
+          this.codigoProducto = response.datoDevolucion!.id!.toString();
           this.buscarClose = true;
           this.buscarProducto()
           
@@ -184,7 +184,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
    conector.texto("--------------------------------\n"); 
    conector.texto("Factura "+this.documentoRetorno.idDocumentoFinal + "\n");
    conector.texto("--------------------------------\n");
-   this.documentoRetorno.listado.forEach((lista:DocumentoListado)=>{
+   this.documentoRetorno.listado!.forEach((lista:DocumentoListado)=>{
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
     conector.texto("  "+lista.nombreProducto + "\n");
     conector.texto("|    Precio   | cnt |    dest    |    total    |\n");
@@ -218,10 +218,10 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
    conector.texto("-----------------------------------------------\n\n"); 
    let tamanio = 0;
-   this.documentoRetorno.pagos.forEach((pago:DocpagosModel)=>{
-    tamanio = 42 - pago.nombreMedio.trim().length; 
+   this.documentoRetorno.pagos!.forEach((pago:DocpagosModel)=>{
+    tamanio = 42 - pago.nombreMedio!.trim().length; 
 
-    conector.texto( '     '+pago.nombreMedio.trim()+ pago.valorPagado.toString().padStart(tamanio)+ "\n");
+    conector.texto( '     '+pago.nombreMedio!.trim()+ pago.valorPagado.toString().padStart(tamanio)+ "\n");
     if (pago.valorRecibido > 0 ){
       conector.texto(" Recibido                       vueltos\n");
     conector.texto("      "+pago.valorRecibido + pago.vueltos.toString().padStart(30,'.') + "\n");
@@ -253,11 +253,11 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
   this.loading.show()
   this.serviceCaja.getMediosCajaActiva()
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:MediosDePago , index )=>{
+      datos.data.forEach((dato:MediosDePago , index:number )=>{
         this.MedioP[index] =   dato ;
         this.pagos[index] = new pagosModel();
         this.pagos[index].idMedioDePago = dato.id;
@@ -301,7 +301,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
   generarDomicilio(){
     this.loading.show() 
   this.documentoService.generarDomicilioDocumento(this.documentoActivo.orden).subscribe(
-    (respuesta:select)=>{
+    (respuesta:any)=>{
       let cont = 0;
        console.log('crearDocumento',respuesta);  
        if (respuesta.error === 'ok'){
@@ -356,7 +356,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
     console.log(linea)
     this.loading.show() 
     this.productoService.devolverPrdCompra(linea).subscribe(
-      (respuesta:select)=>{
+      (respuesta:any)=>{
         
         console.log(JSON.stringify(respuesta));
         if (respuesta.error !== 'ok'){
@@ -376,7 +376,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
 
   }
   irbuscarProducto( ){
-   let activeTextarea = document.activeElement.tagName; 
+   let activeTextarea = document.activeElement!.tagName; 
    console.log(activeTextarea)
    if(activeTextarea.toUpperCase().indexOf('SELECT') < 0)
     this.codProdlement.nativeElement.focus();
@@ -397,9 +397,9 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
  }  
   facturarDocumento(){
 
-     
+    this.documentoActivo.pagos = [];
     if (typeof(this.documentoActivo.pagos) === 'undefined' || this.documentoActivo.pagos.length === 0)
-      {this.documentoActivo.pagos[0] = new DocpagosModel();
+      { this.documentoActivo.pagos[0] = new DocpagosModel();
         this.documentoActivo.pagos[0].idDocumento =  this.documentoActivo.orden;
         try {
           this.documentoActivo.pagos[0].idMedioDePago =  this.pagos[ this.indexEfectivo].idMedioDePago;
@@ -416,7 +416,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
         console.log( this.documentoActivo.pagos);
       }
       //return;
-      if (this.documentoActivo.listado.length === 0){
+      if (this.documentoActivo.listado!.length === 0){
       alert('Debe ingresar los productos a facturar') ; 
       return;
     }
@@ -428,7 +428,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
 
   this.loading.show() 
   this.documentoService.cerrarDocumento(this.documentoActivo.orden).subscribe(
-    (respuesta:select)=>{
+    (respuesta:any)=>{
       let cont = 0; 
        if (respuesta.error === 'ok'){
         this.documentoRetorno = respuesta.data.documentoFinal;
@@ -448,7 +448,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
   crearDocumento(){
     this.loading.show() 
   this.documentoService.crearDocumento().subscribe(
-    (respuesta:select)=>{
+    (respuesta:any)=>{
       let cont = 0;
        console.log('crearDocumento',respuesta); 
        if (respuesta.error === 'ok'){
@@ -465,7 +465,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
   cambiarDocumentoActivo(){
     this.loading.show() 
   this.documentoService.cambiarDocumento(this.documentoActivo.orden).subscribe(
-    (respuesta:select)=>{
+    (respuesta:any)=>{
       let cont = 0;
        console.log('cambiarDocumento',respuesta);  
        if (respuesta.error !== 'ok'){  
@@ -491,7 +491,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
   cancelarDocumento(){
     this.loading.show() 
   this.documentoService.cancelarDocumento(this.documentoActivo.orden).subscribe(
-    (respuesta:select)=>{
+    (respuesta:any)=>{
       let cont = 0;
        console.log('cancelarDocumento',respuesta);  
        if (respuesta.error === 'ok'){
@@ -511,7 +511,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
   this.vueltas =true;
   this.pagos = [];
   this.documentoService.getDocumentosUsuarioCaja().subscribe(
-    (datos:select)=>{
+    (datos:any)=>{
       let cont = 0; 
        this.documentos = [];
        let documentoSeleccionado:DocumentosModel;
@@ -519,7 +519,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
        console.log('getDocumentos_recuest', datos );
        
   if (datos.numdata > 0 ){ 
-    datos.data.forEach((dato:any , index  )=>{ 
+    datos.data.forEach((dato:any , index :number )=>{ 
      // this.documentos = 
      this.documentos.push(dato.objeto);
      if(index === 0)  documentoSeleccionado = dato.objeto;
@@ -527,9 +527,9 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
       documentoSeleccionado = dato.objeto;
      } 
     })
-    this.documentoActivo = documentoSeleccionado;
-    if (this.documentoActivo.pagos.length > 0 ){
-      this.pagos = this.documentoActivo.pagos;
+    this.documentoActivo = documentoSeleccionado!;
+    if (this.documentoActivo.pagos!.length > 0 ){
+      this.pagos = this.documentoActivo.pagos!;
       console.log('pagos factura',this.pagos)
     }else{
       try {

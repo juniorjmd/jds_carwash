@@ -16,14 +16,35 @@ import { answDfltOdoo } from 'src/app/models/app.db.answDfltOdoo.model';
 export class ClienteNuevoComponent implements OnInit {
   Ciudades:any[] = [];
   paises:any[] = [];
-  tipo_direccion:any[];
-  companias:any[] ;
-  Provincias:any[];
-  titulos:any[];
-  categorias:any[];
-  tipo_identificacion:answDfltOdoo[];
+  tipo_direccion:any[] = [];
+  companias:any[]  = [];
+  Provincias:any[] = [];
+  titulos:any[] = [];
+  categorias:any[] = [];
+  tipo_identificacion:answDfltOdoo[] = [];
   tipo_identificacionA:answDfltOdoo = new answDfltOdoo() ;
-  NwCliente: ClientesOdoo ;
+  NwCliente: ClientesOdoo = {
+    name: '',
+    display_name: '',
+    company_type: '',
+    is_company: '',
+    email: '',
+    mobile: '',
+    phone: '',
+    type: '',
+    vat: '',
+    lang: '',
+    street: '',
+    city: '',
+    street2: '',
+    state_id: '',
+    zip: '',
+    country_id: '',
+    function: '',
+    category_id: '',
+    title: '',
+    l10n_latam_identification_type_id: undefined
+  };
   
   cityN:CiudadModel = new CiudadModel();
   constructor( public loading : loading, private MaestroClienteServices :MaestroClienteServices ) { 
@@ -88,10 +109,10 @@ this.getCategorias();
     
   }
   getEmpresas(){ 
-    this.MaestroClienteServices.setEmpresas().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setEmpresas().subscribe((datos:any)=>{
      // console.log('EMPRESAS ODDO' , JSON.stringify(datos));
       
-      datos.data.forEach(value=>{
+      datos.data.forEach((value:any)=>{
         
         this.companias.push({
         "dato": value.id,
@@ -102,10 +123,10 @@ this.getCategorias();
 
   }
   getTitulos(){ 
-    this.MaestroClienteServices.setTitulos().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setTitulos().subscribe((datos:any)=>{
      // console.log('EMPRESAS ODDO' , JSON.stringify(datos));
       
-      datos.data.forEach(value=>{
+      datos.data.forEach((value:any)=>{
         
         this.titulos.push({
         "dato": value.id,
@@ -117,10 +138,10 @@ this.getCategorias();
   }
   
   getCategorias(){ 
-    this.MaestroClienteServices.setCategorias().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setCategorias().subscribe((datos:any)=>{
        console.log('setCategorias ODDO' , JSON.stringify(datos));
       this.loading.show()
-      datos.data.forEach(value=>{
+      datos.data.forEach((value:any)=>{
         
         this.categorias.push({
         "dato": value.id,
@@ -136,9 +157,9 @@ this.getCategorias();
     let tp : answDfltOdoo ;
     this.loading.show() 
     this.tipo_identificacion =[];
-    this.MaestroClienteServices.setTiposDocumentos().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setTiposDocumentos().subscribe((datos:any)=>{
       this.loading.show();
-      datos.data.forEach(value=>{
+      datos.data.forEach((value:any)=>{
         tp = new answDfltOdoo() ; 
         tp[0] = value.id;
         tp[1] = value.display_name ; 
@@ -165,9 +186,9 @@ this.getCategorias();
     this.loading.show() 
     this.Ciudades = []; 
     let selCiudad = 0;
-    this.MaestroClienteServices.getCiudadesPorDepartamento(departameto).subscribe((datos:select)=>{
+    this.MaestroClienteServices.getCiudadesPorDepartamento(departameto).subscribe((datos:any)=>{
       
-      datos.data.forEach(value=>{
+      datos.data.forEach((value:any)=>{
         
       this.Ciudades.push({
         "dato": value.id,
@@ -186,8 +207,8 @@ this.getCategorias();
    this.loading.show() 
    let selPais = 0;
    this.paises = [];
-    this.MaestroClienteServices.getPaises().subscribe((datos:select)=>{
-    datos.data.forEach(value=>{
+    this.MaestroClienteServices.getPaises().subscribe((datos:any)=>{
+    datos.data.forEach((value:any)=>{
       
     this.paises.push({
       "dato": value.id,
@@ -216,8 +237,9 @@ this.getCategorias();
     let selDEP = 0;
     this.Provincias = [];
     this.Ciudades = [];
-    this.MaestroClienteServices.getDepartamentosPorPais(pais).subscribe((datos:select)=>{
-      datos.data.forEach(value=>{
+    this.MaestroClienteServices.getDepartamentosPorPais(pais).subscribe(
+      (datos:any)=>{
+      datos.data.forEach((value:any)=>{
         if (  value.nombre.toUpperCase()  == 'MAGDALENA'){
           selDEP = value.id;
         }

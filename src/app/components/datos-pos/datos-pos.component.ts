@@ -41,7 +41,7 @@ export class DatosPosComponent implements OnInit {
       usuarioPermisos = datos.data.usuario.permisos; 
        this.getMenuImage(usuarioPermisos) ; 
 
-  } catch (error) {
+  } catch (error:any) {
       throw new Error(`Error al leer maestros : ${error}`);
       console.log(error);
       alert( error.error.error);

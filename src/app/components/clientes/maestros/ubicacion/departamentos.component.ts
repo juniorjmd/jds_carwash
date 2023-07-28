@@ -27,8 +27,8 @@ export class DepartamentosComponent implements OnInit {
   listarDepartamentos(){
     this.loading.show();
     this.maestroCliente.getDepartamentos()
-    .subscribe(
-      (datos:select)=>{ 
+    .subscribe({next:
+      (datos:any)=>{ 
     this.numdepartamentos = datos.numdata;
     if (datos.numdata > 0 ){
       this.departamentos = datos.data;
@@ -39,8 +39,8 @@ export class DepartamentosComponent implements OnInit {
         console.log(this.departamentos);
         this.loading.hide();
       } ,
-      error => { this.loading.hide();
-        alert( error.error.error);});
+      error:(error) => { this.loading.hide();
+        alert( error.error.error);}});
   }
   
   borrar(dep:DepartamentoModel ){

@@ -62,7 +62,7 @@ export class ProductosComponent implements OnInit {
      this.getCategorias_marcas(); 
      }
      busquedaAuxiliarProducto( ){ 
-      let text = $("#bodegasSelect option:selected").text()
+      let text = $("#bodegasSelect option:anyed").text()
       if(this.inventario.bodega <= 0) {
         Swal.fire( 'Debe seleccionar la bodega de ingreso', '', 'error');
         return;
@@ -73,11 +73,11 @@ export class ProductosComponent implements OnInit {
         console.log(response);
         
         if (response.confirmado){
-         this.productoRetornoBusqueda = response.datoDevolucion;
+         this.productoRetornoBusqueda = response.datoDevolucion!;
           console.log('dato retornado busqueda directa',response.datoDevolucion);
 
           Swal.fire({
-            title: `ingrese la cantidad a ingresar del producto "${response.datoDevolucion.nombre_completo}" en la bodega  : "${text}"  .`, 
+            title: `ingrese la cantidad a ingresar del producto "${response.datoDevolucion!.nombre_completo}" en la bodega  : "${text}"  .`, 
             input: 'number',
             showCancelButton: true,
             confirmButtonText: 'Si', 
@@ -90,7 +90,7 @@ export class ProductosComponent implements OnInit {
                 Swal.fire( 'el valor debe ser mayor a cero', '', 'error');
                 return;
               }
-              this.newIngresoPrecargue =    new AuxIngresoInventarioModule(this.productoRetornoBusqueda.id , result.value ,  this.inventario.bodega ) ; 
+              this.newIngresoPrecargue =    new AuxIngresoInventarioModule(this.productoRetornoBusqueda.id! , result.value ,  this.inventario.bodega ) ; 
               this.productoService.guardarNuevoProductoPrecargue( this.newIngresoPrecargue   ).subscribe(
                 (respuesta:any)=>{console.log(respuesta)
                  
@@ -122,12 +122,12 @@ export class ProductosComponent implements OnInit {
      getBodegas(){ 
       this.bodegas   = [this.auxBodega];
       this.productoService.getbodegas( ).subscribe(
-        (datos:select)=>{
+        (datos:any)=>{
            console.log(datos);
       if (datos.numdata > 0 ){ 
          
        let  cont = 1 ; 
-        datos.data.forEach((dato:BodegasModule , index )=>{
+        datos.data.forEach((dato:BodegasModule , index:number )=>{
           this.bodegas[cont] = dato;
           cont++;
         }) 
@@ -206,7 +206,7 @@ export class ProductosComponent implements OnInit {
       {this.AuxIngresoInventarioModule=[];
       return;}
       this.productoService.getPrecarguePorBodega(this.inventario.bodega).subscribe(
-        (datos:select)=>{
+        (datos:any)=>{
            console.log(datos);
       if (datos.numdata > 0 ){ 
         this.AuxIngresoInventarioModule = datos.data;  
@@ -229,7 +229,7 @@ export class ProductosComponent implements OnInit {
      existencias(prd:ProductoModule){
       this.loading.show()
       this.productoService.getProductosExistencia(prd).subscribe(
-        (datos:select)=>{
+        (datos:any)=>{
            console.log(datos);
            
       if (datos.numdata > 0 ){ 
@@ -296,13 +296,12 @@ export class ProductosComponent implements OnInit {
   this.categorias = [this.categoriaAux ];
 
     this.loading.show()
-    this.productoService.getCategorias_marcas().subscribe(
-      (datos:select[])=>{
+    this.productoService.getCategorias_marcas().subscribe({next: (datos:any)=>{
          console.log(datos);
      let cont:number;    
     if (datos[0].numdata > 0 ){ 
       cont = 1 ; 
-      datos[0].data.forEach((dato:Categoria , index )=>{
+      datos[0].data.forEach((dato:Categoria , index:number )=>{
         this.categorias[cont] = new CategoriasModel(dato) ;
         cont++;
       }) 
@@ -312,7 +311,7 @@ export class ProductosComponent implements OnInit {
     }
     if (datos[1].numdata > 0 ){ 
       cont = 1 ; 
-      datos[1].data.forEach((dato:MarcasModule , index )=>{
+      datos[1].data.forEach((dato:MarcasModule , index:number )=>{
         this.marcas[cont] = dato;
         cont++;
       }) 
@@ -322,10 +321,10 @@ export class ProductosComponent implements OnInit {
     }
         this.loading.hide()
       } ,
-      error => {this.loading.hide();
+      error:(error) => {this.loading.hide();
         console.log(error)
         alert( error.error.error);
-      }
+      }}
       );
    
     }
@@ -342,15 +341,15 @@ export class ProductosComponent implements OnInit {
         Swal.fire( 'Debe establecer minimo el nombre principal del  producto', '', 'error');
        return ;
        }
-       if( this.newProducto.idCategoria   <= 0){ 
+       if( this.newProducto.idCategoria!   <= 0){ 
         Swal.fire( 'Debe establecer una categoria', '', 'error');
        return ;
        } 
-       if( this.newProducto.idMarca   <= 0){ 
+       if( this.newProducto.idMarca!   <= 0){ 
         Swal.fire( 'Debe establecer una marca', '', 'error');
        return ;
        } 
-       if( this.newProducto.tipo_producto   <= 0){ 
+       if( this.newProducto.tipo_producto!   <= 0){ 
         Swal.fire( 'Debe establecer un tipo de producto', '', 'error');
        return ;
        } 
@@ -381,11 +380,11 @@ export class ProductosComponent implements OnInit {
      getProductos(){ 
     this.loading.show()
     this.productoService.getProductosGeneral([0,100]).subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:ProductoModule , index )=>{
+      datos.data.forEach((dato:ProductoModule , index:number )=>{
         this.Productos[index] = dato;
       }) 
       console.log(this.Productos);
@@ -411,7 +410,7 @@ export class ProductosComponent implements OnInit {
     $('#'+a ).addClass('active') 
     $('.contPrd').css('display' , 'none   ')
     const elemDiv = document.getElementById(a.trim()+'Div') 
-    elemDiv.style.display = 'block'
+    elemDiv!.style.display = 'block'
   }
   ngOnInit(): void {
   }

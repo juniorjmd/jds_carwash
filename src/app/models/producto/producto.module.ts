@@ -41,7 +41,7 @@ export class ProductoModule {
     @Inject(Number) public cantidadVendida?:number, 
     @Inject(Number) public descuento?:number,  
     @Inject(String) public nombre_completo?:string,  
-    @Inject(String) public tipo_prod_nombre?:string,  
+    @Inject(String) public tipo_prod_nombre?:string,   
   ){
 this.existencias = []; 
   }

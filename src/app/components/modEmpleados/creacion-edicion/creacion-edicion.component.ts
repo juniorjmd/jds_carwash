@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { EmpleadosModule } from 'src/app/models/empleados/empleados.module';
 import { TiposEmpleadoModule } from 'src/app/models/tipos-empleado/tipos-empleado.module';
-import { EmpleadosService } from 'src/app/services/empleados.service';
-
-import { select } from 'src/app/interfaces/generales.interface';
-import { ServiciosModule } from 'src/app/models/servicios/servicios.module'; 
+import { EmpleadosService } from 'src/app/services/empleados.service'; 
 import Swal from 'sweetalert2'; 
-import { loading } from 'src/app/models/app.loading';  
-import { title } from 'process';
+import { loading } from 'src/app/models/app.loading';   
 
 @Component({
   selector: 'app-creacion-edicion',
@@ -83,7 +79,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
     })
     let cont = 0;
     empleado.pagosAnticiposEmpleados.forEach(pago=>{
-      if (pago.NombreEstado.trim() =='PENDIENTE_POR_LIQUIDAR'){
+      if (pago.NombreEstado!.trim() =='PENDIENTE_POR_LIQUIDAR'){
         if(cont === 0){ 
         pagosHtml +=  `<tr>
         <td class="centrado" colspan="6">Abonos pendientes por liquidar</td></tr>
@@ -152,11 +148,11 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
     this.empleados = []; 
      this.loading.show()
      this.empleadosServices.getEmpleados().subscribe(
-       (datos:select)=>{
+       (datos:any)=>{
           console.log(datos);
           
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:any , index )=>{ 
+       datos.data.forEach((dato:any )=>{ 
         this.empleados.push(dato.objeto);
        }) 
        console.log('empleados',this.empleados);
@@ -177,11 +173,11 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
     this.tipoEmpleado[0] =   new TiposEmpleadoModule(''); 
     this.loading.show()
     this.empleadosServices.getTiposEmpleados().subscribe(
-      (datos:select)=>{
+      {next:(datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TiposEmpleadoModule , index )=>{
+      datos.data.forEach((dato:TiposEmpleadoModule , index :number)=>{
         this.tipoEmpleado[index] = new TiposEmpleadoModule(
           dato.nombre,  dato.estado , dato.id ,dato.descripcion , dato.nombre_estado 
         ) ;
@@ -193,10 +189,10 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
 
         this.loading.hide()
       } ,
-      error => {this.loading.hide();
+      error: (error) => {this.loading.hide();
         console.log(error)
         Swal.fire( error.error.error, '', 'error');
-      }
+      }}
       );
   }  
   ngOnInit(): void {

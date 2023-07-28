@@ -10,7 +10,7 @@ import { ClientesOdoo } from 'src/app/interfaces/clientes-odoo';
   styleUrls: ['./cliente-inicio.component.css']
 })
 export class ClienteInicioComponent implements OnInit {
-  clientes:ClientesOdoo[];
+  clientes:ClientesOdoo[] = [];
   constructor(public loading : loading, private ClienteService:ClientesService) { 
     this.getClientesOdoo() 
 
@@ -21,7 +21,7 @@ export class ClienteInicioComponent implements OnInit {
   }
   getClientesOdoo(){
     this.loading.show();
-    this.ClienteService.getClientesOdoo().subscribe((respuesta:select)=>{
+    this.ClienteService.getClientesOdoo().subscribe((respuesta:any)=>{
       let cont = 0;
       
        console.log('cerrarDocumento',respuesta); 

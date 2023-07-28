@@ -67,7 +67,7 @@ numCiudades : number = 0 ;
     this.loading.show();
     this.maestroCliente.getCiudades()
       .subscribe(
-        (datos:select)=>{
+        (datos:any)=>{
           
       this.numCiudades = datos.numdata;
       if (datos.numdata > 0 ){

@@ -47,7 +47,7 @@ getEmpleadosLavador(){
 
 
 
-getEmpleadosAcumulados( id:number , fechas:{  fechaInicio:Date,fechaFin:Date }){
+getEmpleadosAcumulados( id:number , fechas:fechaBusqueda){
   let where = [{"columna" : "cod_empleado" , "tipocomp" : '=' , "dato" :  id },
   {"columna" : "fecha" , "tipocomp" : '>=' , "dato" :  fechas.fechaInicio },
   {"columna" : "fecha" , "tipocomp" : '<=' , "dato" :  fechas.fechaFin }
@@ -64,7 +64,8 @@ getEmpleadosAcumulados( id:number , fechas:{  fechaInicio:Date,fechaFin:Date }){
 
 
 
-guardarAnticipoEmpleado(nuevoTipo:EmpleadosModule , valor , descripcion ){   let arrayDatos=new Object()  
+guardarAnticipoEmpleado(nuevoTipo:EmpleadosModule , valor:any , descripcion:string ){  
+   let arrayDatos:any=new Object()  
   //id, cod_servicio, cod_tipo_vehiculo, valor, estado
   /* arraydatos =  {  "nombre" : newEsta.nombre  ,
   "descripcion" : newEsta.descripcion,
@@ -91,7 +92,7 @@ guardarAnticipoEmpleado(nuevoTipo:EmpleadosModule , valor , descripcion ){   let
  }
 
 guardarEmpleado(nuevoTipo:EmpleadosModule){ 
-  let arrayDatos=new Object() 
+  let arrayDatos:any=new Object() 
   let where:any[] = []
   //id, cod_servicio, cod_tipo_vehiculo, valor, estado
   arrayDatos['apellido1'] = nuevoTipo.apellido1; 
@@ -102,7 +103,7 @@ guardarEmpleado(nuevoTipo:EmpleadosModule){
   arrayDatos['monto_dia'] = nuevoTipo.monto_dia; 
   arrayDatos['tipo'] = nuevoTipo.tipo; 
 
-  let datos = {"action": actions.actionInsert ,
+  let datos:any = {"action": actions.actionInsert ,
     "_tabla" : TABLA.empleados,
     "_arraydatos" : arrayDatos,
     "_where":null

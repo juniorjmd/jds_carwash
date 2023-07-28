@@ -53,7 +53,7 @@ export class NewCiudadComponent implements OnInit {
       codDep =departamentos.cod_departamento;
      }
     })
-    this.cityN.cod_dane = ( codDep * 1000) +  this.cityN.cod_ciudad ;
+    this.cityN.cod_dane = ( codDep! * 1000) +  this.cityN.cod_ciudad ;
     if(this.cityN.id > 0 ){
         this.maestroServicio.actualizarCiudades(this.cityN).subscribe(
           (respuesta:any)=>{console.log(respuesta)
@@ -87,14 +87,11 @@ export class NewCiudadComponent implements OnInit {
   confirmado(): void {
     this.dialogo.close(true);
   }
-  PadLeft(value, length) {
-    return (value.toString().length < length) ? this.PadLeft("0" + value, length) : 
-    value;
-}
+
   getPaises(){
     this.loading.show() 
     this.maestroServicio.getPaises().subscribe(
-      (datos:select)=>{ 
+      (datos:any)=>{ 
     this.numpaises = datos.numdata;
     if (datos.numdata > 0 ){
       this.paises = datos.data;
@@ -112,12 +109,12 @@ export class NewCiudadComponent implements OnInit {
         alert( error.error.error);});
    }
 
-
+ 
    getDepartamentosPorPais(id:number){
      if(id>0){
     this.loading.show() 
     this.maestroServicio.getDepartamentosPorPais(id).subscribe(
-      (datos:select)=>{ 
+      (datos:any)=>{ 
     this.numdep = datos.numdata;
     console.log(datos );
     
@@ -140,7 +137,7 @@ export class NewCiudadComponent implements OnInit {
    getDepartamento(){
     this.loading.show() 
     this.maestroServicio.getDepartamentos().subscribe(
-      (datos:select)=>{ 
+      (datos:any)=>{ 
     this.numdep = datos.numdata;
     if (datos.numdata > 0 ){
       this.dep = datos.data;

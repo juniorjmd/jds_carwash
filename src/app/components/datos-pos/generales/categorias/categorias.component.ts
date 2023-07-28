@@ -19,6 +19,11 @@ export class CategoriasComponent implements OnInit {
   crearCategoria(){
 
   }
+  setActualizacategoria(categoria:CategoriasModel){
+
+  }
+
+  setAgregarPerfil(categoria:CategoriasModel){}
   getUsuarios(){ 
     this.loading.show()
     this.productoService.getCategorias().subscribe(

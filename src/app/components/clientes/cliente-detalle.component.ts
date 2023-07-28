@@ -9,12 +9,12 @@ import { MaestroClienteServices } from '../../services/MaestroCliente.services';
 })
 export class ClienteDetalleComponent implements OnInit {
 
-  tipo_direccion:any[];
-  companias:any[] ;
-  Provincias:any[];
-  titulos:any[];
-  categorias:any[];
-  tipo_identificacion:any[];
+  tipo_direccion:any[] = [] ;
+  companias:any[] = [] ;
+  Provincias:any[] = [] ;
+  titulos:any[] = [] ;
+  categorias:any[] = [] ;
+  tipo_identificacion:any[] = [] ;
   constructor( private MaestroClienteServices :MaestroClienteServices ) {  
   }
 

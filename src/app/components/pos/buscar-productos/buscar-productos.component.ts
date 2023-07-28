@@ -15,7 +15,7 @@ import { ProductoService } from 'src/app/services/producto.service';
 })
 export class BuscarProductosComponent implements OnInit {
   parceros : ProductoModule[] = [];
-  prdBusqueda :ProductoModule   ;
+  prdBusqueda !:ProductoModule   ;
   codPrd:string ;  
   show = false ;
   show_reemplazo = false;
@@ -38,21 +38,21 @@ export class BuscarProductosComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  addCnt(cnt){
+  addCnt(cnt:number){
     this.cantidadPrd += cnt ;
-    if (this.prdBusqueda.cantidad < this.cantidadPrd){
-       this.cantidadPrd =  this.prdBusqueda.cantidad ;
+    if (this.prdBusqueda.cantidad! < this.cantidadPrd){
+       this.cantidadPrd =  this.prdBusqueda.cantidad! ;
     }
   }
 
-  enviarCnt( cnt ){
+  enviarCnt( cnt:number ){
     this.disabled = [true, true, true, true, true, true, true, true, true, true];
     this.cantidadPrd  += cnt ;
-    if ( this.cantidadPrd > 0 && this.prdBusqueda.cantidad >= this.cantidadPrd){  
+    if ( this.cantidadPrd > 0 && this.prdBusqueda.cantidad! >= this.cantidadPrd){  
             this.prdBusqueda.cantidadVendida = this.cantidadPrd;
             this.loading.show() 
-            this.prdService.guardarPrdCompra(this.prdBusqueda ,  this.codPrdInser.documento ).subscribe(
-              (respuesta:select)=>{
+            this.prdService.guardarPrdCompra(this.prdBusqueda ,  this.codPrdInser.documento! ).subscribe(
+              (respuesta:any)=>{
                 if (respuesta.error !== 'ok'){
                     alert(respuesta.error);
                     console.log(JSON.stringify(respuesta));
@@ -78,15 +78,13 @@ export class BuscarProductosComponent implements OnInit {
    
    buscarProducto(){
     this.loading.show() 
-    this.prdService.getProductosCodBarrasVCnt(this.codPrd , this.codPrdInser.documento.caja ).subscribe(
-      (respuesta:select)=>{
-        
-        
+    this.prdService.getProductosCodBarrasVCnt(this.codPrd , this.codPrdInser.documento!.caja! ).subscribe(
+      (respuesta:any)=>{  
         if (respuesta.error === 'ok'){
            if (respuesta.numdata > 0 ){
            this.prdBusqueda =  respuesta.data[0] ; 
            console.log('busqueda producto : ',this.prdBusqueda);
-           if(this.prdBusqueda.cantidad >= 10 ){
+           if(this.prdBusqueda.cantidad! >= 10 ){
             this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,false ];
            }else{
              switch (this.prdBusqueda.cantidad ){

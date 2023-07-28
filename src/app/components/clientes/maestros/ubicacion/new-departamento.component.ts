@@ -33,7 +33,7 @@ export class NewDepartamentoComponent implements OnInit {
   getPaises(){
     this.loading.show() 
     this.maestroServicio.getPaises().subscribe(
-      (datos:select)=>{ 
+      (datos:any)=>{ 
     this.numpaises = datos.numdata;
     if (datos.numdata > 0 ){
       this.paises = datos.data;

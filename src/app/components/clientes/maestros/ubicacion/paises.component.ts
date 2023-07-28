@@ -48,7 +48,7 @@ export class PaisesComponent implements OnInit {
    listarPaises(){
     this.loading.show() 
     this.maestroCliente.getPaises().subscribe(
-      (datos:select)=>{ 
+      (datos:any)=>{ 
     this.numpaises = datos.numdata;
     if (datos.numdata > 0 ){
       this.paises = datos.data;
@@ -67,7 +67,7 @@ export class PaisesComponent implements OnInit {
      this.changePais.id = id ;
      this.changePais.cod_pais = codPais;
      this.changePais.nombre = nombre;
-     let activaModal : HTMLElement = document.getElementById('activaModal');
+     let activaModal : HTMLElement = document.getElementById('activaModal')!;
      //activaModal.click()
      this.newPais.open(NewPaisComponent,{data:this.changePais})
      .afterClosed()

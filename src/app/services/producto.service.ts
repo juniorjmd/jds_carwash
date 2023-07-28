@@ -73,7 +73,7 @@ getProductosCodBarrasVCnt(codPrd:string , caja:number){
   return this.http.post(url.action , datos, httpOptions()) ;
 } 
  
-getProductosCodBarras(codPrd){
+getProductosCodBarras(codPrd:any){
   let where = [{"columna" : "barcode" , "tipocomp" : '=' , "dato" : codPrd , "relacion" : 'or'  },
   {"columna" : "id" , "tipocomp" : '=' , "dato" : codPrd , "relacion" : 'or' },
   {"columna" : "idProducto" , "tipocomp" : '=' , "dato" : codPrd , "relacion" : 'or' }  
@@ -140,7 +140,7 @@ getProductosExistencia(codPrd:ProductoModule){
   console.log('servicios getProductosExistencia' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
 } 
-getProductosPorCategoria(codCategoria){
+getProductosPorCategoria(codCategoria:any){
   let where = [{"columna" : "idCategoria" , "tipocomp" : '=' , "dato" : codCategoria  }]
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.productos,
       "_limit" : [0,100] , "_where" : where  
@@ -149,7 +149,7 @@ getProductosPorCategoria(codCategoria){
   return this.http.post(url.action , datos, httpOptions()) ;
 } 
  
-getProductosGeneral(limit?:any[]  ){
+getProductosGeneral(limit?:any  ){
   let datos;
   if( limit.length > 0 ){
       datos   = {"action": actions.actionSelect , "_tabla" : vistas.productos,
@@ -171,7 +171,7 @@ getProductosGeneral(limit?:any[]  ){
               };*/
 
 
-getProductosPorMarca(codMarca){
+getProductosPorMarca(codMarca : any){
   let where = [{"columna" : "idMarca" , "tipocomp" : '=' , "dato" : codMarca  }]
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.productos,
       "_limit" : [0,100] , "_where" : where  
@@ -181,7 +181,7 @@ getProductosPorMarca(codMarca){
 } 
 
 
-getProductosPorNombre(texto:string , limit?:any[] ){
+getProductosPorNombre(texto:string , limit?:any  ){
   let datos ;
   let where = [{"columna" : "nombre" , "tipocomp" : 'like' , "dato" : texto  }]
   if( limit.length > 0 ){ 

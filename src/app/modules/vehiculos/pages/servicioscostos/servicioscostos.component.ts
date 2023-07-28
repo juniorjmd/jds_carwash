@@ -113,11 +113,11 @@ Swal.fire({
     this.tiposServicio[0] =  new TiposServiciosModule('',0,'','');
     this.loading.show()
     this.VehiculosService.getTiposServicios().subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TiposServiciosModule , index )=>{
+      datos.data.forEach((dato:TiposServiciosModule , index:number )=>{
         this.tiposServicio[index] = new TiposServiciosModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;
@@ -143,11 +143,11 @@ Swal.fire({
     if (this.tipo_servicio <=  0  ) { return;  }
     this.loading.show()
     this.VehiculosService.getServiciosPorTipo(this.tipo_servicio).subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:ServiciosModule , index )=>{
+      datos.data.forEach((dato:ServiciosModule , index:number )=>{
         this.serviciosAVehiculos[index] = new ServiciosModule(
           dato.nombre,  dato.estado , dato.estadoNombre ,dato.tipo_servicio , dato.precio_general , dato.descripcion, dato.nombre_tipo_servicio , dato.id
         ) ;
@@ -179,7 +179,7 @@ Swal.fire({
         //console.log('éntro ', servicio);
         
         if(servicio.id == this.servicioSelecionado){
-          this.precio =  servicio.precio_general;
+          this.precio =  servicio.precio_general!;
           exit;
         }
       }
@@ -187,11 +187,11 @@ Swal.fire({
     this.tiposVehiculo[0] =  new TipoVehiculoModule('',0,'','');
     this.loading.show()
     this.VehiculosService.getVehiculoNoAsignadoAServicios(this.servicioSelecionado).subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TipoVehiculoModule , index )=>{
+      datos.data.forEach((dato:TipoVehiculoModule , index:number )=>{
         this.tiposVehiculo[index] = new TipoVehiculoModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;
@@ -253,11 +253,11 @@ this.VehiculosService.guardarCostoServicio(this.newServiciosCostos).subscribe(
   this.tiposVehiculo[0] =  new TipoVehiculoModule('',0,'','');
   this.loading.show()
   this.VehiculosService.getCostosServicios(this.servicioSelecionado).subscribe(
-    (datos:select)=>{
+    (datos:any)=>{
        console.log(datos);
        
   if (datos.numdata > 0 ){ 
-    datos.data.forEach((dato:ServiciosCostosModule , index )=>{
+    datos.data.forEach((dato:ServiciosCostosModule , index:number )=>{
       this.arrServiciosCostos[index] = new ServiciosCostosModule( 
         dato.cod_servicio,
         dato.cod_tipo_vehiculo,

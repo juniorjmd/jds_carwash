@@ -13,7 +13,7 @@ import { LoginComponent } from '../login/login.component';
 })
 export class InicioComponent implements OnInit {
   keyLog:string = '123456qwerty';
-  menusUsuario :RecursoDetalle[];
+  menusUsuario :RecursoDetalle[] = [];
 
   margin = 0;
   constructor( private _ServLogin:LoginService , 
@@ -31,7 +31,7 @@ export class InicioComponent implements OnInit {
       this.menusUsuario = this.getMenuImage(usuario) ;
      console.log('estoy en getUsuarioLogeado',this.menusUsuario);
 
-  } catch (error) {
+  } catch (error : any) {
       throw new Error(`Error al leer maestros : ${error}`);
       console.log(error);
       alert( error.error.error);

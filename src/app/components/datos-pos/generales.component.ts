@@ -37,7 +37,7 @@ export class GeneralesComponent implements OnInit {
       this.listado = this.getMenuImage(usuario) ;
      console.log('estoy en getUsuarioLogeado generales',this.listado);
 
-  } catch (error) {
+  } catch (error:any) {
       throw new Error(`Error al leer maestros : ${error}`);
       console.log(error);
       alert( error.error.error);

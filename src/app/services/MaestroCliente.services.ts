@@ -91,7 +91,7 @@ export class MaestroClienteServices {
     }
 /////////////////////////////////////////////////
 
- PadLeft(value, length) {
+ PadLeft(value:any, length:number):string {
     return (value.toString().length < length) ? this.PadLeft("0" + value, length) : 
     value;
 }
@@ -103,7 +103,7 @@ export class MaestroClienteServices {
         console.log('servicios de maestro - departamento ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
-    getDepartamentosPorPais(id:number){
+    getDepartamentosPorPais(id:any){
         
         let where =   [{"columna" : "cod_pais" , "tipocomp" : "=" , "dato" : id[0] }];
         let datos = {"action": actions.actionSelect ,
@@ -127,7 +127,7 @@ export class MaestroClienteServices {
         console.log('servicios de maestro - paises ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
-    getDepartamentosPorPaisOdoo(pais_id){
+    getDepartamentosPorPaisOdoo(pais_id:any){
 
         let datos = {"action": actions.actionBuscarStatesOdoo ,
                      "_id_pais" : pais_id};
@@ -282,7 +282,7 @@ export class MaestroClienteServices {
             throw new Error(`Error al leer maestros : ${error}`);
           }}
 
-    crearMaestrosDatos(datos , tipo = null){ 
+    crearMaestrosDatos(datos:any , tipo:any = null){ 
         this.finP1 = true; 
         this.MaestrosCliente = [];
          console.log('crearMaestrosDatos',datos);
@@ -295,7 +295,7 @@ export class MaestroClienteServices {
                         {
                             "id" :  this.MaestrosCliente.length ,
                             "nombre" : 'tipo_doc',
-                            "descripcion" : datoMaestro.display_name  ,
+                            "descripcion" : datoMaestro.display_name!  ,
                             "datos" :[]
                         }
                     )
@@ -304,20 +304,19 @@ export class MaestroClienteServices {
                 this.MaestrosCliente.push(
                     {
                         "id" : datoMaestro.id ,
-                        "nombre" : datoMaestro.id_maestro ,
+                        "nombre" : datoMaestro.id_maestro! ,
                         "descripcion" : datoMaestro.descripcion  ,
                         "datos" :[]
                     }
                 ) }
             }
-            const isLargeNumber = (element) => element.id === datoMaestro.id ; 
+            const isLargeNumber = (element:any) => element.id === datoMaestro.id ; 
             if (typeof(datoMaestro.id_maestro) === 'undefined'){
 
-                this.MaestrosCliente[this.MaestrosCliente.findIndex(isLargeNumber)].datos.push({ "dato" :datoMaestro.id ,
-                "label" : datoMaestro.display_name} )
+                this.MaestrosCliente[this.MaestrosCliente.findIndex(isLargeNumber)].datos!.push({ "dato" :datoMaestro.id , "label" : datoMaestro.display_name!} )
 
             }else{
-            this.MaestrosCliente[this.MaestrosCliente.findIndex(isLargeNumber)].datos.push({ "dato" :datoMaestro.dato ,
+            this.MaestrosCliente[this.MaestrosCliente.findIndex(isLargeNumber)].datos!.push({ "dato" :datoMaestro.dato ,
             "label" : datoMaestro.label} )}
 
 
@@ -435,9 +434,9 @@ export class MaestroClienteServices {
     
 
  
-       getMaestroClientes(nomMaestro:string){ 
+       getMaestroClientes(nomMaestro:string):any{ 
          console.log('getMaestroClientes ',this.MaestrosCliente, nomMaestro);
-         let datosRetorno = []; 
+         let datosRetorno:any = []; 
             this.MaestrosCliente.forEach(
                 (value )=>{
                 console.log('getMaestroClientes',value ,value.nombre, nomMaestro);

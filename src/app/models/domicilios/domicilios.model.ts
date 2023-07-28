@@ -29,5 +29,6 @@ export class DomiciliosModel {
   hora!:Time;
   nombreEstablecimiento!:string;
   nombreCliente!:string ;
+  nombre_estado!:string ;
  objetoDocumento!:DocumentosModel 
  }

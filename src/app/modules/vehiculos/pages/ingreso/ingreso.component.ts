@@ -134,7 +134,7 @@ establecerCaja(){
             
             
         
-              if( this.ingreso.cajaAsignada > 0 && this.ingreso.idDocumento > 0 ){
+              if( this.ingreso.cajaAsignada! > 0 && this.ingreso.idDocumento! > 0 ){
                  if (  this.ingreso.cajaAsignada != this.cajaEStablecida.id ){
                   Swal.fire({
                     title: `La placa a ingresar tiene una factura activa en la caja : "${this.ingreso.nombreCajaAsignada}" `+

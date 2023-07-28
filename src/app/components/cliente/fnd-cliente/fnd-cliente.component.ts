@@ -21,14 +21,35 @@ export class FndClienteComponent implements OnInit {
   indexPais:number = -1;
   Ciudades:any[] = [];
   paises:any[] = [];
-  tipo_direccion:any[];
-  companias:any[] ;
-  Provincias:any[];
-  titulos:any[];
-  categorias:any[];
-  tipo_identificacion:any[];
+  tipo_direccion:any[] = [] ;
+  companias:any[] = [];
+  Provincias:any[] = [] ;
+  titulos:any[] = [] ;
+  categorias:any[] = [] ;
+  tipo_identificacion:any[] = [] ;
   tipo_identificacionA:any[] = [] ;
-  NwCliente: ClientesOdoo ; 
+  NwCliente: ClientesOdoo ={
+    name: '',
+    display_name: '',
+    company_type: '',
+    is_company: '',
+    email: '',
+    mobile: '',
+    phone: '',
+    type: '',
+    vat: '',
+    lang: '',
+    street: '',
+    city: '',
+    street2: '',
+    state_id: '',
+    zip: '',
+    country_id: [],
+    function: '',
+    category_id: '',
+    title: '',
+    l10n_latam_identification_type_id: undefined
+  } ; 
   indexDepa:number = -1;
   indexCity:number=-1;
   cityN:CiudadModel = new CiudadModel();
@@ -49,7 +70,7 @@ export class FndClienteComponent implements OnInit {
     this.loading.show() 
     //this.documentoActivo.orden;
   this.clientesService.getClienteOdooPorCedula(this.NwCliente).subscribe(
-    (respuesta:select)=>{
+    (respuesta:any)=>{
       let cont = 0;
        console.log('getClientesOdooPorCedula',respuesta); 
        if (respuesta.error === 'ok'){
@@ -64,7 +85,7 @@ export class FndClienteComponent implements OnInit {
          tp[1] = this.NwCliente.l10n_latam_identification_type_id[1]; 
          this.tipo_identificacionA= tp;          
          this.gettipoDocuOdoo(); 
-         if(this.NwCliente.country_id[0] > 0){
+         if( this.NwCliente.country_id &&  this.NwCliente.country_id[0] > 0){
            this.paises.forEach((val,i)=>{
              if (val[0] === this.NwCliente.country_id[0] ){
                this.indexPais = i; 
@@ -81,8 +102,8 @@ export class FndClienteComponent implements OnInit {
         if(this.NwCliente.city!== false){
            this.Ciudades.forEach((val,i)=>{
              console.log(val , i );
-             let auxCity ;
-             auxCity = this.NwCliente.city;
+             let auxCity:string ;
+             auxCity = this.NwCliente.city.toString();
               if(val[1].trim().toUpperCase() === auxCity.trim().toUpperCase() ){
                 this.indexCity = i;
               }
@@ -111,7 +132,7 @@ actualizarCliente(){
   this.loading.show() 
   //this.documentoActivo.orden;
 this.clientesService.updateClienteOdoo(this.NwCliente).subscribe(
-  (respuesta:select)=>{ 
+  (respuesta:any)=>{ 
      if (respuesta.error === 'ok'){ 
        alert('datos actualizados con exito!!!')
 
@@ -141,7 +162,7 @@ pasarClienteAcontrolYasignarDocumento(){
   this.loading.show() 
   //this.documentoActivo.orden;
 this.clientesService.pasarClienteOdooACntYasignarDoc(this.NwCliente , this.documentoActivo ).subscribe(
-  (respuesta:select)=>{
+  (respuesta:any)=>{
     let cont = 0;
      console.log('getClientesOdooPorCedula',respuesta); 
      if (respuesta.error === 'ok'){
@@ -179,7 +200,7 @@ crearCliente(){
   this.loading.show() 
   //this.documentoActivo.orden;
 this.clientesService.setClienteOdoo(this.NwCliente).subscribe(
-  (respuesta:select)=>{
+  (respuesta:any)=>{
     let cont = 0;
      console.log('getClientesOdooPorCedula',respuesta); 
      if (respuesta.error === 'ok'){
@@ -258,10 +279,10 @@ this.getCategorias();
     
   }
   getEmpresas(){ 
-    this.MaestroClienteServices.setEmpresas().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setEmpresas().subscribe((datos:any)=>{
      // console.log('EMPRESAS ODDO' , JSON.stringify(datos));
       
-      datos.data.forEach(value=>{
+      datos.data.forEach((value:any)=>{
         
         this.companias.push({
         "dato": value.id,
@@ -273,10 +294,10 @@ this.getCategorias();
   }
   
   getTitulos(){ 
-    this.MaestroClienteServices.setTitulos().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setTitulos().subscribe((datos:any)=>{
      // console.log('EMPRESAS ODDO' , JSON.stringify(datos));
       
-      datos.data.forEach(value=>{
+      datos.data.forEach((value:any)=>{
         
         this.titulos.push({
         "dato": value.id,
@@ -288,10 +309,10 @@ this.getCategorias();
   }
   
   getCategorias(){ 
-    this.MaestroClienteServices.setCategorias().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setCategorias().subscribe((datos:any)=>{
        console.log('setCategorias ODDO' , JSON.stringify(datos));
       this.loading.show()
-      datos.data.forEach(value=>{
+      datos.data.forEach((value:any)=>{
         
         this.categorias.push({
         "dato": value.id,
@@ -307,9 +328,9 @@ this.getCategorias();
     let tp : any[] ;
     this.loading.show() 
     this.tipo_identificacion =[];
-    this.MaestroClienteServices.setTiposDocumentos().subscribe((datos:select)=>{
+    this.MaestroClienteServices.setTiposDocumentos().subscribe((datos:any)=>{
       this.loading.show();
-      datos.data.forEach(value=>{
+      datos.data.forEach((value:any)=>{
         tp = []; 
         tp[0] = value.id;
         tp[1] = value.display_name ; 
@@ -340,9 +361,9 @@ this.getCategorias();
     this.loading.show() 
     this.NwCliente.state_id = this.Provincias[this.indexDepa] ; 
     this.Ciudades = [];  
-    this.MaestroClienteServices.getCiudadesPorDepartamentoOdoo(this.NwCliente.state_id[0]).subscribe((datos:select)=>{
+    this.MaestroClienteServices.getCiudadesPorDepartamentoOdoo(this.NwCliente.state_id[0]).subscribe((datos:any)=>{
       
-      datos.data.forEach((value,index)=>{        
+      datos.data.forEach((value:any,index:number)=>{        
       this.Ciudades.push([value.id, value.display_name  , value.city_code ]) 
       if (value.display_name.trim().toUpperCase() === 'SANTA MARTA'){  
         this.indexCity =  index;
@@ -377,10 +398,10 @@ this.getCategorias();
     /*this.paises = [ {    "dato": 0 ,
    "label":'País'}];*/
    this.loading.show() 
-   let selPais:any[];
+   let selPais:any[] = [] ;
    this.paises = [];
-    this.MaestroClienteServices.getPaisesOdoo().subscribe((datos:select)=>{ 
-    datos.data.forEach((value,indexAux)=>{
+    this.MaestroClienteServices.getPaisesOdoo().subscribe((datos:any)=>{ 
+    datos.data.forEach((value:any ,indexAux:number)=>{
       
     this.paises.push([
        value.id, value.display_name 
@@ -405,11 +426,11 @@ this.getCategorias();
     this.loading.show() 
     this.paises;
     this.NwCliente.country_id = this.paises[this.indexPais]; 
-    let selDEP =[];
+    let selDEP:any =[];
     this.Provincias = [];
     this.Ciudades = [];
-    this.MaestroClienteServices.getDepartamentosPorPaisOdoo(this.NwCliente.country_id[0]).subscribe((datos:select)=>{
-      datos.data.forEach((value, index)=>{
+    this.MaestroClienteServices.getDepartamentosPorPaisOdoo(this.NwCliente.country_id[0]).subscribe((datos:any)=>{
+      datos.data.forEach((value:any, index:number)=>{
         if (  value.display_name.toUpperCase()  === 'MAGDALENA (CO)'){
           selDEP = [   value.id, value.display_name ];
           this.indexDepa = index ;

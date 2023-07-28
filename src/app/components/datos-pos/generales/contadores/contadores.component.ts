@@ -18,8 +18,16 @@ export class ContadoresComponent implements OnInit {
   tipContadores :TipoDocumento [] = [];
   contadores :Contador [] = [] ;
   cajas :cajaModel[]  = []; 
-  newContador :  Contador;
-  esta : establecimientoModel[];
+  newContador :  Contador = {
+    id: 0,
+    codContador: '',
+    establecimiento: 0,
+    contador: 0,
+    tipoContador: 0,
+    contador_real_establecimiento: 0,
+    estado: 0
+  };
+  esta : establecimientoModel[] = [];
   constructor( private serviceCaja : cajasServices ,    
     private loading : loading ) { 
       this.Cancelar();
@@ -49,12 +57,12 @@ export class ContadoresComponent implements OnInit {
         this.tipContadores= [];
         this.serviceCaja.getTiposDocumentosConContadores()
          .subscribe(
-          (datos:select)=>{
+          (datos:any)=>{
              console.log(datos);
              this.esta = [];   
         if (datos.numdata > 0 ){ 
           
-          datos.data.forEach((dato:TipoDocumento , index )=>{
+          datos.data.forEach((dato:TipoDocumento , index:number )=>{
             this.tipContadores[index] = dato;
           })  
         }
@@ -72,12 +80,12 @@ export class ContadoresComponent implements OnInit {
         this.newContador.establecimiento = 0;
         this.serviceCaja.getEstablecimientos()
          .subscribe(
-          (datos:select)=>{
+          (datos:any)=>{
              console.log('datos establecimientos',datos);
              this.esta = [];   
         if (datos.numdata > 0 ){ 
           
-          datos.data.forEach((dato:Establecimientos , index )=>{
+          datos.data.forEach((dato:Establecimientos , index:number )=>{
             this.esta[index] =  dato ;
           }) 
           console.log(this.esta);
@@ -100,11 +108,11 @@ export class ContadoresComponent implements OnInit {
       this.loading.show()
       this.serviceCaja.getContadores()
          .subscribe(
-          (datos:select)=>{
+          (datos:any)=>{
              console.log(datos);
              
         if (datos.numdata > 0 ){ 
-          datos.data.forEach((dato:Contador  , index )=>{ 
+          datos.data.forEach((dato:Contador  , index:number )=>{ 
             this.contadores[index] = dato ;
           }) 
           console.log(this.contadores);

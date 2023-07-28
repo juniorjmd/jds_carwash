@@ -21,7 +21,7 @@ export class establecimientoModel{
     estockExistencia?:number ;
     bodegaInventarioPgm?:number;
     NameBodegaExistencia?:string ;
-    constructor(cargaEsta : Establecimientos){
+    constructor(cargaEsta : Establecimientos|undefined){
         this.estado = 0;
         this.tipo = 0;
         this.idAuxiliar = 0;

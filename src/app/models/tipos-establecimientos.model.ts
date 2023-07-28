@@ -1,15 +1,15 @@
 import { TiposEstablecimientos } from "../interfaces/tipos-establecimientos";
 
 export class TiposEstablecimientosModel {
-    id:number;
-nombre:string;
-descripcion:string;
-estado:number;
-fecha_creacion:Date;
-usuario_creador:number;
+    id!:number;
+nombre!:string;
+descripcion!:string;
+estado!:number;
+fecha_creacion!:Date;
+usuario_creador!:number;
 nombreUsuario?:string;
 nombreEstado?:string;
-constructor( tipo : TiposEstablecimientos){
+constructor( tipo : TiposEstablecimientos|undefined){
     if (typeof(tipo) !== 'undefined'){
         this.id = tipo.id;
         this.nombre = tipo.nombre;

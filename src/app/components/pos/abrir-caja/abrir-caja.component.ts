@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { cajaModel } from 'src/app/models/cajas.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
-import { loading } from 'src/app/models/app.loading';
-import { select } from 'src/app/interfaces/generales.interface'; 
+import { loading } from 'src/app/models/app.loading'; 
 import { caja } from 'src/app/interfaces/caja.interface';
 import { cajaResumen } from 'src/app/interfaces/cajaResumen.interface';
 import { Router } from '@angular/router';
@@ -17,7 +16,7 @@ import { cajasResumenModel } from 'src/app/models/cajasResumen.model';
 })
 export class AbrirCajaComponent implements OnInit {
   cajas : cajaModel[]=[];
-  cajaAbierta : cajaModel;
+  cajaAbierta !: cajaModel;
   cajaAbiertaFlag:boolean = false;
   flagCajasDisponibles:boolean = true;
   constructor(private serviceCaja : cajasServices ,    
@@ -103,7 +102,7 @@ export class AbrirCajaComponent implements OnInit {
     this.loading.show()
     this.serviceCaja.resumenCaja(caja)
        .subscribe(
-        (datos:select)=>{
+        (datos:any)=>{
            console.log(datos);  
       if (datos.numdata > 0 ){ 
         datos.data.forEach((dato:any   )=>{
@@ -125,13 +124,13 @@ export class AbrirCajaComponent implements OnInit {
     let cajaAux :cajaModel;
     this.loading.show()
     this.serviceCaja.getCajasUsuario()
-       .subscribe(
-        (datos:select)=>{
+       .subscribe( {next:
+        (datos:any)=>{
           let cont = 0;
            console.log('getCajasUsuario',datos);
            this.cajaAbiertaFlag = false;   
       if (datos.numdata > 0 ){ 
-        datos.data.forEach((dato:caja , index )=>{
+        datos.data.forEach((dato:caja , index:number )=>{
           cajaAux =  new cajaModel( dato ); 
           if (cajaAux.nombreEstado === "Abierta" && cajaAux.idUsuario == cajaAux.usuarioEstadoCaja){
             this.loading.hide() 
@@ -159,9 +158,9 @@ export class AbrirCajaComponent implements OnInit {
   
           this.loading.hide()
         } ,
-        error => {this.loading.hide();
+        error: (error) => {this.loading.hide();
           alert( error.error.error);
-        }
+        } } 
         );
   }
   asignarCaja(caja : cajaModel){
@@ -183,7 +182,7 @@ export class AbrirCajaComponent implements OnInit {
   continuar_caja_suspendida(caja : cajaModel){
     
     this.loading.show() 
-    this.cajaService.abrirCaja(caja, 0).subscribe(
+    this.cajaService.abrirCaja(caja, 0).subscribe( {next:
       (respuesta:any)=>{
         console.log(respuesta)
        
@@ -196,9 +195,9 @@ export class AbrirCajaComponent implements OnInit {
       this.loading.hide();
      
       },
-      error => {this.loading.hide();
+      error:(error) => {this.loading.hide();
         alert( error.error.error);
-      }
+      }}
       );
   } 
   

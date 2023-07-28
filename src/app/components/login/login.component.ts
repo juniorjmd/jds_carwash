@@ -17,7 +17,7 @@ import { select } from 'src/app/interfaces/generales.interface';
   providers:[Modal1Component]
 })
 export class LoginComponent implements OnInit {
-  usuario:UsuarioModel;
+  usuario!:UsuarioModel;
   sucursal:vwsucursal[]=[]; 
   constructor(private _datosInicialesService : DatosInicialesService,
     private _loginService: LoginService,
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
       localStorage.clear();
         //this.sucursal =  this._datosInicialesService.getDatosIniSucursal();
     this._datosInicialesService.getDatosIniSucursal().subscribe(
-      (data:vwsucursal[])=>{
+      (data:any)=>{
       this.sucursal = data;
       console.log(this.sucursal);
     } ,
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
    // let usuario:Usuario;
 
     this._loginService.getLogin(this.usuario.Login , this.usuario.pass).subscribe(
-      async (datos:select)=>{ 
+      async (datos:any)=>{ 
         if(datos.data.usuario.length === 0){
           
           console.log('getLogin * sin datos',datos.data.usuario); 
@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
     }*/
     
   }
-   myFunction(x) { 
+   myFunction(x:any) { 
     if (x.type === "password") {
         x.type = "text";
     } else {

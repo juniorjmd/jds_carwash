@@ -19,7 +19,7 @@ export class CajasNuevaComponent implements OnInit {
   cajas :cajaModel[]  = []; 
   parametros:ParametrosModule[] = [];
   newCaja : cajaModel = new cajaModel(undefined);
-  esta : establecimientoModel[];
+  esta : establecimientoModel[] = [];
   guardarBtn = false;
   constructor( private serviceCaja : cajasServices ,  
      private parServices:ParametrosService , 
@@ -39,7 +39,7 @@ export class CajasNuevaComponent implements OnInit {
     this.parametros = []; 
      this.loading.show()
      this.parServices.getParametros().subscribe(
-       (datos:select)=>{
+       (datos:any)=>{
           console.log(datos);
           
      if (datos.numdata > 0 ){ 
@@ -67,12 +67,12 @@ export class CajasNuevaComponent implements OnInit {
     this.newCaja.establecimiento = 0;
     this.serviceCaja.getEstablecimientos()
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          this.esta = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:Establecimientos , index )=>{
+      datos.data.forEach((dato:Establecimientos , index:number )=>{
         this.esta[index] = new establecimientoModel( dato );
       }) 
       console.log(this.esta);
@@ -96,11 +96,11 @@ getCajas(){
   this.loading.show()
   this.serviceCaja.getCajas()
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:caja , index )=>{
+      datos.data.forEach((dato:caja , index:number )=>{
         this.cajas[index] = new cajaModel( dato );
       }) 
       console.log(this.cajas);

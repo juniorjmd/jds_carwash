@@ -48,7 +48,7 @@ export class EnviosComponent implements OnInit {
 
   this.loading.show() 
   this.documentoService.cerrarDocumento(idDocumento).subscribe(
-    (respuesta:select)=>{
+    (respuesta:any)=>{
       let cont = 0;
        console.log('cerrarDocumento',respuesta); 
        if (respuesta.error === 'ok'){
@@ -91,7 +91,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
    conector.texto("--------------------------------\n"); 
    conector.texto("Factura "+this.documentoRetorno.idDocumentoFinal + "\n");
    conector.texto("--------------------------------\n");
-   this.documentoRetorno.listado.forEach((lista:DocumentoListado)=>{
+   this.documentoRetorno.listado!.forEach((lista:DocumentoListado)=>{
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
     conector.texto(lista.nombreProducto + "\n");
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha);    
@@ -115,7 +115,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
    conector.texto("Medios de Pago\n");
 
-   this.documentoRetorno.pagos.forEach((pagos:DocpagosModel)=>{
+   this.documentoRetorno.pagos!.forEach((pagos:DocpagosModel)=>{
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
     conector.texto("      "+pagos.nombreMedio + "\n");
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha);
