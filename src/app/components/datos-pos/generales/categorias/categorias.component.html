@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class='centrado'>Categorias de productos</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button" class="btn btn-primary" (click)='crearCategoria()'>Nueva Categoria</button>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <table class="table" *ngIf="categorias.length > 0">
+                <tr>
+
+                    <th>Nombre</th>
+                    <th>Letra</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>contador</th>
+                    <th colspan="2">
+                        opcion
+                    </th>
+                </tr>
+                <tr *ngFor="let categoria of categorias">
+                    <td>{{categoria.nombre }}</td>
+                    <td>{{categoria.letra}}</td>
+                    <td>{{categoria.tipoDescripcion }}</td>
+                    <td>{{categoria.descripcion.trim()}}</td>
+                    <td>{{categoria.contador}}</td>
+                    <td title="editar categoria"><i class="fas fa-pencil-alt boton_activo" (click)="setActualizacategoria(categoria)"></i> </td>
+
+                    <td title="Asignar caracteristicas de categoria"><i class="fas fa-address-card boton_activo" (click)="setAgregarPerfil(categoria)"></i>
+
+                    </td>
+
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+</div>

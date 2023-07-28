@@ -1,0 +1,34 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class='centrado'>Listado de reportes</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5">
+            <div class="row" *ngFor="let item of listado.izquierdo">
+                <div class="col-sm-12">
+                    <h3 class='boton_activo'>
+                        <a [routerLink]="item.direccion" class="menuPrincipalLink">
+                            <i class="fas fa-arrow-circle-right"></i>&nbsp;&nbsp; {{item.nombre_recurso}}
+                        </a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+
+            <div class="row" *ngFor="let item2 of listado.derecho">
+                <div class="col-sm-12">
+                    <h3 class='boton_activo'>
+                        <a [routerLink]="item2.direccion" class="menuPrincipalLink">
+                            <i class="fas fa-arrow-circle-right"></i>&nbsp;&nbsp; {{item2.nombre_recurso}}
+                        </a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

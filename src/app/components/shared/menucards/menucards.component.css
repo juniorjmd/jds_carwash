@@ -1,0 +1,9 @@
+.card-title:hover {
+    font-size: 20px !important;
+    color: black !important;
+}
+
+.card-body:hover+.card-title {
+    font-size: 20px !important;
+    color: black !important;
+}

@@ -1,0 +1,234 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item ">
+        <a class="nav-link likcontPrd boton_activo active" id="ListadoPrdLink" (click)="removeGetActivo('ListadoPrdLink');getProductos()">Listado</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link likcontPrd boton_activo" id="CrearPrdLink" (click)="removeGetActivo('CrearPrdLink'); limpiarFormulario()">Crear</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link likcontPrd boton_activo" id="ExistenciaPrdLink" (click)="removeGetActivo('ExistenciaPrdLink'); limpiarFormulario()">Existencias</a>
+    </li>
+</ul>
+
+<div class="container-fluid contPrd" style="display: block; max-height: 500px; overflow-y: auto;" id="ListadoPrdLinkDiv">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class='centrado'>listado de productos</h2>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <table class="table" *ngIf="Productos.length > 0">
+                <tr>
+
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; referencia&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; nombre&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; Tipo&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; precioVenta&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; PrecioSinIVA&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; valorIVA&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; porcent_iva&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; categoria&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; marca&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th colspan="2">
+                        opcion
+                    </th>
+                </tr>
+                <tr *ngFor="let Producto of Productos">
+                    <td>{{Producto.idProducto }}</td>
+                    <td>{{Producto.nombre_completo }}</td>
+                    <td>{{Producto.tipo_prod_nombre }}</td>
+                    <td style="text-align:right;">{{Producto.precioVenta }}</td>
+                    <td style="text-align:right;">{{Producto.PrecioSinIVA }}</td>
+                    <td style="text-align:right;">{{Producto.valorIVA }}</td>
+                    <td class="centrado">{{Producto.porcent_iva }} %</td>
+                    <td noWrap>{{Producto.nombreMarca }}</td>
+                    <td>{{Producto.nombreCategoria }}</td>
+                    <td title="editar producto">
+                        <i class="fas fa-pencil-alt boton_activo" (click)="editarPrd(Producto)"> </i> </td>
+
+                    <td title="mostrar existencias">
+                        <i class="fas fa-address-card boton_activo" (click)="existencias(Producto)"></i>
+
+                    </td>
+
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid contPrd" style="display: none;" id="CrearPrdLinkDiv">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class='centrado'>creacion nuevo de productos</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-1"> </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">Nombre : </div>
+            <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.nombre" class="form-control" placeholder="nombre principal "></div>
+            <div class="col-sm-10">Nombre 2 : </div>
+            <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.nombre2" class="form-control" placeholder="nombre secundario "></div>
+            <div class="col-sm-10">Nombre 3 : </div>
+            <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.nombre3" class="form-control" placeholder="nombre secundario "></div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">Categoria : </div>
+            <div class="col-sm-12">
+                <select class="form-control" [(ngModel)]="newProducto.idCategoria">
+                    <option *ngFor="let categoria of categorias"  value ={{categoria.id}}>{{categoria.nombre}}</option>
+                </select>
+
+            </div>
+            <div class="col-sm-10">Categoria 2 : </div>
+            <div class="col-sm-12">
+                <select class="form-control" [(ngModel)]="newProducto.idCategoria2">
+                    <option *ngFor="let categoria of categorias"  value ={{categoria.id}}>{{categoria.nombre}}</option>
+                </select>
+
+            </div>
+            <div class="col-sm-10">Categoria 3 : </div>
+            <div class="col-sm-12">
+                <select class="form-control" [(ngModel)]="newProducto.idCategoria3">
+                    <option *ngFor="let categoria of categorias"  value ={{categoria.id}}>{{categoria.nombre}}</option>
+                </select>
+
+            </div>
+
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">Marca : </div>
+            <div class="col-sm-12">
+                <select class="form-control" [(ngModel)]="newProducto.idMarca">
+                 <option *ngFor="let marca of marcas"  value ={{marca.id}}>{{marca.nombre}}</option>
+             </select>
+
+            </div>
+            <div class="col-sm-10">Tipo de Producto : </div>
+            <div class="col-sm-12">
+                <select class="form-control" [(ngModel)]="newProducto.tipo_producto">
+                 <option   *ngFor="let tipProducto of tipProductos"  value ={{tipProducto.id}}>{{tipProducto.nombre}}</option>
+             </select>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"> </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">precio : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precioVenta" class="form-control" placeholder="nombre principal "></div>
+
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">IVA (%) : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.porcent_iva" class="form-control" placeholder="nombre principal "></div>
+
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">precio de compra : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precioCompra" class="form-control" placeholder="nombre principal "></div>
+
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-1"> </div>
+        <div class="col-sm-7">
+
+            <div class="col-sm-6">
+                Codigo de Barras
+            </div>
+            <div class="col-sm-12">
+                <input type="text" [(ngModel)]="newProducto.barcode" class="form-control" placeholder="CODIGO DE BARRAS">
+            </div>
+
+            <div class="col-sm-6">
+                Descripcion
+            </div>
+            <div class="col-sm-12">
+                <input type="text" [(ngModel)]="newProducto.descripcion" class="form-control" placeholder="Descripcion adicional">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-12">
+                <input class="btn btn-success col-sm-12" type="button" (click)="enviarProducto()" value="Crear Producto">
+            </div><br>
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-danger col-sm-12" (click)="limpiarFormulario()"> Cancelar </button>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid contPrd" style="display: none;" id="ExistenciaPrdLinkDiv">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class='centrado'>ingresar existencia a productos</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <h3>Datos De inventario : </h3>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">Nombre : </div>
+            <div class="col-sm-12">
+                <input type="text" [(ngModel)]="inventario.nombre" class="form-control" placeholder="nombre inventario ">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">Bodega : </div>
+            <div class="col-sm-12">
+                <select id="bodegasSelect" (change)="cargarPrecargue()" class="form-control" [(ngModel)]="inventario.bodega">
+                    <option *ngFor="let categoria of bodegas"  value ={{categoria.id}}>{{categoria.nombre}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">Descripcion : </div>
+            <div class="col-sm-12">
+                <input type="text" [(ngModel)]="inventario.descripcion" class="form-control" placeholder="descripcion inventario ">
+
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-2">
+            <button class="btn btn-success" (click)="busquedaAuxiliarProducto()">Agregar producto</button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-danger" (click)="borrarPrecarga()">Limpiar listado</button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-info" (click)="cerrarInventario()">cerrar inventario</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" style="max-height: 370px; overflow-y: auto;">
+            <table class="table">
+                <tr *ngFor="let item of AuxIngresoInventarioModule">
+                    <td>{{item.nombreProducto}}</td>
+                    <td>{{item.cantidad}}</td>
+                    <td>{{item.nombreUsuario}}</td>
+                    <td>{{item.nombreBodega}}</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+
+</div>
