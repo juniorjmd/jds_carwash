@@ -103,7 +103,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [HomeVhComponent,
+  declarations: [
+    HomeVhComponent,
     booleanpPipe,
     ImgB64Pipe ,
     dataArrayOdooPipe,
@@ -175,14 +176,27 @@ import { MatDialogModule } from '@angular/material/dialog';
     IngresoComponent, 
     EmpleadosComponent, 
     ServicioscostosComponent, 
-    PagosComponent, CreacionEdicionComponent, TiposServiciosComponent, EstablecerCajaComponent, BodegasComponent, ParametrosComponent, ReimpimirFacturasComponent, InicioReportesComponent, VerFacturasComponent 
+    PagosComponent, 
+    CreacionEdicionComponent,
+     TiposServiciosComponent,
+      EstablecerCajaComponent,
+       BodegasComponent,
+       ParametrosComponent,
+        ReimpimirFacturasComponent,
+         InicioReportesComponent,
+          VerFacturasComponent 
   ],
   imports: [MatButtonModule
     ,MatCheckboxModule,
-    BrowserModule,HttpClientModule,
-    APP_ROUTING,FormsModule,ReactiveFormsModule,
+    BrowserModule,
+    HttpClientModule,
+    APP_ROUTING,
+    FormsModule,
+    ReactiveFormsModule,
     NgbModule,
-    BrowserAnimationsModule,MatDialogModule,MatDialogModule   
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatDialogModule   
   ],
   providers: [DatosInicialesService, Title,  loading],
   bootstrap: [AppComponent],
