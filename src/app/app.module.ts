@@ -1,16 +1,9 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { FormsModule ,ReactiveFormsModule } from '@angular/forms'; 
-
+import { NgModule } from '@angular/core'; 
+import { FormsModule ,ReactiveFormsModule } from '@angular/forms';  
 
 import { DialogoConfirmacionComponent } from 'src/app/components/shared/dialogo-confirmacion/dialogo-confirmacion.component'
-
  
-
-//rutas
-import { APP_ROUTING } from './app.routes';
-
 //servicios
 import { DatosInicialesService   } from './services/DatosIniciales.services';
 
@@ -100,8 +93,11 @@ import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-fact
 import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
 import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-facturas.component'; 
 import { HttpClientModule } from '@angular/common/http';
-import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatDialogModule } from '@angular/material/dialog'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';  
+import { AppRoutingModule } from './app-routing.module'; 
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     HomeVhComponent,
@@ -186,23 +182,22 @@ import { MatDialogModule } from '@angular/material/dialog';
          InicioReportesComponent,
           VerFacturasComponent 
   ],
-  imports: [MatButtonModule
-    ,MatCheckboxModule,
-    BrowserModule,
-    HttpClientModule,
-    APP_ROUTING,
+  imports: [
     FormsModule,
     ReactiveFormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    BrowserModule,
+    HttpClientModule, 
     NgbModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    MatDialogModule   
+    MatDialogModule , 
+    AppRoutingModule,
+    RouterModule
   ],
   providers: [DatosInicialesService, Title,  loading],
-  bootstrap: [AppComponent],
-  entryComponents: [
-    DialogoConfirmacionComponent// <--- Aquí
-    ,NewPaisComponent
-  ]
+  bootstrap: [AppComponent], 
+ 
 })
 export class AppModule { }

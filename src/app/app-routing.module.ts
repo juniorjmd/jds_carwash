@@ -1,4 +1,7 @@
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { InicioComponent } from './components/inicio/inicio.component';
@@ -54,7 +57,28 @@ import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-fact
 import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-facturas.component';
  
 
-export const APP_ROUTES: Routes = [
+
+
+
+
+/*
+const routes: Routes = 
+[{ path: 'jds', component: JdsComponent , children : [
+  { path: 'ventas', loadChildren: () => import('./modules/ventas/ventas.module').then(m => m.VentasModule) },
+{ path: 'inventario', loadChildren:() => import('./modules/inventario/inventario.module').then(m => m.InventarioModule ) },
+{ path:'**' , redirectTo : "ventas"}
+
+
+]} ,
+{ path:'**' , redirectTo : "jds"}
+
+
+
+
+];
+*/
+
+ const routes:  Routes = [
     { path : 'login' , component : LoginComponent}, 
     { path : 'home' , 
     component : HomeComponent ,
@@ -133,8 +157,14 @@ export const APP_ROUTES: Routes = [
         { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
       ]
     },
+    { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
     { path : '**' , pathMatch:'full' , redirectTo : 'login'},
 ] ;
 
 
-export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES , { useHash : true} );
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

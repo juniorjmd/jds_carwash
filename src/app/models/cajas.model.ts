@@ -2,17 +2,17 @@
 import { caja } from "../interfaces/caja.interface";
 
 export class cajaModel{
-    id : number; 
-    nombre : string;
-    descripcion :string;
-    estadoGeneral : number;
-    estadoCaja : number;
-    fechaEstadoGeneral : Date;
-    fechaEstadoCaja : Date;
-    usuarioEstadoCaja : number;
-    usuarioEstadoGeneral : number;
-    nombreEstadoGeneral : string;
-    nombreEstado: string; 
+    id !: number; 
+    nombre !: string;
+    descripcion !:string;
+    estadoGeneral !: number;
+    estadoCaja !: number;
+    fechaEstadoGeneral !: Date;
+    fechaEstadoCaja !: Date;
+    usuarioEstadoCaja !: number;
+    usuarioEstadoGeneral !: number;
+    nombreEstadoGeneral !: string;
+    nombreEstado!: string; 
     asignada ?:boolean;
     idUsuario ?:number;
     establecimiento?:number;

@@ -10,7 +10,7 @@ export const ConectorPlugin = (() => {
       class Operacion {
         accion:string;
         datos:string;
-        constructor(accion, datos) {
+        constructor(accion:any, datos:any) {
             this.accion = accion + "";
             this.datos = datos + "";
         }
@@ -55,35 +55,35 @@ export const ConectorPlugin = (() => {
         };
         ruta:string;
         operaciones:any[];
-        constructor(ruta ) {
+        constructor(ruta:any ) {
             if (!ruta) ruta = ConectorPlugin.URL_PLUGIN_POR_DEFECTO;
             this.ruta = ruta;
             this.operaciones = [];
             return this;
         }
 
-        static obtenerImpresoras(ruta) {
+        static obtenerImpresoras(ruta:any) {
             if (ruta) ConectorPlugin.URL_PLUGIN_POR_DEFECTO = ruta;
             return fetch(ConectorPlugin.URL_PLUGIN_POR_DEFECTO + "/impresoras")
                 .then(r => r.json());
         }
 
-        textoConAcentos(texto) {
+        textoConAcentos(texto:any) {
             this.operaciones.push(new ConectorPlugin.OperacionTicket(ConectorPlugin.Constantes.AccionTextoConAcentos, texto));
             return this;
         }
 
-        qrComoImagen(contenido) {
+        qrComoImagen(contenido:any) {
             this.operaciones.push(new ConectorPlugin.OperacionTicket(ConectorPlugin.Constantes.AccionQrComoImagen, contenido));
             return this;
         }
 
-        imagenDesdeUrl(url) {
+        imagenDesdeUrl(url:any) {
             this.operaciones.push(new ConectorPlugin.OperacionTicket(ConectorPlugin.Constantes.AccionImagen, url));
             return this;
         }
 
-        imagenLocal(ubicacion) {
+        imagenLocal(ubicacion:any) {
             this.operaciones.push(new ConectorPlugin.OperacionTicket(ConectorPlugin.Constantes.AccionImagenLocal, ubicacion));
             return this;
         }
@@ -103,18 +103,18 @@ export const ConectorPlugin = (() => {
             return this;
         }
 
-        establecerTamanioFuente(a, b) {
+        establecerTamanioFuente(a:any, b:any) {
             this.operaciones.push(new ConectorPlugin.OperacionTicket(ConectorPlugin.Constantes.AccionTextSize, `${a},${b}`));
             return this;
         }
 
-        establecerFuente(font) {
+        establecerFuente(font:any) {
             if (font !== ConectorPlugin.Constantes.FuenteA && font !== ConectorPlugin.Constantes.FuenteB && font !== ConectorPlugin.Constantes.FuenteC) throw Error("Fuente inválida");
             this.operaciones.push(new ConectorPlugin.OperacionTicket(ConectorPlugin.Constantes.AccionFont, font));
             return this;
         }
 
-        establecerEnfatizado(val) {
+        establecerEnfatizado(val:any) {
             if (val !== 0 && val !== 1) {
                 throw Error("El valor debe ser 1 para true, 0 para false");
             }
@@ -122,7 +122,7 @@ export const ConectorPlugin = (() => {
             return this;
         }
 
-        establecerJustificacion(justification) {
+        establecerJustificacion(justification:any) {
             if (justification !== ConectorPlugin.Constantes.AlineacionCentro && justification !== ConectorPlugin.Constantes.AlineacionDerecha && justification !== ConectorPlugin.Constantes.AlineacionIzquierda) {
                 throw Error(`Alineación ${justification} inválida`);
             }
@@ -130,12 +130,12 @@ export const ConectorPlugin = (() => {
             return this;
         }
 
-        texto(text) {
+        texto(text:any) {
             this.operaciones.push(new ConectorPlugin.OperacionTicket(ConectorPlugin.Constantes.AccionText, text));
             return this;
         }
 
-        feed(n) {
+        feed(n:any) {
             if (!parseInt(n) || parseInt(n) < 0) {
                 throw Error("Valor para feed inválido");
             }
@@ -143,7 +143,7 @@ export const ConectorPlugin = (() => {
             return this;
         }
 
-        async imprimirEn(nombreImpresora) {
+        async imprimirEn(nombreImpresora:any) {
             const payload = {
                 operaciones: this.operaciones,
                 impresora: nombreImpresora,
@@ -155,12 +155,12 @@ export const ConectorPlugin = (() => {
             return await respuestaRaw.json();
         }
 
-        qr(contenido) {
+        qr(contenido:any) {
             this.operaciones.push(new ConectorPlugin.OperacionTicket(ConectorPlugin.Constantes.AccionQr, contenido));
             return this;
         }
 
-        validarTipoDeCodigoDeBarras(tipo) {
+        validarTipoDeCodigoDeBarras(tipo:any) {
             if (
                 [
                     ConectorPlugin.Constantes.AccionBarcode128,
@@ -179,7 +179,7 @@ export const ConectorPlugin = (() => {
             ) throw Error("Tipo de código de barras no soportado");
         }
 
-        codigoDeBarras(contenido, tipo) {
+        codigoDeBarras(contenido:any, tipo:any) {
             this.validarTipoDeCodigoDeBarras(tipo);
             this.operaciones.push(new ConectorPlugin.OperacionTicket(tipo, contenido));
             return this;

@@ -48,11 +48,13 @@ export class TiposServiciosComponent implements OnInit {
     this.tiposServicio[0] =  new TiposServiciosModule('',0,'','');
     this.loading.show()
     this.VehiculosService.getTiposServicios().subscribe(
-      (datos:select)=>{
+
+      { next : 
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TiposServiciosModule , index )=>{
+      datos.data.forEach((dato:TiposServiciosModule , index:number )=>{
         this.tiposServicio[index] = new TiposServiciosModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;
@@ -64,15 +66,15 @@ export class TiposServiciosComponent implements OnInit {
 
         this.loading.hide()
       } ,
-      error => {this.loading.hide();
+      error: (error) => {this.loading.hide();
         console.log(error)
         Swal.fire( error.error.error, '', 'error');
       }
-      );
+    });
   }  
-  manageTipoVehiculo(){
-    if(this.newTipoServicio.nombre.trim() === '' ){alert('Debe ingresar el nombre del tipo'); return 0 ;}
-    if(this.newTipoServicio.estado === 0){alert('Debe escoger el estado del tipo'); return 0 ;}
+  manageTipoVehiculo():boolean{
+    if(this.newTipoServicio.nombre.trim() === '' ){alert('Debe ingresar el nombre del tipo'); return false ;}
+    if(this.newTipoServicio.estado === 0){alert('Debe escoger el estado del tipo'); return false ;}
 
     this.loading.show(); 
     this.VehiculosService.guardarTiposServicios(this.newTipoServicio).subscribe(
@@ -87,6 +89,7 @@ export class TiposServiciosComponent implements OnInit {
      }
      this.loading.hide(); 
      })
+     return true
   }
    
   cancelar(){

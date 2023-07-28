@@ -47,7 +47,7 @@ eliminarCostosServicios(oldTipoVh:ServiciosCostosModule){
 }
 
 guardarNuevoIngresoServicioold(nuevoTipo:VehiculosIngresoServicioModule){ 
-  let arrayDatos=new Object() 
+  let arrayDatos:any=new Object() 
   let where:any[] = []
   //id, cod_servicio, cod_tipo_vehiculo, valor, estado
   arrayDatos['placaVehiculo'] = nuevoTipo.placaVehiculo; 
@@ -73,7 +73,7 @@ guardarNuevoIngresoServicioold(nuevoTipo:VehiculosIngresoServicioModule){
 //-------------------------
 
 guardarNuevoIngresoServicio(nuevoTipo:VehiculosIngresoServicioModule){ 
-  let arrayDatos=new Object() 
+  let arrayDatos:any=new Object() 
   let where:any[] = []
   //id, cod_servicio, cod_tipo_vehiculo, valor, estado
   arrayDatos['placaVehiculo'] = nuevoTipo.placaVehiculo; 
@@ -98,7 +98,7 @@ guardarNuevoIngresoServicio(nuevoTipo:VehiculosIngresoServicioModule){
  //-----------------------
 guardarCostoServicio(nuevoTipo:ServiciosCostosModule){ 
   console.log('costo a guardar' , nuevoTipo);
-  let arrayDatos=new Object() 
+  let arrayDatos:any=new Object() 
   let where:any[] = []
   //id, cod_servicio, cod_tipo_vehiculo, valor, estado
   arrayDatos['cod_servicio'] =  nuevoTipo.cod_servicio ; 
@@ -109,8 +109,8 @@ guardarCostoServicio(nuevoTipo:ServiciosCostosModule){
     "_tabla" : TABLA.vehiculos_servicios_costos, 
     "_tablaSelect" :'',
     "_arraydatos" : arrayDatos,
-    "_where":null,
-    "_deleteBefore":null
+    "_where":new Array(),
+    "_deleteBefore":new Array()
    };
 
    if (nuevoTipo.cod_tipo_vehiculo == 999999999 ){ 
@@ -123,7 +123,7 @@ guardarCostoServicio(nuevoTipo:ServiciosCostosModule){
     "_tabla" : TABLA.vehiculos_servicios_costos,
     "_tablaSelect" : TABLA.tiposVehiculos,
     "_arraydatos" : arrayDatos,
-    "_where":null,
+    "_where":[],
     "_deleteBefore":[['cod_servicio' , '=' , nuevoTipo.cod_servicio ]] };
    }
   if ( typeof( nuevoTipo.id )!== 'undefined' ){//actualiza
@@ -196,7 +196,7 @@ eliminarServicios(oldTipoVh:ServiciosModule){
   return this.http.post(url.action , datos, httpOptions()) ;
 }
  public guardarServicios(nuevoTipo : ServiciosModule){
-  let arrayDatos=new Object() 
+  let arrayDatos:any=new Object() 
   let where:any[] = []
   arrayDatos['nombre'] = nuevoTipo.nombre; 
   arrayDatos['descripcion'] = nuevoTipo.descripcion; 
@@ -206,7 +206,7 @@ eliminarServicios(oldTipoVh:ServiciosModule){
   let datos = {"action": actions.actionInsert ,
     "_tabla" : TABLA.vehiculos_servicios,
     "_arraydatos" : arrayDatos,
-    "_where":null
+    "_where":[[]]
    };
   if ( typeof( nuevoTipo.id )!== 'undefined' ){//actualiza
     where = [{"columna" : "id" , "tipocomp" : '=' , "dato" : nuevoTipo.id}]
@@ -239,7 +239,7 @@ eliminarTiposServicios(oldTipoVh:TiposServiciosModule){
   return this.http.post(url.action , datos, httpOptions()) ;
 }
  public guardarTiposServicios(nuevoTipo : TiposServiciosModule){
-  let arrayDatos=new Object() 
+  let arrayDatos:any=new Object() 
   let where:any[] = []
   arrayDatos['nombre'] = nuevoTipo.nombre; 
   arrayDatos['descripcion'] = nuevoTipo.descripcion; 
@@ -247,7 +247,7 @@ eliminarTiposServicios(oldTipoVh:TiposServiciosModule){
   let datos = {"action": actions.actionInsert ,
     "_tabla" : TABLA.TiposServicios,
     "_arraydatos" : arrayDatos,
-    "_where":null
+    "_where":[[]]
    };
   if ( typeof( nuevoTipo.id )!== 'undefined' ){//actualiza
     where = [{"columna" : "id" , "tipocomp" : '=' , "dato" : nuevoTipo.id}]
@@ -280,7 +280,7 @@ eliminarTipoDeVehiculo(oldTipoVh:TipoVehiculoModule){
   return this.http.post(url.action , datos, httpOptions()) ;
 }
  public guardarTipoVehiculo(nuevoTipo : TipoVehiculoModule){
-  let arrayDatos=new Object() 
+  let arrayDatos:any=new Object() 
   let where:any[] = []
   arrayDatos['nombre'] = nuevoTipo.nombre; 
   arrayDatos['descripcion'] = nuevoTipo.descripcion; 
@@ -288,7 +288,7 @@ eliminarTipoDeVehiculo(oldTipoVh:TipoVehiculoModule){
   let datos = {"action": actions.actionInsert ,
     "_tabla" : TABLA.tiposVehiculos,
     "_arraydatos" : arrayDatos,
-    "_where":null
+    "_where":[[]]
    };
   if ( typeof( nuevoTipo.id )!== 'undefined' ){//actualiza
     where = [{"columna" : "id" , "tipocomp" : '=' , "dato" : nuevoTipo.id}]

@@ -46,11 +46,12 @@ export class TiposComponent   {
     this.tiposVehiculo[0] =  new TipoVehiculoModule('',0,'','');
     this.loading.show()
     this.VehiculosService.geTiposVehiculos().subscribe(
-      (datos:select)=>{
+   
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TipoVehiculoModule , index )=>{
+      datos.data.forEach((dato:TipoVehiculoModule , index:number )=>{
         this.tiposVehiculo[index] = new TipoVehiculoModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;
@@ -68,9 +69,9 @@ export class TiposComponent   {
       }
       );
   }  
-  manageTipoVehiculo(){
-    if(this.newTipoVehiculo.nombre.trim() === '' ){alert('Debe ingresar el nombre del tipo'); return 0 ;}
-    if(this.newTipoVehiculo.estado === 0){alert('Debe escoger el estado del tipo'); return 0 ;}
+   manageTipoVehiculo():boolean {
+    if(this.newTipoVehiculo.nombre.trim() === '' ){alert('Debe ingresar el nombre del tipo'); return false ;}
+    if(this.newTipoVehiculo.estado === 0){alert('Debe escoger el estado del tipo'); return false ;}
 
     this.loading.show(); 
     this.VehiculosService.guardarTipoVehiculo(this.newTipoVehiculo).subscribe(
@@ -84,7 +85,9 @@ export class TiposComponent   {
       Swal.fire(respuesta.error, '', 'error');
      }
      this.loading.hide(); 
+     return true;
      })
+     return true;
   }
    
   cancelar(){
