@@ -72,7 +72,7 @@ mostrarProductosVendidosPorCierre(cierreActual:CortesDeCajaModule){
         <td>Total</td> 
         </tr>`;
           ;
-        respuesta.data.forEach((item:CortesDeCajaProductosVendidosModule)=>{
+        respuesta.data!.forEach((item:CortesDeCajaProductosVendidosModule)=>{
           pagosHtml +=`<tr> `;
          pagosHtml +=` <td style="text-align: left;">${item.nombreProducto}</td> `;
          pagosHtml +=` <td>${item.idProducto}</td> `;
@@ -114,7 +114,7 @@ mostrarProductosVendidosPorCierre(cierreActual:CortesDeCajaModule){
    <td>Usuario cierre</td>
    </tr>`;
 
-   this.cierresP.forEach(item=>{
+   this.cierresP!.forEach(item=>{
     if(item2.id === item.id_cierre_total){pagosHtml +=`<tr> `;
     pagosHtml +=` <td>${item.fecha_apertura}</td> `;
     pagosHtml +=` <td>${item.fecha_cierre}</td> `;
@@ -147,7 +147,7 @@ mostrarProductosVendidosPorCierre(cierreActual:CortesDeCajaModule){
    </tr>`;
 
 
-   this.cierresPagos.forEach(item=>{
+   this.cierresPagos!.forEach(item=>{
     pagosHtml +=`<tr> `;
     pagosHtml +=` <td>${item.nombre}</td> `;
     pagosHtml +=` <td>${item.valor}</td> `; 

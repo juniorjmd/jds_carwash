@@ -51,7 +51,7 @@ export class TiposComponent   {
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TipoVehiculoModule , index:number )=>{
+      datos.data!.forEach((dato:TipoVehiculoModule , index:number )=>{
         this.tiposVehiculo[index] = new TipoVehiculoModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;

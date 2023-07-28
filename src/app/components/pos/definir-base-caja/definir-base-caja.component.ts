@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit, NgModule } from '@angular/core'; 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { cajaModel } from 'src/app/models/cajas.model';
-import { loading } from 'src/app/models/app.loading';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { loading } from 'src/app/models/app.loading'; 
 import { cajasServices } from 'src/app/services/Cajas.services';
 
 @Component({
@@ -12,7 +11,7 @@ import { cajasServices } from 'src/app/services/Cajas.services';
 })
 export class DefinirBaseCajaComponent implements OnInit {
  caja:cajaModel ;
- valorIngresar:number;
+ valorIngresar:number= 0;
   constructor( private cajaService : cajasServices,
     public dialogo: MatDialogRef<DefinirBaseCajaComponent>,
     @Inject(MAT_DIALOG_DATA) public cajaImport:cajaModel,

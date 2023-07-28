@@ -417,7 +417,7 @@ setMedioDePago(newMedio:MediosDePagoModel){
 }
 ////////////////////////////////////////////////////////////
 
- PadLeft(value, length) {
+ PadLeft(value:any, length:number):string {
     return (value.toString().length < length) ? this.PadLeft("0" + value, length) : 
     value;
 }

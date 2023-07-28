@@ -84,6 +84,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog'; 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';  
+import {  MatRadioModule } from '@angular/material/radio';
 import { AppRoutingModule } from './app-routing.module';   
 
 
@@ -173,7 +174,7 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatCheckboxModule,
+    MatCheckboxModule, MatRadioModule,
     BrowserModule,
     HttpClientModule, 
     MatDialogModule, 

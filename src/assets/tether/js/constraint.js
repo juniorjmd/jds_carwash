@@ -44,7 +44,7 @@ function getBoundingRect(body, tether, to) {
       to[3] += win.pageYOffset;
     }
 
-    BOUNDS_FORMAT.forEach((side, i) => {
+    BOUNDS_FORMAT!.forEach((side, i) => {
       side = side[0].toUpperCase() + side.substr(1);
       if (side === 'Top' || side === 'Left') {
         to[i] += parseFloat(style[`border${side}Width`]);
@@ -76,7 +76,7 @@ function _addOutOfBoundsClass(oob, addClasses, classes, classPrefix, outOfBounds
     }
 
     addClasses.push(oobClass);
-    oob.forEach((side) => {
+    oob!.forEach((side) => {
       addClasses.push(`${oobClass}-${side}`);
     });
   }
@@ -276,7 +276,7 @@ function _flipYTogether(tAttachment, eAttachment, bounds, height, targetHeight, 
 function _getAllClasses(classes, classPrefix, constraints) {
   const allClasses = [getClass('pinned', classes, classPrefix), getClass('out-of-bounds', classes, classPrefix)];
 
-  constraints.forEach((constraint) => {
+  constraints!.forEach((constraint) => {
     const { outOfBoundsClass, pinnedClass } = constraint;
     if (outOfBoundsClass) {
       allClasses.push(outOfBoundsClass);
@@ -286,8 +286,8 @@ function _getAllClasses(classes, classPrefix, constraints) {
     }
   });
 
-  allClasses.forEach((cls) => {
-    ['left', 'top', 'right', 'bottom'].forEach((side) => {
+  allClasses!.forEach((cls) => {
+    ['left', 'top', 'right', 'bottom']!.forEach((side) => {
       allClasses.push(`${cls}-${side}`);
     });
   });
@@ -324,7 +324,7 @@ export default {
     const tAttachment = extend({}, targetAttachment);
     const eAttachment = extend({}, this.attachment);
 
-    this.options.constraints.forEach((constraint) => {
+    this.options.constraints!.forEach((constraint) => {
       let { to, attachment, pin } = constraint;
 
       if (isUndefined(attachment)) {
@@ -429,7 +429,7 @@ export default {
         }
 
         addClasses.push(pinnedClass);
-        pinned.forEach((side) => {
+        pinned!.forEach((side) => {
           addClasses.push(`${pinnedClass}-${side}`);
         });
       }

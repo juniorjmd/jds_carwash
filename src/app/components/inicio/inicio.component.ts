@@ -49,7 +49,7 @@ export class InicioComponent implements OnInit {
     let margin = 0;
     console.log(usuario, menu);
     
-    menu.forEach((detalle , index ) => {
+    menu!.forEach((detalle , index ) => {
       console.log('recorrido',index ,detalle ); 
         if(detalle.recurso.tipo === 'card'){
 

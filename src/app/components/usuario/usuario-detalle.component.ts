@@ -79,7 +79,7 @@ getCajas(){
          console.log('getCajasPorUsuario',datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:caja , index :number)=>{
+      datos.data!.forEach((dato:caja , index :number)=>{
         this.cajas[index] = new cajaModel( dato );
         this.opciones[index] = this.cajas[index].asignada!;
       }) 
@@ -102,7 +102,7 @@ guardarRelacion(){
   console.log('opciones',this.opciones)
   let OpcionesEnvio:number[] = []; 
   let count = 0;
-  this.opciones.forEach((values,index)=>{
+  this.opciones!.forEach((values,index)=>{
     if(values){
       OpcionesEnvio[count] = this.cajas[index].id;
       count++;

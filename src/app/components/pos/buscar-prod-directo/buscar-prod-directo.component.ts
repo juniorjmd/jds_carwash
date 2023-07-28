@@ -90,7 +90,7 @@ export class BuscarProdDirectoComponent  {
         (respuesta:any)=>{
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){
-              respuesta.data.forEach((value:any,index:number) => {  
+              respuesta.data!.forEach((value:any,index:number) => {  
                 this.listPrdBusqueda[index] = value ;  
               }); 
    
@@ -124,7 +124,7 @@ export class BuscarProdDirectoComponent  {
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){
 
-              respuesta.data.forEach((value:any,index:number) => { 
+              respuesta.data!.forEach((value:any,index:number) => { 
                 this.listPrdBusqueda[index] = value ;  
               }); 
    
@@ -150,7 +150,7 @@ export class BuscarProdDirectoComponent  {
        console.log('setCategoriasPrd' , JSON.stringify(datos));
       this.loading.show()
       this.categorias = [];
-      datos.data.forEach((value:any )=>{ 
+      datos.data!.forEach((value:any )=>{ 
         console.log('getCategorias',value); 
         this.categorias.push({
           "dato": value.id,
@@ -170,7 +170,7 @@ export class BuscarProdDirectoComponent  {
        console.log('setMarcas ODDO' , JSON.stringify(datos));
       this.loading.show()
       this.marcas = [];
-      datos.data.forEach((value:any,index:number)=>{
+      datos.data!.forEach((value:any,index:number)=>{
         console.log('value' , value,'index',index);
         
        /* this.categorias[index].dato = value.id;
@@ -199,7 +199,7 @@ export class BuscarProdDirectoComponent  {
      { this.marcas = this.marcasAux} 
      else{
 
-      this.marcas.forEach( ( value:dfltAnswOdoo2) =>{
+      this.marcas!.forEach( ( value:dfltAnswOdoo2) =>{
         console.log(value.label,value.label.indexOf(auxTxt));
         
         if ( value.label.toUpperCase() === auxTxt || value.label.toUpperCase().indexOf(auxTxt) >= 0){

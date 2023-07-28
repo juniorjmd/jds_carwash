@@ -46,7 +46,7 @@ export class BuscarProductosAuxComponent implements OnInit {
             this.prdBusqueda.cantidadVendida = this.cantidadPrd;
             this.loading.show() 
             this.prdService.guardarPrdCompra(this.prdBusqueda ).subscribe(
-              (respuesta:select)=>{
+              (respuesta:any)=>{
                 if (respuesta.error !== 'ok'){
                     alert(respuesta.error);
                     console.log(JSON.stringify(respuesta));
@@ -72,7 +72,7 @@ export class BuscarProductosAuxComponent implements OnInit {
    buscarProducto(){
     this.loading.show() 
     this.prdService.getProductosCodBarrasVCnt(this.codPrd ).subscribe(
-      (respuesta:select)=>{
+      (respuesta:any)=>{
         if (respuesta.error === 'ok'){
            if (respuesta.numdata > 0 ){
            this.prdBusqueda =  respuesta.data[0] ;   

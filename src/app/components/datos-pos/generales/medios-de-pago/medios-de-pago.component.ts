@@ -97,7 +97,7 @@ MedioP:MediosDePago[] = [] ;
          this.esta = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:Establecimientos , index:number )=>{
+      datos.data!.forEach((dato:Establecimientos , index:number )=>{
         this.esta[index] = new establecimientoModel( dato );
       }) 
       console.log(this.esta);
@@ -121,7 +121,7 @@ getMedios(){
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:MediosDePago , index:number )=>{
+      datos.data!.forEach((dato:MediosDePago , index:number )=>{
         this.MedioP[index] =   dato ;
       }) 
       console.log(this.MedioP);

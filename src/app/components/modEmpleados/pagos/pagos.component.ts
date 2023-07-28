@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { EmpleadosModule } from 'src/app/models/empleados/empleados.module';
+import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { EmpleadosService } from 'src/app/services/empleados.service';
 import { loading } from 'src/app/models/app.loading';  
 import { fechaBusqueda, select } from 'src/app/interfaces/generales.interface';
 import Swal from 'sweetalert2'; 
-import { AcumuladosEmpleadosModule } from 'src/app/models/acumulados-empleados/acumulados-empleados.module';
+import { AcumuladosEmpleadoModel } from 'src/app/models/acumulados-empleados/acumulados-empleados.module';
 
 @Component({
   selector: 'app-pagos',
@@ -14,10 +14,10 @@ import { AcumuladosEmpleadosModule } from 'src/app/models/acumulados-empleados/a
 export class PagosComponent implements OnInit {
   valorAnticipo:number = 0; descripcionAticipo:string='';
   indexEmpleado:number = 0;
-  empleado :EmpleadosModule = new EmpleadosModule();
-  empleados :EmpleadosModule[] = [this.empleado];
-  empleadosConAcumulados :EmpleadosModule[] = [];
-  acumulado:AcumuladosEmpleadosModule[] = [] ; 
+  empleado :EmpleadoModel = new EmpleadoModel();
+  empleados :EmpleadoModel[] = [this.empleado];
+  empleadosConAcumulados :EmpleadoModel[] = [];
+  acumulado:AcumuladosEmpleadoModel[] = [] ; 
   listaAcumulados:any = [this.acumulado];
 
   fechasBusqueda:fechaBusqueda[] = [{
@@ -66,7 +66,7 @@ this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo
     }
   }
 
-  validarElPago(empleado:EmpleadosModule, index:number , fechas:fechaBusqueda){
+  validarElPago(empleado:EmpleadoModel, index:number , fechas:fechaBusqueda){
    let pagosHtml:string =  `<h1>empleado :${empleado.nombreCompleto}</h1><hr>
    pago de la liquidacion desde el <b>${fechas.fechaInicio}</b> al <b>${fechas.fechaFin}</b><hr>
    <h3>total acumulado : <b>${empleado.TotalAcumuladoPendientes} </b> menos de anticipos <b> ${empleado.valorADescontarEnPago}</b></h3> <hr>
@@ -79,7 +79,7 @@ this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo
     }
   });
   }
-  generarPago(Empleado:EmpleadosModule, index:number , fechas:fechaBusqueda){
+  generarPago(Empleado:EmpleadoModel, index:number , fechas:fechaBusqueda){
 this.loading.show(); 
 this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
  (respuesta:any)=>{console.log(respuesta)
@@ -102,11 +102,11 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
   }
   getEmpleados(){  
      
-  this.empleado  = new EmpleadosModule(); 
+  this.empleado  = new EmpleadoModel(); 
     this.empleados = [this.empleado];
     this.empleadosConAcumulados = [];  
     let contAcumulados = 0;
-    let empleadosAux :EmpleadosModule = new EmpleadosModule(); 
+    let empleadosAux :EmpleadoModel = new EmpleadoModel(); 
      this.loading.show()
      this.empleadosServices.getEmpleados().subscribe(
       {
@@ -116,7 +116,7 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
           console.log(datos);
           
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:any , index:number )=>{ 
+       datos.data!.forEach((dato:any , index:number )=>{ 
         this.empleados.push(dato.objeto);
         empleadosAux = dato.objeto;
         if(empleadosAux.numeroAcumuladosPendientes! > 0 ){
@@ -155,7 +155,7 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
     elemDiv!.style.display = 'block'
   }
 
-liquidarPagos(auxiliar:EmpleadosModule , index :number , fechas:fechaBusqueda){
+liquidarPagos(auxiliar:EmpleadoModel , index :number , fechas:fechaBusqueda){
   this.acumulado = [] ;  
   let porcDescMaximo : number = 0;
   let totalValorAcumulado : number = 0;
@@ -166,7 +166,7 @@ liquidarPagos(auxiliar:EmpleadosModule , index :number , fechas:fechaBusqueda){
         
    if (datos.numdata > 0 ){ 
     
-     datos.data.forEach((dato:any  )=>{  
+     datos.data!.forEach((dato:any  )=>{  
       totalValorAcumulado += parseFloat(dato.valor);
       if (porcDescMaximo <= 0)  porcDescMaximo = dato.porcDescMaximo ;
 

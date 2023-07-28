@@ -1,5 +1,4 @@
-import { Time } from "@angular/common";
-import * as internal from "events";
+import { Time } from "@angular/common"; 
 import { Clientes } from "../interfaces/clientes.interface";
 import { DocumentoImpuestos, DocumentoListado } from "../interfaces/documento.interface";
 import { DocpagosModel } from "./pagos.model";

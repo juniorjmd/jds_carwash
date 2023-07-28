@@ -25,7 +25,7 @@ export class MoverDocumentosComponent implements OnInit {
     caja.documentoActivoCaja = this.Documento.orden
     this.loading.show();
   this.documentoService.cambiarDocumentoDeCaja(caja).subscribe(
-    (datos:select)=>{ 
+    (datos:any)=>{ 
        console.log('asignarACaja',datos);  
        this.loading.hide();
        this.dialogo.close(true);
@@ -35,12 +35,12 @@ export class MoverDocumentosComponent implements OnInit {
   getCajasActivasEstablecimiento(){
     this.documentoService.getCajasActivas(this.Documento.establecimiento).
     subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
         let cont = 0;
          console.log('getCajasActivas',datos); 
          this.cajasActivas = []; 
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:any    )=>{  
+      datos.data!.forEach((dato:any    )=>{  
        this.cajasActivas.push(dato); 
        
        console.log(dato);

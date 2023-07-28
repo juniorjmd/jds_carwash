@@ -23,7 +23,7 @@ getParametros(){
 }
 
 
-getDatosParametrosTabla(tabla){
+getDatosParametrosTabla(tabla:any){
   let datos = {"action": actions.actionSelect , "_tabla" : tabla,  }
   console.log('getParametros  ' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;

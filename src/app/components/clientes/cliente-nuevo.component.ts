@@ -112,7 +112,7 @@ this.getCategorias();
     this.MaestroClienteServices.setEmpresas().subscribe((datos:any)=>{
      // console.log('EMPRESAS ODDO' , JSON.stringify(datos));
       
-      datos.data.forEach((value:any)=>{
+      datos.data!.forEach((value:any)=>{
         
         this.companias.push({
         "dato": value.id,
@@ -126,7 +126,7 @@ this.getCategorias();
     this.MaestroClienteServices.setTitulos().subscribe((datos:any)=>{
      // console.log('EMPRESAS ODDO' , JSON.stringify(datos));
       
-      datos.data.forEach((value:any)=>{
+      datos.data!.forEach((value:any)=>{
         
         this.titulos.push({
         "dato": value.id,
@@ -141,7 +141,7 @@ this.getCategorias();
     this.MaestroClienteServices.setCategorias().subscribe((datos:any)=>{
        console.log('setCategorias ODDO' , JSON.stringify(datos));
       this.loading.show()
-      datos.data.forEach((value:any)=>{
+      datos.data!.forEach((value:any)=>{
         
         this.categorias.push({
         "dato": value.id,
@@ -159,7 +159,7 @@ this.getCategorias();
     this.tipo_identificacion =[];
     this.MaestroClienteServices.setTiposDocumentos().subscribe((datos:any)=>{
       this.loading.show();
-      datos.data.forEach((value:any)=>{
+      datos.data!.forEach((value:any)=>{
         tp = new answDfltOdoo() ; 
         tp[0] = value.id;
         tp[1] = value.display_name ; 
@@ -188,7 +188,7 @@ this.getCategorias();
     let selCiudad = 0;
     this.MaestroClienteServices.getCiudadesPorDepartamento(departameto).subscribe((datos:any)=>{
       
-      datos.data.forEach((value:any)=>{
+      datos.data!.forEach((value:any)=>{
         
       this.Ciudades.push({
         "dato": value.id,
@@ -208,7 +208,7 @@ this.getCategorias();
    let selPais = 0;
    this.paises = [];
     this.MaestroClienteServices.getPaises().subscribe((datos:any)=>{
-    datos.data.forEach((value:any)=>{
+    datos.data!.forEach((value:any)=>{
       
     this.paises.push({
       "dato": value.id,
@@ -239,7 +239,7 @@ this.getCategorias();
     this.Ciudades = [];
     this.MaestroClienteServices.getDepartamentosPorPais(pais).subscribe(
       (datos:any)=>{
-      datos.data.forEach((value:any)=>{
+      datos.data!.forEach((value:any)=>{
         if (  value.nombre.toUpperCase()  == 'MAGDALENA'){
           selDEP = value.id;
         }

@@ -18,13 +18,14 @@
                     <td colspan="2"> Cod producto</td>
                 </tr>
                 <tr>
-                    <td>{{documentoActivo.clienteNombre}}</td>
-                    <td>{{documentoActivo.vendedorNombre}}</td>
+                    <td>{{documentoActivo.clienteNombre!}}</td>
+                    <td>{{documentoActivo.vendedorNombre!}}</td>
                     <td>
                         <div class="input-group mb-3">
 
                             <select class=" o_input form-control" (blur)='irbuscarProductoObl()' (change)='cambiarDocumentoActivo() ;irbuscarProductoObl()' [(ngModel)]="documentoActivo">
-                                <option *ngFor='let doc of documentos' [ngValue]="doc">{{doc.orden.toString().padStart(10,'0000000000')}}  {{doc.descripcion1.trim()}}   {{doc.descripcion2.trim()}}    </option>
+                                <option *ngFor='let doc of documentos' [ngValue]="doc">{{doc.orden.toString().padStart(10,'0000000000')}}  {{doc.descripcion1!.trim()}}  
+                                     {{doc.descripcion2!.trim()}}    </option>
                             </select>
                             <div class="input-group-append">
                                 <button type="button" (click)='getDocumentos()' class="btn btn-primary">
@@ -108,7 +109,7 @@
                     </td>
                 </tr>
                 <tr *ngFor="let medio of pagos ; let i = index">
-                    <td><b>{{medio.nombre}}</b></td>
+                    <td><b>{{medio.nombreMedio!}}</b></td>
                     <td><input class="o_input form-control" readonly type="number" [(ngModel)]='pagos[i].valorPagado'></td>
                 </tr>
             </table>

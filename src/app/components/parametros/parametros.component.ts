@@ -22,17 +22,17 @@ export class ParametrosComponent implements OnInit {
     this.parametros = []; 
      this.loading.show()
      this.parServices.getParametros().subscribe(
-       (datos:select)=>{
+       (datos:any )=>{
           console.log(datos);
           
      if (datos.numdata > 0 ){ 
       this.parametros = datos.data 
        console.log('parametros',this.parametros);
-       this.parametros.forEach((parametro,index)=>
-       {if(parametro.tip_parametro.trim() === 'tabla' && parametro.par_tabla.trim() !== ''){
+       this.parametros!.forEach((parametro,index)=>
+       {if(parametro.tip_parametro.trim() === 'tabla' && parametro.par_tabla!.trim() !== ''){
         this.loading.show()
         this.parServices.getDatosParametrosTabla(parametro.par_tabla).subscribe(
-          (datos2:select)=>{
+          (datos2:any )=>{
              console.log(datos2);
              
         if (datos2.numdata > 0 ){ 
@@ -41,9 +41,9 @@ export class ParametrosComponent implements OnInit {
             "id" : 0,
             "nombre" : 'ninguno'
           }]
-          datos2.data.forEach(value=>{
+          datos2.data!.forEach((value:any)=>{
             this.parametros[index].datosTabla[contadorInterno].id = value['id'];
-            this.parametros[index].datosTabla[contadorInterno].nombre = value[parametro.par_string];
+            this.parametros[index].datosTabla[contadorInterno].nombre = value[parametro.par_string!];
             contadorInterno++;
           })
         }

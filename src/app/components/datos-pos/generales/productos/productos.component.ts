@@ -105,7 +105,7 @@ export class ProductosComponent implements OnInit {
                }else{ 
                  try {
                   Swal.fire(respuesta.error, '', 'error');
-                 } catch (error) {
+                 } catch (error : any) {
                   Swal.fire('error en el servidor', '', 'error');
                  }
                
@@ -127,7 +127,7 @@ export class ProductosComponent implements OnInit {
       if (datos.numdata > 0 ){ 
          
        let  cont = 1 ; 
-        datos.data.forEach((dato:BodegasModule , index:number )=>{
+        datos.data!.forEach((dato:BodegasModule , index:number )=>{
           this.bodegas[cont] = dato;
           cont++;
         }) 
@@ -170,7 +170,7 @@ export class ProductosComponent implements OnInit {
          }else{ 
            try {
             Swal.fire(respuesta.error, '', 'error');
-           } catch (error) {
+           } catch (error : any) {
             Swal.fire('error en el servidor', '', 'error');
            }
          
@@ -192,7 +192,7 @@ export class ProductosComponent implements OnInit {
          }else{ 
            try {
             Swal.fire(respuesta.error, '', 'error');
-           } catch (error) {
+           } catch (error : any) {
             Swal.fire('error en el servidor', '', 'error');
            }
          
@@ -253,7 +253,7 @@ export class ProductosComponent implements OnInit {
        `;
        // cantInicial, cantActual, compras, ventas, devoluciones, stock, remisionada,
        
-       this.existenciasPrd.forEach(pago=>{
+       this.existenciasPrd!.forEach(pago=>{
          pagosHtml +=`<tr> `;
          pagosHtml +=`<td>${pago.nombreBodega}</td> `;
          pagosHtml +=`<td nowrap>${pago.ult_mov}</td> `;
@@ -301,7 +301,7 @@ export class ProductosComponent implements OnInit {
      let cont:number;    
     if (datos[0].numdata > 0 ){ 
       cont = 1 ; 
-      datos[0].data.forEach((dato:Categoria , index:number )=>{
+      datos[0].data!.forEach((dato:Categoria , index:number )=>{
         this.categorias[cont] = new CategoriasModel(dato) ;
         cont++;
       }) 
@@ -311,7 +311,7 @@ export class ProductosComponent implements OnInit {
     }
     if (datos[1].numdata > 0 ){ 
       cont = 1 ; 
-      datos[1].data.forEach((dato:MarcasModule , index:number )=>{
+      datos[1].data!.forEach((dato:MarcasModule , index:number )=>{
         this.marcas[cont] = dato;
         cont++;
       }) 
@@ -321,7 +321,7 @@ export class ProductosComponent implements OnInit {
     }
         this.loading.hide()
       } ,
-      error:(error) => {this.loading.hide();
+      error:(error : any) => {this.loading.hide();
         console.log(error)
         alert( error.error.error);
       }}
@@ -367,7 +367,7 @@ export class ProductosComponent implements OnInit {
       }else{ 
         try {
          Swal.fire(respuesta.error, '', 'error');
-        } catch (error) {
+        } catch (error : any) {
          Swal.fire('error en el servidor', '', 'error');
         }
       
@@ -384,7 +384,7 @@ export class ProductosComponent implements OnInit {
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:ProductoModule , index:number )=>{
+      datos.data!.forEach((dato:ProductoModule , index:number )=>{
         this.Productos[index] = dato;
       }) 
       console.log(this.Productos);

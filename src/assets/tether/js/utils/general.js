@@ -5,7 +5,7 @@ export function extend(out = {}) {
 
   Array.prototype.push.apply(args, arguments);
 
-  args.slice(1).forEach((obj) => {
+  args.slice(1)!.forEach((obj) => {
     if (obj) {
       for (let key in obj) {
         if ({}.hasOwnProperty.call(obj, key)) {

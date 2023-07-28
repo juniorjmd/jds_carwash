@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 
 export class MarcasModule { 
-   nombre:string; 
+   nombre!:string; 
    descripcion?:string ;  
    estado?:number ; 
    nombre_estado?:string;

@@ -47,7 +47,7 @@ export class NewCiudadComponent implements OnInit {
     this.loading.show();
     let codDep:number;
     console.log("ciudad enviada"+ JSON.stringify(this.cityN));
-    this.dep.forEach(departamentos =>{
+    this.dep!.forEach(departamentos =>{
       console.log(this.cityN.cod_departamento, departamentos.id);
      if ( this.cityN.cod_departamento === departamentos.id){
       codDep =departamentos.cod_departamento;

@@ -2,6 +2,7 @@
 export class pagosModel{
    idMedioDePago !:number ; 
    valorPagado!:number ; 
+   nombreMedio?:string;
 
     } 
     export class DocpagosModel{

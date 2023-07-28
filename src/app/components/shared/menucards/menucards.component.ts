@@ -7,7 +7,7 @@ import { RecursoDetalle } from 'src/app/interfaces/usuario.interface';
   styleUrls: ['./menucards.component.css']
 })
 export class MenucardsComponent implements OnInit {
-  @Input() menuDetalle:RecursoDetalle ; 
+  @Input() menuDetalle!:RecursoDetalle ; 
   constructor() { 
    }
 

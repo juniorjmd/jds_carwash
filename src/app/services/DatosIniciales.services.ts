@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
     providedIn: 'root'
 })
 export class DatosInicialesService {
-    private sucursal:vwsucursal[]  ;
+    private sucursal:vwsucursal[] = [] ;
 
     constructor(private http: HttpClient){}
 

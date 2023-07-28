@@ -61,7 +61,7 @@
   }
 
   function addClass(el, name) {
-    name.split(' ').forEach(function (cls) {
+    name.split(' ')!.forEach(function (cls) {
       if (cls.trim()) {
         el.classList.add(cls);
       }
@@ -92,7 +92,7 @@
     }
   }
   function removeClass(el, name) {
-    name.split(' ').forEach(function (cls) {
+    name.split(' ')!.forEach(function (cls) {
       if (cls.trim()) {
         el.classList.remove(cls);
       }
@@ -101,12 +101,12 @@
   function updateClasses(el, add, all) {
     // Of the set of 'all' classes, we need the 'add' classes, and only the
     // 'add' classes to be set.
-    all.forEach(function (cls) {
+    all!.forEach(function (cls) {
       if (add.indexOf(cls) === -1 && el.classList.contains(cls)) {
         removeClass(el, cls);
       }
     });
-    add.forEach(function (cls) {
+    add!.forEach(function (cls) {
       if (!el.classList.contains(cls)) {
         addClass(el, cls);
       }
@@ -133,7 +133,7 @@
 
     var args = [];
     Array.prototype.push.apply(args, arguments);
-    args.slice(1).forEach(function (obj) {
+    args.slice(1)!.forEach(function (obj) {
       if (obj) {
         for (var key in obj) {
           if ({}.hasOwnProperty.call(obj, key)) {
@@ -416,7 +416,7 @@
       var abutted = [];
 
       if (top <= targetPos.bottom && bottom >= targetPos.top) {
-        ['left', 'right'].forEach(function (side) {
+        ['left', 'right']!.forEach(function (side) {
           var targetPosSide = targetPos[side];
 
           if (targetPosSide === left || targetPosSide === right) {
@@ -426,7 +426,7 @@
       }
 
       if (left <= targetPos.right && right >= targetPos.left) {
-        ['top', 'bottom'].forEach(function (side) {
+        ['top', 'bottom']!.forEach(function (side) {
           var targetPosSide = targetPos[side];
 
           if (targetPosSide === top || targetPosSide === bottom) {
@@ -440,7 +440,7 @@
           classes = _this$options.classes,
           classPrefix = _this$options.classPrefix;
       this.all.push(getClass('abutted', classes, classPrefix));
-      sides.forEach(function (side) {
+      sides!.forEach(function (side) {
         _this.all.push(getClass('abutted', classes, classPrefix) + "-" + side);
       });
 
@@ -448,7 +448,7 @@
         this.add.push(getClass('abutted', classes, classPrefix));
       }
 
-      abutted.forEach(function (side) {
+      abutted!.forEach(function (side) {
         _this.add.push(getClass('abutted', classes, classPrefix) + "-" + side);
       });
       defer(function () {
@@ -501,7 +501,7 @@
         to[3] += win.pageYOffset;
       }
 
-      BOUNDS_FORMAT.forEach(function (side, i) {
+      BOUNDS_FORMAT!.forEach(function (side, i) {
         side = side[0].toUpperCase() + side.substr(1);
 
         if (side === 'Top' || side === 'Left') {
@@ -536,7 +536,7 @@
       }
 
       addClasses.push(oobClass);
-      oob.forEach(function (side) {
+      oob!.forEach(function (side) {
         addClasses.push(oobClass + "-" + side);
       });
     }
@@ -723,7 +723,7 @@
 
   function _getAllClasses(classes, classPrefix, constraints) {
     var allClasses = [getClass('pinned', classes, classPrefix), getClass('out-of-bounds', classes, classPrefix)];
-    constraints.forEach(function (constraint) {
+    constraints!.forEach(function (constraint) {
       var outOfBoundsClass = constraint.outOfBoundsClass,
           pinnedClass = constraint.pinnedClass;
 
@@ -735,8 +735,8 @@
         allClasses.push(pinnedClass);
       }
     });
-    allClasses.forEach(function (cls) {
-      ['left', 'top', 'right', 'bottom'].forEach(function (side) {
+    allClasses!.forEach(function (cls) {
+      ['left', 'top', 'right', 'bottom']!.forEach(function (side) {
         allClasses.push(cls + "-" + side);
       });
     });
@@ -783,7 +783,7 @@
       var addClasses = [];
       var tAttachment = extend({}, targetAttachment);
       var eAttachment = extend({}, this.attachment);
-      this.options.constraints.forEach(function (constraint) {
+      this.options.constraints!.forEach(function (constraint) {
         var to = constraint.to,
             attachment = constraint.attachment,
             pin = constraint.pin;
@@ -895,7 +895,7 @@
           }
 
           addClasses.push(pinnedClass);
-          pinned.forEach(function (side) {
+          pinned!.forEach(function (side) {
             addClasses.push(pinnedClass + "-" + side);
           });
         }
@@ -1018,7 +1018,7 @@
       if (isUndefined(handler)) {
         delete this.bindings[event];
       } else {
-        this.bindings[event].forEach(function (binding, index) {
+        this.bindings[event]!.forEach(function (binding, index) {
           if (binding.handler === handler) {
             _this.bindings[event].splice(index, 1);
           }
@@ -1036,7 +1036,7 @@
       }
 
       if (!isUndefined(this.bindings) && this.bindings[event]) {
-        this.bindings[event].forEach(function (binding, index) {
+        this.bindings[event]!.forEach(function (binding, index) {
           var ctx = binding.ctx,
               handler = binding.handler,
               once = binding.once;
@@ -1083,7 +1083,7 @@
       offsets[_key] = arguments[_key];
     }
 
-    offsets.forEach(function (_ref) {
+    offsets!.forEach(function (_ref) {
       var top = _ref.top,
           left = _ref.left;
 
@@ -1244,7 +1244,7 @@
   var tethers = [];
 
   var position = function position() {
-    tethers.forEach(function (tether) {
+    tethers!.forEach(function (tether) {
       tether.position(false);
     });
     flush();
@@ -1284,7 +1284,7 @@
     };
 
     if (!isUndefined(window) && !isUndefined(window.addEventListener)) {
-      ['resize', 'scroll', 'touchmove'].forEach(function (event) {
+      ['resize', 'scroll', 'touchmove']!.forEach(function (event) {
         window.addEventListener(event, tick);
       });
     }
@@ -1305,7 +1305,7 @@
 
       _this.setOptions(options, false);
 
-      TetherBase.modules.forEach(function (module) {
+      TetherBase.modules!.forEach(function (module) {
         if (!isUndefined(module.initialize)) {
           module.initialize.call(_assertThisInitialized(_this));
         }
@@ -1356,7 +1356,7 @@
         this.targetModifier = 'scroll-handle';
       }
 
-      ['element', 'target'].forEach(function (key) {
+      ['element', 'target']!.forEach(function (key) {
         if (isUndefined(_this2[key])) {
           throw new Error('Tether Error: Both element and target must be defined');
         }
@@ -1441,7 +1441,7 @@
 
       addClass(this.element, getClass('enabled', classes, classPrefix));
       this.enabled = true;
-      this.scrollParents.forEach(function (parent) {
+      this.scrollParents!.forEach(function (parent) {
         if (parent !== _this3.target.ownerDocument) {
           parent.addEventListener('scroll', _this3.position);
         }
@@ -1463,7 +1463,7 @@
       this.enabled = false;
 
       if (!isUndefined(this.scrollParents)) {
-        this.scrollParents.forEach(function (parent) {
+        this.scrollParents!.forEach(function (parent) {
           parent.removeEventListener('scroll', _this4.position);
         });
       }
@@ -1476,7 +1476,7 @@
 
       this._removeClasses();
 
-      tethers.forEach(function (tether, i) {
+      tethers!.forEach(function (tether, i) {
         if (tether === _this5) {
           tethers.splice(i, 1);
         }
@@ -1527,7 +1527,7 @@
       }
 
       this.all = [];
-      sides.forEach(function (side) {
+      sides!.forEach(function (side) {
         _this6.all.push(getClass('element-attached', classes, classPrefix) + "-" + side);
 
         _this6.all.push(getClass('target-attached', classes, classPrefix) + "-" + side);
@@ -1679,7 +1679,7 @@
         var offsetParentStyle = getComputedStyle(offsetParent);
         var offsetParentSize = offsetPosition;
         var offsetBorder = {};
-        ['Top', 'Left', 'Bottom', 'Right'].forEach(function (side) {
+        ['Top', 'Left', 'Bottom', 'Right']!.forEach(function (side) {
           offsetBorder[side.toLowerCase()] = parseFloat(offsetParentStyle["border" + side + "Width"]);
         });
         offsetPosition.right = doc.body.scrollWidth - offsetPosition.left - offsetParentSize.width + offsetBorder.right;
@@ -1914,7 +1914,7 @@
         removeClass(this.target, getClass('target', classes, classPrefix));
       }
 
-      this.all.forEach(function (className) {
+      this.all!.forEach(function (className) {
         _this9.element.classList.remove(className);
 
         _this9.target.classList.remove(className);
@@ -1935,7 +1935,7 @@
           classes = _this$options7.classes,
           classPrefix = _this$options7.classPrefix;
       this.markers = {};
-      ['target', 'element'].forEach(function (type) {
+      ['target', 'element']!.forEach(function (type) {
         var el = document.createElement('div');
         el.className = getClass(type + "-marker", classes, classPrefix);
         var dot = document.createElement('div');

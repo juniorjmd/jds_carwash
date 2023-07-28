@@ -26,7 +26,7 @@ export class Evented {
     if (isUndefined(handler)) {
       delete this.bindings[event];
     } else {
-      this.bindings[event].forEach((binding, index) => {
+      this.bindings[event]!.forEach((binding, index) => {
         if (binding.handler === handler) {
           this.bindings[event].splice(index, 1);
         }
@@ -38,7 +38,7 @@ export class Evented {
 
   trigger(event, ...args) {
     if (!isUndefined(this.bindings) && this.bindings[event]) {
-      this.bindings[event].forEach((binding, index) => {
+      this.bindings[event]!.forEach((binding, index) => {
         const { ctx, handler, once } = binding;
 
         const context = ctx || this;

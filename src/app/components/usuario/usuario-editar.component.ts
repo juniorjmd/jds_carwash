@@ -92,7 +92,7 @@ export class UsuarioEditarComponent implements OnInit {
   ) {
    this.newUsuario = userImport;
    
-   this.newUsuario.Usr_Modif =  parseInt(localStorage.getItem('#2@56YH7H82BF')) ; 
+   this.newUsuario.Usr_Modif =  parseInt(localStorage.getItem('#2@56YH7H82BF')!) ; 
    }
 
   ngOnInit(): void {
@@ -101,7 +101,7 @@ export class UsuarioEditarComponent implements OnInit {
   {
     
     console.log('nueva caja',this.newUsuario.Nombre1)
-    this.newUsuario.usr_registro =  parseInt(localStorage.getItem('#2@56YH7H82BF')); 
+    this.newUsuario.usr_registro =  parseInt(localStorage.getItem('#2@56YH7H82BF')!); 
     if (typeof(this.newUsuario.Nombre1) === 'undefined'){
      this.loading.hide();
      alert('Debe ingresar el Nombre de la caja');

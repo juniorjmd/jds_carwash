@@ -54,7 +54,7 @@ export class TiposServiciosComponent implements OnInit {
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TiposServiciosModule , index:number )=>{
+      datos.data!.forEach((dato:TiposServiciosModule , index:number )=>{
         this.tiposServicio[index] = new TiposServiciosModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;
@@ -66,7 +66,7 @@ export class TiposServiciosComponent implements OnInit {
 
         this.loading.hide()
       } ,
-      error: (error) => {this.loading.hide();
+      error: (error : any) => {this.loading.hide();
         console.log(error)
         Swal.fire( error.error.error, '', 'error');
       }

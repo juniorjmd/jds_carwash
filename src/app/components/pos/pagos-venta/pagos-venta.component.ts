@@ -32,7 +32,7 @@ export class PagosVentaComponent implements OnInit {
     //documentos_pagos
     this.serviceCaja.setPagoDocumento(this.Documento.orden ,this.pagos )
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos); 
     console.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
@@ -54,7 +54,7 @@ export class PagosVentaComponent implements OnInit {
       this.pagos[index].valorPagado = 0;
     }
     this.pagos[this.indexEfectivo].valorPagado = this.Documento.totalFactura;
-    this.pagos.forEach((dato:DocpagosModel , index )=>{
+    this.pagos!.forEach((dato:DocpagosModel , index : number )=>{
       if (index !== this.indexEfectivo)
       this.pagos[this.indexEfectivo].valorPagado -= dato.valorPagado;
     })
@@ -78,12 +78,11 @@ getMediosP(){
   this.listo = false;
   this.loading.show()
   this.serviceCaja.getMediosCajaActiva()
-     .subscribe(
-      (datos:select)=>{
+     .subscribe( {next:(datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:MediosDePago , index )=>{
+      datos.data!.forEach((dato:MediosDePago , index : number )=>{
         this.pagos[index] = new DocpagosModel();
         this.pagos[index].idMedioDePago = dato.id;
         this.pagos[index].nombreMedio =dato.nombre;
@@ -108,9 +107,9 @@ getMediosP(){
         this.loading.hide()
         this.listo = true;
       } ,
-      error => {this.loading.hide();
+      error: (error) => {this.loading.hide();
         alert( error.error.error);
-      }
+      }}
       );
   }
 }

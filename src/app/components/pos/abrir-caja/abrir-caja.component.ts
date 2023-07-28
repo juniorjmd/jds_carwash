@@ -50,7 +50,7 @@ export class AbrirCajaComponent implements OnInit {
         if (respuesta.error === 'ok'){ 
            
       if (respuesta.numdata > 0 ){ 
-        respuesta.data.forEach((dato:any   )=>{
+        respuesta.data!.forEach((dato:any   )=>{
           cajaResumen =  dato  ;
 
           console.log(cajaResumen, dato , dato); 
@@ -78,7 +78,7 @@ export class AbrirCajaComponent implements OnInit {
         if (respuesta.error === 'ok'){ 
            
       if (respuesta.numdata > 0 ){ 
-        respuesta.data.forEach((dato:any   )=>{
+        respuesta.data!.forEach((dato:any   )=>{
           cajaResumen =  dato  ;
 
           console.log(cajaResumen, dato , dato); 
@@ -105,7 +105,7 @@ export class AbrirCajaComponent implements OnInit {
         (datos:any)=>{
            console.log(datos);  
       if (datos.numdata > 0 ){ 
-        datos.data.forEach((dato:any   )=>{
+        datos.data!.forEach((dato:any   )=>{
           cajaResumen = dato.json ; 
         }) 
         this.abrirResumen(cajaResumen );
@@ -130,7 +130,7 @@ export class AbrirCajaComponent implements OnInit {
            console.log('getCajasUsuario',datos);
            this.cajaAbiertaFlag = false;   
       if (datos.numdata > 0 ){ 
-        datos.data.forEach((dato:caja , index:number )=>{
+        datos.data!.forEach((dato:caja , index:number )=>{
           cajaAux =  new cajaModel( dato ); 
           if (cajaAux.nombreEstado === "Abierta" && cajaAux.idUsuario == cajaAux.usuarioEstadoCaja){
             this.loading.hide() 
@@ -158,7 +158,7 @@ export class AbrirCajaComponent implements OnInit {
   
           this.loading.hide()
         } ,
-        error: (error) => {this.loading.hide();
+        error: (error : any) => {this.loading.hide();
           alert( error.error.error);
         } } 
         );
@@ -195,7 +195,7 @@ export class AbrirCajaComponent implements OnInit {
       this.loading.hide();
      
       },
-      error:(error) => {this.loading.hide();
+      error:(error : any) => {this.loading.hide();
         alert( error.error.error);
       }}
       );

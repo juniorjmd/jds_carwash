@@ -24,7 +24,7 @@ const OFFSET_MAP = {
 export function addOffset(...offsets) {
   const out = { top: 0, left: 0 };
 
-  offsets.forEach(({ top, left }) => {
+  offsets!.forEach(({ top, left }) => {
     if (isString(top)) {
       top = parseFloat(top);
     }

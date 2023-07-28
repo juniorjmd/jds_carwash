@@ -17,7 +17,7 @@ export class NavbarComponent   {
   llaveIncio:string;
   sucursal : vwsucursal[] = [];  
     keyLog:string = '123456qwerty';
-    menusUsuario :RecursoDetalle[];
+    menusUsuario :RecursoDetalle[] = [];
   
     margin = 0;
     constructor(  private _datosInicialesService: DatosInicialesService , private _ServLogin:LoginService , 
@@ -25,12 +25,12 @@ export class NavbarComponent   {
       this.getUsuarioLogeado();
      
     this.llaveIncio = ''; 
-    this._datosInicialesService.getDatosIniSucursal().subscribe(
-      (data:vwsucursal[])=>{
+    this._datosInicialesService.getDatosIniSucursal().subscribe({next:
+      (data:any)=>{
       this.sucursal = data;
       console.log(this.sucursal);
     } ,
-    error => alert(error.error.error));
+    error:error => alert(error.error.error) });
     
   }
 
@@ -44,7 +44,7 @@ export class NavbarComponent   {
       this.menusUsuario = this.getMenuImage(usuario) ;
      console.log('estoy en getUsuarioLogeado',this.menusUsuario);
 
-  } catch (error) {
+  } catch (error : any) {
       throw new Error(`Error al leer maestros : ${error}`);
       console.log(error);
       alert( error.error.error);
@@ -61,7 +61,7 @@ export class NavbarComponent   {
     let margin = 0;
     console.log(usuario, menu);
     
-    menu.forEach((detalle , index ) => {
+    menu!.forEach((detalle , index ) => {
       console.log('recorrido',index ,detalle ); 
         if(detalle.recurso.tipo === 'ul-nav'){
           menuCard[margin]= detalle.recurso ; 

@@ -39,7 +39,7 @@ export class DepartamentosComponent implements OnInit {
         console.log(this.departamentos);
         this.loading.hide();
       } ,
-      error:(error) => { this.loading.hide();
+      error:(error : any) => { this.loading.hide();
         alert( error.error.error);}});
   }
   

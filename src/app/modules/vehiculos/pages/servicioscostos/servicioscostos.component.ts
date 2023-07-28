@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { select } from 'src/app/interfaces/generales.interface';
 import { ServiciosCostosModule } from 'src/app/models/servicios-costos/servicios-costos.module';
 import { ServiciosModule } from 'src/app/models/servicios/servicios.module';
 import { TipoVehiculoModule } from 'src/app/models/tipo-vehiculo/tipo-vehiculo.module';
-import { TiposServiciosModule } from 'src/app/models/tipos-servicios/tipos-servicios.module';
-
+import { TiposServiciosModule } from 'src/app/models/tipos-servicios/tipos-servicios.module'; 
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import Swal from 'sweetalert2'; 
-import { loading } from 'src/app/models/app.loading';  
-import { exit } from 'process';
+import { loading } from 'src/app/models/app.loading';   
 
 @Component({
   selector: 'app-servicioscostos',
@@ -117,7 +114,7 @@ Swal.fire({
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TiposServiciosModule , index:number )=>{
+      datos.data!.forEach((dato:TiposServiciosModule , index:number )=>{
         this.tiposServicio[index] = new TiposServiciosModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;
@@ -147,7 +144,7 @@ Swal.fire({
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:ServiciosModule , index:number )=>{
+      datos.data!.forEach((dato:ServiciosModule , index:number )=>{
         this.serviciosAVehiculos[index] = new ServiciosModule(
           dato.nombre,  dato.estado , dato.estadoNombre ,dato.tipo_servicio , dato.precio_general , dato.descripcion, dato.nombre_tipo_servicio , dato.id
         ) ;
@@ -174,16 +171,15 @@ Swal.fire({
       return
     }
     this.getCostosServiciosVehiculos();
-    this.serviciosAVehiculos.forEach(
-      (servicio:ServiciosModule)=>{
-        //console.log('éntro ', servicio);
-        
-        if(servicio.id == this.servicioSelecionado){
-          this.precio =  servicio.precio_general!;
-          exit;
-        }
-      }
-    )
+    for (const servicio of this.serviciosAVehiculos)   { 
+     if(servicio.id == this.servicioSelecionado){
+        this.precio =  servicio.precio_general!;
+        break;
+       }
+}
+
+
+
     this.tiposVehiculo[0] =  new TipoVehiculoModule('',0,'','');
     this.loading.show()
     this.VehiculosService.getVehiculoNoAsignadoAServicios(this.servicioSelecionado).subscribe(
@@ -191,7 +187,7 @@ Swal.fire({
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TipoVehiculoModule , index:number )=>{
+      datos.data!.forEach((dato:TipoVehiculoModule , index:number )=>{
         this.tiposVehiculo[index] = new TipoVehiculoModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;
@@ -257,7 +253,7 @@ this.VehiculosService.guardarCostoServicio(this.newServiciosCostos).subscribe(
        console.log(datos);
        
   if (datos.numdata > 0 ){ 
-    datos.data.forEach((dato:ServiciosCostosModule , index:number )=>{
+    datos.data!.forEach((dato:ServiciosCostosModule , index:number )=>{
       this.arrServiciosCostos[index] = new ServiciosCostosModule( 
         dato.cod_servicio,
         dato.cod_tipo_vehiculo,
@@ -295,18 +291,13 @@ limpiar(){
     this.tipoVehiculo = 0 
     this.precio = 0  
     this.newServiciosCostos = new ServiciosCostosModule(0,0,0,0);
-    this.getCostosServiciosVehiculos();
-      
-  this.serviciosAVehiculos.forEach(
-    (servicio:ServiciosModule)=>{
-      //console.log('éntro ', servicio);
-      
-      if(servicio.id == this.servicioSelecionado){
-        this.precio =  servicio.precio_general;
-        exit;
-      }
-    }
-  )
+    this.getCostosServiciosVehiculos();  
+for (const servicio of this.serviciosAVehiculos) { 
+  if(servicio.id == this.servicioSelecionado){
+    this.precio =  servicio.precio_general!;
+    break;
+  }
+}
  
 }
   ngOnInit(): void {

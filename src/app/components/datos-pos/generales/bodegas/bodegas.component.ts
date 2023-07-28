@@ -28,7 +28,7 @@ export class BodegasComponent implements OnInit {
   @Inject(Number) public id?:number,
   @Inject(String) public nombre_estado?:string*/
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:BodegasModule , index:number )=>{
+      datos.data!.forEach((dato:BodegasModule , index:number )=>{
         this.bodegas[index] = new BodegasModule(dato.nombre,
                                                 dato.estado,
                                                 dato.descripcion,
@@ -43,7 +43,7 @@ export class BodegasComponent implements OnInit {
 
         this.loading.hide()
       } ,
-      error:(error) => {this.loading.hide();
+      error:(error : any) => {this.loading.hide();
         console.log(error)
         alert( error.error.error);
       }}

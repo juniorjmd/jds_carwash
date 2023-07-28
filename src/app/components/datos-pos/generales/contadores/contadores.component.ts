@@ -62,7 +62,7 @@ export class ContadoresComponent implements OnInit {
              this.esta = [];   
         if (datos.numdata > 0 ){ 
           
-          datos.data.forEach((dato:TipoDocumento , index:number )=>{
+          datos.data!.forEach((dato:TipoDocumento , index:number )=>{
             this.tipContadores[index] = dato;
           })  
         }
@@ -85,7 +85,7 @@ export class ContadoresComponent implements OnInit {
              this.esta = [];   
         if (datos.numdata > 0 ){ 
           
-          datos.data.forEach((dato:Establecimientos , index:number )=>{
+          datos.data!.forEach((dato:Establecimientos , index:number )=>{
             this.esta[index] =  dato ;
           }) 
           console.log(this.esta);
@@ -112,7 +112,7 @@ export class ContadoresComponent implements OnInit {
              console.log(datos);
              
         if (datos.numdata > 0 ){ 
-          datos.data.forEach((dato:Contador  , index:number )=>{ 
+          datos.data!.forEach((dato:Contador  , index:number )=>{ 
             this.contadores[index] = dato ;
           }) 
           console.log(this.contadores);

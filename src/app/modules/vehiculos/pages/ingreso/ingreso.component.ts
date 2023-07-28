@@ -8,7 +8,7 @@ import { loading } from 'src/app/models/app.loading';
 import { VehiculosIngresoServicioModule } from 'src/app/models/vehiculos-ingreso-servicio/vehiculos-ingreso-servicio.module';
 import { select } from 'src/app/interfaces/generales.interface';
 import { ServiciosCostosModule } from 'src/app/models/servicios-costos/servicios-costos.module';
-import { EmpleadosModule } from 'src/app/models/empleados/empleados.module';
+import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { EmpleadosService } from 'src/app/services/empleados.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EstablecerCajaComponent } from '../establecer-caja/establecer-caja.component';
@@ -32,7 +32,7 @@ export class IngresoComponent implements OnInit {
  tiposVehiculo:TipoVehiculoModule[] = [];
   tiposServicio:TiposServiciosModule[] = [];
   tipo_servicio:number = 0;
-  empleados:EmpleadosModule[] = []
+  empleados:EmpleadoModel[] = []
   constructor( private serviceCaja : cajasServices ,
     private newAbrirDialog : MatDialog,private VehiculosService : VehiculosService , 
       private empleadosServices :EmpleadosService ,
@@ -52,11 +52,11 @@ establecerCajaInicialDefault(){
   this.loading.show()
   this.serviceCaja.getCajasActivasYparametros()
      .subscribe(
-      (datos:select[])=>{
+      (datos:any)=>{
         console.log(datos);
     let cont:number;    
    if (datos[0].numdata == 1 ){  
-      datos[0].data.forEach((dato:caja   )=>{
+      datos[0].data!.forEach((dato:caja   )=>{
         cajaAux =  new cajaModel( dato ); 
        
       this.cajaEStablecida.id = cajaAux.id;
@@ -67,12 +67,12 @@ establecerCajaInicialDefault(){
     }else if(datos[0].numdata > 0 ){
       if(datos[1].numdata > 0 ){
         let definir = 0;
-        datos[1].data.forEach((dato:ParametrosModule   )=>{ 
+        datos[1].data!.forEach((dato:ParametrosModule   )=>{ 
          if(dato.cod_parametro === 'CAJA_PREDEFINIDA_PARA_INGRESO')
-           {definir = dato.par_numerico} 
+           {definir = dato.par_numerico!} 
                
         })
-        datos[0].data.forEach((dato:caja   )=>{
+        datos[0].data!.forEach((dato:caja   )=>{
           cajaAux =  new cajaModel( dato ); 
          if (definir === cajaAux.id)
       {  this.cajaEStablecida.id = cajaAux.id;
@@ -170,7 +170,7 @@ establecerCaja(){
                      }else{ 
                        try {
                         Swal.fire(respuesta.error, '', 'error');
-                       } catch (error) {
+                       } catch (error : any) {
                         Swal.fire('error en el servidor', '', 'error');
                        }
                      
@@ -203,7 +203,7 @@ establecerCaja(){
           }else{ 
             try {
              Swal.fire(respuesta.error, '', 'error');
-            } catch (error) {
+            } catch (error : any) {
              Swal.fire('error en el servidor', '', 'error');
             }
           
@@ -222,11 +222,11 @@ establecerCaja(){
       this.empleados = []; 
        this.loading.show()
        this.empleadosServices.getEmpleadosLavador().subscribe(
-         (datos:select)=>{
+         (datos:any)=>{
             console.log(datos);
             
        if (datos.numdata > 0 ){ 
-         datos.data.forEach((dato:any , index )=>{ 
+         datos.data!.forEach((dato:any , index:number )=>{ 
           this.empleados.push(dato.objeto);
          }) 
          console.log('empleados',this.empleados);
@@ -248,7 +248,7 @@ establecerCaja(){
     if (this.ingreso.placaVehiculo.trim() === ''  ) { return;  }
     this.loading.show()
     this.VehiculosService.getVehiculos_propietario(this.ingreso.placaVehiculo ).subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          let dato:any = {placaVehiculo :  '',
          propietario:'',
@@ -289,11 +289,11 @@ establecerCaja(){
     this.tiposServicio[0] =  new TiposServiciosModule('',0,'','');
     this.loading.show()
     this.VehiculosService.getTiposServicios().subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TiposServiciosModule , index )=>{
+      datos.data!.forEach((dato:TiposServiciosModule , index:number )=>{
         this.tiposServicio[index] = new TiposServiciosModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;
@@ -314,7 +314,7 @@ establecerCaja(){
   
   optenerValor(){
     this.ingreso.valor = 0;
-    this.serviciosAVehiculos.forEach((servicio : ServiciosCostosModule )=>{
+    this.serviciosAVehiculos!.forEach((servicio : ServiciosCostosModule )=>{
       if (servicio.cod_servicio == this.ingreso.cod_servicio ){
         this.ingreso.valor = servicio.valor; 
       }
@@ -333,7 +333,7 @@ establecerCaja(){
       return ;
     }
     let cont=0;
-    this.serviciosAVehiculos.forEach((servicio : ServiciosCostosModule )=>{
+    this.serviciosAVehiculos!.forEach((servicio : ServiciosCostosModule )=>{
          if (servicio.tipo_servicio == this.tipo_servicio ){
           cont++;
           this.serviciosAmostrar[cont]  = {id:servicio.cod_servicio , nombre : servicio.nombreServicio }
@@ -346,11 +346,11 @@ establecerCaja(){
     if (this.ingreso.cod_tipo_vehiculo <=  0  ) { return;  }
     this.loading.show()
     this.VehiculosService.getServiciosPorTipoVehiculo(this.ingreso.cod_tipo_vehiculo ).subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:ServiciosCostosModule , index )=>{
+      datos.data!.forEach((dato:ServiciosCostosModule , index:number )=>{
         this.serviciosAVehiculos[index] = new ServiciosCostosModule(
           dato.cod_servicio,   dato.cod_tipo_vehiculo ,dato.valor ,dato.estado , dato.id,dato.estadoNombre,dato.nombreServicio,dato.descipcionServicio
           ,dato.tipo_servicio , dato.nombre_tipo_servicio ,dato.nombreTipoVehiculo,dato.descripcionTipoVehiculo       ) ;
@@ -375,11 +375,11 @@ establecerCaja(){
     this.tiposVehiculo[0] =  new TipoVehiculoModule('',0,'','');
     this.loading.show()
     this.VehiculosService.geTiposVehiculos( ).subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log('geTiposVehiculos',datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TipoVehiculoModule , index )=>{
+      datos.data!.forEach((dato:TipoVehiculoModule , index:number )=>{
         this.tiposVehiculo[index] = new TipoVehiculoModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;

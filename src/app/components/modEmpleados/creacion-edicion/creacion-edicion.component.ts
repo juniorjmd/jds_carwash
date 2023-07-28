@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmpleadosModule } from 'src/app/models/empleados/empleados.module';
+import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { TiposEmpleadoModule } from 'src/app/models/tipos-empleado/tipos-empleado.module';
 import { EmpleadosService } from 'src/app/services/empleados.service'; 
 import Swal from 'sweetalert2'; 
@@ -11,9 +11,9 @@ import { loading } from 'src/app/models/app.loading';
   styleUrls: ['./creacion-edicion.component.css']
 })
 export class CreacionEdicionComponent implements OnInit {
-  nuevoEmpleado : EmpleadosModule = new EmpleadosModule() ;
+  nuevoEmpleado : EmpleadoModel = new EmpleadoModel() ;
   tipoEmpleado :TiposEmpleadoModule[] = [];
-  empleados :EmpleadosModule[] = [];
+  empleados :EmpleadoModel[] = [];
 
   constructor( private empleadosServices :EmpleadosService ,  private loading : loading ) {
     this.getTipoEmpleado();
@@ -43,7 +43,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
   
  if (respuesta.error === 'ok'){
   Swal.fire('datos ingresados con exito');  
-   this.nuevoEmpleado =    new    EmpleadosModule( ); 
+   this.nuevoEmpleado =    new    EmpleadoModel( ); 
    //this.getServiciosVehiculos();
  }else{ 
   Swal.fire(respuesta.error, '', 'error');
@@ -52,7 +52,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
  })
    
    }
-   mostarPagos(empleado:EmpleadosModule){
+   mostarPagos(empleado:EmpleadoModel){
     let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.nombreCompleto}</h1>
      <table class='table' style='font-size:12px'> 
      <tr>
@@ -67,7 +67,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
      </tr>
     `;
     
-    empleado.pagosEmpleados.forEach(pago=>{
+    empleado.pagosEmpleados!.forEach(pago=>{
       pagosHtml +=`<tr> `;
       pagosHtml +=`<td>${pago.porConceptoDe}</td> `;
       pagosHtml +=`<td nowrap>${pago.diasTrabajados}</td> `;
@@ -78,7 +78,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
       pagosHtml +=`</tr> `;
     })
     let cont = 0;
-    empleado.pagosAnticiposEmpleados.forEach(pago=>{
+    empleado.pagosAnticiposEmpleados!.forEach(pago=>{
       if (pago.NombreEstado!.trim() =='PENDIENTE_POR_LIQUIDAR'){
         if(cont === 0){ 
         pagosHtml +=  `<tr>
@@ -108,10 +108,10 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
 
     Swal.fire({html:pagosHtml, width: '900px'});
   }
-  editarEmpleado(empleado:EmpleadosModule){
+  editarEmpleado(empleado:EmpleadoModel){
     this.nuevoEmpleado = empleado;
   }
-  mostarAcumulado(empleado:EmpleadosModule){
+  mostarAcumulado(empleado:EmpleadoModel){
     let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.nombreCompleto}</h1>
      <table class='table' style='font-size:12px'> 
      <tr>
@@ -123,7 +123,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
      <td>Estado</td>
      </tr>`;
 
-    empleado.AcumuladosEmpleados.forEach(pago=>{
+    empleado.AcumuladosEmpleados!.forEach(pago=>{
       pagosHtml +=`<tr> `;
       pagosHtml +=`<td>${pago.nombreEmpleado}</td> `;
       pagosHtml +=`<td nowrap>${pago.nombreServicio}</td> `;
@@ -142,7 +142,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
 
   }
    cancelar(){
-    this.nuevoEmpleado = new EmpleadosModule( );
+    this.nuevoEmpleado = new EmpleadoModel( );
    }
    getEmpleados(){ 
     this.empleados = []; 
@@ -152,7 +152,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
           console.log(datos);
           
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:any )=>{ 
+       datos.data!.forEach((dato:any )=>{ 
         this.empleados.push(dato.objeto);
        }) 
        console.log('empleados',this.empleados);
@@ -177,7 +177,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TiposEmpleadoModule , index :number)=>{
+      datos.data!.forEach((dato:TiposEmpleadoModule , index :number)=>{
         this.tipoEmpleado[index] = new TiposEmpleadoModule(
           dato.nombre,  dato.estado , dato.id ,dato.descripcion , dato.nombre_estado 
         ) ;
@@ -189,7 +189,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
 
         this.loading.hide()
       } ,
-      error: (error) => {this.loading.hide();
+      error: (error : any) => {this.loading.hide();
         console.log(error)
         Swal.fire( error.error.error, '', 'error');
       }}

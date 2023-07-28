@@ -30,7 +30,7 @@ export class EnviosComponent implements OnInit {
 
                 this.getDomicilios();
               }
-
+              MostrarDetalle(pedidos:DocumentosModel){}
   generarPago( envio:DocumentosModel){ 
     
       console.log('envio generado',envio);

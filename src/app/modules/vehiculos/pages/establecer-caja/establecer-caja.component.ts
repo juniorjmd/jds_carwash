@@ -31,11 +31,11 @@ getCajas(){
   this.loading.show()
   this.serviceCaja.getCajasActivas()
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
         let cont = 0;
          console.log('getCajas',datos); 
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:caja   )=>{
+      datos.data!.forEach((dato:caja   )=>{
         cajaAux =  new cajaModel( dato ); 
         this.cajas.push(cajaAux); 
              

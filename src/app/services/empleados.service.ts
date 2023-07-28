@@ -5,7 +5,7 @@ import { actions } from '../models/app.db.actions';
 import { TABLA } from '../models/app.db.tables';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
-import { EmpleadosModule } from '../models/empleados/empleados.module';
+import { EmpleadoModel } from '../models/empleados/empleados.module';
 
 @Injectable({
   providedIn: 'root'
@@ -64,7 +64,7 @@ getEmpleadosAcumulados( id:number , fechas:fechaBusqueda){
 
 
 
-guardarAnticipoEmpleado(nuevoTipo:EmpleadosModule , valor:any , descripcion:string ){  
+guardarAnticipoEmpleado(nuevoTipo:EmpleadoModel , valor:any , descripcion:string ){  
    let arrayDatos:any=new Object()  
   //id, cod_servicio, cod_tipo_vehiculo, valor, estado
   /* arraydatos =  {  "nombre" : newEsta.nombre  ,
@@ -91,7 +91,7 @@ guardarAnticipoEmpleado(nuevoTipo:EmpleadosModule , valor:any , descripcion:stri
   return this.http.post(url.action , datos, httpOptions()) ;
  }
 
-guardarEmpleado(nuevoTipo:EmpleadosModule){ 
+guardarEmpleado(nuevoTipo:EmpleadoModel){ 
   let arrayDatos:any=new Object() 
   let where:any[] = []
   //id, cod_servicio, cod_tipo_vehiculo, valor, estado
@@ -119,7 +119,7 @@ guardarEmpleado(nuevoTipo:EmpleadosModule){
  }
 
 
- guardarPagoEmpleado(empleado:EmpleadosModule , fechas:fechaBusqueda){ 
+ guardarPagoEmpleado(empleado:EmpleadoModel , fechas:fechaBusqueda){ 
 
   /** "fecha1"=>$_FECHA_1 , 
  * "fecha2" =>  $_FECHA_2, 

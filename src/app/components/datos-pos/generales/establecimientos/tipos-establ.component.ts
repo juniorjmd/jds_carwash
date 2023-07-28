@@ -30,7 +30,7 @@ export class TiposEstablComponent implements OnInit {
          this.tiposEsta = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:TiposEstablecimientosModel , index:number )=>{
+      datos.data!.forEach((dato:TiposEstablecimientosModel , index:number )=>{
         this.tiposEsta[index] = new TiposEstablecimientosModel( dato );
       }) 
       console.log(this.tiposEsta);

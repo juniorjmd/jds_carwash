@@ -9,7 +9,7 @@ import { CommonModule, Time } from '@angular/common';
     CommonModule
   ]
 })
-export class PagosEmpleadosModule {
+export class PagosEmpleadoModel {
    public idUsuario:number = 0;
    public codEmpleado:number = 0; 
    public totalParcial:number = 0; 

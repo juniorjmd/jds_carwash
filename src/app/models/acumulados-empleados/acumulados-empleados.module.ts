@@ -9,7 +9,7 @@ import { CommonModule, Time } from '@angular/common';
     CommonModule
   ]
 })
-export class AcumuladosEmpleadosModule {
+export class AcumuladosEmpleadoModel {
   public cod_empleado!:number; 
   public cod_servicio!:number; 
   public valor!:number; 

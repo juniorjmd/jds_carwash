@@ -55,7 +55,7 @@ export class DatosPosComponent implements OnInit {
  
     let menu = usuarioPermisos; 
     
-    menu.forEach((detalle   ) => {
+    menu!.forEach((detalle   ) => {
         if(detalle.recurso.tipo === 'boton'){
           switch(detalle.recurso.nombre_recurso){
             case 'Mantenimientos de cajas' : 

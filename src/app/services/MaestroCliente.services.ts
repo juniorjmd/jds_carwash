@@ -8,20 +8,17 @@ import { TABLA } from '../models/app.db.tables';
 import { DepartamentoModel, PaisModel , CiudadModel } from '../models/maestros.model';
 import { select } from '../interfaces/generales.interface';
 
-import { loading } from 'src/app/models/app.loading';
-import { isNull } from '@angular/compiler/src/output/output_ast';
-import { exit } from 'process';
-import { ClientesOdoo } from '../interfaces/clientes-odoo';
+import { loading } from 'src/app/models/app.loading';  
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class MaestroClienteServices {
-    private MaestrosCliente:maestros[]  ;
-    ciudades: ciudad[];
-    departamentos: departamento[];
-    paises: pais[]; 
+    private MaestrosCliente:maestros[] =[] ;
+    ciudades: ciudad[]=[];
+    departamentos: departamento[]=[];
+    paises: pais[]=[]; 
     finP1 : boolean = false ;
 
 
@@ -267,7 +264,7 @@ export class MaestroClienteServices {
             console.log('retorno - getTipoDoc', retorno); 
             this.crearMaestrosDatos(retorno ,'asdfasdf');
            console.log('estoy en getTipoDoc',this.MaestrosCliente);
-        } catch (error) {
+        } catch (error : any) {
             throw new Error(`Error al leer getTipoDoc : ${error}`);
           }}
           
@@ -278,7 +275,7 @@ export class MaestroClienteServices {
             console.log('retorno', retorno); 
             this.crearMaestrosDatos(retorno);
            console.log('estoy en pruebaget',this.MaestrosCliente);
-        } catch (error) {
+        } catch (error : any) {
             throw new Error(`Error al leer maestros : ${error}`);
           }}
 
@@ -287,7 +284,7 @@ export class MaestroClienteServices {
         this.MaestrosCliente = [];
          console.log('crearMaestrosDatos',datos);
          let idActual = 0;
-         datos.data.forEach((datoMaestro:maestroSelect)=>{
+         datos.data!.forEach((datoMaestro:maestroSelect)=>{
             if (idActual !== datoMaestro.id){
                 idActual = datoMaestro.id;
                 if ( tipo  !== null){
@@ -437,7 +434,7 @@ export class MaestroClienteServices {
        getMaestroClientes(nomMaestro:string):any{ 
          console.log('getMaestroClientes ',this.MaestrosCliente, nomMaestro);
          let datosRetorno:any = []; 
-            this.MaestrosCliente.forEach(
+            this.MaestrosCliente!.forEach(
                 (value )=>{
                 console.log('getMaestroClientes',value ,value.nombre, nomMaestro);
                  if(value.nombre === nomMaestro){   

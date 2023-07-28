@@ -53,7 +53,7 @@ export class UsuarioComponent implements OnInit {
           console.log(datos);
           
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:Usuarios , index:number )=>{
+       datos.data!.forEach((dato:Usuarios , index:number )=>{
          this.usuarios[index] = new UsuarioModel( dato );
        }) 
        console.log(this.usuarios);
@@ -63,7 +63,7 @@ export class UsuarioComponent implements OnInit {
  
          this.loading.hide()
        } ,
-       error : (error) => {this.loading.hide();
+       error : (error : any) => {this.loading.hide();
          console.log(error)
          alert( error.error.error);
        }

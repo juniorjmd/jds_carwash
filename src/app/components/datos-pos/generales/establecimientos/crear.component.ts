@@ -73,7 +73,7 @@ export class CrearComponent implements OnInit {
       this.locationVirtual  = [];
    if (datos.numdata > 0 ){ 
      
-     datos.data.forEach((dato:LocationOdoo , index:number )=>{
+     datos.data!.forEach((dato:LocationOdoo , index:number )=>{
        this.locationStore[index] = dato;  
 
      }) 
@@ -102,7 +102,7 @@ export class CrearComponent implements OnInit {
         console.log(datos);   
         this.locationPOS   = []; 
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:LocationOdoo , index:number )=>{ 
+       datos.data!.forEach((dato:LocationOdoo , index:number )=>{ 
          this.locationPOS[index] = dato; 
          //----------------------------------
          if (this.newEsta.idBodegaStock == this.locationPOS[index].id){ 
@@ -134,7 +134,7 @@ export class CrearComponent implements OnInit {
         console.log(datos);   
         this.locationPOS   = []; 
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:LocationOdoo , index:number )=>{ 
+       datos.data!.forEach((dato:LocationOdoo , index:number )=>{ 
          this.locationPOS[index] = dato; 
          //----------------------------------
          if (this.newEsta.idBodegaStock == this.locationPOS[index].id){ 
@@ -167,7 +167,7 @@ export class CrearComponent implements OnInit {
         console.log(datos);    
       this.locationVirtual  = [];
      if (datos.numdata > 0 ){ 
-       datos.data.forEach((dato:LocationOdoo , index:number )=>{  
+       datos.data!.forEach((dato:LocationOdoo , index:number )=>{  
         this.locationVirtual[index] = dato;
         if (this.newEsta.idBodegaVitual == this.locationVirtual[index].id){ 
          this.aLocationVirtual =  this.locationVirtual[index] ; 
@@ -179,7 +179,7 @@ export class CrearComponent implements OnInit {
 
        this.loading.hide()
      } ,
-     error:(error) => {this.loading.hide();
+     error:(error : any) => {this.loading.hide();
        
    this.locationStore = [];
        alert( error.error.error);
@@ -211,7 +211,7 @@ export class CrearComponent implements OnInit {
          this.establecimientos = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:Establecimientos , index:number )=>{
+      datos.data!.forEach((dato:Establecimientos , index:number )=>{
         this.establecimientos[index] = new establecimientoModel( dato );
       }) 
     //  this.aLocationFisico  = {'id':0};
@@ -239,7 +239,7 @@ export class CrearComponent implements OnInit {
          this.tiposEsta = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:TiposEstablecimientos , index:number )=>{
+      datos.data!.forEach((dato:TiposEstablecimientos , index:number )=>{
         this.tiposEsta[index] = new TiposEstablecimientosModel( dato );
       }) 
       console.log(this.tiposEsta);
@@ -260,7 +260,7 @@ export class CrearComponent implements OnInit {
     this.Cancelar();
     this.newEsta = estaActualiza ;  
 
-    this.locationStore.forEach((dato:LocationOdoo , index:number )=>{
+    this.locationStore!.forEach((dato:LocationOdoo , index:number )=>{
       
       if (this.newEsta.idAuxiliar == dato.id){ 
        this.aLocationFisico  =  this.locationStore[index];

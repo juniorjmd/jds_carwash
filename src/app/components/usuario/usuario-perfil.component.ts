@@ -27,7 +27,7 @@ import { select } from 'src/app/interfaces/generales.interface';
      <div class="col-sm-12  "><label id="example-radio-group-label">Seleccione el perfil del Usuairo : </label>
 <mat-radio-group   [(ngModel)]="perfilUsuario">
 <ul> 
- <li *ngFor="let perfil of perfiles" > <mat-radio-button    [value]="perfil.id">
+ <li *ngFor="let perfil of perfiles" > <mat-radio-button  [value]="perfil.id">
     {{perfil.Perf_Nombre}}
   </mat-radio-button></li></ul>
 </mat-radio-group>
@@ -61,7 +61,7 @@ export class UsuarioPerfilComponent implements OnInit {
   private loading : loading , 
   public dialogo: MatDialogRef<UsuarioPerfilComponent>
   ) { this.usuarioActual = usuario;
-    this.perfilUsuario = this.usuarioActual.perfil;
+    this.perfilUsuario = this.usuarioActual.perfil!;
     this.getPerfiles();
   }
 
@@ -91,11 +91,11 @@ export class UsuarioPerfilComponent implements OnInit {
   getPerfiles(){ 
     this.loading.show()
     this.userService.getPerfiles().subscribe(
-      (datos:select)=>{
+      (datos:any )=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:Perfil , index )=>{
+      datos.data!.forEach((dato:Perfil , index : number )=>{
         this.perfiles[index] =  dato ;
       }) 
       console.log('perfiles',this.perfiles , this.perfiles.length);

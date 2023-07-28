@@ -37,7 +37,7 @@ export class ReportesComponent implements OnInit {
       this.listado = this.getMenuImage(usuario) ;
      console.log('estoy en getUsuarioLogeado generales',this.listado);
 
-  } catch (error) {
+  } catch (error : any) {
       throw new Error(`Error al leer maestros : ${error}`);
       console.log(error);
       alert( error.error.error);
@@ -60,7 +60,7 @@ export class ReportesComponent implements OnInit {
     let cont_2 = 0;
     let flag = false ;
     
-    menu.forEach((detalle   ) => {
+    menu!.forEach((detalle   ) => {
         if(detalle.recurso.tipo === 'link'){ 
 
           if(flag){

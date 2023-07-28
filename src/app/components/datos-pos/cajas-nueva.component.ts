@@ -48,7 +48,7 @@ export class CajasNuevaComponent implements OnInit {
      }else{
        this.parametros = [];
      }
-     this.parametros.forEach(parametro =>{
+     this.parametros!.forEach(parametro =>{
       if(parametro.cod_parametro.trim() === 'SISTEMA_MULTICAJAS'){
         if(parametro.par_boolean == true)
         {this.guardarBtn = true; }   
@@ -72,7 +72,7 @@ export class CajasNuevaComponent implements OnInit {
          this.esta = [];   
     if (datos.numdata > 0 ){ 
       
-      datos.data.forEach((dato:Establecimientos , index:number )=>{
+      datos.data!.forEach((dato:Establecimientos , index:number )=>{
         this.esta[index] = new establecimientoModel( dato );
       }) 
       console.log(this.esta);
@@ -100,7 +100,7 @@ getCajas(){
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:caja , index:number )=>{
+      datos.data!.forEach((dato:caja , index:number )=>{
         this.cajas[index] = new cajaModel( dato );
       }) 
       console.log(this.cajas);

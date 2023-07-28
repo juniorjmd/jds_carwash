@@ -29,7 +29,7 @@ export class ServiciosComponent implements OnInit {
     }
     let cont=0;
     //newServicioAVehiculo.tipo_servicio
-    this.serviciosAVehiculos.forEach((servicioAsignado : ServiciosModule )=>{
+    this.serviciosAVehiculos!.forEach((servicioAsignado : ServiciosModule )=>{
       console.log(servicioAsignado);
       
 
@@ -47,11 +47,11 @@ export class ServiciosComponent implements OnInit {
     this.tiposServicio[0] =  new TiposServiciosModule('',0,'','');
     this.loading.show()
     this.VehiculosService.getTiposServicios().subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:TiposServiciosModule , index )=>{
+      datos.data!.forEach((dato:TiposServiciosModule , index:number )=>{
         this.tiposServicio[index] = new TiposServiciosModule(
           dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
         ) ;
@@ -98,10 +98,10 @@ export class ServiciosComponent implements OnInit {
     this.serviciosAVehiculos[0] =   new ServiciosModule('',0,'',0,0); 
     this.loading.show()
     this.VehiculosService.getServicios().subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:ServiciosModule , index )=>{
+      datos.data!.forEach((dato:ServiciosModule , index:number )=>{
         this.serviciosAVehiculos[index] = new ServiciosModule(
           dato.nombre,  dato.estado , dato.estadoNombre ,dato.tipo_servicio , dato.precio_general , dato.descripcion, dato.nombre_tipo_servicio , dato.id
         ) ;
@@ -119,7 +119,8 @@ this.mostrarServicioPorTipo();
       }
       );
   }  
-  manageServicioVehiculo(){
+
+  manageServicioVehiculo():any{
     if(this.newServicioAVehiculo.nombre.trim() === '' ){alert('Debe ingresar el nombre del tipo'); return 0 ;}
     if(this.newServicioAVehiculo.estado === 0){alert('Debe escoger el estado del servicio'); return 0 ;}
     if(this.newServicioAVehiculo.tipo_servicio === 0){alert('Debe escoger el estado del tipo de servicio'); return 0 ;}

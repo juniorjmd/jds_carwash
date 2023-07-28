@@ -60,7 +60,7 @@ export class GeneralesComponent implements OnInit {
     let cont_2 = 0;
     let flag = false ;
     
-    menu.forEach((detalle   ) => {
+    menu!.forEach((detalle   ) => {
         if(detalle.recurso.tipo === 'link'){ 
 
           if(flag){

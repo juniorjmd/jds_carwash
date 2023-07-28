@@ -7,7 +7,7 @@ import { dfltAnswOdoo } from "../interfaces/clientes-odoo";
 
 
 export class dataArrayOdooPipe implements PipeTransform {
-    transform(srcImg:dfltAnswOdoo | boolean ) {
+    transform(srcImg:any ) {
         if (   srcImg != false ){
             return  srcImg[1] ;
         }else{

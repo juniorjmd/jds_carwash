@@ -68,7 +68,7 @@
         }));
       }
 
-      ownKeys.forEach(function (key) {
+      ownKeys!.forEach(function (key) {
         _defineProperty(target, key, source[key]);
       });
     }

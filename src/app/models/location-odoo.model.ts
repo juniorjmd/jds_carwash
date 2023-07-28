@@ -1,6 +1,6 @@
 export class LocationOdoo {
-    id  : number;
-    name  :string ;
+    id !: number;
+    name !:string ;
     complete_name  ?:string;
     active  ?: boolean;
     usage ?:string ;

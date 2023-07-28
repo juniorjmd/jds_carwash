@@ -31,7 +31,7 @@
                     <td>{{usuario.nombreCompleto}}</td>
                     <td>{{usuario.Login }}</td>
                     <td>{{usuario.mail}}</td>
-                    <td>{{usuario.libranza|booleanP}}</td>
+                    <td>{{usuario.libranza!|booleanP}}</td>
                     <td>{{usuario.ultimo_ingreso }}</td>
                     <td>{{usuario.Fecha_Modif }}</td>
                     <td title="editar usuario"><i class="fas fa-pencil-alt boton_activo" (click)="setActualizaUsuario(usuario)"></i> </td>

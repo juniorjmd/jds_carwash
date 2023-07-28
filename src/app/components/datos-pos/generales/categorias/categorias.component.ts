@@ -27,11 +27,11 @@ export class CategoriasComponent implements OnInit {
   getUsuarios(){ 
     this.loading.show()
     this.productoService.getCategorias().subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:Categoria , index )=>{
+      datos.data!.forEach((dato:Categoria , index:number )=>{
         this.categorias[index] = new CategoriasModel(dato) ;
       }) 
       console.log(this.categorias);

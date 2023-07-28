@@ -44,7 +44,7 @@ const transformKey = (() => {
 const tethers = [];
 
 const position = () => {
-  tethers.forEach((tether) => {
+  tethers!.forEach((tether) => {
     tether.position(false);
   });
   flush();
@@ -85,7 +85,7 @@ function now() {
   };
 
   if (!isUndefined(window) && !isUndefined(window.addEventListener)) {
-    ['resize', 'scroll', 'touchmove'].forEach((event) => {
+    ['resize', 'scroll', 'touchmove']!.forEach((event) => {
       window.addEventListener(event, tick);
     });
   }
@@ -102,7 +102,7 @@ class TetherClass extends Evented {
 
     this.setOptions(options, false);
 
-    TetherBase.modules.forEach((module) => {
+    TetherBase.modules!.forEach((module) => {
       if (!isUndefined(module.initialize)) {
         module.initialize.call(this);
       }
@@ -140,7 +140,7 @@ class TetherClass extends Evented {
       this.targetModifier = 'scroll-handle';
     }
 
-    ['element', 'target'].forEach((key) => {
+    ['element', 'target']!.forEach((key) => {
       if (isUndefined(this[key])) {
         throw new Error('Tether Error: Both element and target must be defined');
       }
@@ -216,7 +216,7 @@ class TetherClass extends Evented {
     addClass(this.element, getClass('enabled', classes, classPrefix));
     this.enabled = true;
 
-    this.scrollParents.forEach((parent) => {
+    this.scrollParents!.forEach((parent) => {
       if (parent !== this.target.ownerDocument) {
         parent.addEventListener('scroll', this.position);
       }
@@ -234,7 +234,7 @@ class TetherClass extends Evented {
     this.enabled = false;
 
     if (!isUndefined(this.scrollParents)) {
-      this.scrollParents.forEach((parent) => {
+      this.scrollParents!.forEach((parent) => {
         parent.removeEventListener('scroll', this.position);
       });
     }
@@ -245,7 +245,7 @@ class TetherClass extends Evented {
 
     this._removeClasses();
 
-    tethers.forEach((tether, i) => {
+    tethers!.forEach((tether, i) => {
       if (tether === this) {
         tethers.splice(i, 1);
       }
@@ -289,7 +289,7 @@ class TetherClass extends Evented {
     }
 
     this.all = [];
-    sides.forEach((side) => {
+    sides!.forEach((side) => {
       this.all.push(`${getClass('element-attached', classes, classPrefix)}-${side}`);
       this.all.push(`${getClass('target-attached', classes, classPrefix)}-${side}`);
     });
@@ -432,7 +432,7 @@ class TetherClass extends Evented {
       const offsetParentSize = offsetPosition;
 
       const offsetBorder = {};
-      ['Top', 'Left', 'Bottom', 'Right'].forEach((side) => {
+      ['Top', 'Left', 'Bottom', 'Right']!.forEach((side) => {
         offsetBorder[side.toLowerCase()] = parseFloat(offsetParentStyle[`border${side}Width`]);
       });
 
@@ -648,7 +648,7 @@ class TetherClass extends Evented {
       removeClass(this.target, getClass('target', classes, classPrefix));
     }
 
-    this.all.forEach((className) => {
+    this.all!.forEach((className) => {
       this.element.classList.remove(className);
       this.target.classList.remove(className);
     });
@@ -666,7 +666,7 @@ Tether.modules.push({
     const { classes, classPrefix } = this.options;
     this.markers = {};
 
-    ['target', 'element'].forEach((type) => {
+    ['target', 'element']!.forEach((type) => {
       const el = document.createElement('div');
       el.className = getClass(`${type}-marker`, classes, classPrefix);
 

@@ -27,7 +27,7 @@ export class Modal1Component implements OnInit {
      this.pBodyModal.innerHTML =error;  
      this.btnModal.click();
   }
-   open(content) {
+   open(content:any) {
     this.modalService.open(content);
   }
 

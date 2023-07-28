@@ -68,7 +68,7 @@
         }));
       }
 
-      ownKeys.forEach(function (key) {
+      ownKeys!.forEach(function (key) {
         _defineProperty(target, key, source[key]);
       });
     }
@@ -650,7 +650,7 @@
         }));
       }
 
-      ownKeys.forEach(function (key) {
+      ownKeys!.forEach(function (key) {
         _defineProperty(target, key, source[key]);
       });
     }
@@ -926,7 +926,7 @@
         }));
       }
 
-      ownKeys.forEach(function (key) {
+      ownKeys!.forEach(function (key) {
         _defineProperty(target, key, source[key]);
       });
     }
@@ -2051,7 +2051,7 @@
         }));
       }
 
-      ownKeys.forEach(function (key) {
+      ownKeys!.forEach(function (key) {
         _defineProperty(target, key, source[key]);
       });
     }
@@ -2228,7 +2228,7 @@
 
   if (DOCUMENT && typeof DOCUMENT.querySelector === 'function') {
     var attrs = [['data-family-prefix', 'familyPrefix'], ['data-replacement-class', 'replacementClass'], ['data-auto-replace-svg', 'autoReplaceSvg'], ['data-auto-add-css', 'autoAddCss'], ['data-auto-a11y', 'autoA11y'], ['data-search-pseudo-elements', 'searchPseudoElements'], ['data-observe-mutations', 'observeMutations'], ['data-mutate-approach', 'mutateApproach'], ['data-keep-original-source', 'keepOriginalSource'], ['data-measure-performance', 'measurePerformance'], ['data-show-missing-icons', 'showMissingIcons']];
-    attrs.forEach(function (_ref) {
+    attrs!.forEach(function (_ref) {
       var _ref2 = _slicedToArray(_ref, 2),
           attr = _ref2[0],
           key = _ref2[1];
@@ -2434,7 +2434,7 @@
   }
 
   function publish(promise) {
-    promise._then = promise._then.forEach(invokeCallback);
+    promise._then = promise._then!.forEach(invokeCallback);
   }
 
   function publishFulfillment(promise) {
@@ -3258,7 +3258,7 @@
     _byLigature = lookup(function (acc, icon, iconName) {
       var ligatures = icon[2];
       acc[iconName] = iconName;
-      ligatures.forEach(function (ligature) {
+      ligatures!.forEach(function (ligature) {
         acc[ligature] = iconName;
       });
       return acc;
@@ -3460,7 +3460,7 @@
         observeMutationsRoot = _options$observeMutat === void 0 ? DOCUMENT : _options$observeMutat;
     mo = new MUTATION_OBSERVER(function (objects) {
       if (disabled) return;
-      toArray(objects).forEach(function (mutationRecord) {
+      toArray(objects)!.forEach(function (mutationRecord) {
         if (mutationRecord.type === 'childList' && mutationRecord.addedNodes.length > 0 && !isWatched(mutationRecord.addedNodes[0])) {
           if (config.searchPseudoElements) {
             pseudoElementsCallback(mutationRecord.target);
@@ -3698,7 +3698,7 @@
     };
   }
 
-  function MissingIcon(error) {
+  function MissingIcon(error : any) {
     this.name = 'MissingIcon';
     this.message = error || 'Icon unavailable';
     this.stack = new Error().stack;
@@ -4172,7 +4172,7 @@
         }
 
         var additions = definitions.reduce(this._pullDefinitions, {});
-        Object.keys(additions).forEach(function (key) {
+        Object.keys(additions)!.forEach(function (key) {
           _this.definitions[key] = _objectSpread({}, _this.definitions[key] || {}, additions[key]);
           defineIcons(key, additions[key]);
           build();

@@ -90,7 +90,7 @@ export class VentasComponent implements AfterViewInit  {
     let margin = 0;
     console.log(usuario, menu);
     
-    menu.forEach((detalle , index ) => {
+    menu!.forEach((detalle , index ) => {
       console.log('recorrido',index ,detalle ); 
         if(detalle.recurso.tipo === 'boton'){
 
@@ -257,7 +257,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:MediosDePago , index:number )=>{
+      datos.data!.forEach((dato:MediosDePago , index:number )=>{
         this.MedioP[index] =   dato ;
         this.pagos[index] = new pagosModel();
         this.pagos[index].idMedioDePago = dato.id;
@@ -405,7 +405,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
           this.documentoActivo.pagos[0].idMedioDePago =  this.pagos[ this.indexEfectivo].idMedioDePago;
         this.documentoActivo.pagos[0].referencia =  'Efectivo';
         this.documentoActivo.pagos[0].valorPagado =  this.pagos[ this.indexEfectivo].valorPagado;
-        } catch (error) {
+        } catch (error : any) {
           this.documentoActivo.pagos[0].idMedioDePago =  1;
         this.documentoActivo.pagos[0].referencia =  'Efectivo';
         this.documentoActivo.pagos[0].valorPagado =  this.documentoActivo.valorTotal;
@@ -474,7 +474,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
        }else{ 
         try {
           this.pagos[ this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura;
-        } catch (error) {
+        } catch (error : any) {
           
         }
           
@@ -519,7 +519,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
        console.log('getDocumentos_recuest', datos );
        
   if (datos.numdata > 0 ){ 
-    datos.data.forEach((dato:any , index :number )=>{ 
+    datos.data!.forEach((dato:any , index :number )=>{ 
      // this.documentos = 
      this.documentos.push(dato.objeto);
      if(index === 0)  documentoSeleccionado = dato.objeto;
@@ -534,7 +534,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
     }else{
       try {
         this.pagos[ this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura;
-      } catch (error) {
+      } catch (error : any) {
         
       }
     }
@@ -545,7 +545,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
  this.vueltas =false;
 } ,
 (error: any) =>{
-  alert(JSON.stringify(error));
+  alert(JSON.stringify(error ));
 
 });
 }

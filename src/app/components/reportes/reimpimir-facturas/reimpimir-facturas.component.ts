@@ -41,7 +41,7 @@ export class ReimpimirFacturasComponent implements OnInit {
    `;
    // cantInicial, cantActual, compras, ventas, devoluciones, stock, remisionada,
    
-   venta.listado.forEach(pago=>{
+   venta.listado!.forEach(pago=>{
      pagosHtml +=`<tr> `;
      pagosHtml +=`<td>${pago.nombreProducto}</td> `;
      pagosHtml +=`<td nowrap>${pago.idProducto}</td> `;
@@ -68,7 +68,7 @@ export class ReimpimirFacturasComponent implements OnInit {
   pagosHtml +=`</tr> `;
   // cantInicial, cantActual, compras, ventas, devoluciones, stock, remisionada,
   
-  venta.pagos.forEach(pago=>{
+  venta.pagos!.forEach(pago=>{
     pagosHtml +=`<tr> `;
     pagosHtml +=`<td style="text-align: left;"><b>${pago.nombreMedio}</b></td> `;
     pagosHtml +=`<td nowrap>${pago.referencia}</td> `;
@@ -121,7 +121,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
    conector.texto("----------------------------------------\n");
    conector.texto("----------------COPIA-------------------\n");
    conector.texto("----------------------------------------\n");
-   factura.listado.forEach((lista:DocumentoListado)=>{
+   factura.listado!.forEach((lista:DocumentoListado)=>{
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
     conector.texto("  "+lista.nombreProducto + "\n");
     conector.texto("|    Precio   | cnt |    dest    |    total    |\n");
@@ -155,10 +155,10 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
    conector.texto("-----------------------------------------------\n\n"); 
    let tamanio = 0;
-   factura.pagos.forEach((pago:DocpagosModel)=>{
-    tamanio = 42 - pago.nombreMedio.trim().length; 
+   factura.pagos!.forEach((pago:DocpagosModel)=>{
+    tamanio = 42 - pago.nombreMedio!.trim().length; 
 
-    conector.texto( '     '+pago.nombreMedio.trim()+ pago.valorPagado.toString().padStart(tamanio)+ "\n");
+    conector.texto( '     '+pago.nombreMedio!.trim()+ pago.valorPagado.toString().padStart(tamanio)+ "\n");
     if (pago.valorRecibido > 0 ){
       conector.texto(" Recibido                       vueltos\n");
     conector.texto("      "+pago.valorRecibido + pago.vueltos.toString().padStart(30,'.') + "\n");
@@ -191,21 +191,21 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
       return;
     }
     this.documentoService.getVentasFinalizadas(this.codFactura.trim() ).subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
          console.log('getDocumentos', datos.numdata);
          console.log('getDocumentos_recuest', datos );
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:any , index  )=>{  
+      datos.data!.forEach((dato:any , index :number )=>{  
        this.documentos.push(dato.objeto);
        
       }) 
    } 
   } ,
   (error: any) =>{
-    alert(JSON.stringify(error));
+    alert(JSON.stringify(error ));
   
   });
   }

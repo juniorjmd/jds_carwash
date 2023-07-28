@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import * as internal from 'events';
+import { Injectable } from '@angular/core'; 
 import { ClientesOdoo } from '../interfaces/clientes-odoo';
 import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
@@ -11,7 +10,7 @@ import { DocumentosModel } from '../models/documento.model';
     providedIn: 'root'
 })
 export class ClientesService {
-    private clientes:cliente[]  ;
+    private clientes:cliente[] = []  ;
     
 
     constructor(private http: HttpClient ,
@@ -23,8 +22,27 @@ export class ClientesService {
         return this.clientes;
       
     }
-    getDatosCliente(id:number){ 
-        let clienteF:cliente; 
+    getDatosCliente(id:number):any{ 
+        let clienteF:cliente = {
+            id: 0,
+            nombre: '',
+            identificacion: 0,
+            tipoIdentificacion: '',
+            calle: '',
+            calle2: '',
+            ciudad: '',
+            provincia: '',
+            pais: '',
+            cp: '',
+            direRecibo: '',
+            puestoTrabajo: '',
+            tel1: '',
+            tel2: '',
+            mail: '',
+            enlace: '',
+            titulo: '',
+            categoria: ''
+        }; 
        for(let cliente of this.clientes){
            if ( cliente.id === id )
               clienteF = cliente;
@@ -40,7 +58,26 @@ export class ClientesService {
     }
     
     getDatosClientePname(nombre:string){ 
-        let clienteF:cliente; 
+        let clienteF:cliente = {
+            id: 0,
+            nombre: '',
+            identificacion: 0,
+            tipoIdentificacion: '',
+            calle: '',
+            calle2: '',
+            ciudad: '',
+            provincia: '',
+            pais: '',
+            cp: '',
+            direRecibo: '',
+            puestoTrabajo: '',
+            tel1: '',
+            tel2: '',
+            mail: '',
+            enlace: '',
+            titulo: '',
+            categoria: ''
+        };  
        for(let cliente of this.clientes){
            if ( cliente.nombre === nombre )
               clienteF = cliente;
