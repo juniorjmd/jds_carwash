@@ -2,11 +2,11 @@ import { Categoria } from "../interfaces/categoria.interface";
 
  
 export class CategoriasModel { 
-  id:number; 
-  letra:string; 
-  nombre:string; 
-  descripcion:string; 
-  tipo:string;
+  id!:number; 
+  letra!:string; 
+  nombre!:string; 
+  descripcion!:string; 
+  tipo!:string;
   contador?:number;
   tipoDescripcion ?:string;
   constructor( cat: Categoria){
@@ -16,7 +16,7 @@ export class CategoriasModel {
     this.nombre= cat.nombre; 
     this.descripcion = cat.descripcion.trim(); 
     this.tipo= cat.tipo;
-    this.tipoDescripcion= cat.tipoDescripcion.trim();
+    this.tipoDescripcion= cat.tipoDescripcion!.trim();
   this.contador = cat.contador;
   }
   }

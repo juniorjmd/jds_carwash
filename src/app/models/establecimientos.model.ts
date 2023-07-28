@@ -2,13 +2,13 @@
 import { Establecimientos } from "../interfaces/establecimientos.interface";
 
 export class establecimientoModel{
-    id:number;
-    nombre:string ;
-    descripcion:string ;
-    tipo:number ;
-    fecha_creacion:Date ;
-    usuario_creacion:number ;
-    estado:number ;
+    id!:number;
+    nombre!:string ;
+    descripcion!:string ;
+    tipo!:number ;
+    fecha_creacion!:Date ;
+    usuario_creacion!:number ;
+    estado!:number ;
     nombreTipo ?:string ;
     nombreEstado ?:string ;
     nombreUsuario ?:string ;

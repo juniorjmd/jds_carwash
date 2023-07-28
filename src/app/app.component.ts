@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Globals } from 'src/globales';
 import { Title } from '@angular/platform-browser';
+import * as $ from 'jquery';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

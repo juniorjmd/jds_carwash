@@ -75,13 +75,13 @@ getCajas(){
   this.loading.show()
   this.serviceCaja.getCajasPorUsuario(this.usuarioActual.ID)
      .subscribe(
-      (datos:select)=>{
+      (datos:any)=>{
          console.log('getCajasPorUsuario',datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:caja , index )=>{
+      datos.data.forEach((dato:caja , index :number)=>{
         this.cajas[index] = new cajaModel( dato );
-        this.opciones[index] = this.cajas[index].asignada;
+        this.opciones[index] = this.cajas[index].asignada!;
       }) 
       console.log(this.cajas);
     }else{

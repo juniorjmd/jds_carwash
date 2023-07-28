@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { DialogoConfirmacionComponent } from 'src/app/components/shared/dialogo-confirmacion/dialogo-confirmacion.component'
  
 //servicios
-import { DatosInicialesService   } from './services/DatosIniciales.services';
 
 //componentes
 import { AppComponent } from './app.component';
@@ -38,7 +37,6 @@ import { CajasDetalleComponent } from './components/datos-pos/cajas-detalle.comp
 import { CajasNuevaComponent } from './components/datos-pos/cajas-nueva.component';
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component';
 import { Modal1Component } from './components/shared/modal1/modal1.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MaestrosComponent } from './components/clientes/maestros/maestros.component'; 
 import { MaestrosNavComponent } from './components/clientes/maestros/navbar.component';
 import { CiudadesComponent } from './components/clientes/maestros/ubicacion/ciudades.component';
@@ -74,16 +72,9 @@ import { EnviosComponent } from './components/envios/envios.component';
 import { DevolucionesComponent } from './components/devoluciones/devoluciones.component';
 import { FndClienteComponent } from './components/cliente/fnd-cliente/fnd-cliente.component';
 import { TiposDeDocumentosComponent } from './components/datos-pos/generales/tipos-de-documentos/tipos-de-documentos.component';
-import { TiposComponent } from './components/vehiculos/tipos/tipos.component';
-import { ServiciosComponent } from './components/vehiculos/servicios/servicios.component';
-import { IngresoComponent } from './components/vehiculos/ingreso/ingreso.component'; 
 import { EmpleadosComponent } from './components/modEmpleados/empleados/empleados.component';
-import { ServicioscostosComponent } from './components/vehiculos/servicioscostos/servicioscostos.component';
 import { PagosComponent } from './components/modEmpleados/pagos/pagos.component';
 import { CreacionEdicionComponent } from './components/modEmpleados/creacion-edicion/creacion-edicion.component';
-import { HomeVhComponent } from './components/vehiculos/home/home.component';
-import { TiposServiciosComponent } from './components/vehiculos/tipos-servicios/tipos-servicios.component';
-import { EstablecerCajaComponent } from './components/vehiculos/establecer-caja/establecer-caja.component';
 import { BodegasComponent } from './components/datos-pos/generales/bodegas/bodegas.component'; 
 import { ParametrosComponent } from './components/parametros/parametros.component';
 import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
@@ -95,12 +86,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';  
 import { AppRoutingModule } from './app-routing.module';   
 
-import * as $ from 'jquery/JQuery';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
-  declarations: [HomeVhComponent,
+  declarations: [ 
     booleanpPipe,
     ImgB64Pipe ,
     dataArrayOdooPipe,
@@ -166,16 +159,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     EnviosComponent,
     DevolucionesComponent,
     FndClienteComponent,
-    TiposDeDocumentosComponent,
-    TiposComponent,
-    ServiciosComponent,
-    IngresoComponent, 
-    EmpleadosComponent, 
-    ServicioscostosComponent, 
+    TiposDeDocumentosComponent,   
+    EmpleadosComponent,  
     PagosComponent, 
-    CreacionEdicionComponent,
-     TiposServiciosComponent,
-      EstablecerCajaComponent,
+    CreacionEdicionComponent,  
        BodegasComponent,
        ParametrosComponent,
         ReimpimirFacturasComponent,
@@ -189,9 +176,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatCheckboxModule,
     BrowserModule,
     HttpClientModule, 
-    BrowserAnimationsModule,
     MatDialogModule, 
-    AppRoutingModule 
+    AppRoutingModule , 
+    CommonModule,RouterModule
   ],
   providers: [ Title,  loading], 
   bootstrap: [AppComponent],

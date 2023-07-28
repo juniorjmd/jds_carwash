@@ -3,11 +3,11 @@ export class loading {
      classOculto:string = 'oculto';
 
     show(){
-        let cont: HTMLElement = document.getElementById(this.idLoadin);
+        let cont: HTMLElement = document.getElementById(this.idLoadin)!;
         cont.classList.remove(this.classOculto);
     }
     hide(){
-        let cont: HTMLElement = document.getElementById(this.idLoadin);
+        let cont: HTMLElement = document.getElementById(this.idLoadin)!;
         cont.classList.add(this.classOculto);
     }
     

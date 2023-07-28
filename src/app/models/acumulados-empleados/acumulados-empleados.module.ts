@@ -10,10 +10,10 @@ import { CommonModule, Time } from '@angular/common';
   ]
 })
 export class AcumuladosEmpleadosModule {
-  public cod_empleado:number; 
-  public cod_servicio:number; 
-  public valor:number; 
-  public estado:number;
+  public cod_empleado!:number; 
+  public cod_servicio!:number; 
+  public valor!:number; 
+  public estado!:number;
    public nombreEstado?:string;
    public nombreEmpleado?:string;
    public nombreServicio?:string;

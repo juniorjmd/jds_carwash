@@ -259,7 +259,7 @@ let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes;
          console.log('getDocumentos_recuest', datos );
          
     if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:any , index  )=>{  
+      datos.data.forEach((dato:any , index :number )=>{  
        this.documentos.push(dato.objeto);
        
       }) 

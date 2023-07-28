@@ -91,6 +91,12 @@ const routes: Routes =
           { path : 'Pagos' , component : PagosComponent}, 
           { path : '**' , pathMatch:'full' , redirectTo : 'Mantenimiento'}, 
          ]},
+         
+         { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
+         { path: 'vehiculos', loadChildren: () => import('./modules/vehiculos/vehiculos.module').then(m => m.VehiculosModule) },
+       
+
+
          { path : 'Vehiculos' ,component : HomeVhComponent, children:[
            { path : 'Ingresos' , component : IngresoComponent},
            { path : 'Servicios' , component : ServiciosComponent}, 
@@ -99,6 +105,10 @@ const routes: Routes =
            { path : 'TiposServicios' , component : TiposServiciosComponent},  
             { path : '**' , pathMatch:'full' , redirectTo : 'Ingresos'}, 
           ]},
+
+
+
+
         { path : 'pos' , component : POSComponent
            ,children:[
             { path : 'abrir' , component : AbrirCajaComponent},
@@ -157,8 +167,7 @@ const routes: Routes =
         { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
       ]
     },
-    { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
-    { path : '**' , pathMatch:'full' , redirectTo : 'login'},
+     { path : '**' , pathMatch:'full' , redirectTo : 'login'},
 ] ;
 
 

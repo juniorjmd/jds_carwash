@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { select } from 'src/app/interfaces/generales.interface';
 import { Usuarios } from 'src/app/interfaces/usuario.interface';
 import { loading } from 'src/app/models/app.loading';
 import { UsuarioModel } from 'src/app/models/usuario.model';
@@ -49,24 +48,29 @@ export class UsuarioComponent implements OnInit {
     this.usuarios[0] = new UsuarioModel(undefined) ;
     this.loading.show()
     this.userService.getUsuarios().subscribe(
-      (datos:select)=>{
-         console.log(datos);
-         
-    if (datos.numdata > 0 ){ 
-      datos.data.forEach((dato:Usuarios , index )=>{
-        this.usuarios[index] = new UsuarioModel( dato );
-      }) 
-      console.log(this.usuarios);
-    }else{
-      this.usuarios = [];
-    }
 
-        this.loading.hide()
-      } ,
-      error => {this.loading.hide();
-        console.log(error)
-        alert( error.error.error);
+      {next: (datos:any)=>{
+          console.log(datos);
+          
+     if (datos.numdata > 0 ){ 
+       datos.data.forEach((dato:Usuarios , index:number )=>{
+         this.usuarios[index] = new UsuarioModel( dato );
+       }) 
+       console.log(this.usuarios);
+     }else{
+       this.usuarios = [];
+     }
+ 
+         this.loading.hide()
+       } ,
+       error : (error) => {this.loading.hide();
+         console.log(error)
+         alert( error.error.error);
+       }
+      
+      
       }
+     
       );
   }
   setAgregarCajas(usuario:Usuarios){

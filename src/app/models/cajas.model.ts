@@ -20,7 +20,7 @@ export class cajaModel{
     estadoEsta?:number;
     nombreUsuarioEstadoCaja?:string;
     documentoActivoCaja?:number;
-    constructor(cargaCaja : caja){
+    constructor(cargaCaja : caja|undefined){
         this.estadoCaja = 0 ;
         this.estadoGeneral = 0;
         this.establecimiento = 0; 

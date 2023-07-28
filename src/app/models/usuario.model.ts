@@ -1,26 +1,26 @@
 import { Usuarios } from "../interfaces/usuario.interface";
 
 export class UsuarioModel {
-    ID:number;
-    Login:string;
-    Nombre1:string;
-    Nombre2:string;
-    Apellido1:string;
-    Apellido2:string;
-    nombreCompleto:string;
-    estado:number;
-    usr_registro:number;
-    Fecha_Registro:string;
-    Usr_Modif:number;
-    Fecha_Modif:string;
-    pass:string;
-    change_pass:number;
-    ultimo_ingreso:string;
-    mail:string;
+    ID!:number;
+    Login!:string;
+    Nombre1!:string;
+    Nombre2!:string;
+    Apellido1!:string;
+    Apellido2!:string;
+    nombreCompleto!:string;
+    estado!:number;
+    usr_registro!:number;
+    Fecha_Registro!:string;
+    Usr_Modif!:number;
+    Fecha_Modif!:string;
+    pass!:string;
+    change_pass!:number;
+    ultimo_ingreso!:string;
+    mail!:string;
     descripcion?:string;
     perfil?:number;
     libranza?:boolean;
-    constructor( cargaUsuario : Usuarios){
+    constructor( cargaUsuario : Usuarios|undefined){
       if(typeof(cargaUsuario) !== 'undefined'){
         this.ID= cargaUsuario.ID	;
         this.Login= cargaUsuario.Login	;
