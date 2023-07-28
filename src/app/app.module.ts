@@ -4,11 +4,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule ,ReactiveFormsModule } from '@angular/forms'; 
 
 
-import {   HttpClientModule, } from '@angular/common/http';
-import { MatDialogModule } from '@angular/material/dialog';
-import {  MatRadioModule } from '@angular/material/radio';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DialogoConfirmacionComponent } from 'src/app/components/shared/dialogo-confirmacion/dialogo-confirmacion.component'
 
  
@@ -104,6 +99,8 @@ import { ParametrosComponent } from './components/parametros/parametros.componen
 import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
 import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
 import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-facturas.component'; 
+import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [HomeVhComponent,
@@ -176,14 +173,16 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
     TiposComponent,
     ServiciosComponent,
     IngresoComponent, 
-    EmpleadosComponent, ServicioscostosComponent, PagosComponent, CreacionEdicionComponent, TiposServiciosComponent, EstablecerCajaComponent, BodegasComponent, ParametrosComponent, ReimpimirFacturasComponent, InicioReportesComponent, VerFacturasComponent 
+    EmpleadosComponent, 
+    ServicioscostosComponent, 
+    PagosComponent, CreacionEdicionComponent, TiposServiciosComponent, EstablecerCajaComponent, BodegasComponent, ParametrosComponent, ReimpimirFacturasComponent, InicioReportesComponent, VerFacturasComponent 
   ],
   imports: [MatButtonModule
     ,MatCheckboxModule,
     BrowserModule,HttpClientModule,
     APP_ROUTING,FormsModule,ReactiveFormsModule,
     NgbModule,
-    BrowserAnimationsModule,MatDialogModule,MatRadioModule   
+    BrowserAnimationsModule,MatDialogModule,MatDialogModule   
   ],
   providers: [DatosInicialesService, Title,  loading],
   bootstrap: [AppComponent],
