@@ -1,6 +1,5 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
-import { NgModule } from '@angular/core'; 
-import { FormsModule ,ReactiveFormsModule } from '@angular/forms';  
+import { NgModule } from '@angular/core';  
 
 import { DialogoConfirmacionComponent } from 'src/app/components/shared/dialogo-confirmacion/dialogo-confirmacion.component'
  
@@ -86,8 +85,7 @@ import { CreacionEdicionComponent } from './components/modEmpleados/creacion-edi
 import { HomeVhComponent } from './components/vehiculos/home/home.component';
 import { TiposServiciosComponent } from './components/vehiculos/tipos-servicios/tipos-servicios.component';
 import { EstablecerCajaComponent } from './components/vehiculos/establecer-caja/establecer-caja.component';
-import { BodegasComponent } from './components/datos-pos/generales/bodegas/bodegas.component';
-import * as $ from 'jquery';
+import { BodegasComponent } from './components/datos-pos/generales/bodegas/bodegas.component'; 
 import { ParametrosComponent } from './components/parametros/parametros.component';
 import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
 import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
@@ -96,10 +94,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog'; 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';  
-import { AppRoutingModule } from './app-routing.module'; 
-import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';  
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import * as $ from 'jquery';
+
+
 @NgModule({
   declarations: [
+
+    
     HomeVhComponent,
     booleanpPipe,
     ImgB64Pipe ,
@@ -182,22 +186,22 @@ import { RouterModule } from '@angular/router';
          InicioReportesComponent,
           VerFacturasComponent 
   ],
-  imports: [
+   imports: [
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCheckboxModule,
     BrowserModule,
     HttpClientModule, 
-    NgbModule,
     BrowserAnimationsModule,
-    MatDialogModule,
-    MatDialogModule , 
-    AppRoutingModule,
-    RouterModule
+    MatDialogModule, 
+    AppRoutingModule 
   ],
-  providers: [DatosInicialesService, Title,  loading],
-  bootstrap: [AppComponent], 
+  providers: [ Title,  loading], 
+  bootstrap: [AppComponent],
+  exports:[  AppComponent 
+    ]
  
 })
 export class AppModule { }
+   
