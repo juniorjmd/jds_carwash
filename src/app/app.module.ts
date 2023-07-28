@@ -46,8 +46,7 @@ import { DepartamentosComponent } from './components/clientes/maestros/ubicacion
 import { PaisesComponent } from './components/clientes/maestros/ubicacion/paises.component';
 import { NewCiudadComponent } from './components/clientes/maestros/ubicacion/new-ciudad.component';
 import { NewPaisComponent } from './components/clientes/maestros/ubicacion/new-pais.component';
-import { NewDepartamentoComponent } from './components/clientes/maestros/ubicacion/new-departamento.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NewDepartamentoComponent } from './components/clientes/maestros/ubicacion/new-departamento.component'; 
 import { LoadingComponent } from './components/shared/loading/loading.component'; 
 import { loading } from './models/app.loading';
 import { DefinirBaseCajaComponent } from './components/pos/definir-base-caja/definir-base-caja.component';
