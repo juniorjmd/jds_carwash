@@ -1,0 +1,30 @@
+<table #dataTable class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" *ngFor="let columna of columnasTabla">{{ columna.columna }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let dato of datosTabla, let indexDT = index ; ">
+            <td *ngFor="let item of columnasTabla , let i = index;" (click)="editarItem(indexDT , i, origen)">
+                <div *ngIf="item.name == 'opcFila'; else ItemTemplate" class="container">
+                    <a *ngIf="item.eliminar" (click)="eliminarElemento(dato ,indexDT )">
+                        <i-bs class="ibsIco size-xl" name="trash"></i-bs>
+                    </a>
+                    <a *ngIf="item.procesar" title="Procesar" [routerLink]="item.procesar">
+                        <i-bs class="ibsIco size-xl" name="gear"></i-bs>
+                    </a>
+                </div>
+
+                <ng-template #ItemTemplate>
+                    <span *ngIf="!showEditCol[indexDT][i].showEdit; else editarItemTemplate">{{ dato[item.name] }}</span>
+
+                    <ng-template #editarItemTemplate>
+                        <input class="form-control" type="text" [(ngModel)]="datoNuevo" [disabled]="showEditCol[indexDT][i].readOnly" (keyup.enter)="enviarDatoNuevo(indexDT , i, origen)" />
+
+                    </ng-template>
+                </ng-template>
+            </td>
+        </tr>
+    </tbody>
+</table>

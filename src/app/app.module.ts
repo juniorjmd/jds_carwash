@@ -73,7 +73,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
+import { SharedModule } from './modules/shared/shared.module';
+import { TooltipModule } from 'ngx-bootstrap/tooltip'; 
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 @NgModule({
   declarations: [ 
@@ -135,15 +139,20 @@ import { RouterModule } from '@angular/router';
           VerFacturasComponent 
   ],
    imports: [
+    ModalModule.forRoot(),
+    TooltipModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatCheckboxModule, MatRadioModule,
+    MatCheckboxModule, 
+    MatRadioModule,
     BrowserModule,
     HttpClientModule, 
     MatDialogModule, 
     AppRoutingModule , 
-    CommonModule,RouterModule
+    CommonModule,RouterModule,
+    SharedModule,
+    TypeaheadModule.forRoot() 
   ],
   providers: [ Title,  loading], 
   bootstrap: [AppComponent],

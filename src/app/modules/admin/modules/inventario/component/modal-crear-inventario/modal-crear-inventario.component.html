@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="my-4">
+                <!-- Aplicamos un margen de 20px arriba y abajo del formulario -->
+                <form (ngSubmit)="submitForm()" #myForm="ngForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="formData.nombre" required>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <input type="text" class="form-control" id="descripcion" name="descripcion" [(ngModel)]="formData.descripcion" required>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="id_tipo">Tipo</label>
+                                <select class="form-control" id="id_tipo" name="id_tipo" [(ngModel)]="formData.id_tipo" required>
+                                <option *ngFor="let dato of datosTipo" [value]="dato.id" >{{dato.text}}</option> 
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="estado">Estado</label>
+                                <select class="form-control" id="estado" name="estado" [(ngModel)]="formData.estado" required>
+                                    <option value="">Seleccione estado</option>
+                                    <option value="SAP">Sin aplicar</option>
+                                  <!--  <option value="APL">Aplicado</option>
+                                    <option value="CAN">Cancelado</option>
+                                    <option value="REV">Reversado</option>-->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <div class="form-group">
+                        <label for="fechaCreacion">Fecha de creación</label>
+                        <input type="date" class="form-control" id="fechaCreacion" name="fechaCreacion" [(ngModel)]="formData.fechaCreacion" required>
+                    </div>
+
+                    <div *ngIf="formData.id_tipo == 2">
+                        <div class="form-group">
+                            <app-dropdown-fnd (optionSelected)="onCategoriaSeleccionada($event)" *ngIf="categorias" title="categorias" [OptionField]="'nombre'" [options]="categorias"></app-dropdown-fnd>
+                        </div>
+                    </div>
+                    <div *ngIf="formData.id_tipo ==  3 ">
+                        <div class="form-group">
+                            <app-dropdown-fnd (optionSelected)="onMarcaSeleccionada($event)" *ngIf="categorias" title="marcas" [OptionField]="'nombre'" [options]="categorias"></app-dropdown-fnd>
+
+                        </div>
+                    </div>
+                    <div *ngIf="formData.id_tipo == 4">
+                        <div class="form-group">
+                            <app-dropdown-fnd (optionSelected)="onProveedorSeleccionado($event)" *ngIf="categorias" title="proveedores" [OptionField]="'nombre'" [options]="categorias"></app-dropdown-fnd>
+
+                        </div>
+                    </div>
+
+                    <!-- Separación entre el último elemento y los botones -->
+                    <div class="my-3">
+                        <button type="button" (click)="cancelar()" class="btn btn-secondary">Cancelar</button>
+                        <!-- Botón de cancelar -->
+                        <button type="submit" class="btn btn-primary mx-1">Crear Inventario</button>
+                        <!-- Botón de enviar el formulario -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

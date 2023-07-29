@@ -1,0 +1,15 @@
+{
+    "inventario": [{ "name": "nombre", "columna": "Nombre" },
+        { "name": "descripcion", "columna": "Descripcion" },
+        { "name": "estadoDescripcion", "columna": "Estado" },
+        { "name": "tipoInventarioName", "columna": "Tipo" },
+        { "name": "fechaCreacion", "columna": "Fec. Inicio" },
+        { "name": "fechaAplicacion", "columna": "Fec. Fin" },
+        { "name": "opcFila", "columna": "<----->", "eliminar": true, "procesar": "wrk" }
+    ],
+    "categorias": [{ "name": "nombre", "columna": "Nombre" },
+        { "name": "descripcion", "columna": "Descripcion", "editabe": true }
+    ]
+
+
+}

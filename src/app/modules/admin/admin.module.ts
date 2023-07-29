@@ -16,7 +16,6 @@ import { ContadoresComponent } from './pages/generales/contadores/contadores.com
 import { CuentasCntComponent } from './pages/generales/cuentas-cnt/cuentas-cnt.component';
 import { CrearComponent } from './pages/generales/establecimientos/crear.component';
 import { ImpuestosComponent } from './pages/generales/impuestos/impuestos.component';
-import { InventariosComponent } from './pages/generales/inventarios/inventarios.component';
 import { MediosDePagoComponent } from './pages/generales/medios-de-pago/medios-de-pago.component';
 import { ProductosComponent } from './pages/generales/productos/productos.component';
 import { TiposDeDocumentosComponent } from './pages/generales/tipos-de-documentos/tipos-de-documentos.component';
@@ -26,7 +25,7 @@ import { TiposEstablComponent } from './pages/generales/establecimientos/tipos-e
 @NgModule({
   declarations: [
     AdminComponent,DatosPosComponent,
-	BodegasComponent,GeneralesComponent,ContadoresComponent,MediosDePagoComponent,InventariosComponent,
+	BodegasComponent,GeneralesComponent,ContadoresComponent,MediosDePagoComponent,
 CategoriasComponent,
           ProductosComponent,TiposEstablComponent,
                 TiposDeDocumentosComponent,

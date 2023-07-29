@@ -11,8 +11,7 @@ import { CategoriasComponent } from './pages/generales/categorias/categorias.com
 import { ContadoresComponent } from './pages/generales/contadores/contadores.component';
 import { CuentasCntComponent } from './pages/generales/cuentas-cnt/cuentas-cnt.component';
 import { CrearComponent } from './pages/generales/establecimientos/crear.component';
-import { ImpuestosComponent } from './pages/generales/impuestos/impuestos.component';
-import { InventariosComponent } from './pages/generales/inventarios/inventarios.component';
+import { ImpuestosComponent } from './pages/generales/impuestos/impuestos.component'; 
 import { MediosDePagoComponent } from './pages/generales/medios-de-pago/medios-de-pago.component';
 import { ProductosComponent } from './pages/generales/productos/productos.component';
 import { TiposDeDocumentosComponent } from './pages/generales/tipos-de-documentos/tipos-de-documentos.component';
@@ -23,7 +22,7 @@ const routes: Routes = [{ path : '' , component: DatosPosComponent,
                 { path : 'generales' ,      component: GeneralesComponent},
                 { path : 'contadores' ,      component: ContadoresComponent},
                 { path : 'Medios' ,      component: MediosDePagoComponent},
-                { path : 'inventarios' ,      component: InventariosComponent},
+                { path : 'inventarios' ,   loadChildren: () => import('./modules/inventario/inventario.module').then(m => m.InventarioModule) },
                 { path : 'categorias' ,      component: CategoriasComponent},
                 { path : 'productos' ,      component: ProductosComponent},
                 { path : 'tipoDocumentos' ,      component: TiposDeDocumentosComponent},

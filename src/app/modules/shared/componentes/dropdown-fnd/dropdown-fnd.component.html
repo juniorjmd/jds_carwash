@@ -1,0 +1,11 @@
+<label *ngIf="title" [for]="title">{{title | titlecase}}</label>
+<!--  
+<input [(ngModel)]="selectedOption" [typeahead]="options" class="form-control" (selectItem)="onSelectItem($event)" [placeholder]="'buscar ' + title | titlecase " [typeaheadOptionField]="OptionField" autocomplete="off">
+-->
+
+<input [(ngModel)]="selectedOption" [ngbTypeahead]="search" (selectItem)="onSelectItem($event)" class="form-control" [placeholder]="'Buscar ' + title | titlecase" autocomplete="off" />
+<ul class="dropdown-menu">
+    <li *ngFor="let option of options" class="dropdown-menu">
+        {{ option[OptionField] }}
+    </li>
+</ul>
