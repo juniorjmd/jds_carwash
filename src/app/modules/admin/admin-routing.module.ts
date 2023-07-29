@@ -35,7 +35,7 @@ const routes: Routes = [{ path : '' , component: DatosPosComponent,
                 { path : 'cajaDetalle:id' ,      component: CajasDetalleComponent},
                 { path : '**' , pathMatch:'full' , redirectTo : 'generales'}, 
               ]          
-              }, ];
+              } ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

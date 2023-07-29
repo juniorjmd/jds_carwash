@@ -24,8 +24,7 @@ export class TiposEstablComponent implements OnInit {
   
   getTiposEstablecimiento(){ 
     this.serviceCaja.getAllTiposEstablecimientos()
-         .subscribe(
-      (datos:any)=>{
+         .subscribe({next: (datos:any)=>{
          console.log(datos);
          this.tiposEsta = [];   
     if (datos.numdata > 0 ){ 
@@ -38,11 +37,11 @@ export class TiposEstablComponent implements OnInit {
 
         this.loading.hide()
       } ,
-      error => {this.loading.hide();
+      error: (error) => {this.loading.hide();
         
     this.tiposEsta = [];
         alert( error.error.error);
-      }
+      }}
       );
   }
 

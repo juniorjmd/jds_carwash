@@ -41,14 +41,8 @@ export class NavbarComponent   {
       console.log('retorno', datos);  
       let usuario : Usuario ;
       usuario = datos.data.usuario ; 
-      //this.menusUsuario = this.getMenuImage(usuario) ;
-      this.menusUsuario = [
-        {nombre_recurso:'Vehiculos', 
-        idtipo:0,
-        tipo:'ul-nav',
-        estado:1 ,
-        direccion:'vehiculos'
-      }]
+      this.menusUsuario = this.getMenuImage(usuario) ;
+     
 
 
      console.log('estoy en getUsuarioLogeado en navbar component',this.menusUsuario);
