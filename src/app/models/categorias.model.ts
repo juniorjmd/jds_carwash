@@ -14,9 +14,9 @@ export class CategoriasModel {
     this.id = cat.id ;
     this.letra= cat.letra; 
     this.nombre= cat.nombre; 
-    this.descripcion = cat.descripcion.trim(); 
+    this.descripcion = cat.descripcion ; 
     this.tipo= cat.tipo;
-    this.tipoDescripcion= cat.tipoDescripcion!.trim();
+    this.tipoDescripcion= cat.tipoDescripcion ;
   this.contador = cat.contador;
   }
   }
