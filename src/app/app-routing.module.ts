@@ -66,9 +66,6 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
          { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
          { path: 'vehiculos', loadChildren: () => import('./modules/vehiculos/vehiculos.module').then(m => m.VehiculosModule) },
        
- 
-
-
         { path : 'pos' , component : POSComponent
            ,children:[
             { path : 'abrir' , component : AbrirCajaComponent},
@@ -77,10 +74,9 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
             { path : '**' , pathMatch:'full' , redirectTo : 'abrir'}, 
            ]}, 
 
-           { path : 'devoluciones' , component : DevolucionesComponent},
-           { path : 'envios' , component : EnviosComponent},
-
-          { path : 'clientes' , component : ClientesComponent,
+        { path : 'devoluciones' , component : DevolucionesComponent},
+        { path : 'envios' , component : EnviosComponent},
+        { path : 'clientes' , component : ClientesComponent,
            children:[
             { path : 'listado' , component : ClienteInicioComponent},
             { path : 'nuevo' , component : ClienteNuevoComponent},
@@ -95,25 +91,6 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
                 ]},
             { path : '**' , pathMatch:'full' , redirectTo : 'listado'}, 
             ]}, 
-        { path : 'DatosPos' , component: DatosPosComponent,
-              children:[
-                {path : 'bodegas' , component:BodegasComponent},
-                { path : 'generales' ,      component: GeneralesComponent},
-                { path : 'contadores' ,      component: ContadoresComponent},
-                { path : 'Medios' ,      component: MediosDePagoComponent},
-                { path : 'inventarios' ,      component: InventariosComponent},
-                { path : 'categorias' ,      component: CategoriasComponent},
-                { path : 'productos' ,      component: ProductosComponent},
-                { path : 'tipoDocumentos' ,      component: TiposDeDocumentosComponent},
-                { path : 'establecimientos' ,    component: CrearComponent},
-                { path : 'cuentasContables', component:CuentasCntComponent},
-                { path : 'impuestos', component:ImpuestosComponent},
-                { path : 'caja' ,      component: CajasComponent},
-                { path : 'cajaNueva' ,      component: CajasNuevaComponent},
-                { path : 'cajaDetalle:id' ,      component: CajasDetalleComponent},
-                { path : '**' , pathMatch:'full' , redirectTo : 'generales'}, 
-              ]          
-              }, 
         
         { path : 'cierres' ,      component: CierresComponent},
         { path : 'reportes' ,      component: InicioReportesComponent , children:[

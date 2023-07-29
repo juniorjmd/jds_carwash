@@ -44,11 +44,11 @@ export interface Permisos{
 }
 
 export interface RecursoDetalle{
-    id:number,
+    id?:number,
     nombre_recurso:string,
-    img:string,
+    img?:string,
     idtipo:number,
     tipo:string,
     estado?:number ,
-    direccion?:string[]
+    direccion?:any
 }

@@ -10,7 +10,7 @@ import { TiposComponent } from './pages/tipos/tipos.component';
 const routes: Routes = [
   
 
-  { path : 'Vehiculos' ,component : HomeVhComponent, children:[
+  { path : '' ,component : HomeVhComponent, children:[
     { path : 'Ingresos' , component : IngresoComponent},
     { path : 'Servicios' , component : ServiciosComponent}, 
     { path : 'Tipos' , component : TiposComponent}, 

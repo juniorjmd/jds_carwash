@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { select } from 'src/app/interfaces/generales.interface';
-import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
+import { select } from 'src/app/interfaces/generales.interface'; 
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
 import { LoginService } from 'src/app/services/login.services';
 import { DatosInicialesService  } from '../../../services/DatosIniciales.services';
+import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 
 
 @Component({
@@ -41,8 +41,17 @@ export class NavbarComponent   {
       console.log('retorno', datos);  
       let usuario : Usuario ;
       usuario = datos.data.usuario ; 
-      this.menusUsuario = this.getMenuImage(usuario) ;
-     console.log('estoy en getUsuarioLogeado',this.menusUsuario);
+      //this.menusUsuario = this.getMenuImage(usuario) ;
+      this.menusUsuario = [
+        {nombre_recurso:'Vehiculos', 
+        idtipo:0,
+        tipo:'ul-nav',
+        estado:1 ,
+        direccion:'vehiculos'
+      }]
+
+
+     console.log('estoy en getUsuarioLogeado en navbar component',this.menusUsuario);
 
   } catch (error : any) {
       throw new Error(`Error al leer maestros : ${error}`);
@@ -59,7 +68,7 @@ export class NavbarComponent   {
     let menuCard:RecursoDetalle[] = [];
     let menu = usuario.permisos;
     let margin = 0;
-    console.log(usuario, menu);
+    console.log('get menu usuario navbar',usuario, menu);
     
     menu!.forEach((detalle , index ) => {
       console.log('recorrido',index ,detalle ); 

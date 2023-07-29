@@ -20,7 +20,7 @@ import { RouterModule } from '@angular/router';import { BrowserModule } from '@a
     TiposComponent,TiposServiciosComponent
   ],
   imports: [
-    CommonModule,FormsModule,RouterModule,BrowserModule,
+    CommonModule,FormsModule,RouterModule, 
     VehiculosRoutingModule,
     
   ]
