@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Categoria } from 'src/app/interfaces/categoria';
-import { ColumnasTabla } from 'src/app/interfaces/columnas-tabla';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'; 
 import { ModalCrearExistenciaComponent } from '../../component/modal-crear-existencia/modal-crear-existencia.component';
+import { Categoria } from 'src/app/interfaces/nInterfaces/categoria';
+import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
 
 @Component({
   templateUrl: './existencias.component.html',

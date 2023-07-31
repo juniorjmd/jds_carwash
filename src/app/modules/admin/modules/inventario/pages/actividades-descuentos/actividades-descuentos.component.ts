@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Categoria } from 'src/app/interfaces/categoria';
-import { ColumnasTabla } from 'src/app/interfaces/columnas-tabla';
+import { Categoria } from 'src/app/interfaces/nInterfaces/categoria';
+import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
 import { ModalCrearActDescuentoComponent } from '../../component/modal-crear-act-descuento/modal-crear-act-descuento.component';
 
 @Component({

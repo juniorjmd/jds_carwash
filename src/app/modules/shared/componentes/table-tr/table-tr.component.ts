@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { ColumnasTabla } from 'src/app/interfaces/columnas-tabla';
+import { Component, Input } from '@angular/core'; 
+import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
 
 @Component({
   selector: 'app-table-tr',

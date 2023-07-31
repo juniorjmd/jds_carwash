@@ -7,12 +7,14 @@ import { TabComponent } from './componentes/tab/tab.component';
 import { TableTrComponent } from './componentes/table-tr/table-tr.component';
 import { TableComponent } from './componentes/table/table.component';
 import { UlLinkComponent } from './componentes/ul-link/ul-link.component';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { FormsModule } from '@angular/forms';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable'; 
 import { columnasTablaCnfg, confAmbiente } from './config';
 import { DropdownFndComponent } from './componentes/dropdown-fnd/dropdown-fnd.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [LiNavItemComponent ,
     TableTrComponent,
@@ -20,11 +22,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TabComponent,
     UlLinkComponent,
     DropdownFndComponent],
-  imports: [
-    CommonModule,
-    RouterModule,NgbModule ,
+  imports: [ NgbModule ,
     NgxBootstrapIconsModule.pick(allIcons)  ,
-    NgxDatatableModule,FormsModule 
+    NgxDatatableModule,RouterModule,FormsModule,CommonModule
+
+
   ],
   exports:[LiNavItemComponent ,DropdownFndComponent,
     TableTrComponent,

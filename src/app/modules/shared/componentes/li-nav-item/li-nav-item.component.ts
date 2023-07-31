@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { Menu } from 'src/app/interfaces/menu';
+import { Component, Input } from '@angular/core'; 
+import { Menu } from 'src/app/interfaces/nInterfaces/menu';
 
 @Component({
   selector: 'app-li-nav-item',

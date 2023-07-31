@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Categoria } from 'src/app/interfaces/categoria';
-import { ColumnasTabla } from 'src/app/interfaces/columnas-tabla';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'; 
 import { ModalCrearMarcaComponent } from '../../component/modal-crear-marca/modal-crear-marca.component';
+import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
+import { Categoria } from 'src/app/interfaces/nInterfaces/categoria';
 
 @Component({
   templateUrl: './marcas.component.html',

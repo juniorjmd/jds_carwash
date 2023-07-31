@@ -65,19 +65,19 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog'; 
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';  
-import {  MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';   
 import { AppRoutingModule } from './app-routing.module';   
 
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+ 
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ModalModule } from 'ngx-bootstrap/modal';
-
+import { ModalModule } from 'ngx-bootstrap/modal'; 
 import { SharedModule } from './modules/shared/shared.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip'; 
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ 
@@ -139,9 +139,8 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
           VerFacturasComponent 
   ],
    imports: [
-    ModalModule.forRoot(),
-    TooltipModule.forRoot(),
-    FormsModule,
+    NgbModule ,
+    RouterModule,FormsModule,CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCheckboxModule, 
@@ -151,8 +150,12 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     MatDialogModule, 
     AppRoutingModule , 
     CommonModule,RouterModule,
-    SharedModule,
-    TypeaheadModule.forRoot() 
+    SharedModule, 
+    TypeaheadModule.forRoot(), 
+    ModalModule.forRoot(),
+    TooltipModule.forRoot(),
+
+    
   ],
   providers: [ Title,  loading], 
   bootstrap: [AppComponent],

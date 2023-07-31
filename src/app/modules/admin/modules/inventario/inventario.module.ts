@@ -24,6 +24,7 @@ import { LotesComponent } from './pages/lotes/lotes.component';
 import { MarcasComponent } from './pages/marcas/marcas.component';
 import { ProductosComponent } from './pages/productos/productos.component';
 import { WrkInventarioComponent } from './pages/wrk-inventario/wrk-inventario.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -55,7 +56,7 @@ import { WrkInventarioComponent } from './pages/wrk-inventario/wrk-inventario.co
   imports: [
     CommonModule,
     ApiRoutingModule,
-    SharedModule    
+    SharedModule  ,FormsModule  
   ]
 })
 export class InventarioModule { }

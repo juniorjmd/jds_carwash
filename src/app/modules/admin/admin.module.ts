@@ -37,8 +37,8 @@ CajasComponent,
 	
   ],
   imports: [
-    CommonModule,FormsModule,RouterModule, 
-    AdminRoutingModule
+    CommonModule,RouterModule, 
+    AdminRoutingModule,FormsModule
   ]
 })
 export class AdminModule { }
