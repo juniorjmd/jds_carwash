@@ -5,6 +5,7 @@ const login = 'https://jdscw.services.sofdla.com.co/login/';
 const datosIniciales = 'https://jdscw.services.sofdla.com.co/datosiniciales/';
 const brand = 'https://jdscw.services.sofdla.com.co/brand/';
 
+
 const httpOptionsSinAutorizacion = {
   headers: new HttpHeaders({
     'Content-type': 'application/json'  
