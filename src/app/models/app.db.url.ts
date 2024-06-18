@@ -1,9 +1,9 @@
 import { HttpHeaders } from '@angular/common/http'; 
 
-const action = 'https://jdscw.services.sofdla.com.co/';
-const login = 'https://jdscw.services.sofdla.com.co/login/';
-const datosIniciales = 'https://jdscw.services.sofdla.com.co/datosiniciales/';
-const brand = 'https://jdscw.services.sofdla.com.co/brand/';
+const action = 'https://services.carwash.sofdla.com.co/services/view/action/';
+const login = 'https://services.carwash.sofdla.com.co/services/view/action/login/';
+const datosIniciales = 'https://services.carwash.sofdla.com.co/services/view/action/datosiniciales/';
+const brand = 'https://services.carwash.sofdla.com.co/services/view/action/brand/';
 
 const httpOptionsSinAutorizacion = {
   headers: new HttpHeaders({
@@ -15,8 +15,8 @@ export let httpOptions = ()=>{
   return {
     headers: new HttpHeaders({
       'Content-type': 'application/json' ,
-      'Authorization' : localStorage.getItem('sis41254#2@')!
-  })
+      'AUTORIZACION' : localStorage.getItem('sis41254#2@')! 
+  }) 
   }
 }
 export const url = { 
