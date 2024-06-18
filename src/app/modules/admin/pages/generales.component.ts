@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; 
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Router } from '@angular/router';  
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { UsuarioResponseInterface } from 'src/app/interfaces/UsuarioResponse.Interface';
 import { select } from 'src/app/interfaces/generales.interface';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
@@ -15,7 +19,7 @@ export class GeneralesComponent implements OnInit {
   menusUsuario :RecursoDetalle[] = [];
   listado:any;
   constructor( private _datosInicialesService: DatosInicialesService , private _ServLogin:LoginService , 
-    private _Router : Router) { 
+    private _Router : Router , private sanitizer: DomSanitizer) { 
       let auxmenusUsuario :RecursoDetalle[] = [];
       this.listado = {
         'derecho' : auxmenusUsuario  , 
@@ -27,25 +31,27 @@ export class GeneralesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async getUsuarioLogeado(){
-    try {
-      const ServLogin = await  this._ServLogin.getUsuarioLogeadoAsync(); 
-      const datos:any|select  = await ServLogin; 
-      console.log('retorno getUsuarioLogeado', datos);  
-      let usuario : Usuario ;
-      usuario = datos.data.usuario ; 
-      this.listado = this.getMenuImage(usuario) ;
-     console.log('estoy en getUsuarioLogeado generales',this.listado);
-
-  } catch (error:any) {
-      throw new Error(`Error al leer maestros : ${error}`);
-      console.log(error);
-      alert( error.error.error);
-      this._Router.navigate(['login']);
-    }  
-   
+    getUsuarioLogeado(){
+      this._ServLogin.getUsuarioLogeado().pipe(
+        catchError(error => {
+          console.error(`Error al leer maestros: ${error}`);
+          alert(error.error.error);
+          this._Router.navigate(['login']);
+          return of(null); // Devuelve un Observable vacío en caso de error
+        })
+      ).subscribe((datos:UsuarioResponseInterface | null) => {
+        if (datos) {
+          console.log('retorno getUsuarioLogeado', datos);  
+          let usuario: Usuario = datos.data.usuario; 
+          this.listado = this.getMenuImage(usuario);
+          console.log('estoy en getUsuarioLogeado generales', this.listado);
+        }
+      });
   }
 
+  getSanitizedHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   
   getMenuImage(usuario:Usuario){
 

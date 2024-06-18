@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Permisos, Usuario  } from '../interfaces/usuario.interface';
 import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
+import { Observable } from 'rxjs';
+import { UsuarioResponseInterface } from '../interfaces/UsuarioResponse.Interface';
 
 
 @Injectable({
@@ -49,8 +51,18 @@ export class LoginService {
                 };
         console.log('validar llave de session inicializado ' ,url.login , datos, 
         url.httpOptionsSinAutorizacion);
-        return this.http.post(url.login , datos, httpOptions()) ;
+        return this.http.post<UsuarioResponseInterface>(url.login , datos, httpOptions()) ;
     }
+    
+    getUsuarioLogeadoObs(invoker: string = ''): Observable<any> {
+        const datos = {
+          "action": actions.actionValidarKeylogin,
+          "_llaveSession": localStorage.getItem('sis41254#2@'),
+          "_invoker": invoker
+        };
+        console.log('validar llave de session <observable> inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
+        return this.http.post(url.login, datos, httpOptions());
+      }
 
     async  getUsuarioLogeadoAsync(invoker :string = '')
     {       
