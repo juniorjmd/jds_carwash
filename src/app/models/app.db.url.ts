@@ -1,9 +1,9 @@
 import { HttpHeaders } from '@angular/common/http'; 
 
-const action = 'https://carwash.services.jdpsoluciones.com/';
-const login = 'https://carwash.services.jdpsoluciones.com/login/';
-const datosIniciales = 'https://carwash.services.jdpsoluciones.com/datosiniciales/';
-const brand = 'https://carwash.services.jdpsoluciones.com/brand/';
+const action = 'https://jdscw.services.sofdla.com.co/';
+const login = 'https://jdscw.services.sofdla.com.co/login/';
+const datosIniciales = 'https://jdscw.services.sofdla.com.co/datosiniciales/';
+const brand = 'https://jdscw.services.sofdla.com.co/brand/';
 
 const httpOptionsSinAutorizacion = {
   headers: new HttpHeaders({

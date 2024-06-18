@@ -30,14 +30,11 @@ export class LoginService {
                 };
         console.log('servicios datos iniciales inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
         return this.http.post(url.login , datos, url.httpOptionsSinAutorizacion) ;
-
-     
-        
     } 
+
+
     private getPermisos(idPerfil:number):Permisos[]{
         return this.permisosUsuario;
-        
-        
     }
     private getLlaveRegistro(){
         return this.usuario.key_registro;
@@ -55,8 +52,8 @@ export class LoginService {
     {       
         let datos = {"action": actions.actionValidarKeylogin ,
         "_llaveSession" : localStorage.getItem('sis41254#2@')  ,"_invoker": invoker };
-console.log('validar llave de session inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
-return await   this.http.post(url.login , datos, url.httpOptionsSinAutorizacion).toPromise() ; 
+        console.log('validar llave de session inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
+        return await   this.http.post(url.login , datos, url.httpOptionsSinAutorizacion).toPromise() ; 
     }
 }
  
