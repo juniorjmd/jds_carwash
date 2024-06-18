@@ -3911,7 +3911,7 @@ class LoginComponent {
             }
             else {
                 console.log('getLogin', datos.data.usuario);
-                localStorage.setItem('sis41254#2@', datos.data.usuario.key_registro);
+                localStorage.setItem('sis41254#2@', "Bearer "+datos.data.usuario.key_registro);
                 localStorage.setItem('#2@56YH7H82BF', datos.data.usuario.id);
                 this._Router.navigate(['home']);
             }

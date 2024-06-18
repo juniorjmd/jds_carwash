@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Permisos, Usuario  } from '../interfaces/usuario.interface';
 import { actions } from '../models/app.db.actions';
-import { url } from '../models/app.db.url';
+import { httpOptions, url } from '../models/app.db.url';
 
 
 @Injectable({
@@ -23,6 +23,10 @@ export class LoginService {
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
         return hashHex;
       }
+
+    /*
+    
+    */  
     getLogin( L_usuario: string , L_contraseña: string) {
         let datos = {"action": actions.actionlogin ,
                     "_password" : L_contraseña,
@@ -45,7 +49,7 @@ export class LoginService {
                 };
         console.log('validar llave de session inicializado ' ,url.login , datos, 
         url.httpOptionsSinAutorizacion);
-        return this.http.post(url.login , datos, url.httpOptionsSinAutorizacion) ;
+        return this.http.post(url.login , datos, httpOptions()) ;
     }
 
     async  getUsuarioLogeadoAsync(invoker :string = '')
@@ -53,7 +57,7 @@ export class LoginService {
         let datos = {"action": actions.actionValidarKeylogin ,
         "_llaveSession" : localStorage.getItem('sis41254#2@')  ,"_invoker": invoker };
         console.log('validar llave de session inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
-        return await   this.http.post(url.login , datos, url.httpOptionsSinAutorizacion).toPromise() ; 
+        return await   this.http.post(url.login , datos, httpOptions()).toPromise() ; 
     }
 }
  
