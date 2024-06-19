@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ClientesService, cliente } from 'src/app/services/Clientes.services';
 
-import { loading } from 'src/app/models/app.loading';
-import { select } from 'src/app/interfaces/generales.interface';
+import { loading } from 'src/app/models/app.loading'; 
 import { ClientesOdoo } from 'src/app/interfaces/clientes-odoo';
 @Component({
   selector: 'app-cliente-inicio',

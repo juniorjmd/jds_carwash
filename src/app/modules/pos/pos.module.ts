@@ -13,13 +13,13 @@ import { PagosVentaComponent } from './pages/pagos-venta/pagos-venta.component';
 import { POSComponent } from './pages/pos.component';
 import { ResumenCajaComponent } from './pages/resumen-caja/resumen-caja.component';
 import { VentasComponent } from './pages/ventas/ventas.component';
-import { FormsModule } from '@angular/forms';
-import { ImgB64Pipe } from 'src/app/pipes/imgB64.pipe';
+import { FormsModule } from '@angular/forms'; 
+import { AppModule } from 'src/app/app.module';
+import { SharedModule } from '../shared/shared.module';
  
 
 @NgModule({
-  declarations: [ 
-    ImgB64Pipe ,
+  declarations: [  
     POSComponent, 
     BuscarProductosComponent,
     VentasComponent,
@@ -35,7 +35,7 @@ import { ImgB64Pipe } from 'src/app/pipes/imgB64.pipe';
   imports: [
     CommonModule,
     PosRoutingModule,
-    FormsModule 
+    FormsModule ,SharedModule
   ]
 })
 export class PosModule { }

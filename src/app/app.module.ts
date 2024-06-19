@@ -19,20 +19,14 @@ import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle.co
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { ReporteDiarioComponent } from './components/reportes/reporte-diario.component'; 
 import { ReporteVentasPcajaComponent } from './components/reportes/reporte-ventas-pcaja.component';
-import { MenucardsComponent } from './components/shared/menucards/menucards.component'; 
-
-
-
+import { MenucardsComponent } from './components/shared/menucards/menucards.component';  
 
 
 import { CierresComponent } from './components/cierres/cierres.component';
-import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component';
-import { Modal1Component } from './components/shared/modal1/modal1.component'; 
+import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component'; 
 import { LoadingComponent } from './components/shared/loading/loading.component'; 
 import { loading } from './models/app.loading';
-import { UsuarioPerfilComponent } from './components/usuario/usuario-perfil.component';
-import { ImgB64Pipe } from './pipes/imgB64.pipe';
-import { dataArrayOdooPipe } from './pipes/dataArrayOdoo.pipe';
+import { UsuarioPerfilComponent } from './components/usuario/usuario-perfil.component'; 
 import { booleanpPipe } from './pipes/booleanp.pipe';
 import { EnviosComponent } from './components/envios/envios.component';
 import { DevolucionesComponent } from './components/devoluciones/devoluciones.component'; 
@@ -62,9 +56,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ 
-    booleanpPipe,
-    ImgB64Pipe ,
-    dataArrayOdooPipe,
     AppComponent,
     NavbarComponent,
     LoginComponent,
@@ -80,8 +71,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReporteVentasPcajaComponent,
     MenucardsComponent, 
     CierresComponent,
-    MiUsuarioComponent,
-    Modal1Component, 
+    MiUsuarioComponent, 
     DialogoConfirmacionComponent,
     LoadingComponent, 
     UsuarioPerfilComponent, 
@@ -97,7 +87,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
    imports: [
     NgbModule ,
-    RouterModule,FormsModule,CommonModule,
+    RouterModule,
+    FormsModule,
+    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCheckboxModule, 
@@ -116,7 +108,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   providers: [ Title,  loading], 
   bootstrap: [AppComponent],
-  exports:[  AppComponent 
+  exports:[  AppComponent  
     ]
  
 })

@@ -20,6 +20,7 @@ import { MediosDePagoComponent } from './pages/generales/medios-de-pago/medios-d
 import { ProductosComponent } from './pages/generales/productos/productos.component';
 import { TiposDeDocumentosComponent } from './pages/generales/tipos-de-documentos/tipos-de-documentos.component';
 import { TiposEstablComponent } from './pages/generales/establecimientos/tipos-establ.component';
+import { AppModule } from 'src/app/app.module';
 
  
 @NgModule({
@@ -38,7 +39,8 @@ CajasComponent,
   ],
   imports: [
     CommonModule,RouterModule, 
-    AdminRoutingModule,FormsModule
+    AdminRoutingModule,FormsModule, 
+    AppModule
   ]
 })
 export class AdminModule { }

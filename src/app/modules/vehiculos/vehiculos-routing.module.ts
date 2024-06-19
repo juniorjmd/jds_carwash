@@ -8,8 +8,6 @@ import { TiposServiciosComponent } from './pages/tipos-servicios/tipos-servicios
 import { TiposComponent } from './pages/tipos/tipos.component';
 
 const routes: Routes = [
-  
-
   { path : '' ,component : HomeVhComponent, children:[
     { path : 'Ingresos' , component : IngresoComponent},
     { path : 'Servicios' , component : ServiciosComponent}, 

@@ -15,9 +15,8 @@ import { NewCiudadComponent } from './pages/clientes/maestros/ubicacion/new-ciud
 import { NewDepartamentoComponent } from './pages/clientes/maestros/ubicacion/new-departamento.component';
 import { NewPaisComponent } from './pages/clientes/maestros/ubicacion/new-pais.component';
 import { PaisesComponent } from './pages/clientes/maestros/ubicacion/paises.component'; 
-import { booleanpPipe } from 'src/app/pipes/booleanp.pipe';
-import { dataArrayOdooPipe } from 'src/app/pipes/dataArrayOdoo.pipe';
-import { ImgB64Pipe } from 'src/app/pipes/imgB64.pipe';
+import { AppModule } from 'src/app/app.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -26,27 +25,21 @@ import { ImgB64Pipe } from 'src/app/pipes/imgB64.pipe';
     ClientesComponent,
     ClienteNuevoComponent,
     ClienteInicioComponent,
-    ClienteDetalleComponent,
-    
-    booleanpPipe,
-    ImgB64Pipe ,
-    dataArrayOdooPipe,
+    ClienteDetalleComponent,  
     CiudadesComponent,
     DepartamentosComponent,
     PaisesComponent,
     NewCiudadComponent,
     NewPaisComponent,
-    NewDepartamentoComponent,
-
+    NewDepartamentoComponent, 
     MaestrosNavComponent , 
     MaestrosComponent,
-    FndClienteComponent
-  
+    FndClienteComponent 
   ],
   
   imports: [
     CommonModule,FormsModule, 
-    PersonasRoutingModule 
+    PersonasRoutingModule , SharedModule
   ]
 })
 export class PersonasModule { }

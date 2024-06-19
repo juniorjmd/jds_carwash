@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CortesDeCajaModule } from 'src/app/models/cortes-de-caja/cortes-de-caja.module';
 import { CortesDeCajaService } from 'src/app/services/cortes-de-caja.service';
-import { loading } from 'src/app/models/app.loading';
-import { select } from 'src/app/interfaces/generales.interface';
+import { loading } from 'src/app/models/app.loading'; 
 import { CortesDeCajaPagosModule } from 'src/app/models/cortes-de-caja-pagos/cortes-de-caja-pagos.module';
 import Swal from 'sweetalert2';
 import { CortesDeCajaProductosVendidosModule } from 'src/app/models/cortes-de-caja-productos-vendidos/cortes-de-caja-productos-vendidos.module';

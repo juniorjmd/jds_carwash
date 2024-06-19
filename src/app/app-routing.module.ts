@@ -15,16 +15,19 @@ import { PagosComponent } from './components/modEmpleados/pagos/pagos.component'
 import { ParametrosComponent } from './components/parametros/parametros.component';
 import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
 import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
-import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-facturas.component';
- 
-
- 
+import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-facturas.component'; 
 
  const routes:  Routes = [
     { path : 'login' , component : LoginComponent}, 
     { path : 'home' , 
     component : HomeComponent ,
-      children : [       
+      children : [      
+        
+        
+        { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
+        { path: 'vehiculos', loadChildren: () => import('./modules/vehiculos/vehiculos.module').then(m => m.VehiculosModule) },
+        { path: 'pos', loadChildren: () => import('./modules/pos/pos.module').then(m => m.PosModule) }, 
+        { path: 'clientes', loadChildren: () => import('./modules/personas/personas.module').then(m => m.PersonasModule) },
         { path : 'miUsuario' , component : MiUsuarioComponent}, 
         { path : 'parametrosDelSistema' , component : ParametrosComponent}, 
         { path : 'inicio' ,component : InicioComponent, },
@@ -33,16 +36,8 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
           { path : 'Pagos' , component : PagosComponent}, 
           { path : '**' , pathMatch:'full' , redirectTo : 'Mantenimiento'}, 
          ]},
-         
-         { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
-         { path: 'vehiculos', loadChildren: () => import('./modules/vehiculos/vehiculos.module').then(m => m.VehiculosModule) },
-         { path: 'pos', loadChildren: () => import('./modules/pos/pos.module').then(m => m.PosModule) }, 
-
         { path : 'devoluciones' , component : DevolucionesComponent},
         { path : 'envios' , component : EnviosComponent},
-        
-        { path: 'clientes', loadChildren: () => import('./modules/personas/personas.module').then(m => m.PersonasModule) },
-        
         { path : 'cierres' ,      component: CierresComponent},
         { path : 'reportes' ,      component: InicioReportesComponent , children:[
           {path : 'reportesMenu' , component:ReportesComponent}, 

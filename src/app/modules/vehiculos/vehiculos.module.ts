@@ -10,7 +10,8 @@ import { ServicioscostosComponent } from './pages/servicioscostos/servicioscosto
 import { TiposServiciosComponent } from './pages/tipos-servicios/tipos-servicios.component';
 import { TiposComponent } from './pages/tipos/tipos.component';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+
 
 
 @NgModule({
@@ -21,8 +22,7 @@ import { RouterModule } from '@angular/router';import { BrowserModule } from '@a
   ],
   imports: [
     CommonModule,FormsModule,RouterModule, 
-    VehiculosRoutingModule,
-    
+    VehiculosRoutingModule, 
   ]
 })
 export class VehiculosModule { }

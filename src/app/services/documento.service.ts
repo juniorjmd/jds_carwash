@@ -136,22 +136,25 @@ getVentasFinalizadasPorFecha(fecha1:string, fecha2:string){
 } 
 
 
+
+
+
 cambiarDocumento(documento:number){
   let datos = {"action": actions.actionChangeDocumentos , "_docActual" : documento }
-  console.log('cambiarDocumento activo ' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  console.log('cambiarDocumento activo ' ,url.actionDocumentos , datos, httpOptions());
+  return this.http.post(url.actionDocumentos , datos, httpOptions()) ;
 }
 
 
 cancelarDocumento(documento:number){
   let datos = {"action": actions.actionCancelarDocumentos , "_documento" : documento }
-  console.log('cancelarDocumento activo ' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  console.log('cancelarDocumento activo ' ,url.actionDocumentos , datos, httpOptions());
+  return this.http.post(url.actionDocumentos , datos, httpOptions()) ;
 }
 generarDomicilioDocumento(documento:number){
   let datos = {"action": actions.actionCambiarDocADomicilio , "_documento" : documento }
-  console.log('actionCambiarDocADomicilio ' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  console.log('actionCambiarDocADomicilio ' ,url.actionDocumentos , datos, httpOptions());
+  return this.http.post(url.actionDocumentos , datos, httpOptions()) ;
 }
 cerrarDocumento(documento:number){
  /* {"action": "CREAR_STOCK_PICKING_FINAL"   ,
@@ -159,19 +162,22 @@ cerrarDocumento(documento:number){
  }*/
   let datos = {"action": actions.actionCerarDocumentos ,
   "_documento" : documento }
-  console.log('crearDocumento activo ' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  console.log('crearDocumento activo ' ,url.actionDocumentos , datos, httpOptions());
+  return this.http.post(url.actionDocumentos , datos, httpOptions()) ;
 }
-//actionCambioCajaDocumento
-crearDocumento(){
-  let datos = {"action": actions.actionCrearDocumentos }
-  console.log('crearDocumento activo ' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
-}
+
 
 cambiarDocumentoDeCaja(caja:cajaModel){
   let datos = {"action": actions.actionCambioCajaDocumento, "datos" : caja}
-  console.log('crearDocumento activo ' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  console.log('crearDocumento activo ' ,url.actionDocumentos , datos, httpOptions());
+  return this.http.post(url.actionDocumentos , datos, httpOptions()) ;
 }
+
+//actionCambioCajaDocumento
+crearDocumento(){
+  let datos = {"action": actions.actionCrearDocumentos }
+  console.log('crearDocumento activo ' ,url.actionDocumentos , datos, httpOptions());
+  return this.http.post(url.actionDocumentos , datos, httpOptions()) ;
+}
+
 }
