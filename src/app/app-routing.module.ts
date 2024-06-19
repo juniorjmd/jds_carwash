@@ -61,21 +61,8 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
 
         { path : 'devoluciones' , component : DevolucionesComponent},
         { path : 'envios' , component : EnviosComponent},
-        { path : 'clientes' , component : ClientesComponent,
-           children:[
-            { path : 'listado' , component : ClienteInicioComponent},
-            { path : 'nuevo' , component : ClienteNuevoComponent},
-            { path : 'detalle/idCliente' , component : ClienteDetalleComponent},
-            { path : 'maestros' , component : MaestrosComponent,
-               children:[
-                {   path : 'ciudades' , component: CiudadesComponent}, 
-                {   path : 'departamentos' , component: DepartamentosComponent}, 
-                {   path : 'paises' , component: PaisesComponent},     
-                { path : '**' , pathMatch:'full' , redirectTo : 'ciudades'},  
-                  
-                ]},
-            { path : '**' , pathMatch:'full' , redirectTo : 'listado'}, 
-            ]}, 
+        
+        { path: 'clientes', loadChildren: () => import('./modules/personas/personas.module').then(m => m.PersonasModule) },
         
         { path : 'cierres' ,      component: CierresComponent},
         { path : 'reportes' ,      component: InicioReportesComponent , children:[

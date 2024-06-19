@@ -3,7 +3,9 @@ import { ClientesOdoo, dfltAnswOdoo } from 'src/app/interfaces/clientes-odoo';
 import { select } from 'src/app/interfaces/generales.interface';
 import { datosMaestros } from 'src/app/interfaces/maestros.interface';
 import { CiudadModel } from 'src/app/models/maestros.model';
-import { MaestroClienteServices } from '../../services/MaestroCliente.services';
+import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services'; 
+
+
 import { loading } from 'src/app/models/app.loading';
 import { answDfltOdoo } from 'src/app/models/app.db.answDfltOdoo.model';
 

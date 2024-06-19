@@ -7,9 +7,14 @@ import { CiudadModel } from 'src/app/models/maestros.model';
 import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services'; 
 import { loading } from 'src/app/models/app.loading';
 import { answDfltOdoo } from 'src/app/models/app.db.answDfltOdoo.model';
-import { BuscarProductosComponent } from '../../pos/buscar-productos/buscar-productos.component';
+
+
+import { VehiculosService } from 'src/app/services/vehiculos.service'; 
+
+ 
 import { DocumentosModel } from 'src/app/models/documento.model';
 import {ClientesService} from 'src/app/services/Clientes.services'
+import { BuscarProductosComponent } from 'src/app/components/pos/buscar-productos/buscar-productos.component';
 
 @Component({
   selector: 'app-fnd-cliente',

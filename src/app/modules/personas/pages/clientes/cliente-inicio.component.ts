@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ClientesService, cliente } from '../../services/Clientes.services';
+
+import { ClientesService, cliente } from 'src/app/services/Clientes.services';
 
 import { loading } from 'src/app/models/app.loading';
 import { select } from 'src/app/interfaces/generales.interface';

@@ -20,26 +20,14 @@ import { ReportesComponent } from './components/reportes/reportes.component';
 import { ReporteDiarioComponent } from './components/reportes/reporte-diario.component'; 
 import { ReporteVentasPcajaComponent } from './components/reportes/reporte-ventas-pcaja.component';
 import { POSComponent } from './components/pos/pos.component'; 
-import { MenucardsComponent } from './components/shared/menucards/menucards.component';
-import { ClientesComponent } from './components/clientes/clientes.component';
-import { ClienteNuevoComponent } from './components/clientes/cliente-nuevo.component';
-import { ClienteInicioComponent } from './components/clientes/cliente-inicio.component';
-import { ClienteDetalleComponent } from './components/clientes/cliente-detalle.component';
+import { MenucardsComponent } from './components/shared/menucards/menucards.component'; 
 import { BuscarProductosComponent } from './components/pos/buscar-productos/buscar-productos.component';
 import { VentasComponent } from './components/pos/ventas/ventas.component';
 import { AbrirCajaComponent } from './components/pos/abrir-caja/abrir-caja.component';
 import { CerrarCajaComponent } from './components/pos/cerrar-caja/cerrar-caja.component';
 import { CierresComponent } from './components/cierres/cierres.component';
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component';
-import { Modal1Component } from './components/shared/modal1/modal1.component';
-import { MaestrosComponent } from './components/clientes/maestros/maestros.component'; 
-import { MaestrosNavComponent } from './components/clientes/maestros/navbar.component';
-import { CiudadesComponent } from './components/clientes/maestros/ubicacion/ciudades.component';
-import { DepartamentosComponent } from './components/clientes/maestros/ubicacion/departamentos.component';
-import { PaisesComponent } from './components/clientes/maestros/ubicacion/paises.component';
-import { NewCiudadComponent } from './components/clientes/maestros/ubicacion/new-ciudad.component';
-import { NewPaisComponent } from './components/clientes/maestros/ubicacion/new-pais.component';
-import { NewDepartamentoComponent } from './components/clientes/maestros/ubicacion/new-departamento.component'; 
+import { Modal1Component } from './components/shared/modal1/modal1.component'; 
 import { LoadingComponent } from './components/shared/loading/loading.component'; 
 import { loading } from './models/app.loading';
 import { DefinirBaseCajaComponent } from './components/pos/definir-base-caja/definir-base-caja.component';
@@ -53,8 +41,7 @@ import { booleanpPipe } from './pipes/booleanp.pipe';
 import { PagosVentaComponent } from './components/pos/pagos-venta/pagos-venta.component';
 import { BuscarProdDirectoComponent } from './components/pos/buscar-prod-directo/buscar-prod-directo.component';
 import { EnviosComponent } from './components/envios/envios.component';
-import { DevolucionesComponent } from './components/devoluciones/devoluciones.component';
-import { FndClienteComponent } from './components/cliente/fnd-cliente/fnd-cliente.component';
+import { DevolucionesComponent } from './components/devoluciones/devoluciones.component'; 
 import { EmpleadosComponent } from './components/modEmpleados/empleados/empleados.component';
 import { PagosComponent } from './components/modEmpleados/pagos/pagos.component';
 import { CreacionEdicionComponent } from './components/modEmpleados/creacion-edicion/creacion-edicion.component';
@@ -99,25 +86,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReporteVentasPcajaComponent,
     POSComponent, 
     MenucardsComponent,
-    ClientesComponent,
-    ClienteNuevoComponent,
-    ClienteInicioComponent,
-    ClienteDetalleComponent,
     BuscarProductosComponent,
     VentasComponent,
     AbrirCajaComponent,
     CerrarCajaComponent,
     CierresComponent,
     MiUsuarioComponent,
-    Modal1Component,
-    MaestrosComponent,
-    MaestrosNavComponent,
-    CiudadesComponent,
-    DepartamentosComponent,
-    PaisesComponent,
-    NewCiudadComponent,
-    NewPaisComponent,
-    NewDepartamentoComponent,
+    Modal1Component, 
     DialogoConfirmacionComponent,
     LoadingComponent,
     DefinirBaseCajaComponent,
@@ -128,8 +103,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     PagosVentaComponent,
     BuscarProdDirectoComponent,
     EnviosComponent,
-    DevolucionesComponent,
-    FndClienteComponent,
+    DevolucionesComponent, 
     EmpleadosComponent,  
     PagosComponent, 
     CreacionEdicionComponent,  

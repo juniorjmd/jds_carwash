@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MaestroClienteServices } from '../../services/MaestroCliente.services';
+import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services';
 
 
 @Component({
