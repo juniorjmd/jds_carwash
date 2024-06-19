@@ -16,12 +16,12 @@ import { DocpagosModel, pagosModel } from 'src/app/models/pagos.model';
 import { PagosVentaComponent } from '../pagos-venta/pagos-venta.component';
 import { printer, url } from 'src/app/models/app.db.url';
 import { ConectorPlugin } from 'src/app/models/app.printer.con';
-import { BuscarProdDirectoComponent } from '../buscar-prod-directo/buscar-prod-directo.component';
-import { FndClienteComponent } from '../../cliente/fnd-cliente/fnd-cliente.component'; 
+import { BuscarProdDirectoComponent } from '../buscar-prod-directo/buscar-prod-directo.component'; 
 import { productoDocumento } from 'src/app/interfaces/clientes-odoo';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { LoginService } from 'src/app/services/login.services';
 import { Router } from '@angular/router';
+import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd-cliente/fnd-cliente.component';
 
 
 @Component({

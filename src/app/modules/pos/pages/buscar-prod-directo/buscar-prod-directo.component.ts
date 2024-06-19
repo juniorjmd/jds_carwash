@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MaestroClienteServices } from '../../../services/MaestroCliente.services';
+import { MaestroClienteServices } from '../../../../services/MaestroCliente.services';
 import { loading } from 'src/app/models/app.loading';
 import { dfltAnswOdoo2 } from 'src/app/interfaces/clientes-odoo'; 
 import { ProductoService } from 'src/app/services/producto.service';

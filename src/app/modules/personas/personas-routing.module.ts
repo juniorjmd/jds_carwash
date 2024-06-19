@@ -11,7 +11,7 @@ import { PaisesComponent } from "./pages/clientes/maestros/ubicacion/paises.comp
 
 
 const routes: Routes = [
-    { path : 'clientes' , component : ClientesComponent,
+    { path : '' , component : ClientesComponent,
        children:[
         { path : 'listado' , component : ClienteInicioComponent},
         { path : 'nuevo' , component : ClienteNuevoComponent},

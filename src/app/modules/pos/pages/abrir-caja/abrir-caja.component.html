@@ -1,0 +1,76 @@
+<div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 class="centrado">Cajas Disponible</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 "></div>
+        <div class="col-sm-8 ">
+            <h1 *ngIf="!flagCajasDisponibles"> No existen cajas disponibles para asignar</h1>
+
+            <table *ngIf="flagCajasDisponibles" class="table">
+                <thead *ngIf="!cajaAbiertaFlag" class="thead-inverse">
+                    <tr>
+                        <th>caja</th>
+                        <th>Descripcion</th>
+                        <th colspan="2">opcion</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!cajaAbiertaFlag">
+                    <tr *ngFor="let caja of cajas">
+                        <td scope="row">{{caja.nombre}}</td>
+                        <td>{{caja.descripcion}}</td>
+                        <td *ngIf="caja.nombreEstado === 'Cerrada'">
+                          <div class="d-flex justify-content-around">
+                            <i class="bi bi-shop fs-2 text-success boton_activo" (click)="asignarCaja(caja)" title="Abrir caja"></i> 
+                            <i class="bi bi-check2-circle fs-2" title="Establecer caja"></i> 
+                          </div>
+                        </td>
+
+
+                        <td *ngIf="caja.nombreEstado !== 'Cerrada'"> 
+                         <div class="d-flex justify-content-around">
+                            <i class="bi bi-shop fs-2"  title="Abrir caja"  ></i>  
+                            <i class="bi bi-check2-circle fs-2 text-success boton_activo" (click)="continuar_caja_suspendida(caja)" title="Establecer caja"></i>
+                        </div>
+                        </td>
+                        
+
+                        <td *ngIf="caja.nombreEstado === 'Pausa'">
+                            <i class="bi bi-lock boton_activo fs-2 text-success" (click)="cerrar(caja)" title="Cerrar caja"></i>
+                        </td>
+                        <td *ngIf="caja.nombreEstado !== 'Pausa'">
+                            <i class="bi bi-lock fs-2 "  title="Cerrar caja" ></i> 
+                        </td>
+                    </tr>
+                </tbody>
+
+                <thead *ngIf="cajaAbiertaFlag" class="thead-inverse">
+                    <tr>
+                        <th>caja</th>
+                        <th>Descripcion</th>
+                        <th>Fecha de Apertura</th>
+                        <th >opcion</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="cajaAbiertaFlag">
+                    <tr>
+                        <td scope="row">{{cajaAbierta.nombre}}</td>
+                        <td>{{cajaAbierta.descripcion}}</td>
+                        <td>{{cajaAbierta.fechaEstadoCaja}}</td>
+                        <td>
+                            <div class="d-flex justify-content-around">
+                            <i class="bi bi-shop fs-2 boton_activo text-success" (click)="continuar()" title="Abrir caja"></i>
+                         
+                            <i class="bi bi-door-open fs-2 boton_activo text-success" (click)="cerrar_parcial(cajaAbierta)" title="liberar caja"></i>
+                        
+                            <i class="bi bi-lock fs-2 boton_activo text-success" (click)="cerrar(cajaAbierta)" title="Cerrar caja"></i>
+                        </div>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

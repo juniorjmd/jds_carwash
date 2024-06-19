@@ -19,27 +19,21 @@ import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle.co
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { ReporteDiarioComponent } from './components/reportes/reporte-diario.component'; 
 import { ReporteVentasPcajaComponent } from './components/reportes/reporte-ventas-pcaja.component';
-import { POSComponent } from './components/pos/pos.component'; 
 import { MenucardsComponent } from './components/shared/menucards/menucards.component'; 
-import { BuscarProductosComponent } from './components/pos/buscar-productos/buscar-productos.component';
-import { VentasComponent } from './components/pos/ventas/ventas.component';
-import { AbrirCajaComponent } from './components/pos/abrir-caja/abrir-caja.component';
-import { CerrarCajaComponent } from './components/pos/cerrar-caja/cerrar-caja.component';
+
+
+
+
+
 import { CierresComponent } from './components/cierres/cierres.component';
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component';
 import { Modal1Component } from './components/shared/modal1/modal1.component'; 
 import { LoadingComponent } from './components/shared/loading/loading.component'; 
 import { loading } from './models/app.loading';
-import { DefinirBaseCajaComponent } from './components/pos/definir-base-caja/definir-base-caja.component';
-import { ResumenCajaComponent } from './components/pos/resumen-caja/resumen-caja.component';
 import { UsuarioPerfilComponent } from './components/usuario/usuario-perfil.component';
-import { MoverDocumentosComponent } from './components/pos/mover-documentos/mover-documentos.component';
-import { MostrarProductoComponent } from './components/pos/mostrar-producto/mostrar-producto.component';
 import { ImgB64Pipe } from './pipes/imgB64.pipe';
 import { dataArrayOdooPipe } from './pipes/dataArrayOdoo.pipe';
 import { booleanpPipe } from './pipes/booleanp.pipe';
-import { PagosVentaComponent } from './components/pos/pagos-venta/pagos-venta.component';
-import { BuscarProdDirectoComponent } from './components/pos/buscar-prod-directo/buscar-prod-directo.component';
 import { EnviosComponent } from './components/envios/envios.component';
 import { DevolucionesComponent } from './components/devoluciones/devoluciones.component'; 
 import { EmpleadosComponent } from './components/modEmpleados/empleados/empleados.component';
@@ -84,24 +78,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReportesComponent,
     ReporteDiarioComponent, 
     ReporteVentasPcajaComponent,
-    POSComponent, 
-    MenucardsComponent,
-    BuscarProductosComponent,
-    VentasComponent,
-    AbrirCajaComponent,
-    CerrarCajaComponent,
+    MenucardsComponent, 
     CierresComponent,
     MiUsuarioComponent,
     Modal1Component, 
     DialogoConfirmacionComponent,
-    LoadingComponent,
-    DefinirBaseCajaComponent,
-    ResumenCajaComponent,
-    UsuarioPerfilComponent,
-    MoverDocumentosComponent,
-    MostrarProductoComponent,
-    PagosVentaComponent,
-    BuscarProdDirectoComponent,
+    LoadingComponent, 
+    UsuarioPerfilComponent, 
     EnviosComponent,
     DevolucionesComponent, 
     EmpleadosComponent,  

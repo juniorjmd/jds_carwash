@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { productoDocumento } from 'src/app/interfaces/clientes-odoo';
-import { select } from 'src/app/interfaces/generales.interface';
+import { productoDocumento } from 'src/app/interfaces/clientes-odoo'; 
 import { errorOdoo, OdooPrd } from 'src/app/interfaces/odoo-prd';
 
 import { loading } from 'src/app/models/app.loading';

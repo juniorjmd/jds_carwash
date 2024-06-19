@@ -1,26 +1,12 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-
-
+import { RouterModule, Routes } from '@angular/router';  
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { InicioComponent } from './components/inicio/inicio.component';
-import { UsuarioComponent } from './components/usuario/usuario.component';
-import { POSComponent } from './components/pos/pos.component';
-import { ClientesComponent } from './components/clientes/clientes.component';
-import { ClienteNuevoComponent } from './components/clientes/cliente-nuevo.component';
-import { ClienteInicioComponent } from './components/clientes/cliente-inicio.component';
-import { ClienteDetalleComponent } from './components/clientes/cliente-detalle.component'; 
-import { CerrarCajaComponent } from './components/pos/cerrar-caja/cerrar-caja.component';
-import { AbrirCajaComponent } from './components/pos/abrir-caja/abrir-caja.component';
-import { VentasComponent } from './components/pos/ventas/ventas.component';
+import { UsuarioComponent } from './components/usuario/usuario.component'; 
 import { CierresComponent } from './components/cierres/cierres.component';
 import { ReportesComponent } from './components/reportes/reportes.component'; 
-import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component';
-import { MaestrosComponent } from './components/clientes/maestros/maestros.component';
-import { CiudadesComponent } from './components/clientes/maestros/ubicacion/ciudades.component';
-import { DepartamentosComponent } from './components/clientes/maestros/ubicacion/departamentos.component';
-import { PaisesComponent } from './components/clientes/maestros/ubicacion/paises.component';
+import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component'; 
 import { DevolucionesComponent } from './components/devoluciones/devoluciones.component';
 import { EnviosComponent } from './components/envios/envios.component';
 import { EmpleadosComponent } from './components/modEmpleados/empleados/empleados.component';
@@ -50,14 +36,7 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
          
          { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
          { path: 'vehiculos', loadChildren: () => import('./modules/vehiculos/vehiculos.module').then(m => m.VehiculosModule) },
-       
-        { path : 'pos' , component : POSComponent
-           ,children:[
-            { path : 'abrir' , component : AbrirCajaComponent},
-            { path : 'ventas' , component : VentasComponent},
-            { path : 'cerrar' , component : CerrarCajaComponent},
-            { path : '**' , pathMatch:'full' , redirectTo : 'abrir'}, 
-           ]}, 
+         { path: 'pos', loadChildren: () => import('./modules/pos/pos.module').then(m => m.PosModule) }, 
 
         { path : 'devoluciones' , component : DevolucionesComponent},
         { path : 'envios' , component : EnviosComponent},

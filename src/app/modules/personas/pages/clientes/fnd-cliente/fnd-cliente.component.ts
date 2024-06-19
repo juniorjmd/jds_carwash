@@ -14,7 +14,7 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
  
 import { DocumentosModel } from 'src/app/models/documento.model';
 import {ClientesService} from 'src/app/services/Clientes.services'
-import { BuscarProductosComponent } from 'src/app/components/pos/buscar-productos/buscar-productos.component';
+import { BuscarProductosComponent } from 'src/app/modules/pos/pages/buscar-productos/buscar-productos.component';
 
 @Component({
   selector: 'app-fnd-cliente',
