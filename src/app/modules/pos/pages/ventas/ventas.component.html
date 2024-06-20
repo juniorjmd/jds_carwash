@@ -21,7 +21,11 @@
                     <td>
                         <div class="input-group mb-3">
                             <select class="o_input form-control" (blur)='irbuscarProductoObl()' (change)='cambiarDocumentoActivo() ;irbuscarProductoObl()' [(ngModel)]="documentoActivo">
-                                <option *ngFor='let doc of documentos' [ngValue]="doc">{{doc.orden.toString().padStart(10,'0000000000')}}  {{doc.descripcion1!.trim()}} {{doc.descripcion2!.trim()}} </option>
+                                <option *ngFor='let doc of documentos' [ngValue]="doc">
+                                    {{doc.orden.toString().padStart(10,'0000000000')}}   
+                                </option>
+
+
                             </select>
                             <div class="input-group-append">
                                 <button type="button" (click)='getDocumentos()' class="btn btn-primary">

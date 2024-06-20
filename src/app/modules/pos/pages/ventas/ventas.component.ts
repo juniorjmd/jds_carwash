@@ -21,532 +21,569 @@ import { productoDocumento } from 'src/app/interfaces/clientes-odoo';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { LoginService } from 'src/app/services/login.services';
 import { Router } from '@angular/router';
+import { catchError, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd-cliente/fnd-cliente.component';
-
 
 @Component({
   selector: 'app-ventas',
   templateUrl: './ventas.component.html',
   styleUrls: ['./ventas.component.css']
 })
-export class VentasComponent implements AfterViewInit  {
+export class VentasComponent implements AfterViewInit, OnInit {
 
-
-  
-  cotiza = false ; 
-  libranza = false ; 
+  cotiza = false; 
+  libranza = false; 
   pasaAotraCaja = false;
   planSepare = false;
   domicilio = false;
-  pagos:pagosModel[] =[]  ;
-  indexEfectivo!:number;
-  focus!:boolean;
-  MedioP:MediosDePago[]=[];
-  buscarClose : boolean = true;
-  codigoProducto!:string;
-  vueltas:boolean = false;
-  menusUsuario :RecursoDetalle[] = [];
-  documentos : DocumentosModel[] = [];
-  documentoActivo : DocumentosModel = new DocumentosModel();
-  documentoRetorno : DocumentosModel = new DocumentosModel();
-  documentoSeleccionadoActivo : DocumentosModel = new DocumentosModel(); 
+  pagos: pagosModel[] = []; 
+  indexEfectivo!: number;
+  focus!: boolean;
+  MedioP: MediosDePago[] = [];
+  buscarClose: boolean = true;
+  codigoProducto!: string;
+  vueltas: boolean = false;
+  menusUsuario: RecursoDetalle[] = [];
+  documentos: DocumentosModel[] = [];
+  documentoActivo: DocumentosModel = new DocumentosModel();
+  documentoRetorno: DocumentosModel = new DocumentosModel();
+  documentoSeleccionadoActivo: DocumentosModel = new DocumentosModel(); 
+
   @ViewChild('codProd') codProdlement!: ElementRef;
-  constructor( public loading : loading,private serviceCaja : cajasServices ,
-    private newAbrirDialog : MatDialog,
-    private documentoService : DocumentoService,
-    private productoService : ProductoService,private _ServLogin:LoginService , 
-    private _Router : Router
-    
- ) {  
-  console.clear();
-  this.getUsuarioLogeado(); 
+
+  constructor(
+    public loading: loading,
+    private serviceCaja: cajasServices,
+    private newAbrirDialog: MatDialog,
+    private documentoService: DocumentoService,
+    private productoService: ProductoService,
+    private _ServLogin: LoginService, 
+    private _Router: Router
+  ) {  
+    console.clear();
   }
 
-  async getUsuarioLogeado(){
-    try {
-      const ServLogin = await  this._ServLogin.getUsuarioLogeadoAsync(); 
-      const datos:any|select  = await ServLogin; 
-      console.log('retorno', datos);  
-      let usuario : Usuario ;
-      usuario = datos.data.usuario ; 
-      this.menusUsuario = this.getMenuImage(usuario) ;
-     console.log('estoy en getUsuarioLogeado',this.menusUsuario);
-     this.getDocumentos();
-  } catch (error:any) {
-      throw new Error(`Error al leer maestros : ${error}`);
-      console.log(error);
-      alert( error.error.error);
-      this._Router.navigate(['login']);
-    }  
-   
+  ngOnInit(): void { 
+    this.getDocumentos();
   }
-
-  ngOnInit(): void {
-    }
-  getMenuImage(usuario:Usuario){
-
-    let menuCard:RecursoDetalle[] = [];
-    let menu = usuario.permisos;
-    let margin = 0;
-    console.log(usuario, menu);
-    
-    menu!.forEach((detalle , index ) => {
-      console.log('recorrido',index ,detalle ); 
-        if(detalle.recurso.tipo === 'boton'){
-
-          menuCard[margin]= detalle.recurso ;
-          margin = margin + 1;
-
-          switch (detalle.recurso.nombre_recurso)
-          {
-            case 'crear cotizacion' :
-
-             this.cotiza = true ; 
-              break;
-              case 'crear libranza' :
-                this.libranza = true ; 
-                break;
-                case 'pasar a otra caja' :
-                  this.pasaAotraCaja = true;
-                  break;
-                  case 'plan separe' :
-                    this.planSepare = true;
-                    break;
-                    case 'domicilio' :
-                  this.domicilio = true;
-                  break;
- 
-                 
-          }
-        }
-      });
-      
-
-      return menuCard;
-  }
-
-
-
 
   ngAfterViewInit(): void {
     this.irbuscarProducto();
     this.getMediosP();
   }
-  busquedaAuxiliarProducto( ){ 
- 
-      this.buscarClose = false ;
-      this.newAbrirDialog.open(BuscarProdDirectoComponent ,{data:this.codigoProducto })
-      .afterClosed()
-      .subscribe(( response:responsePrd  )=>{
-        console.log(response);
-        
-        if (response.confirmado){
-         
-          console.log('dato retornado busqueda directa',response.datoDevolucion);
-          this.codigoProducto = response.datoDevolucion!.id!.toString();
-          this.buscarClose = true;
-          this.buscarProducto()
-          
-        }else{ 
-          this.codigoProducto = '';
-          this.irbuscarProducto();
-         
-        }  
-      })  
-    
+
+  getMenuImage(usuario: Usuario) {
+    let menuCard: RecursoDetalle[] = [];
+    let menu = usuario.permisos;
+    let margin = 0;
+    console.log(usuario, menu);
+
+    menu!.forEach((detalle, index) => {
+      console.log('recorrido', index, detalle); 
+      if (detalle.recurso.tipo === 'boton') {
+        menuCard[margin] = detalle.recurso;
+        margin = margin + 1;
+
+        switch (detalle.recurso.nombre_recurso) {
+          case 'crear cotizacion':
+            this.cotiza = true; 
+            break;
+          case 'crear libranza':
+            this.libranza = true; 
+            break;
+          case 'pasar a otra caja':
+            this.pasaAotraCaja = true;
+            break;
+          case 'plan separe':
+            this.planSepare = true;
+            break;
+          case 'domicilio':
+            this.domicilio = true;
+            break;
+        }
+      }
+    });
+
+    return menuCard;
   }
 
-  async printer_factura_final()
-  { console.log(this.documentoRetorno); 
+  getDocumentos() {
+    this.vueltas = true;
+    this.pagos = [];
+    this.documentoService.getDocumentosCaja().pipe(
+      tap((datos: any) => {
+        this.documentos = [];
+        let documentoSeleccionado: DocumentosModel[] ;
+        console.log('getDocumentos', datos.numdata);
+        console.log('getDocumentos_recuest', datos);
+
+        if (datos.numdata > 0) {
+          this.documentos = datos.data ; 
+          
+        console.log('getDocumentos_recuest', this.documentos);
+          if (datos.numdata === 1) {
+            this.documentoActivo = datos.data[0];
+          } else {
+            documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ;
+            
+          console.log('documentoSeleccionado' , documentoSeleccionado);
+            this.documentoActivo = documentoSeleccionado[0];
+          }
+          console.log('documentoActivo' , this.documentoActivo);
+          if (this.documentoActivo.pagos!.length > 0) {
+            this.pagos = this.documentoActivo.pagos!;
+            console.log('pagos factura', this.pagos);
+          } else {
+            try {
+              this.pagos[this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura;
+            } catch (error: any) {
+              console.error('Error setting pagos', error);
+            }
+          }
+          this.irbuscarProducto();
+        } else {
+          this.crearDocumento();
+        }
+        this.vueltas = false;
+      }),
+      catchError((error: any) => {
+        console.error('error',JSON.stringify(error));
+        return of(null); // Devuelve un observable vacío en caso de error
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('getDocumentos completo')
+    });
+  }
+
+  crearDocumento() {
+    this.loading.show();
+    this.documentoService.crearDocumento().pipe(
+      tap((respuesta: any) => {
+        console.log('crearDocumento', respuesta); 
+        if (respuesta.error === 'ok') {
+          this.getDocumentos();
+        } else {
+          alert(respuesta.error);
+        }
+        this.loading.hide();
+        this.irbuscarProducto();
+      }),
+      catchError((error: any) => {
+        this.loading.hide();
+        alert(JSON.stringify(error));
+        return of(null);
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('crearDocumento completo')
+    });
+  }
+
+  buscarProducto() { 
+    console.log('buscarProducto', this.codigoProducto);
+    let dataAuxEnvio: productoDocumento = {
+      'idproducto': this.codigoProducto,
+      'documento': this.documentoActivo
+    }; 
+    if (this.codigoProducto.trim() !== '' && this.buscarClose) {
+      this.buscarClose = false;
+      this.newAbrirDialog.open(BuscarProductosComponent, { data: dataAuxEnvio })
+        .afterClosed()
+        .pipe(
+          tap((confirmado: Boolean) => {
+            this.getDocumentos();
+            this.codigoProducto = '';
+            this.irbuscarProducto();
+            this.buscarClose = true;
+          })
+        ).subscribe({
+          next: () => {},
+          error: (error) => console.error('Error:', error),
+          complete: () => console.log('buscarProducto completo')
+        });
+    }
+  }
+
+  moverDocumentoCaja() {
+    this.newAbrirDialog.open(MoverDocumentosComponent, { data: this.documentoActivo })
+      .afterClosed()
+      .pipe(
+        tap((confirmado: Boolean) => {
+          if (confirmado) { 
+            this.getDocumentos();
+          }
+        })
+      ).subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () => console.log('moverDocumentoCaja completo')
+      });
+  }
+
+  eliminarLinea(linea: DocumentoListado) {
+    console.log(linea);
+    this.loading.show();
+    this.productoService.devolverPrdCompra(linea).pipe(
+      tap((respuesta: any) => {
+        console.log(JSON.stringify(respuesta));
+        if (respuesta.error !== 'ok') {
+          alert(respuesta.error);
+        } else {
+          this.getDocumentos();
+        }
+        this.loading.hide();
+      }),
+      catchError((error: errorOdoo) => {
+        console.log(JSON.stringify(error));
+        alert(error.error.error + "\n" + error.error.msg); 
+        this.loading.hide();
+        return of(null);
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('eliminarLinea completo')
+    });
+  }
+
+  irbuscarProducto() {
+    let activeTextarea = document.activeElement!.tagName; 
+    console.log(activeTextarea);
+    if (activeTextarea.toUpperCase().indexOf('SELECT') < 0) {
+      this.codProdlement.nativeElement.focus();
+    }
+  }
+
+  irbuscarProductoObl() { 
+    this.codProdlement.nativeElement.focus(); 
+  }
+
+  asignarPagosAVenta() {
+    this.newAbrirDialog.open(PagosVentaComponent, { data: this.documentoActivo })
+      .afterClosed()
+      .pipe(
+        tap((confirmado: Boolean) => {
+          if (confirmado) { 
+            this.facturarDocumento();
+          }
+        })
+      ).subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () => console.log('asignarPagosAVenta completo')
+      });
+  }
+
+  facturarDocumento() {
+    this.documentoActivo.pagos = [];
+    if (typeof(this.documentoActivo.pagos) === 'undefined' || this.documentoActivo.pagos.length === 0) {
+      this.documentoActivo.pagos[0] = new DocpagosModel();
+      this.documentoActivo.pagos[0].idDocumento = this.documentoActivo.orden;
+      try {
+        this.documentoActivo.pagos[0].idMedioDePago = this.pagos[this.indexEfectivo].idMedioDePago;
+        this.documentoActivo.pagos[0].referencia = 'Efectivo';
+        this.documentoActivo.pagos[0].valorPagado = this.pagos[this.indexEfectivo].valorPagado;
+      } catch (error: any) {
+        this.documentoActivo.pagos[0].idMedioDePago = 1;
+        this.documentoActivo.pagos[0].referencia = 'Efectivo';
+        this.documentoActivo.pagos[0].valorPagado = this.documentoActivo.valorTotal;
+      }
+    } else {
+      console.log(this.documentoActivo.pagos);
+    }
+    if (this.documentoActivo.listado!.length === 0) {
+      alert('Debe ingresar los productos a facturar'); 
+      return;
+    }
+    if (parseInt(this.documentoActivo.totalFactura.toString()) === 0) {
+      alert('el total de la factura debe ser mayor a cero'); 
+      return;
+    }
+
+    this.loading.show();
+    this.documentoService.cerrarDocumento(this.documentoActivo.orden).pipe(
+      tap((respuesta: any) => {
+        if (respuesta.error === 'ok') {
+          this.documentoRetorno = respuesta.data.documentoFinal;
+          console.log('facturarDocumento', this.documentoRetorno);
+          this.printer_factura_final();
+          this.crearDocumento();
+        } else {
+          alert(respuesta.error);
+        }
+        this.loading.hide();
+        this.irbuscarProducto();
+      }),
+      catchError((error: any) => {
+        this.loading.hide();
+        alert(JSON.stringify(error));
+        return of(null);
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('facturarDocumento completo')
+    });
+  }
+
+  cambiarDocumentoActivo() {
+    this.loading.show();
+    this.documentoService.cambiarDocumento(this.documentoActivo.orden).pipe(
+      tap((respuesta: any) => {
+        if (respuesta.error !== 'ok') {  
+          alert(respuesta.error); 
+        } else { 
+          try {
+            this.pagos[this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura;
+          } catch (error: any) {
+            console.error('Error setting pagos', error);
+          }
+        }
+        this.loading.hide();
+        this.irbuscarProducto();
+      }),
+      catchError((error: any) => {
+        this.loading.hide();
+        alert(JSON.stringify(error));
+        return of(null);
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('cambiarDocumentoActivo completo')
+    });
+  }
+
+  cancelarDocumento() {
+    this.loading.show();
+    this.documentoService.cancelarDocumento(this.documentoActivo.orden).pipe(
+      tap((respuesta: any) => {
+        if (respuesta.error === 'ok') {
+          this.getDocumentos(); 
+        } else {
+          this.getDocumentos();
+          alert(respuesta.error);
+        }
+        this.loading.hide();
+        this.irbuscarProducto();
+      }),
+      catchError((error: any) => {
+        this.loading.hide();
+        alert(JSON.stringify(error));
+        return of(null);
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('cancelarDocumento completo')
+    });
+  }
+
+  generarEnvio() { 
+    if (this.documentoActivo.totalFactura <= 0) {
+      alert('El valor en la factura debe ser mayor a cero');
+      return;
+    }
+    if (this.documentoActivo.cliente === 0) {
+      this.newAbrirDialog.open(FndClienteComponent, { data: this.documentoActivo })
+        .afterClosed()
+        .pipe(
+          tap((confirmado: Boolean) => {
+            this.generarDomicilio();
+            this.buscarClose = true;
+          })
+        ).subscribe({
+          next: () => {},
+          error: (error) => console.error('Error:', error),
+          complete: () => console.log('generarEnvio completo')
+        });   
+    } else {
+      this.generarDomicilio();
+    }
+  }
+
+  generarDomicilio() {
+    this.loading.show();
+    this.documentoService.generarDomicilioDocumento(this.documentoActivo.orden).pipe(
+      tap((respuesta: any) => {
+        if (respuesta.error === 'ok') {
+          this.getDocumentos(); 
+        } else {
+          this.getDocumentos();
+          alert(respuesta.error);
+        }
+        this.loading.hide();
+        this.irbuscarProducto();
+      }),
+      catchError((error: any) => {
+        this.loading.hide();
+        alert(JSON.stringify(error));
+        return of(null);
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('generarDomicilio completo')
+    });
+  }
+
+  getMediosP() { 
+    this.loading.show();
+    this.serviceCaja.getMediosCajaActiva().pipe(
+      tap((datos: any) => {
+        if (datos.numdata > 0) { 
+          datos.data!.forEach((dato: MediosDePago, index: number) => {
+            this.MedioP[index] = dato;
+            this.pagos[index] = new pagosModel();
+            this.pagos[index].idMedioDePago = dato.id;
+            if (dato.nombre === 'Efectivo') {
+              this.indexEfectivo = index;
+              this.pagos[index].valorPagado = this.documentoActivo.totalFactura;
+            } else {
+              this.pagos[index].valorPagado = 0;
+            }
+          }); 
+        } else {
+          this.MedioP = [];
+        }  
+        this.loading.hide();
+      }),
+      catchError((error: any) => {
+        this.loading.hide();
+        alert(error.error.error);
+        return of(null);
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('getMediosP completo')
+    });
+  }
+
+  busquedaAuxiliarProducto() { 
+    this.buscarClose = false;
+    this.newAbrirDialog.open(BuscarProdDirectoComponent, { data: this.codigoProducto })
+      .afterClosed()
+      .pipe(
+        tap((response: responsePrd) => {
+          if (response.confirmado) {
+            this.codigoProducto = response.datoDevolucion!.id!.toString();
+            this.buscarClose = true;
+            this.buscarProducto();
+          } else { 
+            this.codigoProducto = '';
+            this.irbuscarProducto();
+          }
+        })
+      ).subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () => console.log('busquedaAuxiliarProducto completo')
+      });
+  }
+
+  buscarCliente(){
+    this.newAbrirDialog.open(FndClienteComponent,{data:this.documentoActivo })
+    .afterClosed()
+    .pipe(
+      tap((confirmado: Boolean)=>{
+        this.getDocumentos();
+        this.codigoProducto = '';
+        this.irbuscarProducto();
+        this.buscarClose = true;
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCliente completo')
+    });   
+  }
+
+  async printer_factura_final() {
+    console.log(this.documentoRetorno); 
     let fecha = new Date();
     let dayOfMonth = fecha.getDate();
     let month = fecha.getMonth() + 1;
     let year = fecha.getFullYear();
     let hour = fecha.getHours();
     let minutes = fecha.getMinutes(); 
-    let auxStr:string;
-let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes; 
-   let nombreImpresora = printer.namePrinterGenerico;
-   if (!nombreImpresora) return console.log("Selecciona una impresora");
-   let conector = new ConectorPlugin(null);
-   conector.cortar();
-   conector.establecerTamanioFuente(1, 1);
-   conector.establecerEnfatizado(0);
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
-  // conector.imagenDesdeUrl(url.brand + "/logo_empresa.png")
-   conector.texto( this.documentoRetorno.nombreEsta + "\n");
-   conector.texto( 'Vende : '+this.documentoRetorno.vendedorNombre + "\n" ); 
-   conector.texto("Fecha/Hora:"+fechaStr+ "\n");
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
-   conector.texto( "     Resolucion:"+ this.documentoRetorno.resolucion + "\n" ); 
-   conector.texto( "     Desde :"+ this.documentoRetorno.consecutivoDesde +" Hasta :"+ this.documentoRetorno.consecutivoHasta + "\n" ); 
-   conector.texto( "     Fecha:"+ this.documentoRetorno.fechaInicioResolucion  +" Hasta :"+this.documentoRetorno.fechaFinResolucion + "\n" ); 
-   conector.texto("--------------------------------\n"); 
-   conector.texto("Factura "+this.documentoRetorno.idDocumentoFinal + "\n");
-   conector.texto("--------------------------------\n");
-   this.documentoRetorno.listado!.forEach((lista:DocumentoListado)=>{
+    let auxStr: string;
+    let fechaStr =  dayOfMonth + "/" + month + "/" + year + ' ' + hour + ':' + minutes; 
+    let nombreImpresora = printer.namePrinterGenerico;
+    if (!nombreImpresora) return console.log("Selecciona una impresora");
+    let conector = new ConectorPlugin(null);
+    conector.cortar();
+    conector.establecerTamanioFuente(1, 1);
+    conector.establecerEnfatizado(0);
+    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
+    conector.texto(this.documentoRetorno.nombreEsta + "\n");
+    conector.texto('Vende : ' + this.documentoRetorno.vendedorNombre + "\n"); 
+    conector.texto("Fecha/Hora:" + fechaStr + "\n");
     conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
-    conector.texto("  "+lista.nombreProducto + "\n");
-    conector.texto("|    Precio   | cnt |    dest    |    total    |\n");
-    auxStr = lista.presioVenta.toString() ;
-    lista.presioVenta = parseInt(auxStr);
-    conector.texto(lista.presioVenta.toString().padStart(13 )  );
-    auxStr = lista.cantidadVendida.toString() ;
-    lista.cantidadVendida = parseInt(auxStr);
-    conector.texto(lista.cantidadVendida.toString().padStart(6 ));
-    auxStr = lista.descuento.toString() ;
-    lista.descuento = parseInt(auxStr);
-    conector.texto(lista.descuento.toString().padStart(14 ));
-    auxStr = lista.valorTotal.toString() ;
-    lista.valorTotal = parseInt(auxStr);
-    conector.texto(lista.valorTotal.toString().padStart(14 ) +  "\n\n");
-   })
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
-   conector.texto("------------------------------------\n");
-   auxStr =  this.documentoRetorno.valorParcial.toString() ;  
-   conector.texto("Valor Parcial  :  "+auxStr.padStart( 16  , ' ' )+ "\n");
-   auxStr =  this.documentoRetorno.valorIVA.toString() ;  
-   conector.texto("          IVA  :  "+auxStr.padStart( 16  , ' ' )+ "\n");
-   auxStr =  this.documentoRetorno.valorTotal.toString() ;  
-   conector.texto("Total Factura  :  "+auxStr.padStart( 16  , ' ' )+ "\n");
-   auxStr =  this.documentoRetorno.totalFactura.toString() ;   
-   conector.texto("------------------------------------\n\n");
-   
-   conector.texto("-----------------------------------------------\n");
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
-   conector.texto("Medios de Pago\n"); 
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
-   conector.texto("-----------------------------------------------\n\n"); 
-   let tamanio = 0;
-   this.documentoRetorno.pagos!.forEach((pago:DocpagosModel)=>{
-    tamanio = 42 - pago.nombreMedio!.trim().length; 
-
-    conector.texto( '     '+pago.nombreMedio!.trim()+ pago.valorPagado.toString().padStart(tamanio)+ "\n");
-    if (pago.valorRecibido > 0 ){
-      conector.texto(" Recibido                       vueltos\n");
-    conector.texto("      "+pago.valorRecibido + pago.vueltos.toString().padStart(30,'.') + "\n");
-    }else{
-      conector.texto( "     Referencia" +pago.referencia.padStart(30,'.') +"\n");
-    }
-    
-   })
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
-   
-   conector.texto("\n-----------------------------------------------\n\n");    
-   conector.texto("***Gracias por su compra***\n");
-   
-   conector.feed(4)
-
-   conector.abrirCajon() // Abrir cajón de dinero. Opcional
-   conector.cortar()
-   const respuestaAlImprimir = await conector.imprimirEn(nombreImpresora);
-   if (respuestaAlImprimir === true) {
-       console.log("Impreso correctamente");
-   } else {
-       console.log("Error. La respuesta es: " + respuestaAlImprimir);
-   }
-  } 
-
-
-
-  getMediosP(){ 
-  this.loading.show()
-  this.serviceCaja.getMediosCajaActiva()
-     .subscribe(
-      (datos:any)=>{
-         console.log(datos);
-         
-    if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:MediosDePago , index:number )=>{
-        this.MedioP[index] =   dato ;
-        this.pagos[index] = new pagosModel();
-        this.pagos[index].idMedioDePago = dato.id;
-        if (dato.nombre === 'Efectivo')
-       { this.indexEfectivo = index;
-          this.pagos[index].valorPagado = this.documentoActivo.totalFactura;}
-        else
-        {this.pagos[index].valorPagado = 0;}
-      }) 
-      console.log(this.MedioP);
-    }else{
-      this.MedioP = [];
-    }  
-    console.log('medios de pago' , this.MedioP );
-        this.loading.hide()
-      } ,
-      error => {this.loading.hide();
-        alert( error.error.error);
+    conector.texto("     Resolucion:" + this.documentoRetorno.resolucion + "\n"); 
+    conector.texto("     Desde :" + this.documentoRetorno.consecutivoDesde + " Hasta :" + this.documentoRetorno.consecutivoHasta + "\n"); 
+    conector.texto("     Fecha:" + this.documentoRetorno.fechaInicioResolucion + " Hasta :" + this.documentoRetorno.fechaFinResolucion + "\n"); 
+    conector.texto("--------------------------------\n"); 
+    conector.texto("Factura " + this.documentoRetorno.idDocumentoFinal + "\n");
+    conector.texto("--------------------------------\n");
+    this.documentoRetorno.listado!.forEach((lista: DocumentoListado) => {
+      conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
+      conector.texto("  " + lista.nombreProducto + "\n");
+      conector.texto("|    Precio   | cnt |    dest    |    total    |\n");
+      auxStr = lista.presioVenta.toString();
+      lista.presioVenta = parseInt(auxStr);
+      conector.texto(lista.presioVenta.toString().padStart(13));
+      auxStr = lista.cantidadVendida.toString();
+      lista.cantidadVendida = parseInt(auxStr);
+      conector.texto(lista.cantidadVendida.toString().padStart(6));
+      auxStr = lista.descuento.toString();
+      lista.descuento = parseInt(auxStr);
+      conector.texto(lista.descuento.toString().padStart(14));
+      auxStr = lista.valorTotal.toString();
+      lista.valorTotal = parseInt(auxStr);
+      conector.texto(lista.valorTotal.toString().padStart(14) +  "\n\n");
+    });
+    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
+    conector.texto("------------------------------------\n");
+    auxStr = this.documentoRetorno.valorParcial.toString();  
+    conector.texto("Valor Parcial  :  " + auxStr.padStart(16, ' ') + "\n");
+    auxStr = this.documentoRetorno.valorIVA.toString();  
+    conector.texto("          IVA  :  " + auxStr.padStart(16, ' ') + "\n");
+    auxStr = this.documentoRetorno.valorTotal.toString();  
+    conector.texto("Total Factura  :  " + auxStr.padStart(16, ' ') + "\n");
+    auxStr = this.documentoRetorno.totalFactura.toString();   
+    conector.texto("------------------------------------\n\n");
+    conector.texto("-----------------------------------------------\n");
+    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
+    conector.texto("Medios de Pago\n"); 
+    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
+    conector.texto("-----------------------------------------------\n\n"); 
+    let tamanio = 0;
+    this.documentoRetorno.pagos!.forEach((pago: DocpagosModel) => {
+      tamanio = 42 - pago.nombreMedio!.trim().length; 
+      conector.texto('     ' + pago.nombreMedio!.trim() + pago.valorPagado.toString().padStart(tamanio) + "\n");
+      if (pago.valorRecibido > 0) {
+        conector.texto(" Recibido                       vueltos\n");
+        conector.texto("      " + pago.valorRecibido + pago.vueltos.toString().padStart(30, '.') + "\n");
+      } else {
+        conector.texto("     Referencia" + pago.referencia.padStart(30, '.') + "\n");
       }
-      );
-  }
-  generarEnvio(){ 
-    if(this.documentoActivo.totalFactura <= 0){
-      alert('El valor en la factura debe ser mayor a cero');
-      return;
-    }
-    console.log('cliente',this.documentoActivo.cliente)
-    if(this.documentoActivo.cliente === 0 ){
-      
-        this.newAbrirDialog.open(FndClienteComponent,{data:this.documentoActivo })
-        .afterClosed()
-        .subscribe((confirmado: Boolean)=>{
-          this.generarDomicilio()
-          this.buscarClose = true;
-
-        })   
-    }else{this.generarDomicilio()}
-
-  }
-
-  generarDomicilio(){
-    this.loading.show() 
-  this.documentoService.generarDomicilioDocumento(this.documentoActivo.orden).subscribe(
-    (respuesta:any)=>{
-      let cont = 0;
-       console.log('crearDocumento',respuesta);  
-       if (respuesta.error === 'ok'){
-        this.getDocumentos(); 
-       }else{
-       this.getDocumentos();
-         alert(respuesta.error);
-       }
-       this.loading.hide();
-       this.irbuscarProducto();
-
-} );
-  }
-  buscarCliente(){
-    this.newAbrirDialog.open(FndClienteComponent,{data:this.documentoActivo })
-    .afterClosed()
-    .subscribe((confirmado: Boolean)=>{
-      this.getDocumentos();
-      this.codigoProducto = '';
-      this.irbuscarProducto();
-      this.buscarClose = true;
-    })   
-  }
-
-  buscarProducto( ){ 
-    console.log('buscarProducto',this.codigoProducto)
-    let dataAuxEnvio:productoDocumento = {'idproducto':this.codigoProducto,
-                                           'documento':this.documentoActivo}; 
-    if (this.codigoProducto.trim() !== '' &&  this.buscarClose){
-      this.buscarClose = false ;
-      this.newAbrirDialog.open(BuscarProductosComponent ,{data:dataAuxEnvio })
-      .afterClosed()
-      .subscribe((confirmado: Boolean)=>{
-        this.getDocumentos();
-        this.codigoProducto = '';
-        this.irbuscarProducto();
-        this.buscarClose = true;
-      })  
+    });
+    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
+    conector.texto("\n-----------------------------------------------\n\n");    
+    conector.texto("***Gracias por su compra***\n");
+    conector.feed(4);
+    conector.abrirCajon(); // Abrir cajón de dinero. Opcional
+    conector.cortar();
+    const respuestaAlImprimir = await conector.imprimirEn(nombreImpresora);
+    if (respuestaAlImprimir === true) {
+      console.log("Impreso correctamente");
+    } else {
+      console.log("Error. La respuesta es: " + respuestaAlImprimir);
     }
   }
-  moverDocumentoCaja(){
-     this.newAbrirDialog.open(MoverDocumentosComponent ,{data:this.documentoActivo })
-      .afterClosed()
-      .subscribe((confirmado: Boolean)=>{
-        if (confirmado){ 
-          this.getDocumentos();
-      }
-      })
-  } 
-
-  eliminarLinea(linea:DocumentoListado){
-    console.log(linea)
-    this.loading.show() 
-    this.productoService.devolverPrdCompra(linea).subscribe(
-      (respuesta:any)=>{
-        
-        console.log(JSON.stringify(respuesta));
-        if (respuesta.error !== 'ok'){
-            alert(respuesta.error);
-            
-          }else{
-            this.getDocumentos();
-          }
-          this.loading.hide()
-        },
-        (error:errorOdoo) =>{
-          console.log(JSON.stringify( error) );
-          
-          alert(error.error.error +"\n" + error.error.msg); 
-          this.loading.hide()
-        }) 
-
-  }
-  irbuscarProducto( ){
-   let activeTextarea = document.activeElement!.tagName; 
-   console.log(activeTextarea)
-   if(activeTextarea.toUpperCase().indexOf('SELECT') < 0)
-    this.codProdlement.nativeElement.focus();
-  }
-  irbuscarProductoObl( ){ 
-     this.codProdlement.nativeElement.focus(); 
-     
-   }
-
-  asignarPagosAVenta(){
-    this.newAbrirDialog.open(PagosVentaComponent ,{data:this.documentoActivo })
-     .afterClosed()
-     .subscribe((confirmado: Boolean)=>{
-       if (confirmado){ 
-         this.facturarDocumento();
-     }
-     })
- }  
-  facturarDocumento(){
-
-    this.documentoActivo.pagos = [];
-    if (typeof(this.documentoActivo.pagos) === 'undefined' || this.documentoActivo.pagos.length === 0)
-      { this.documentoActivo.pagos[0] = new DocpagosModel();
-        this.documentoActivo.pagos[0].idDocumento =  this.documentoActivo.orden;
-        try {
-          this.documentoActivo.pagos[0].idMedioDePago =  this.pagos[ this.indexEfectivo].idMedioDePago;
-        this.documentoActivo.pagos[0].referencia =  'Efectivo';
-        this.documentoActivo.pagos[0].valorPagado =  this.pagos[ this.indexEfectivo].valorPagado;
-        } catch (error : any) {
-          this.documentoActivo.pagos[0].idMedioDePago =  1;
-        this.documentoActivo.pagos[0].referencia =  'Efectivo';
-        this.documentoActivo.pagos[0].valorPagado =  this.documentoActivo.valorTotal;
-        }
-        
-        
-      }else{
-        console.log( this.documentoActivo.pagos);
-      }
-      //return;
-      if (this.documentoActivo.listado!.length === 0){
-      alert('Debe ingresar los productos a facturar') ; 
-      return;
-    }
-    if (parseInt(this.documentoActivo.totalFactura.toString()) === 0){
-      alert('el total de la factura debe ser mayor a cero') ; 
-      return;
-    } 
-  //  documentoActivo
-
-  this.loading.show() 
-  this.documentoService.cerrarDocumento(this.documentoActivo.orden).subscribe(
-    (respuesta:any)=>{
-      let cont = 0; 
-       if (respuesta.error === 'ok'){
-        this.documentoRetorno = respuesta.data.documentoFinal;
-        console.log('facturarDocumento',this.documentoRetorno)
-        this.printer_factura_final()
-        this.crearDocumento();
-        
-       }else{
-         alert(respuesta.error);
-       }
-       this.loading.hide();
-       this.irbuscarProducto();
-
-} );
-  
-  }
-  crearDocumento(){
-    this.loading.show() 
-  this.documentoService.crearDocumento().subscribe(
-    (respuesta:any)=>{
-      let cont = 0;
-       console.log('crearDocumento',respuesta); 
-       if (respuesta.error === 'ok'){
-        this.getDocumentos();
-        
-       }else{
-         alert(respuesta.error);
-       }
-       this.loading.hide();
-       this.irbuscarProducto();
-
-} );
-  } 
-  cambiarDocumentoActivo(){
-    this.loading.show() 
-  this.documentoService.cambiarDocumento(this.documentoActivo.orden).subscribe(
-    (respuesta:any)=>{
-      let cont = 0;
-       console.log('cambiarDocumento',respuesta);  
-       if (respuesta.error !== 'ok'){  
-         alert(respuesta.error); 
-         
-       }else{ 
-        try {
-          this.pagos[ this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura;
-        } catch (error : any) {
-          
-        }
-          
-      
-      }
-       this.loading.hide();
-       this.irbuscarProducto();
-
-} );
-  }
-  actualizarPagosDocumento(){
-
-  }
-  cancelarDocumento(){
-    this.loading.show() 
-  this.documentoService.cancelarDocumento(this.documentoActivo.orden).subscribe(
-    (respuesta:any)=>{
-      let cont = 0;
-       console.log('cancelarDocumento',respuesta);  
-       if (respuesta.error === 'ok'){
-        this.getDocumentos(); 
-       }else{
-       this.getDocumentos();
-         alert(respuesta.error);
-       }
-       this.loading.hide();
-       this.irbuscarProducto();
-
-} );
-  }
-
- getDocumentos(){
-  //this.printer_factura_final();
-  this.vueltas =true;
-  this.pagos = [];
-  this.documentoService.getDocumentosUsuarioCaja().subscribe(
-    (datos:any)=>{
-      let cont = 0; 
-       this.documentos = [];
-       let documentoSeleccionado:DocumentosModel;
-       console.log('getDocumentos', datos.numdata);
-       console.log('getDocumentos_recuest', datos );
-       
-  if (datos.numdata > 0 ){ 
-    datos.data!.forEach((dato:any , index :number )=>{ 
-     // this.documentos = 
-     this.documentos.push(dato.objeto);
-     if(index === 0)  documentoSeleccionado = dato.objeto;
-     if (dato.objeto.estado == 1 ){
-      documentoSeleccionado = dato.objeto;
-     } 
-    })
-    this.documentoActivo = documentoSeleccionado!;
-    if (this.documentoActivo.pagos!.length > 0 ){
-      this.pagos = this.documentoActivo.pagos!;
-      console.log('pagos factura',this.pagos)
-    }else{
-      try {
-        this.pagos[ this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura;
-      } catch (error : any) {
-        
-      }
-    }
-     this.irbuscarProducto();
- }else{
-  this.crearDocumento()
-} 
- this.vueltas =false;
-} ,
-(error: any) =>{
-  alert(JSON.stringify(error ));
-
-});
-}
 }

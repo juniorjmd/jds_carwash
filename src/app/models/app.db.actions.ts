@@ -62,6 +62,8 @@
  const action_ingreso_precargue = 'INGRESO_DATOS_DATOS_AUX_INVENTARIO';
 
  export const actions = {
+  'action_get_documentos_usuario':'GET_DOCUMENTOS_USUARIO_ACTUAL',
+  'action_get_documentos_caja':'GET_DOCUMENTOS_USUARIO_ACTUAL_CAJA_ACTIVA',
   'action_insertar_pagos':INSERTAR_PAGO_EMPLEADO,
   'action_ingreso_precargue' : action_ingreso_precargue,
   'action_cancelar_inventario':action_cancelar_inventario,
