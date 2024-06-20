@@ -43,6 +43,6 @@ export class ProductoModule {
     @Inject(String) public nombre_completo?:string,  
     @Inject(String) public tipo_prod_nombre?:string,   
   ){
-this.existencias = []; 
+      this.existencias = []; 
   }
  }

@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd-cliente/fnd-cliente.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ventas',
@@ -136,7 +137,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
             console.log('pagos factura', this.pagos);
           } else {
             try {
-              this.pagos[this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura;
+              this.pagos[this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura?? 0;
             } catch (error: any) {
               console.error('Error setting pagos', error);
             }
@@ -166,14 +167,22 @@ export class VentasComponent implements AfterViewInit, OnInit {
         if (respuesta.error === 'ok') {
           this.getDocumentos();
         } else {
-          alert(respuesta.error);
+          try {
+            Swal.fire(respuesta.error, '', 'error');
+           } catch (error : any) {
+            Swal.fire('error en el servidor', '', 'error');
+           }
         }
         this.loading.hide();
         this.irbuscarProducto();
       }),
       catchError((error: any) => {
-        this.loading.hide();
-        alert(JSON.stringify(error));
+        this.loading.hide(); 
+        try {
+          Swal.fire(error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
         return of(null);
       })
     ).subscribe({
@@ -230,16 +239,24 @@ export class VentasComponent implements AfterViewInit, OnInit {
     this.productoService.devolverPrdCompra(linea).pipe(
       tap((respuesta: any) => {
         console.log(JSON.stringify(respuesta));
-        if (respuesta.error !== 'ok') {
-          alert(respuesta.error);
+        if (respuesta.error !== 'ok') { 
+          try {
+            Swal.fire(respuesta.error, '', 'error');
+           } catch (error : any) {
+            Swal.fire('error en el servidor', '', 'error');
+           }
         } else {
           this.getDocumentos();
         }
         this.loading.hide();
       }),
       catchError((error: errorOdoo) => {
-        console.log(JSON.stringify(error));
-        alert(error.error.error + "\n" + error.error.msg); 
+        console.log(JSON.stringify(error)); 
+        try {
+          Swal.fire(error.error.error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
         this.loading.hide();
         return of(null);
       })
@@ -296,11 +313,20 @@ export class VentasComponent implements AfterViewInit, OnInit {
       console.log(this.documentoActivo.pagos);
     }
     if (this.documentoActivo.listado!.length === 0) {
-      alert('Debe ingresar los productos a facturar'); 
+      let error = 'Debe ingresar los productos a facturar' ; 
+      try {
+        Swal.fire(error, '', 'error');
+       } catch (error : any) {
+        Swal.fire('error en el servidor', '', 'error');
+       }
       return;
     }
-    if (parseInt(this.documentoActivo.totalFactura.toString()) === 0) {
-      alert('el total de la factura debe ser mayor a cero'); 
+    if (parseInt(this.documentoActivo.totalFactura.toString()) === 0) { 
+      try {
+        Swal.fire('el total de la factura debe ser mayor a cero', '', 'error');
+       } catch (error : any) {
+        Swal.fire('error en el servidor', '', 'error');
+       }
       return;
     }
 
@@ -313,14 +339,22 @@ export class VentasComponent implements AfterViewInit, OnInit {
           this.printer_factura_final();
           this.crearDocumento();
         } else {
-          alert(respuesta.error);
+          try {
+            Swal.fire(respuesta.error, '', 'error');
+           } catch (error : any) {
+            Swal.fire('error en el servidor', '', 'error');
+           }
         }
         this.loading.hide();
         this.irbuscarProducto();
       }),
       catchError((error: any) => {
-        this.loading.hide();
-        alert(JSON.stringify(error));
+        this.loading.hide(); 
+        try {
+          Swal.fire(error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
         return of(null);
       })
     ).subscribe({
@@ -335,7 +369,11 @@ export class VentasComponent implements AfterViewInit, OnInit {
     this.documentoService.cambiarDocumento(this.documentoActivo.orden).pipe(
       tap((respuesta: any) => {
         if (respuesta.error !== 'ok') {  
-          alert(respuesta.error); 
+          try {
+            Swal.fire(respuesta.error, '', 'error');
+           } catch (error : any) {
+            Swal.fire('error en el servidor', '', 'error');
+           }
         } else { 
           try {
             this.pagos[this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura;
@@ -348,7 +386,11 @@ export class VentasComponent implements AfterViewInit, OnInit {
       }),
       catchError((error: any) => {
         this.loading.hide();
-        alert(JSON.stringify(error));
+        try {
+          Swal.fire(error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
         return of(null);
       })
     ).subscribe({
@@ -366,14 +408,22 @@ export class VentasComponent implements AfterViewInit, OnInit {
           this.getDocumentos(); 
         } else {
           this.getDocumentos();
-          alert(respuesta.error);
+          try {
+            Swal.fire(respuesta.error, '', 'error');
+           } catch (error : any) {
+            Swal.fire('error en el servidor', '', 'error');
+           }
         }
         this.loading.hide();
         this.irbuscarProducto();
       }),
       catchError((error: any) => {
         this.loading.hide();
-        alert(JSON.stringify(error));
+        try {
+          Swal.fire(error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
         return of(null);
       })
     ).subscribe({
@@ -384,8 +434,10 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 
   generarEnvio() { 
-    if (this.documentoActivo.totalFactura <= 0) {
-      alert('El valor en la factura debe ser mayor a cero');
+    if (this.documentoActivo.totalFactura <= 0) { 
+      
+      Swal.fire('El valor en la factura debe ser mayor a cero', '', 'error');
+      
       return;
     }
     if (this.documentoActivo.cliente === 0) {
@@ -414,14 +466,22 @@ export class VentasComponent implements AfterViewInit, OnInit {
           this.getDocumentos(); 
         } else {
           this.getDocumentos();
-          alert(respuesta.error);
+          try {
+            Swal.fire(respuesta.error, '', 'error');
+           } catch (error : any) {
+            Swal.fire('error en el servidor', '', 'error');
+           }
         }
         this.loading.hide();
         this.irbuscarProducto();
       }),
       catchError((error: any) => {
         this.loading.hide();
-        alert(JSON.stringify(error));
+        try {
+          Swal.fire(error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
         return of(null);
       })
     ).subscribe({
@@ -453,8 +513,12 @@ export class VentasComponent implements AfterViewInit, OnInit {
         this.loading.hide();
       }),
       catchError((error: any) => {
-        this.loading.hide();
-        alert(error.error.error);
+        this.loading.hide(); 
+        try {
+          Swal.fire(error.error.error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
         return of(null);
       })
     ).subscribe({

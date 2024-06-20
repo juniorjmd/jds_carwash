@@ -9,9 +9,7 @@
  const actionProcedure = 'da5195132f73b029d0ce3a1dc2a05a46e7f0461c4';
  const actionSelect = 'e06c06e7e4ef58bdb0cf1858541b3017fdd35473';
  const actionSelects = 'e06c06e7e4ef58bdb0kieujfñ541b3017fdd35473';
- const actionSelectCajasPorUsuario = 'mnbvcxzxcxcxasdfewq15616';
- const actionInsertSE = 'e251ba9c423f96654579e892fd50d50a38337616';
- const actionDeleteSE = 'b0ecfb6a24fa75f0108286c898f3dea3158655d2';
+ const actionSelectCajasPorUsuario = 'mnbvcxzxcxcxasdfewq15616'; 
 
 
 
@@ -104,10 +102,8 @@
     'actionSelectPorUsuario' :actionSelectPorUsuario,
     'actionlogin' :actionlogin ,
     'actionValidarKeylogin' :validarLlave,
-    'actionSelCajaXuser' :actionSelectCajasPorUsuario,
-    'actionInsertSE' :actionInsertSE ,
-    'actionCambioCajaDocumento' :actionCambioCajaDocumento,
-    'actionDeleteSE' :actionDeleteSE ,
+    'actionSelCajaXuser' :actionSelectCajasPorUsuario, 
+    'actionCambioCajaDocumento' :actionCambioCajaDocumento, 
     'actionConfirmar' :actionConfirmar ,
     'actionUsuario' :actionUsuario ,
     'insert_orden_pregunta' :insert_orden_pregunta ,

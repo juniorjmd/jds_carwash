@@ -26,8 +26,8 @@ export class CategoriasComponent implements OnInit {
   setAgregarPerfil(categoria:CategoriasModel){}
   getUsuarios(){ 
     this.loading.show()
-    this.productoService.getCategorias().subscribe(
-      (datos:any)=>{
+    this.productoService.getCategorias().subscribe({
+       next :       (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
@@ -41,10 +41,10 @@ export class CategoriasComponent implements OnInit {
 
         this.loading.hide()
       } ,
-      error => {this.loading.hide();
+      error: error => {this.loading.hide();
         console.log(error)
         alert( error.error.error);
-      }
+      }}
       );
   }
 

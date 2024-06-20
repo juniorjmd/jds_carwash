@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModelBase } from '../ModelBase';
 
 
 
@@ -10,7 +11,7 @@ import { CommonModule } from '@angular/common';
   ]
 })
 
-export class MarcasModule { 
+export class MarcasModule extends ModelBase { 
    nombre!:string; 
    descripcion?:string ;  
    estado?:number ; 

@@ -1,7 +1,8 @@
 import { Categoria } from "../interfaces/categoria.interface";
+import { ModelBase } from "./ModelBase";
 
  
-export class CategoriasModel { 
+export class CategoriasModel extends ModelBase { 
   id!:number; 
   letra!:string; 
   nombre!:string; 
@@ -9,7 +10,12 @@ export class CategoriasModel {
   tipo!:string;
   contador?:number;
   tipoDescripcion ?:string;
+  idPadreCategoria ?:number;
+    
+
   constructor( cat: Categoria){
+
+    super();
     if (typeof (cat) !== 'undefined' ){
     this.id = cat.id ;
     this.letra= cat.letra; 
@@ -17,7 +23,7 @@ export class CategoriasModel {
     this.descripcion = cat.descripcion ; 
     this.tipo= cat.tipo;
     this.tipoDescripcion= cat.tipoDescripcion ;
-  this.contador = cat.contador;
+    this.contador = cat.contador;
   }
   }
 } 

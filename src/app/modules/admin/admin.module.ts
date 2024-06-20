@@ -21,6 +21,7 @@ import { ProductosComponent } from './pages/generales/productos/productos.compon
 import { TiposDeDocumentosComponent } from './pages/generales/tipos-de-documentos/tipos-de-documentos.component';
 import { TiposEstablComponent } from './pages/generales/establecimientos/tipos-establ.component';
 import { AppModule } from 'src/app/app.module';
+import { SharedModule } from '../shared/shared.module';
 
  
 @NgModule({
@@ -40,7 +41,7 @@ CajasComponent,
   imports: [
     CommonModule,RouterModule, 
     AdminRoutingModule,FormsModule, 
-    AppModule
+    SharedModule
   ]
 })
 export class AdminModule { }

@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CategoriasModel } from 'src/app/models/categorias.model';
 import { Categoria } from 'src/app/interfaces/categoria.interface'; 
 import { loading } from 'src/app/models/app.loading';
-import { ProductoService } from 'src/app/services/producto.service';
-import { select } from 'src/app/interfaces/generales.interface'; 
+import { ProductoService } from 'src/app/services/producto.service'; 
 import { ProductoModule } from 'src/app/models/producto/producto.module';
 import { MarcasModule } from 'src/app/models/marcas/marcas.module'; 
 import { PrdExistenciasModule } from 'src/app/models/prd-existencias/prd-existencias.module';
@@ -136,8 +135,12 @@ export class ProductosComponent implements OnInit {
           this.loading.hide()
         } ,
         error => {this.loading.hide();
-          console.log(error)
-          alert( error.error.error);
+          console.error('getbodegas',error) 
+          try {
+            Swal.fire( error.error.error, '', 'error');
+          } catch (error) {
+            Swal.fire( 'error interno, validar con el administrador del sitio', '', 'error');
+          }
         }
         );
      }
@@ -215,8 +218,12 @@ export class ProductosComponent implements OnInit {
           this.loading.hide()
         } ,
         error => {this.loading.hide();
-          console.log(error)
-          alert( error.error.error);
+          console.error('getPrecarguePorBodega',error) 
+          try {
+            Swal.fire( error.error.error, '', 'error');
+          } catch (error) {
+            Swal.fire( 'error interno, validar con el administrador del sitio', '', 'error');
+          }
         }
         );
      }
@@ -229,6 +236,8 @@ export class ProductosComponent implements OnInit {
      existencias(prd:ProductoModule){
       this.loading.show()
       this.productoService.getProductosExistencia(prd).subscribe(
+        {
+          next:
         (datos:any)=>{
            console.log(datos);
            
@@ -284,11 +293,15 @@ export class ProductosComponent implements OnInit {
       }
   
           this.loading.hide()
-        } ,
+        } , error:
         error => {this.loading.hide();
-          console.log(error)
-          alert( error.error.error);
-        }
+          console.error('getProductosExistencia',error) 
+          try {
+            Swal.fire( error.error.error, '', 'error');
+          } catch (error) {
+            Swal.fire( 'error interno, validar con el administrador del sitio', '', 'error');
+          }
+        }}
         );
      }
      getCategorias_marcas(){ 
@@ -296,8 +309,9 @@ export class ProductosComponent implements OnInit {
   this.categorias = [this.categoriaAux ];
 
     this.loading.show()
-    this.productoService.getCategorias_marcas().subscribe({next: (datos:any)=>{
-         console.log(datos);
+    this.productoService.getCategorias_marcas().subscribe({
+      next: (datos:any)=>{
+         console.log('getCategorias_marcas',datos);
      let cont:number;    
     if (datos[0].numdata > 0 ){ 
       cont = 1 ; 
@@ -322,8 +336,12 @@ export class ProductosComponent implements OnInit {
         this.loading.hide()
       } ,
       error:(error : any) => {this.loading.hide();
-        console.log(error)
-        alert( error.error.error);
+        console.error('getCategorias_marcas',error) 
+        try {
+          Swal.fire( error.error.error, '', 'error');
+        } catch (error) {
+          Swal.fire( 'error interno, validar con el administrador del sitio', '', 'error');
+        }
       }}
       );
    
@@ -359,6 +377,7 @@ export class ProductosComponent implements OnInit {
        } 
       this.loading.show(); 
       this.productoService.guardarNuevoProducto(this.newProducto).subscribe(
+        {next:
        (respuesta:any)=>{console.log(respuesta)
         
        if (respuesta.error === 'ok'){
@@ -372,14 +391,20 @@ export class ProductosComponent implements OnInit {
         }
       
       }
-       this.loading.hide(); 
-       }) 
+      
+       }
+       , error: error =>  {Swal.fire(JSON.stringify(error), '', 'error')  ;
+        console.error("enviar producto" ,  error)
+       }
+       , complete: () =>  {this.loading.hide();} }
+      ) 
      }
 
      
      getProductos(){ 
     this.loading.show()
-    this.productoService.getProductosGeneral([0,100]).subscribe(
+    this.productoService.getProductosGeneral([0,100]).subscribe({
+      next: 
       (datos:any)=>{
          console.log(datos);
          
@@ -393,11 +418,14 @@ export class ProductosComponent implements OnInit {
     }
 
         this.loading.hide()
-      } ,
-      error => {this.loading.hide();
-        console.log(error)
-        alert( error.error.error);
-      }
+      } , error:    error => {this.loading.hide();
+        console.error('getProductosGeneral',error) 
+        try {
+          Swal.fire( error.error.error, '', 'error');
+        } catch (error) {
+          Swal.fire( 'error interno, validar con el administrador del sitio', '', 'error');
+        }
+      }}
       );
     }
 
