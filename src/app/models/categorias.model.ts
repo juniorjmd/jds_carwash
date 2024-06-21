@@ -12,17 +12,16 @@ export class CategoriasModel extends ModelBase {
   idPadreCategoria ?:number;
     
 
-  constructor( cat: Categoria){
+    constructor( cat: Categoria){
 
-    super();
-    if (typeof (cat) !== 'undefined' ){
-    this.id = cat.id ;
-    this.letra= cat.letra; 
-    this.nombre= cat.nombre; 
-    this.descripcion = cat.descripcion ; 
-    this.tipo= cat.tipo;
-    this.tipoDescripcion= cat.tipoDescripcion ;
-    this.contador = cat.contador;
-  }
-  }
+        super();
+        if (typeof (cat) !== 'undefined' ){
+        this.id = cat.id ;
+        this.letra= cat.letra; 
+        this.nombre= cat.nombre; 
+        this.descripcion = cat.descripcion ; 
+        this.tipo= cat.tipo;
+        this.tipoDescripcion= cat.tipoDescripcion ;
+        this.contador = cat.contador;
+      } } 
 } 

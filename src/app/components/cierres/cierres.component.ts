@@ -88,7 +88,7 @@ mostrarProductosVendidosPorCierre(cierreActual:CortesDeCajaModule){
       }
 
        }else{
-         alert(respuesta.error);
+        Swal.fire(respuesta.error , "error");
        }
        this.loading.hide();
   }) 

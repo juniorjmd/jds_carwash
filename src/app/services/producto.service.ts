@@ -47,20 +47,6 @@ getProductosPorCategoria(codCategoria:any){
   console.log('servicios getProductosPorCategoria' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
- 
-getProductosGeneral(limit?:any): Observable<ProductoRequest|any>  {
-  let datos;
-  if( limit.length > 0 ){
-      datos   = {"action": actions.get_all_products , 
-  "_limit" : limit  
-          };}else{
-      datos = {"action": actions.get_all_products ,  
-              };
-  }
-  
-  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
-  return this.http.post<ProductoRequest|any>(this.urlInventario, datos, httpOptions()) ;
-}   
 
 
 getProductosPorMarca(codMarca : any){
@@ -178,21 +164,7 @@ borrarPrecarguePorBodega(bodega:number){
 } 
 
 
-getProductosPorNombre(texto:string , limit?:any  ){
-  let datos ;
-  let where = [{"columna" : "nombre" , "tipocomp" : 'like' , "dato" : texto  }]
-  if( limit.length > 0 ){ 
-    datos = {"action": actions.actionSelect , "_tabla" : vistas.productos,
-      "_limit" : limit , "_where" : where  
-              }; }
-              else{
-                  datos = {"action": actions.buscarProducto  , "_tabla" : vistas.productos,
-                    "_where" : where  
-              };  
-              }
-  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
-  return this.http.post(this.urlInventario, datos, httpOptions()) ;
-} 
+
 //actionStockMoveDevolucion
 
 guardarPrdCompra(producto :ProductoModule , documentoActivo:DocumentosModel ){
@@ -230,6 +202,38 @@ devolverPrdCompra(producto : DocumentoListado  ){
   console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 }
+
+
+getProductosPorNombre(texto:string , limit?:any  ){
+  let datos ;
+  let where = [{"columna" : "nombre" , "tipocomp" : 'like' , "dato" : texto  }]
+  if( limit.length > 0 ){ 
+    datos = {"action": actions.actionSelect , "_tabla" : vistas.productos,
+      "_limit" : limit , "_where" : where  
+              }; }
+              else{
+                  datos = {"action": actions.buscarProducto  , "_tabla" : vistas.productos,
+                    "_where" : where  
+              };  
+              }
+  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
+  return this.http.post(this.urlInventario, datos, httpOptions()) ;
+} 
+ 
+getProductosGeneral(limit?:any): Observable<ProductoRequest|any>  {
+  let datos;
+  if( limit.length > 0 ){
+      datos   = {"action": actions.get_all_products , 
+  "_limit" : limit  
+          };}else{
+      datos = {"action": actions.get_all_products ,  
+              };
+  }
+  
+  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
+  return this.http.post<ProductoRequest|any>(this.urlInventario, datos, httpOptions()) ;
+}   
+
 // #endregion
  
 }

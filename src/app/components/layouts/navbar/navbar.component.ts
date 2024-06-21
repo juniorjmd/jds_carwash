@@ -72,7 +72,7 @@ export class NavbarComponent {
     console.log('get menu usuario navbar', usuario, menu);
 
     menu!.forEach((detalle, index) => {
-      console.log('recorrido', index, detalle);
+     // console.log('recorrido', index, detalle);
       if (detalle.recurso.tipo === 'ul-nav') {
         menuCard[margin] = detalle.recurso;
         margin++;

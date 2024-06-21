@@ -50,7 +50,7 @@ export class InicioComponent implements OnInit {
     console.log(usuario, menu);
     
     menu!.forEach((detalle , index ) => {
-      console.log('recorrido',index ,detalle ); 
+      // console.log('recorrido',index ,detalle ); 
         if(detalle.recurso.tipo === 'card'){
 
           menuCard[margin]= detalle.recurso ;

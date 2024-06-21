@@ -14,6 +14,4 @@ import { ModelBase } from '../ModelBase';
 export class MarcasModule extends ModelBase { 
    nombre!:string; 
    descripcion?:string ;  
-   nombre_estado?:string; 
-
 }

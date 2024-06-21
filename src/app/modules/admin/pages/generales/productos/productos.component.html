@@ -34,12 +34,12 @@
                     </th>
                 </tr>
                 <tr *ngFor="let Producto of Productos">
-                    <td>{{Producto.idProducto }}</td>
+                    <td>{{Producto.id }}</td>
                     <td>{{Producto.nombre }}</td>
                     <td>{{Producto.tipo_prod_nombre }}</td> 
                     <td class="centrado">{{Producto.porcent_iva }} %</td>
                     <td noWrap>{{Producto.nombreMarca }}</td>
-                    <td>{{Producto.nombreCategoria }}</td>
+                    <td>{{Producto.categoria?.nombre }}</td>
                     <td title="editar producto">
                         <i class="fas fa-pencil-alt boton_activo" (click)="editarPrd(Producto)"> </i> </td>
 

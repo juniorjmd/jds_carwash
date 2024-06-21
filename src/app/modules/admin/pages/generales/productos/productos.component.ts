@@ -47,7 +47,7 @@ export class ProductosComponent implements OnInit {
                           {id:2 , nombre:'servicios' } 
                         ];
   marcas:MarcasModule[] = [this.marcasAux];
-  newProducto:ProductoModule = new ProductoModule( '' , '' ,0 ,0,'0','0','',0,0,0,0,0,'','','',0, ''  ) ; 
+  newProducto:ProductoModule = new ProductoModule( '' , '' ,0 ,0,'0','0', 0,0,0,0,0,'','','',0, ''  ) ; 
 
 
   constructor(private loading : loading,
@@ -243,7 +243,7 @@ export class ProductosComponent implements OnInit {
       if (datos.numdata > 0 ){ 
         this.existenciasPrd = datos.data; 
         console.log(this.existenciasPrd);
-        let pagosHtml:string =  `<h1>Producto : <br>${this.existenciasPrd[0].nombre_completo}</h1>
+        let pagosHtml:string =  `<h1>Producto : <br>${this.existenciasPrd[0].nombre_producto}</h1>
         <table class='table' style='font-size:12px'> 
         <tr><td colspan='10' > <h1>Existentencias y Movimientos</h1><td></tr> 
         <tr>
@@ -265,14 +265,14 @@ export class ProductosComponent implements OnInit {
          pagosHtml +=`<tr> `;
          pagosHtml +=`<td>${pago.nombreBodega}</td> `;
          pagosHtml +=`<td nowrap>${pago.ult_mov}</td> `;
-         pagosHtml +=`<td nowrap>${pago.fecha_ult_mov}</td> `;
+         pagosHtml +=`<td nowrap>${pago.fecha_ultimo_cambio}</td> `;
          pagosHtml +=`<td nowrap>${pago.nombreUsuario_ult_mov}</td> `;
-         pagosHtml +=`<td nowrap>${pago.cantInicial}</td> `;
-         pagosHtml +=`<td nowrap>${pago.cantActual}</td> `;
+         pagosHtml +=`<td nowrap>${pago.cant_inicial}</td> `;
+         pagosHtml +=`<td nowrap>${pago.cant_actual}</td> `;
          pagosHtml +=`<td nowrap>${pago.ventas}</td> `;
          pagosHtml +=`<td nowrap>${pago.compras}</td> `;
          pagosHtml +=`<td nowrap>${pago.devoluciones}</td> `;
-         pagosHtml +=`<td nowrap>${pago.remisionada}</td> `;
+         pagosHtml +=`<td nowrap>${pago.remisiones}</td> `;
          pagosHtml +=`</tr> `;
        })
    
@@ -349,7 +349,7 @@ export class ProductosComponent implements OnInit {
 
 
      limpiarFormulario(){
-      this.newProducto  =new ProductoModule( '' , '' ,0 ,0,'','0', '',0,0,0,0,0,'','','',0,''  ) ; 
+      this.newProducto  =new ProductoModule( '' , '' ,0 ,0,'','0', 0,0,0,0,0,'','','',0,''  ) ; 
 
      }
      enviarProducto(){

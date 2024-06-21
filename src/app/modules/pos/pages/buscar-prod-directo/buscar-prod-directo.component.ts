@@ -5,7 +5,8 @@ import { dfltAnswOdoo2 } from 'src/app/interfaces/clientes-odoo';
 import { ProductoService } from 'src/app/services/producto.service';
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ProductoModule } from 'src/app/models/producto/producto.module';
+import { ProductoModule } from 'src/app/models/producto/producto.module'; 
+import Swal from 'sweetalert2';
 @Component({ 
   selector: 'app-buscar-prod-directo',
   templateUrl: './buscar-prod-directo.component.html',
@@ -13,7 +14,7 @@ import { ProductoModule } from 'src/app/models/producto/producto.module';
 })
 export class BuscarProdDirectoComponent  {
   show = false ;
-  textFindMarcas:string = '';
+  textFindMarcas:string = '';textFindCategoria="";
   textFindProductos:string = '';
   parceros : ProductoModule[] = [];
   prdBusqueda !:ProductoModule   ;
@@ -27,6 +28,7 @@ export class BuscarProdDirectoComponent  {
   marcas:dfltAnswOdoo2[]=[];
   marcasAux:dfltAnswOdoo2[] = [];
   categorias:dfltAnswOdoo2[] = [];
+  categoriasAux:dfltAnswOdoo2[] = [];
   constructor(public loading : loading ,public dialogo: MatDialogRef<BuscarProdDirectoComponent>
     , private prdService : ProductoService,
     private MaestroClienteServices :MaestroClienteServices) {
@@ -39,47 +41,52 @@ export class BuscarProdDirectoComponent  {
      this.loading.show() 
      this.listPrdBusqueda = [];
      this.prdService.getProductosPorNombre( this.textFindProductos ,[0,30] ).subscribe(
+
+      {next :
        (respuesta:any)=>{
          if (respuesta.error === 'ok'){
             if (respuesta.numdata > 0 ){
               this.listPrdBusqueda =  respuesta.data;
   
-            }else{alert('la busqueda no genero ningun resultado') 
+            }else{ 
+              Swal.fire('la busqueda no genero ningun resultado' , "error");
                } 
           }else{
-            alert(respuesta.error);
+            
+            Swal.fire(respuesta.error , "error"); 
           } 
           console.log('getProductosPorCategoria',JSON.stringify(respuesta));
           this.loading.hide();
          
-          },
-          error => {this.loading.hide();
-            alert( error.error.error);
-          } 
+          } , error:    error => { this.loading.hide();  
+                    Swal.fire(error , "error"); 
+          } }
      );
     }
    buscarProductos(){
     console.log('busqueda productos inicial' ); 
      this.loading.show() 
      this.listPrdBusqueda = [];
-     this.prdService.getProductosGeneral([0,30]).subscribe(
-       (respuesta:any)=>{
+     this.prdService.getProductosGeneral([0,30]).subscribe({
+      next :  (respuesta:any)=>{
          if (respuesta.error === 'ok'){
             if (respuesta.numdata > 0 ){
-              this.listPrdBusqueda =  respuesta.data;
-  
-            }else{alert('la busqueda no genero ningun resultado') 
+
+              const productos = respuesta.productos; 
+              console.log('producto general' , productos)
+              this.listPrdBusqueda = productos   
+            }else{Swal.fire('la busqueda no genero ningun resultado') 
                } 
-          }else{
-            alert(respuesta.error);
+          }else{ 
+            
+            Swal.fire( "getProductosGeneral" , respuesta.error ,"error"  );
           } 
           console.log('getProductosPorCategoria',JSON.stringify(respuesta));
           this.loading.hide();
          
-          },
-          error => {this.loading.hide();
-            alert( error.error.error);
-          } 
+          }, error :  error => {this.loading.hide();
+            Swal.fire( error ,"getProductosGeneral" , "error"  );
+          } }
      );
     }
    buscarPorCategoria(categoria:dfltAnswOdoo2){
@@ -94,17 +101,17 @@ export class BuscarProdDirectoComponent  {
                 this.listPrdBusqueda[index] = value ;  
               }); 
    
-             }else{alert('no existen productos con la categoria '+ categoria.label) 
+             }else{Swal.fire('no existen productos con la categoria '+ categoria.label) 
                 } 
            }else{
-             alert(respuesta.error);
+             Swal.fire(respuesta.error);
            } 
            console.log('getProductosPorCategoria',JSON.stringify(respuesta));
            this.loading.hide();
           
            },
            error => {this.loading.hide();
-             alert( error.error.error);
+             Swal.fire( error.error.error);
            } 
       );
      }
@@ -128,17 +135,17 @@ export class BuscarProdDirectoComponent  {
                 this.listPrdBusqueda[index] = value ;  
               }); 
    
-             }else{alert('no existen productos de la marca '+ marca.label) 
+             }else{Swal.fire('no existen productos de la marca '+ marca.label) 
                 } 
            }else{
-             alert(respuesta.error);
+             Swal.fire(respuesta.error);
            } 
            console.log('getProductosPorMarca',JSON.stringify(respuesta));
            this.loading.hide();
           
            },
            error => {this.loading.hide();
-             alert( error.error.error);
+             Swal.fire( error.error.error);
            } 
       );
 
@@ -150,6 +157,7 @@ export class BuscarProdDirectoComponent  {
        console.log('setCategoriasPrd' , JSON.stringify(datos));
       this.loading.show()
       this.categorias = [];
+      
       datos.data!.forEach((value:any )=>{ 
         console.log('getCategorias',value); 
         this.categorias.push({
@@ -160,6 +168,7 @@ export class BuscarProdDirectoComponent  {
         })  
     
       })       
+      this.categoriasAux = this.categorias ;
       this.loading.hide() ;
       console.log('categorias',this.categorias);
     });
@@ -190,7 +199,8 @@ export class BuscarProdDirectoComponent  {
     });
 
   }
-  getMarcasPorFiltro(){
+  getMarcasPorFiltro()
+  {
     //this.marcasAux = this.marcas;
     let marcas3 : dfltAnswOdoo2[] = [];
     let cont = 0;
@@ -211,6 +221,20 @@ export class BuscarProdDirectoComponent  {
       })
      // console.log(marcas3);
       this.marcas = marcas3;
+     }
+  }
+
+  
+  getCaterogiasPorFiltro()
+  {
+    //this.marcasAux = this.marcas; 
+    let cont = 0;
+    let auxTxt = this.textFindCategoria.trim().toUpperCase();
+    if (  auxTxt === '')
+     { this.categorias = this.marcasAux} 
+     else{
+      this.marcas = this.marcas.filter(value => {( value.label.toUpperCase() === auxTxt || value.label.toUpperCase().indexOf(auxTxt) >= 0)})
+      
      }
   }
  
