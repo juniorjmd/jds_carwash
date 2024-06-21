@@ -51,15 +51,15 @@ getProductosPorCategoria(codCategoria:any){
 getProductosGeneral(limit?:any): Observable<ProductoRequest|any>  {
   let datos;
   if( limit.length > 0 ){
-      datos   = {"action": actions.actionSelect , "_tabla" : vistas.productos,
+      datos   = {"action": actions.get_all_products , 
   "_limit" : limit  
           };}else{
-      datos = {"action": actions.actionSelect , "_tabla" : vistas.productos,
+      datos = {"action": actions.get_all_products ,  
               };
   }
   
-  console.log('servicios getProductosPorMarca' ,this.baseUrl, datos, httpOptions());
-  return this.http.post<ProductoRequest|any>(this.baseUrl, datos, httpOptions()) ;
+  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
+  return this.http.post<ProductoRequest|any>(this.urlInventario, datos, httpOptions()) ;
 }   
 
 

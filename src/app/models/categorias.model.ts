@@ -2,8 +2,7 @@ import { Categoria } from "../interfaces/categoria.interface";
 import { ModelBase } from "./ModelBase";
 
  
-export class CategoriasModel extends ModelBase { 
-  id!:number; 
+export class CategoriasModel extends ModelBase {  
   letra!:string; 
   nombre!:string; 
   descripcion!:string; 

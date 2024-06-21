@@ -1,5 +1,6 @@
 import { Inject, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModelBase } from '../ModelBase';
 
 
 
@@ -9,11 +10,10 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ]
 })
-export class PrdExistenciasModule { 
+export class PrdExistenciasModule extends ModelBase{ 
  
   
   constructor(
-
     @Inject(String) public id_usuario_ult_mov :number ,
     @Inject(String) public fecha_ult_mov:string, 
     @Inject(String) public ult_mov:string, 
@@ -31,6 +31,7 @@ export class PrdExistenciasModule {
     @Inject(String) public nombreUsuario_creacion:string,
     ){
 
+     super();
     }
   
 }

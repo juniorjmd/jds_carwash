@@ -47,8 +47,7 @@ export class ProductosComponent implements OnInit {
                           {id:2 , nombre:'servicios' } 
                         ];
   marcas:MarcasModule[] = [this.marcasAux];
-  newProducto:ProductoModule = new ProductoModule( '' ,0 ,0,0,0,0,'','',0,''
-  ,0,0,0,0,0,'','','',0,0,new Date(),'','','','','',0,0,'') ; 
+  newProducto:ProductoModule = new ProductoModule( '' , '' ,0 ,0,'0','0','',0,0,0,0,0,'','','',0, ''  ) ; 
 
 
   constructor(private loading : loading,
@@ -76,7 +75,7 @@ export class ProductosComponent implements OnInit {
           console.log('dato retornado busqueda directa',response.datoDevolucion);
 
           Swal.fire({
-            title: `ingrese la cantidad a ingresar del producto "${response.datoDevolucion!.nombre_completo}" en la bodega  : "${text}"  .`, 
+            title: `ingrese la cantidad a ingresar del producto "${response.datoDevolucion!.nombre}" en la bodega  : "${text}"  .`, 
             input: 'number',
             showCancelButton: true,
             confirmButtonText: 'Si', 
@@ -289,7 +288,7 @@ export class ProductosComponent implements OnInit {
 
       }else{
         this.existenciasPrd = [];
-        Swal.fire( 'el producto ' + prd.nombre_completo+ ' no posee existencias en ninguna bodega!!', '', 'error');
+        Swal.fire( 'el producto ' + prd.nombre+ ' no posee existencias en ninguna bodega!!', '', 'error');
       }
   
           this.loading.hide()
@@ -350,8 +349,8 @@ export class ProductosComponent implements OnInit {
 
 
      limpiarFormulario(){
-      this.newProducto  = new ProductoModule( '' ,0 ,0,0,0,0,'','',0,''
-      ,0,0,0,0,0,'','','',0,0,new Date(),'','','','','',0,0,'') ; 
+      this.newProducto  =new ProductoModule( '' , '' ,0 ,0,'','0', '',0,0,0,0,0,'','','',0,''  ) ; 
+
      }
      enviarProducto(){
       
@@ -371,10 +370,10 @@ export class ProductosComponent implements OnInit {
         Swal.fire( 'Debe establecer un tipo de producto', '', 'error');
        return ;
        } 
-       if( this.newProducto.precioVenta   <= 0){ 
+      /* if( this.newProducto.precioVenta   <= 0){ 
         Swal.fire( 'Debe establecer el precio de venta', '', 'error');
        return ;
-       } 
+       } */
       this.loading.show(); 
       this.productoService.guardarNuevoProducto(this.newProducto).subscribe(
         {next:

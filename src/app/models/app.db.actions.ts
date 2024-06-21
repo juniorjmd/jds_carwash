@@ -59,7 +59,10 @@
  const action_cancelar_inventario = 'BORRAR_DATOS_INGRESO_AUX_INVENTARIO';
  const action_ingreso_precargue = 'INGRESO_DATOS_DATOS_AUX_INVENTARIO';
 
+
  export const actions = {
+  'get_all_products' : 'BUSCAR_TODOS_LOS_PRODUCTOS',
+  'get_product' : 'BUSCAR_TODOS_LOS_PRODUCTOS',
   'action_get_documentos_usuario':'GET_DOCUMENTOS_USUARIO_ACTUAL',
   'action_get_documentos_caja':'GET_DOCUMENTOS_USUARIO_ACTUAL_CAJA_ACTIVA',
   'action_insertar_pagos':INSERTAR_PAGO_EMPLEADO,

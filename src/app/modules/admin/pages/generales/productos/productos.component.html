@@ -25,10 +25,7 @@
 
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; referencia&nbsp;&nbsp;&nbsp;&nbsp; </th>
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; nombre&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; Tipo&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; precioVenta&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; PrecioSinIVA&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; valorIVA&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; Tipo&nbsp;&nbsp;&nbsp;&nbsp; </th> 
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; porcent_iva&nbsp;&nbsp;&nbsp;&nbsp; </th>
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; categoria&nbsp;&nbsp;&nbsp;&nbsp; </th>
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; marca&nbsp;&nbsp;&nbsp;&nbsp; </th>
@@ -38,11 +35,8 @@
                 </tr>
                 <tr *ngFor="let Producto of Productos">
                     <td>{{Producto.idProducto }}</td>
-                    <td>{{Producto.nombre_completo }}</td>
-                    <td>{{Producto.tipo_prod_nombre }}</td>
-                    <td style="text-align:right;">{{Producto.precioVenta }}</td>
-                    <td style="text-align:right;">{{Producto.PrecioSinIVA }}</td>
-                    <td style="text-align:right;">{{Producto.valorIVA }}</td>
+                    <td>{{Producto.nombre }}</td>
+                    <td>{{Producto.tipo_prod_nombre }}</td> 
                     <td class="centrado">{{Producto.porcent_iva }} %</td>
                     <td noWrap>{{Producto.nombreMarca }}</td>
                     <td>{{Producto.nombreCategoria }}</td>
@@ -122,12 +116,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-1"> </div>
-        <div class="col-sm-3">
-            <div class="col-sm-10">precio : </div>
-            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precioVenta" class="form-control" placeholder="nombre principal "></div>
-
-        </div>
+        <div class="col-sm-1"> </div> 
         <div class="col-sm-3">
             <div class="col-sm-10">IVA (%) : </div>
             <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.porcent_iva" class="form-control" placeholder="nombre principal "></div>
@@ -139,6 +128,29 @@
 
         </div>
     </div>
+
+    
+    <div class="row">
+        <div class="col-sm-1"> </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">precio1 : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[0].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
+
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">precio2 : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[0].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
+
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">precio3 : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[0].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
+
+        </div>
+    </div>
+
+
+
     <hr>
     <div class="row">
         <div class="col-sm-1"> </div>
