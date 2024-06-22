@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Permisos, Usuario  } from '../interfaces/usuario.interface';
 import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { UsuarioResponseInterface } from '../interfaces/UsuarioResponse.Interface';
 
 
@@ -64,12 +64,21 @@ export class LoginService {
         return this.http.post(url.login, datos, httpOptions());
       }
 
-    async  getUsuarioLogeadoAsync(invoker :string = '')
-    {       
-        let datos = {"action": actions.actionValidarKeylogin ,
-        "_llaveSession" : localStorage.getItem('sis41254#2@')  ,"_invoker": invoker };
-        console.log('validar llave de session inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
-        return await   this.http.post(url.login , datos, httpOptions()).toPromise() ; 
-    }
+    // async  getUsuarioLogeadoAsync(invoker :string = '')
+    // {       
+    //     let datos = {"action": actions.actionValidarKeylogin ,
+    //     "_llaveSession" : localStorage.getItem('sis41254#2@')  ,"_invoker": invoker };
+    //     console.log('validar llave de session inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
+    //     return await   this.http.post(url.login , datos, httpOptions()).toPromise() ; 
+    // }
+    async getUsuarioLogeadoAsync(invoker: string = ''): Promise<any> {
+        let datos = {
+          action: actions.actionValidarKeylogin,
+          _llaveSession: localStorage.getItem('sis41254#2@'),
+          _invoker: invoker
+        };
+        console.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
+        return await firstValueFrom(this.http.post(url.login, datos, httpOptions()));
+      }
 }
  

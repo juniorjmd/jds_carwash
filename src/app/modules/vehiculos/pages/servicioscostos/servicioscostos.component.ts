@@ -144,11 +144,7 @@ Swal.fire({
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:ServiciosModule , index:number )=>{
-        this.serviciosAVehiculos[index] = new ServiciosModule(
-          dato.nombre,  dato.estado , dato.estadoNombre ,dato.tipo_servicio , dato.precio_general , dato.descripcion, dato.nombre_tipo_servicio , dato.id
-        ) ;
-      }) 
+      this.serviciosAVehiculos = datos.data! ;
       console.log(this.serviciosAVehiculos);
     }else{
       this.serviciosAVehiculos = [];

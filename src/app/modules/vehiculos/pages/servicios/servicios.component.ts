@@ -11,7 +11,7 @@ import { TiposServiciosModule } from 'src/app/models/tipos-servicios/tipos-servi
   styleUrls: ['./servicios.component.css']
 })
 export class ServiciosComponent implements OnInit {
-  newServicioAVehiculo : ServiciosModule =  new ServiciosModule('',0,'',0,0); ;
+  newServicioAVehiculo : ServiciosModule =  new ServiciosModule('',0,0); ;
   serviciosAVehiculos:ServiciosModule[] = []; 
   serviciosAmostrar:ServiciosModule[] = []; 
   tiposServicio:TiposServiciosModule[] = []
@@ -95,17 +95,13 @@ export class ServiciosComponent implements OnInit {
     })
   }
   getServiciosVehiculos(){ 
-    this.serviciosAVehiculos[0] =   new ServiciosModule('',0,'',0,0); 
+    this.serviciosAVehiculos[0] =   new ServiciosModule('',0,0); 
     this.loading.show()
     this.VehiculosService.getServicios().subscribe(
       (datos:any)=>{
          console.log(datos);
     if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:ServiciosModule , index:number )=>{
-        this.serviciosAVehiculos[index] = new ServiciosModule(
-          dato.nombre,  dato.estado , dato.estadoNombre ,dato.tipo_servicio , dato.precio_general , dato.descripcion, dato.nombre_tipo_servicio , dato.id
-        ) ;
-      }) 
+      this.serviciosAVehiculos = datos.data! ; 
       console.log(this.serviciosAVehiculos);
     }else{
       this.serviciosAVehiculos = [];
@@ -131,7 +127,7 @@ this.mostrarServicioPorTipo();
       
      if (respuesta.error === 'ok'){
       Swal.fire('datos ingresados con exito');  
-       this.newServicioAVehiculo =    new  ServiciosModule('',0,'',0,0); 
+       this.newServicioAVehiculo =    new  ServiciosModule('',0 ,0); 
        this.getServiciosVehiculos();
      }else{ 
       Swal.fire(respuesta.error, '', 'error');
@@ -141,7 +137,7 @@ this.mostrarServicioPorTipo();
   }
    
   cancelar(){
-    this.newServicioAVehiculo = new ServiciosModule('',0,'',0,0); 
+    this.newServicioAVehiculo = new ServiciosModule('',0,0); 
   } 
 
 
