@@ -1,18 +1,17 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { loading } from 'src/app/models/app.loading';
 import { select } from 'src/app/interfaces/generales.interface';
-import { DocumentosModel } from 'src/app/models/documento.model';
+import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OdooPrd, responsePrd } from 'src/app/interfaces/odoo-prd';
-import { MoverDocumentosComponent } from '../mover-documentos/mover-documentos.component';
-import { BuscarProductosComponent } from '../buscar-productos/buscar-productos.component';
+import { MoverDocumentosComponent } from '../mover-documentos/mover-documentos.component'; 
 import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { ProductoService } from 'src/app/services/producto.service';
 import { errorOdoo } from 'src/app/interfaces/odoo-prd';
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
 import { cajasServices } from 'src/app/services/Cajas.services';
-import { DocpagosModel, pagosModel } from 'src/app/models/pagos.model';
+import { DocpagosModel, pagosModel } from 'src/app/models/ventas/pagos.model';
 import { PagosVentaComponent } from '../pagos-venta/pagos-venta.component';
 import { printer, url } from 'src/app/models/app.db.url';
 import { ConectorPlugin } from 'src/app/models/app.printer.con';
@@ -25,6 +24,8 @@ import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd-cliente/fnd-cliente.component';
 import Swal from 'sweetalert2';
+import { IngresarProductoVentaComponent } from '../ingresar-producto-venta/ingresar-producto-venta.component';
+import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto';
 
 @Component({
   selector: 'app-ventas',
@@ -42,6 +43,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   indexEfectivo!: number;
   focus!: boolean;
   MedioP: MediosDePago[] = [];
+  MedioPInicial: MediosDePago[] = [];
   buscarClose: boolean = true;
   codigoProducto!: string;
   vueltas: boolean = false;
@@ -66,12 +68,11 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void { 
-    this.getDocumentos();
+    this.getMediosP();
   }
 
   ngAfterViewInit(): void {
     this.irbuscarProducto();
-    this.getMediosP();
   }
 
   getMenuImage(usuario: Usuario) {
@@ -109,9 +110,8 @@ export class VentasComponent implements AfterViewInit, OnInit {
     return menuCard;
   }
 
-  getDocumentos() {
-    this.vueltas = true;
-    this.pagos = [];
+  getDocumentos() { 
+    this.vueltas = true; 
     this.documentoService.getDocumentosCaja().pipe(
       tap((datos: any) => {
         this.documentos = [];
@@ -121,27 +121,22 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
         if (datos.numdata > 0) {
           this.documentos = datos.data ; 
-          
-        console.log('getDocumentos_recuest', this.documentos);
+          console.log('getDocumentos_recuest', this.documentos);
           if (datos.numdata === 1) {
             this.documentoActivo = datos.data[0];
           } else {
-            documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ;
-            
+            documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ; 
           console.log('documentoSeleccionado' , documentoSeleccionado);
-            this.documentoActivo = documentoSeleccionado[0];
+            this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
           }
-          console.log('documentoActivo' , this.documentoActivo);
-          if (this.documentoActivo.pagos!.length > 0) {
-            this.pagos = this.documentoActivo.pagos!;
-            console.log('pagos factura', this.pagos);
-          } else {
+          this.asignarMediosDePagoValoresIniciales();
+        
             try {
               this.pagos[this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura?? 0;
             } catch (error: any) {
               console.error('Error setting pagos', error);
             }
-          }
+          
           this.irbuscarProducto();
         } else {
           this.crearDocumento();
@@ -149,7 +144,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         this.vueltas = false;
       }),
       catchError((error: any) => {
-        console.error('error',JSON.stringify(error));
+        console.error('error', error );
         return of(null); // Devuelve un observable vacío en caso de error
       })
     ).subscribe({
@@ -157,6 +152,41 @@ export class VentasComponent implements AfterViewInit, OnInit {
       error: (error) => console.error('Error:', error),
       complete: () => console.log('getDocumentos completo')
     });
+  }
+
+  asignarMediosDePagoValoresIniciales(){
+
+    this.MedioP = this.MedioPInicial.map(x=>x);
+    console.log('documentoActivo' , this.documentoActivo); 
+          if (this.documentoActivo.pagos === undefined || this.documentoActivo.pagos.length === 0){
+            this.documentoActivo.pagos = this.MedioP.map((value: any , index) => {
+              let valorPago = 0;
+               if (index == this.indexEfectivo){
+                valorPago = this.documentoActivo.totalFactura
+               }
+                let auxpago:DocpagosModel = {
+                  idDocumento: this.documentoActivo.orden,
+                  idMedioDePago: value.id,
+                  valorPagado: valorPago,
+                  valorTotalAPagar: valorPago,
+                  valorRecibido: valorPago,
+                  vueltos: 0,
+                  referencia: ''
+                } ; 
+              return auxpago;
+            })
+          } 
+           let doc = this.documentoActivo ; 
+           this.MedioP.forEach(medio => {
+            const pago = doc.pagos!.find((p: DocpagosModel) => p.idMedioDePago === medio.id);
+            if (pago) {
+              medio.valor_aux = pago.valorTotalAPagar;
+            }
+          });
+          
+            this.pagos = this.documentoActivo.pagos!;
+            console.log('pagos factura', this.pagos);
+
   }
 
   crearDocumento() {
@@ -200,7 +230,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     }; 
     if (this.codigoProducto.trim() !== '' && this.buscarClose) {
       this.buscarClose = false;
-      this.newAbrirDialog.open(BuscarProductosComponent, { data: dataAuxEnvio })
+      this.newAbrirDialog.open(IngresarProductoVentaComponent, { data: dataAuxEnvio })
         .afterClosed()
         .pipe(
           tap((confirmado: Boolean) => {
@@ -376,7 +406,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
            }
         } else { 
           try {
-            this.pagos[this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura;
+            this.asignarMediosDePagoValoresIniciales();
           } catch (error: any) {
             console.error('Error setting pagos', error);
           }
@@ -432,7 +462,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       complete: () => console.log('cancelarDocumento completo')
     });
   }
-
+//generar factura domicilio
   generarEnvio() { 
     if (this.documentoActivo.totalFactura <= 0) { 
       
@@ -496,19 +526,12 @@ export class VentasComponent implements AfterViewInit, OnInit {
     this.serviceCaja.getMediosCajaActiva().pipe(
       tap((datos: any) => {
         if (datos.numdata > 0) { 
-          datos.data!.forEach((dato: MediosDePago, index: number) => {
-            this.MedioP[index] = dato;
-            this.pagos[index] = new pagosModel();
-            this.pagos[index].idMedioDePago = dato.id;
-            if (dato.nombre === 'Efectivo') {
-              this.indexEfectivo = index;
-              this.pagos[index].valorPagado = this.documentoActivo.totalFactura;
-            } else {
-              this.pagos[index].valorPagado = 0;
-            }
-          }); 
+          this.MedioP = datos.data! ;
+          this.MedioPInicial = datos.data! ;
+          this.getDocumentos();
         } else {
           this.MedioP = [];
+          Swal.fire('error en el servidor', 'No hay medios de pago disponible', 'error');    
         }  
         this.loading.hide();
       }),
@@ -534,10 +557,13 @@ export class VentasComponent implements AfterViewInit, OnInit {
       .afterClosed()
       .pipe(
         tap((response: responsePrd) => {
-          if (response.confirmado) {
-            this.codigoProducto = response.datoDevolucion!.id!.toString();
-            this.buscarClose = true;
-            this.buscarProducto();
+          if (response.confirmado && response.datoDevolucion !== undefined ) { 
+
+            let datoAsignacion:DtoDocumentoProducto = {
+             'producto': response.datoDevolucion    ,
+              'documento':this.documentoActivo
+            }
+            this.newAbrirDialog.open(IngresarProductoVentaComponent, { data:  datoAsignacion })  
           } else { 
             this.codigoProducto = '';
             this.irbuscarProducto();

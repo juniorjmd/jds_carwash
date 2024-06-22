@@ -1,6 +1,6 @@
  
 import { DecimalPipe } from "@angular/common";
-import { caja } from "../interfaces/caja.interface"; 
+import { caja } from "../../interfaces/caja.interface"; 
 
 
 export class cajasResumenModel{

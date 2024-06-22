@@ -10,7 +10,7 @@
                         <div class="container-fluid">
                             <a class="navbar-brand">Categorias</a>
                             <div class="d-flex" role="search">
-                                <input class="form-control me-2" [(ngModel)]='textFindCategoria' (keyup.enter)="getCaterogiasPorFiltro()" type="search" placeholder="Buscar" aria-label="Buscar">
+                                <input class="form-control me-2" [(ngModel)]='textFindCategoria' (keyup.enter)="getCaterogiasPorFiltro()" type="search" placeholder="Filtrar Cate" aria-label="Buscar">
                                 <button class="btn btn-outline-success" (click)="getCaterogiasPorFiltro()" type="button">Buscar</button>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                             <div class="container-fluid">
                                 <a class="navbar-brand">Marcas</a>
                                 <div class="d-flex" role="search">
-                                    <input class="form-control me-2" [(ngModel)]='textFindMarcas' (keyup.enter)="getMarcasPorFiltro()" type="search" placeholder="Buscar" aria-label="Buscar">
+                                    <input class="form-control me-2" [(ngModel)]='textFindMarcas' (keyup.enter)="getMarcasPorFiltro()" type="search" placeholder="Filtrar Marcas" aria-label="Buscar">
                                     <button class="btn btn-outline-success" (click)="getMarcasPorFiltro()" type="button">Buscar</button>
                                 </div>
                             </div>
@@ -38,14 +38,23 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-12" style="overflow: auto; height:100%;min-height: 500px;">
-            <table class="table">
-                <tr>
-                    <td>Filtro :</td>
-                    <td colspan="6">
+        <div class="col-sm-12" >
+            <nav class="navbar bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand">Categorias</a>
+                    <div class="d-flex" role="search">
                         <input type="text" [(ngModel)]='textFindProductos' (keyup.enter)="getProductosPorFiltro()" class="form-control" />
-                    </td>
-                </tr>
+                 
+                        <button class="btn btn-outline-success" (click)="getProductosPorFiltro()" type="button">Buscar</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+            <div class="row">
+                <div class="col-sm-12" style="overflow: auto; height:70%;min-height: 500px;max-height: 600px;">
+                         
+            <table class="table"> 
                 <tr>
                     <th class="centrado">Código</th> 
                     <th class="centrado">Nombre</th>

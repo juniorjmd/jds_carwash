@@ -4,7 +4,7 @@ import { ClientesOdoo } from '../interfaces/clientes-odoo';
 import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
-import { DocumentosModel } from '../models/documento.model';
+import { DocumentosModel } from '../models/ventas/documento.model';
 
 @Injectable({
     providedIn: 'root'

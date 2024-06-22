@@ -1,20 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ClientesOdoo, dfltAnswOdoo } from 'src/app/interfaces/clientes-odoo';
-import { select } from 'src/app/interfaces/generales.interface';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { datosMaestros } from 'src/app/interfaces/maestros.interface';
+import { ClientesOdoo, dfltAnswOdoo } from 'src/app/interfaces/clientes-odoo'; 
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import { CiudadModel } from 'src/app/models/maestros.model';
 import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services'; 
-import { loading } from 'src/app/models/app.loading';
-import { answDfltOdoo } from 'src/app/models/app.db.answDfltOdoo.model';
-
-
-import { VehiculosService } from 'src/app/services/vehiculos.service'; 
-
- 
-import { DocumentosModel } from 'src/app/models/documento.model';
-import {ClientesService} from 'src/app/services/Clientes.services'
-import { BuscarProductosComponent } from 'src/app/modules/pos/pages/buscar-productos/buscar-productos.component';
+import { loading } from 'src/app/models/app.loading';  
+import { DocumentosModel } from 'src/app/models/ventas/documento.model';
+import {ClientesService} from 'src/app/services/Clientes.services' 
 
 @Component({
   selector: 'app-fnd-cliente',
@@ -61,8 +52,10 @@ export class FndClienteComponent implements OnInit {
   busqueda:boolean = true;
   crear:boolean = true ; 
   constructor( public loading : loading, private MaestroClienteServices :MaestroClienteServices ,
-    public dialogo: MatDialogRef<BuscarProductosComponent>,
+
+    public dialogo: MatDialogRef<FndClienteComponent>,
     @Inject(MAT_DIALOG_DATA) public documentoActivo:DocumentosModel ,
+
     private clientesService:ClientesService       
     ) { 
     

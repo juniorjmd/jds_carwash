@@ -90,9 +90,9 @@
                         <h3 style="color: coral;">Medios de Pago</h3>
                     </td>
                 </tr>
-                <tr *ngFor="let medio of pagos; let i = index">
-                    <td><b>{{medio.nombreMedio!}}</b></td>
-                    <td><input class="o_input form-control" readonly type="number" [(ngModel)]='pagos[i].valorPagado'></td>
+                <tr *ngFor="let medio of MedioP; let i = index">
+                    <td><b>{{medio.nombre}}</b></td>
+                    <td><input class="o_input form-control" readonly type="number" [(ngModel)]='MedioP[i].valor_aux'></td>
                 </tr>
             </table>
         </div>

@@ -9,7 +9,7 @@ import { PROCEDURE, TABLA } from '../models/app.db.tables';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { AuxIngresoInventarioModule } from '../models/aux-ingreso-inventario/aux-ingreso-inventario.module';
-import { DocumentosModel } from '../models/documento.model';
+import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModule } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { Observable } from 'rxjs';
@@ -39,24 +39,7 @@ getProductosExistencia(codPrd:ProductoModule){
   console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
-getProductosPorCategoria(codCategoria:any){
-  let where = [{"columna" : "idCategoria" , "tipocomp" : '=' , "dato" : codCategoria  }]
-  let datos = {"action": actions.actionSelect , "_tabla" : vistas.productos,
-      "_limit" : [0,100] , "_where" : where  
-              };
-  console.log('servicios getProductosPorCategoria' ,this.baseUrl, datos, httpOptions());
-  return this.http.post(this.baseUrl, datos, httpOptions()) ;
-} 
 
-
-getProductosPorMarca(codMarca : any){
-  let where = [{"columna" : "idMarca" , "tipocomp" : '=' , "dato" : codMarca  }]
-  let datos = {"action": actions.actionSelect , "_tabla" : vistas.productos,
-      "_limit" : [0,100] , "_where" : where  
-              };
-  console.log('servicios getProductosPorMarca' ,this.baseUrl, datos, httpOptions());
-  return this.http.post(this.baseUrl, datos, httpOptions()) ;
-} 
 
 getTiposDeDocumentos(){
   let datos = {"action": actions.actionSelect ,
@@ -167,7 +150,7 @@ borrarPrecarguePorBodega(bodega:number){
 
 //actionStockMoveDevolucion
 
-guardarPrdCompra(producto :ProductoModule , documentoActivo:DocumentosModel ){
+guardarPrdCompra(producto :ProductoModule , documentoActivo:number ){
 
   let datos = {"action": actions.action_insertar_producto_venta , 
   "_producto_enviado" : producto , 
@@ -204,21 +187,6 @@ devolverPrdCompra(producto : DocumentoListado  ){
 }
 
 
-getProductosPorNombre(texto:string , limit?:any  ){
-  let datos ;
-  let where = [{"columna" : "nombre" , "tipocomp" : 'like' , "dato" : texto  }]
-  if( limit.length > 0 ){ 
-    datos = {"action": actions.actionSelect , "_tabla" : vistas.productos,
-      "_limit" : limit , "_where" : where  
-              }; }
-              else{
-                  datos = {"action": actions.buscarProducto  , "_tabla" : vistas.productos,
-                    "_where" : where  
-              };  
-              }
-  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
-  return this.http.post(this.urlInventario, datos, httpOptions()) ;
-} 
  
 getProductosGeneral(limit?:any): Observable<ProductoRequest|any>  {
   let datos;
@@ -232,7 +200,31 @@ getProductosGeneral(limit?:any): Observable<ProductoRequest|any>  {
   
   console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
   return this.http.post<ProductoRequest|any>(this.urlInventario, datos, httpOptions()) ;
-}   
+} 
+
+getProductosPorCategoria(codCategoria:any){ 
+  let datos = {"action": actions.get_all_products_by_category , "_id_cate" : codCategoria,
+      "_limit" : [0,100]   
+              };
+  console.log('servicios getProductosPorCategoria' ,this.urlInventario, datos, httpOptions());
+  return this.http.post(this.urlInventario, datos, httpOptions()) ;
+} 
+
+getProductosPorNombre(texto:string , limit?:any  ){
+  let datos  = {"action": actions.get_all_products_by_name ,"_dato_busqueda" : texto ,
+    "_limit" : limit
+  }; 
+  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
+  return this.http.post(this.urlInventario, datos, httpOptions()) ;
+} 
+
+getProductosPorMarca(codMarca : any){ 
+  let datos = {"action": actions.get_all_products_by_brand , "_id_brand" :codMarca,
+      "_limit" : [0,100] 
+              };
+  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
+  return this.http.post(this.urlInventario, datos, httpOptions()) ;
+} 
 
 // #endregion
  

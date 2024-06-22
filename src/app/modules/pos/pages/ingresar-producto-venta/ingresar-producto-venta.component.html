@@ -1,33 +1,21 @@
-<div class="container-fluid" style="min-width: 700px;">
-    <h3 *ngIf="!show">Buscando Productos</h3>
-    <div *ngIf="!show" class="row">
-        <div class="col-sm-12">
-            <p class="card-text">
-                parametro de Busqueda <b> {{codPrd}}</b>
-                <i ngclass="fas fa-sync-alt fa-spin" [ngClass]="{'fas': true, 'fa-sync-alt': true, 'fa-spin': show===false}"></i></p>
-        </div>
-    </div>
-
-
-
-    <div class="row" *ngIf="show">
+<div class="container-fluid" style="min-width: 700px;background-color: aliceblue">  
+    <h3 >Ingreso Productos a venta</h3>
+    <div class="row" >
         <div class="col-sm-7">
             <div class="card mb-3" style="max-width: 500px;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img style="max-width: 100px;" [src]="prdBusqueda.imagen!| ImgB64" alt="{{prdBusqueda.nombre}}">
+                        <img style="max-width: 100px;" [src]="(arrayDocPrd.producto?.images?.[0]?.url ?? '')| ImgB64" alt="{{arrayDocPrd.producto?.nombre}}">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <p class="card-text">{{ prdBusqueda.nombre }}</p>
-                            <p class="card-text"><b>precio: </b><small class="text-muted">{{ prdBusqueda.precioVenta }}</small>
-                                <br><b>precio base : </b><small class="text-muted">{{ prdBusqueda.PrecioSinIVA }}</small><br>
-                                <b>valor IVA : </b><small class="text-muted">{{ prdBusqueda.valorIVA }}</small>
-                                <br><b>Descuento: </b><small class="text-muted">{{ prdBusqueda.descuento }}</small>
-
-
-                                <br><b>IVA: </b><small class="text-muted">{{ prdBusqueda.porcent_iva}} %</small>
-                                <br><b>existencia: </b><small class="text-muted">{{ prdBusqueda.cantidad }}</small></p>
+                            <p class="card-text">{{ arrayDocPrd.producto?.nombre }}</p>
+                            <p class="card-text"><b>precio: </b><small class="text-muted">{{ arrayDocPrd.producto?.precioVenta }}</small>
+                                <br><b>precio base : </b><small class="text-muted">{{ arrayDocPrd.producto?.PrecioSinIVA??0 }}</small><br>
+                                <b>valor IVA : </b><small class="text-muted">{{ arrayDocPrd.producto?.valorIVA??0 }}</small>
+                                <br><b>Descuento: </b><small class="text-muted">{{ arrayDocPrd.producto?.descuento ??0}}</small>  
+                                <br><b>IVA: </b><small class="text-muted">{{ arrayDocPrd.producto?.porcent_iva}} %</small>
+                                <br><b>existencia: </b><small class="text-muted">{{ arrayDocPrd.producto?.cantidad }}</small></p>
                         </div>
                     </div>
                 </div>
@@ -70,10 +58,10 @@
     <h3 *ngIf="show_reemplazo">Productos Reemplazo</h3>
     <div *ngIf="show_reemplazo" class="row">
         <div *ngFor="let parcero  of parceros" class="col-sm-3">
-            <div class="card mb-3" style="max-width: 540px;" (click)="codPrd = parcero.id!.toString(); buscarProducto() ">
+            <div class="card mb-3" style="max-width: 540px;" (click)="codPrd = parcero.id!.toString(); ">
                 <div class="row g-0">
                     <div class="col-md-2">
-                        <img style="max-height: 50px;" [src]="parcero.imagen! | ImgB64" alt="{{parcero.imagen}}">
+                        <img style="max-height: 50px;" [src]="(parcero.imagen ??'') | ImgB64" alt="{{parcero.imagen}}">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">

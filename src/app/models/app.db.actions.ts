@@ -61,6 +61,9 @@
 
 
  export const actions = {
+  'get_all_products_by_name' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_NOMBRE',
+  'get_all_products_by_brand' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_MARCA',
+  'get_all_products_by_category' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_CATEGORIA',
   'get_all_products' : 'BUSCAR_TODOS_LOS_PRODUCTOS',
   'get_product' : 'BUSCAR_TODOS_LOS_PRODUCTOS',
   'action_get_documentos_usuario':'GET_DOCUMENTOS_USUARIO_ACTUAL',

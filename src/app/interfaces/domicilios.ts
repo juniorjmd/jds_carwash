@@ -1,5 +1,5 @@
 import { Time } from "@angular/common";
-import { DocumentosModel } from "../models/documento.model";
+import { DocumentosModel } from "../models/ventas/documento.model";
 import { Documento } from "./documento.interface";
 
 export interface Domicilios {

@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { caja } from 'src/app/interfaces/caja.interface';
 import { select } from 'src/app/interfaces/generales.interface';
 import { loading } from 'src/app/models/app.loading';
-import { cajaModel } from 'src/app/models/cajas.model';
+import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { cajasServices } from 'src/app/services/Cajas.services'; 
 

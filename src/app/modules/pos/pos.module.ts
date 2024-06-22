@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { PosRoutingModule } from './pos-routing.module';
 import { AbrirCajaComponent } from './pages/abrir-caja/abrir-caja.component';
-import { BuscarProdDirectoComponent } from './pages/buscar-prod-directo/buscar-prod-directo.component';
-import { BuscarProductosComponent } from './pages/buscar-productos/buscar-productos.component';
+import { BuscarProdDirectoComponent } from './pages/buscar-prod-directo/buscar-prod-directo.component'; 
 import { CerrarCajaComponent } from './pages/cerrar-caja/cerrar-caja.component';
 import { DefinirBaseCajaComponent } from './pages/definir-base-caja/definir-base-caja.component';
 import { MostrarProductoComponent } from './pages/mostrar-producto/mostrar-producto.component';
@@ -13,15 +12,14 @@ import { PagosVentaComponent } from './pages/pagos-venta/pagos-venta.component';
 import { POSComponent } from './pages/pos.component';
 import { ResumenCajaComponent } from './pages/resumen-caja/resumen-caja.component';
 import { VentasComponent } from './pages/ventas/ventas.component';
-import { FormsModule } from '@angular/forms'; 
-import { AppModule } from 'src/app/app.module';
+import { FormsModule } from '@angular/forms';  
 import { SharedModule } from '../shared/shared.module';
+import { IngresarProductoVentaComponent } from './pages/ingresar-producto-venta/ingresar-producto-venta.component';
  
 
 @NgModule({
   declarations: [  
-    POSComponent, 
-    BuscarProductosComponent,
+    POSComponent,  
     VentasComponent,
     AbrirCajaComponent,
     CerrarCajaComponent,
@@ -30,7 +28,8 @@ import { SharedModule } from '../shared/shared.module';
     MoverDocumentosComponent,
     MostrarProductoComponent,
     PagosVentaComponent,
-    BuscarProdDirectoComponent 
+    BuscarProdDirectoComponent,
+    IngresarProductoVentaComponent 
   ],
   imports: [
     CommonModule,

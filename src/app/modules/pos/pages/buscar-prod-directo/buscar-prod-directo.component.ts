@@ -46,21 +46,21 @@ export class BuscarProdDirectoComponent  {
        (respuesta:any)=>{
          if (respuesta.error === 'ok'){
             if (respuesta.numdata > 0 ){
-              this.listPrdBusqueda =  respuesta.data;
-  
+              const productos = respuesta.productos; 
+              console.log('producto general' , productos)
+              this.listPrdBusqueda = productos   
             }else{ 
-              Swal.fire('la busqueda no genero ningun resultado' , "error");
+              Swal.fire(  "error",  'la busqueda no genero ningun resultado', "error" );
                } 
-          }else{
-            
-            Swal.fire(respuesta.error , "error"); 
+          }else{ 
+            Swal.fire(  "error", respuesta.error , "error"); 
           } 
           console.log('getProductosPorCategoria',JSON.stringify(respuesta));
-          this.loading.hide();
+         
          
           } , error:    error => { this.loading.hide();  
-                    Swal.fire(error , "error"); 
-          } }
+                    Swal.fire(  "error", error , "error"); 
+          },complete:()=>  this.loading.hide() }
      );
     }
    buscarProductos(){
@@ -70,48 +70,43 @@ export class BuscarProdDirectoComponent  {
      this.prdService.getProductosGeneral([0,30]).subscribe({
       next :  (respuesta:any)=>{
          if (respuesta.error === 'ok'){
-            if (respuesta.numdata > 0 ){
-
+            if (respuesta.numdata > 0 ){ 
               const productos = respuesta.productos; 
-              console.log('producto general' , productos)
+              console.log('producto general ===>>>' , productos)
               this.listPrdBusqueda = productos   
-            }else{Swal.fire('la busqueda no genero ningun resultado') 
+            }else{Swal.fire(  "error", 'la busqueda no genero ningun resultado') 
                } 
           }else{ 
             
-            Swal.fire( "getProductosGeneral" , respuesta.error ,"error"  );
+            Swal.fire(  "error - getProductosGeneral" , respuesta.error ,"error"  );
           } 
           console.log('getProductosPorCategoria',JSON.stringify(respuesta));
           this.loading.hide();
          
           }, error :  error => {this.loading.hide();
-            Swal.fire( error ,"getProductosGeneral" , "error"  );
+            Swal.fire(  "error - getProductosGeneral",  error  , "error"  );
           } }
      );
     }
    buscarPorCategoria(categoria:dfltAnswOdoo2){
-    this.listPrdBusqueda = [];
-     console.log('categoria' , categoria); 
+    this.listPrdBusqueda = []; 
       this.loading.show() 
       this.prdService.getProductosPorCategoria(categoria.dato ).subscribe(
         (respuesta:any)=>{
           if (respuesta.error === 'ok'){
-             if (respuesta.numdata > 0 ){
-              respuesta.data!.forEach((value:any,index:number) => {  
-                this.listPrdBusqueda[index] = value ;  
-              }); 
-   
-             }else{Swal.fire('no existen productos con la categoria '+ categoria.label) 
+             if (respuesta.numdata > 0 ){ 
+               this.listPrdBusqueda = respuesta.productos?? [] ;   
+             }else{Swal.fire(  "error", 'no existen productos con la categoria '+ categoria.label) 
                 } 
            }else{
-             Swal.fire(respuesta.error);
+             Swal.fire(  "error", respuesta.error);
            } 
            console.log('getProductosPorCategoria',JSON.stringify(respuesta));
            this.loading.hide();
           
            },
            error => {this.loading.hide();
-             Swal.fire( error.error.error);
+             Swal.fire(  "error",  error.error.error);
            } 
       );
      }
@@ -126,27 +121,23 @@ export class BuscarProdDirectoComponent  {
     this.listPrdBusqueda = [];
     console.log('marca' , marca);
     this.loading.show() 
-      this.prdService.getProductosPorMarca(marca.dato ).subscribe(
+      this.prdService.getProductosPorMarca(marca.dato ).subscribe( {
+        next:
         (respuesta:any)=>{
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){
-
-              respuesta.data!.forEach((value:any,index:number) => { 
-                this.listPrdBusqueda[index] = value ;  
-              }); 
-   
-             }else{Swal.fire('no existen productos de la marca '+ marca.label) 
+                this.listPrdBusqueda = respuesta.productos?? [] ;  
+             }else{Swal.fire(  "error", 'no existen productos de la marca '+ marca.label) 
                 } 
            }else{
-             Swal.fire(respuesta.error);
+             Swal.fire(  "error", respuesta.error);
            } 
-           console.log('getProductosPorMarca',JSON.stringify(respuesta));
-           this.loading.hide();
+           console.log('getProductosPorMarca',JSON.stringify(respuesta)); 
           
-           },
-           error => {this.loading.hide();
-             Swal.fire( error.error.error);
-           } 
+           },error: error => {
+             Swal.fire(  "error",  error.error.error);
+           },complete: ()=> this.loading.hide()
+           }
       );
 
    }
@@ -158,8 +149,7 @@ export class BuscarProdDirectoComponent  {
       this.loading.show()
       this.categorias = [];
       
-      datos.data!.forEach((value:any )=>{ 
-        console.log('getCategorias',value); 
+      datos.data!.forEach((value:any )=>{  
         this.categorias.push({
           "dato": value.id,
           "label":value.nombre,
@@ -170,7 +160,7 @@ export class BuscarProdDirectoComponent  {
       })       
       this.categoriasAux = this.categorias ;
       this.loading.hide() ;
-      console.log('categorias',this.categorias);
+     // console.log('categorias',this.categorias);
     });
 
   }
@@ -179,11 +169,7 @@ export class BuscarProdDirectoComponent  {
        console.log('setMarcas ODDO' , JSON.stringify(datos));
       this.loading.show()
       this.marcas = [];
-      datos.data!.forEach((value:any,index:number)=>{
-        console.log('value' , value,'index',index);
-        
-       /* this.categorias[index].dato = value.id;
-        this.categorias[index].label = value.display_name;*/
+      datos.data!.forEach((value:any,index:number)=>{ 
         this.marcas.push({
           "dato": value.id,
           "label":value.nombre,
@@ -193,7 +179,7 @@ export class BuscarProdDirectoComponent  {
     
       }) 
       this.marcasAux = this.marcas;
-      console.log(this.categorias);
+      // console.log(this.categorias);
       
       this.loading.hide() ;
     });

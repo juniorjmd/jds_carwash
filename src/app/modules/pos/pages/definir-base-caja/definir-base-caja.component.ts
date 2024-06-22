@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, NgModule } from '@angular/core'; 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { cajaModel } from 'src/app/models/cajas.model';
+import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { loading } from 'src/app/models/app.loading'; 
 import { cajasServices } from 'src/app/services/Cajas.services';
 

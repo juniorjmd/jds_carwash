@@ -2,8 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { select } from 'src/app/interfaces/generales.interface';
 import { loading } from 'src/app/models/app.loading';
-import { cajaModel } from 'src/app/models/cajas.model';
-import { DocumentosModel } from 'src/app/models/documento.model';
+import { cajaModel } from 'src/app/models/ventas/cajas.model';
+import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocumentoService } from 'src/app/services/documento.service';
 
 @Component({

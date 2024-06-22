@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, Time } from '@angular/common';
-import { DocumentosModel } from '../documento.model';
+import { DocumentosModel } from '../ventas/documento.model';
 
 
 

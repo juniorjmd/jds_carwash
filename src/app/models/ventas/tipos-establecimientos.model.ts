@@ -1,4 +1,4 @@
-import { TiposEstablecimientos } from "../interfaces/tipos-establecimientos";
+import { TiposEstablecimientos } from "../../interfaces/tipos-establecimientos";
 
 export class TiposEstablecimientosModel {
     id!:number;

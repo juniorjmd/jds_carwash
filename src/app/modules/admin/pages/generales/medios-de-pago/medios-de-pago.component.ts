@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Establecimientos } from 'src/app/interfaces/establecimientos.interface';
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
-import { establecimientoModel } from 'src/app/models/establecimientos.model';
+import { establecimientoModel } from 'src/app/models/ventas/establecimientos.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { loading } from 'src/app/models/app.loading';
 import { select } from 'src/app/interfaces/generales.interface';
-import { MediosDePagoModel } from 'src/app/models/medios-de-pago.model';
+import { MediosDePagoModel } from 'src/app/models/ventas/medios-de-pago.model';
 
 @Component({
   selector: 'app-medios-de-pago',

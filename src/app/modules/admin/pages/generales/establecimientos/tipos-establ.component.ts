@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select } from 'src/app/interfaces/generales.interface';
-import { TiposEstablecimientosModel } from 'src/app/models/tipos-establecimientos.model';
+import { TiposEstablecimientosModel } from 'src/app/models/ventas/tipos-establecimientos.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { loading } from 'src/app/models/app.loading';
 @Component({

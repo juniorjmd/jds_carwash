@@ -12,7 +12,7 @@ import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { EmpleadosService } from 'src/app/services/empleados.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EstablecerCajaComponent } from '../establecer-caja/establecer-caja.component';
-import { cajaModel } from 'src/app/models/cajas.model';
+import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { caja } from 'src/app/interfaces/caja.interface';
 import { ParametrosModule } from 'src/app/models/parametros/parametros.module';

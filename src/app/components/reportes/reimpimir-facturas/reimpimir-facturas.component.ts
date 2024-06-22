@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { DocumentosModel } from 'src/app/models/documento.model';
+import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { loading } from 'src/app/models/app.loading';
 import { select } from 'src/app/interfaces/generales.interface';
 import Swal from 'sweetalert2';
 import { ConectorPlugin } from 'src/app/models/app.printer.con';
-import { DocpagosModel } from 'src/app/models/pagos.model';
+import { DocpagosModel } from 'src/app/models/ventas/pagos.model';
 import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { printer, url } from 'src/app/models/app.db.url';
 import { CurrencyPipe } from '@angular/common';

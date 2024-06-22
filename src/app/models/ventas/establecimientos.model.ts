@@ -1,5 +1,5 @@
  
-import { Establecimientos } from "../interfaces/establecimientos.interface";
+import { Establecimientos } from "../../interfaces/establecimientos.interface";
 
 export class establecimientoModel{
     id!:number;

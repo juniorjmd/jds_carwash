@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { caja } from 'src/app/interfaces/caja.interface';
 import { select } from 'src/app/interfaces/generales.interface';
-import { cajaModel } from 'src/app/models/cajas.model';
+import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { loading } from 'src/app/models/app.loading';
 import { cajasServices } from 'src/app/services/Cajas.services'; 
-import { establecimientoModel } from 'src/app/models/establecimientos.model';
+import { establecimientoModel } from 'src/app/models/ventas/establecimientos.model';
 import { Establecimientos } from 'src/app/interfaces/establecimientos.interface';
 import { ParametrosService } from 'src/app/services/parametros.service';
 import { ParametrosModule } from 'src/app/models/parametros/parametros.module';

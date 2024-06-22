@@ -3,9 +3,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { select } from 'src/app/interfaces/generales.interface';
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
 import { loading } from 'src/app/models/app.loading';
-import { cajaModel } from 'src/app/models/cajas.model';
-import { DocumentosModel } from 'src/app/models/documento.model';
-import { DocpagosModel, pagosModel } from 'src/app/models/pagos.model';
+import { cajaModel } from 'src/app/models/ventas/cajas.model';
+import { DocumentosModel } from 'src/app/models/ventas/documento.model';
+import { DocpagosModel, pagosModel } from 'src/app/models/ventas/pagos.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { DocumentoService } from 'src/app/services/documento.service';
 

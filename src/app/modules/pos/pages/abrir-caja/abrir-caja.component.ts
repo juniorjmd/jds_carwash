@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { cajaModel } from 'src/app/models/cajas.model';
+import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { loading } from 'src/app/models/app.loading'; 
 import { caja } from 'src/app/interfaces/caja.interface';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DefinirBaseCajaComponent } from '../definir-base-caja/definir-base-caja.component';
 import { ResumenCajaComponent } from '../resumen-caja/resumen-caja.component';
-import { cajasResumenModel } from 'src/app/models/cajasResumen.model';
+import { cajasResumenModel } from 'src/app/models/ventas/cajasResumen.model';
 @Component({
   selector: 'app-abrir-caja',
   templateUrl: './abrir-caja.component.html',

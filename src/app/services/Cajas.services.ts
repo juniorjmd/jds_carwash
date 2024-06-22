@@ -7,13 +7,13 @@ import { HttpClient } from '@angular/common/http';
 import { PROCEDURE, TABLA } from '../models/app.db.tables';
 
 import { loading } from 'src/app/models/app.loading'; 
-import { cajaModel } from '../models/cajas.model';
-import { establecimientoModel } from '../models/establecimientos.model';
-import { TiposEstablecimientosModel } from '../models/tipos-establecimientos.model';
+import { cajaModel } from '../models/ventas/cajas.model';
+import { establecimientoModel } from '../models/ventas/establecimientos.model';
+import { TiposEstablecimientosModel } from '../models/ventas/tipos-establecimientos.model';
 import { Establecimientos } from '../interfaces/establecimientos.interface';
 import { Contador } from '../interfaces/contador';
-import { MediosDePagoModel } from '../models/medios-de-pago.model';
-import { DocpagosModel } from '../models/pagos.model';
+import { MediosDePagoModel } from '../models/ventas/medios-de-pago.model';
+import { DocpagosModel } from '../models/ventas/pagos.model';
 
 
 @Injectable({

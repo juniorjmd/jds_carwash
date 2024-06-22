@@ -1,5 +1,5 @@
 import { answDfltOdoo } from "../models/app.db.answDfltOdoo.model";
-import { DocumentosModel } from "../models/documento.model";
+import { DocumentosModel } from "../models/ventas/documento.model";
 import { ProductoModule } from "../models/producto/producto.module";
 
 export interface ClientesOdoo {
