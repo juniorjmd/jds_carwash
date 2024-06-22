@@ -19,6 +19,7 @@ export class NavbarComponent {
   menusUsuario: RecursoDetalle[] = [];
   usuario?: Usuario;
   isDropdownActive = true;
+  moduleActive = '';
 
   margin = 0;
   constructor(
@@ -28,12 +29,11 @@ export class NavbarComponent {
     private _Router: Router
   ) {
     this.getUsuarioLogeado();
-
     this.llaveIncio = '';
     this._datosInicialesService.getDatosIniSucursal().subscribe({
       next: (data: any) => {
         this.sucursal = data;
-        console.log(this.sucursal);
+        // console.log(this.sucursal);
       },
       error: (error) => alert(error.error.error),
     });
@@ -45,14 +45,13 @@ export class NavbarComponent {
   async getUsuarioLogeado() {
     try {
       const ServLogin = await this._ServLogin.getUsuarioLogeadoAsync();
-      const datos: any = ServLogin;
-      console.log('retorno', datos);
+      const datos: any | select = await ServLogin;
+
       let usuario: Usuario;
       usuario = datos.data.usuario;
       this.usuario = usuario;
 
       this.menusUsuario = this.getMenuImage(usuario);
-
       console.log(
         'estoy en getUsuarioLogeado en navbar component',
         this.menusUsuario
@@ -69,27 +68,46 @@ export class NavbarComponent {
     let menuCard: RecursoDetalle[] = [];
     let menu = usuario.permisos;
     let margin = 0;
-    console.log('get menu usuario navbar', usuario, menu);
+    console.log(usuario, menu);
 
     menu!.forEach((detalle, index) => {
-     // console.log('recorrido', index, detalle);
-      if (detalle.recurso.tipo === 'ul-nav') {
+      // console.log('recorrido',index ,detalle );
+      if (detalle.recurso.tipo === 'card') {
         menuCard[margin] = detalle.recurso;
-        margin++;
+        margin = margin + 1;
       }
     });
+    switch (margin) {
+      case 1:
+        this.margin = 4;
+        break;
+      case 2:
+        this.margin = 3;
+        break;
+      case 3:
+        this.margin = 2;
+        break;
+    }
 
     return menuCard;
   }
   confirmLogout() {
     const message = '¿Estás seguro de que deseas cerrar sesión?';
-    this.modalService.openConfirmationModal(message)
-      .then((result) => {
-        if (result) {
-          this._Router.navigate(['/']);
-        } else {
-          console.log('Cancelado');
-        }
-      });
+    this.modalService.openConfirmationModal(message).then((result) => {
+      if (result) {
+        this._Router.navigate(['/']);
+      } else {
+        console.log('Cancelado');
+      }
+    });
+  }
+  changeModule(module: string) {
+    this.moduleActive = `${module}`.split(',')[1];
+    // alert( this.moduleActive)
+    this._Router.navigate([`home/${this.moduleActive}`]);
+    if (this.moduleActive==='pos') {
+      this.moduleActive='punto de venta'
+      
+    }
   }
 }

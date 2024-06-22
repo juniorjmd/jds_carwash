@@ -25,6 +25,7 @@ export class InicioComponent implements OnInit {
     try {
       const ServLogin = await  this._ServLogin.getUsuarioLogeadoAsync(); 
       const datos:any|select  = await ServLogin; 
+  
       console.log('retorno', datos);  
       let usuario : Usuario ;
       usuario = datos.data.usuario ; 
