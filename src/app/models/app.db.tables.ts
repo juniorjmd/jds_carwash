@@ -6,7 +6,7 @@
    PARAMETROS:'parametros',
    empleados:'empleados',
    vehiculos_servicios_costos:'vehiculos_servicios_costos',
-   TiposServicios : 'vehiculos_servicios_tipos',
+   TiposServicios : 'inv_mst_tipos_servicios',// vehiculos_servicios_tipos
    vehiculos_servicios :'vehiculos_servicios',
     SUCURSAL : DATOS_SUCURSAL ,
     ciudades : "ciudades" ,

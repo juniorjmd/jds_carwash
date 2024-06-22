@@ -107,7 +107,7 @@ Swal.fire({
   this.tiposVehiculo  = [];
 
 
-    this.tiposServicio[0] =  new TiposServiciosModule('',0,'','');
+    this.tiposServicio[0] =  new TiposServiciosModule('','','');
     this.loading.show()
     this.VehiculosService.getTiposServicios().subscribe(
       (datos:any)=>{
@@ -116,7 +116,7 @@ Swal.fire({
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:TiposServiciosModule , index:number )=>{
         this.tiposServicio[index] = new TiposServiciosModule(
-          dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
+          dato.nombre , dato.estadoNombre , dato.descripcion 
         ) ;
       }) 
       console.log(this.tiposServicio);
