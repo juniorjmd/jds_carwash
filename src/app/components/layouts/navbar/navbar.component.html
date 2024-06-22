@@ -1,21 +1,20 @@
 <nav
   *ngIf="sucursal.length > 0"
-  class="navbar navbar-expand-lg navbar-light px-4 sticky-top d-flex  justify-content-around align-items-center text-light"
+  class="mb-3 navbar navbar-expand-lg navbar-light px-4 top-0 sticky-top d-flex  justify-content-around align-items-center text-light"
   style="background-color: #c9a8a9"
 >
-  <p
-    style="cursor: pointer"
-    class="navbar-brand"
-    (click)="changeModule('vfff,inicio')"
-  >
+
     <img
+    style="cursor: pointe;"
+    class=""
+    (click)="changeModule('vfff,inicio')"
       [src]="sucursal[0].logo"
       width="30"
       height="30"
       alt=""
       loading="lazy"
     />
-  </p>
+ 
 
   <div
     class="container-fluid d-flex justify-content-around align-items-center"
