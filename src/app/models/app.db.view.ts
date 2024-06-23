@@ -32,7 +32,7 @@
     contadores:'vw_contadores',
     tipos_documentos_con_cont: 'vw_t_documentos_con_cont',
     domicilios:'vw_documentos_domicilio',
-    vehiculos_servicios_tipos:'vw_vehiculos_servicios_tipos',
+    vehiculos_servicios_tipos:'vw_inv_mst_tipos_servicios',
     productos:'vw_productos_con_existencia',
     marcas:'vw_inv_marcas' , 
     prd_inventario:'vw_prd_inventario',

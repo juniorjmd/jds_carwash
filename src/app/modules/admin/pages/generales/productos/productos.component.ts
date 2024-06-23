@@ -48,8 +48,7 @@ export class ProductosComponent implements OnInit {
                         ];
   marcas:MarcasModule[] = [this.marcasAux];
   newProducto:ProductoModule = new ProductoModule( '' , '' ,0 ,0,'0','0', 0,0,0,0,0,'','','',0, ''  ) ; 
-
-
+  textFindProductos:string = '';
   constructor(private loading : loading,
     private productoService:ProductoService,
     
@@ -59,6 +58,43 @@ export class ProductosComponent implements OnInit {
      this.getBodegas();
      this.getCategorias_marcas(); 
      }
+     
+   getProductosPorFiltro(){
+    console.log('busqueda productos inicial' ); 
+     this.loading.show()  
+     this.productoService.getProductosPorNombre( this.textFindProductos ,[0,30] ).subscribe(
+
+      {next :
+       (respuesta:any)=>{
+         if (respuesta.error === 'ok'){
+            if (respuesta.numdata > 0 ){
+              const productos = respuesta.productos; 
+              console.log('producto general' , productos)
+              this.Productos = productos   
+            }else{ 
+              Swal.fire(  "error",  'la busqueda no genero ningun resultado', "error" );
+               } 
+          }else{ 
+            Swal.fire(  "error", respuesta.error , "error"); 
+          } 
+          console.log('getProductosNombre',JSON.stringify(respuesta));
+         
+         
+          } , error:    error => { this.loading.hide();  
+                    Swal.fire(  "error", error , "error"); 
+          },complete:()=>  this.loading.hide() }
+     );
+    }
+    setCategoria2(){ 
+      
+        this.categorias2 = [ this.categoriaAux ];
+        this.categorias3  = [ this.categoriaAux ];
+        this.categorias2  = this.categorias.filter( x=> x.idPadreCategoria == this.newProducto.idCategoria  )
+    }
+    setCategoria3(){ 
+      this.categorias3  = [ this.categoriaAux ];
+      this.categorias3  = this.categorias2.filter( x=> x.idPadreCategoria == this.newProducto.idCategoria  )
+    }
      busquedaAuxiliarProducto( ){ 
       let text = $("#bodegasSelect option:anyed").text()
       if(this.inventario.bodega <= 0) {
@@ -119,20 +155,15 @@ export class ProductosComponent implements OnInit {
 
      getBodegas(){ 
       this.bodegas   = [this.auxBodega];
-      this.productoService.getbodegas( ).subscribe(
+      this.productoService.getbodegas( ).subscribe({next : 
         (datos:any)=>{
-           console.log(datos);
+           console.log('producto component - get bodegas' , datos);
       if (datos.numdata > 0 ){ 
-         
-       let  cont = 1 ; 
-        datos.data!.forEach((dato:BodegasModule , index:number )=>{
-          this.bodegas[cont] = dato;
-          cont++;
-        }) 
+        this.bodegas = datos.data! 
       }else{
         this.bodegas   = [this.auxBodega];   }
-          this.loading.hide()
-        } ,
+          
+        } , error:
         error => {this.loading.hide();
           console.error('getbodegas',error) 
           try {
@@ -141,7 +172,7 @@ export class ProductosComponent implements OnInit {
             Swal.fire( 'error interno, validar con el administrador del sitio', '', 'error');
           }
         }
-        );
+        , complete : ()=>this.loading.hide()    }  );
      }
      cerrarInventario(){
       if(this.inventario.bodega <= 0)
@@ -229,10 +260,65 @@ export class ProductosComponent implements OnInit {
      editarPrd(prd:ProductoModule){
       this.removeGetActivo('CrearPrdLink'); 
       this.limpiarFormulario()
+      this.categorias2 = [...this.categorias ];
+        this.categorias3  = [...this.categorias ];
       this.newProducto = prd;
      }
 
+
      existencias(prd:ProductoModule){
+      if (prd.existencias.length > 0 ){ 
+        this.existenciasPrd = prd.existencias; 
+        console.log(this.existenciasPrd);
+        let pagosHtml:string =  `<h1>Producto : <br>${this.existenciasPrd[0].nombre_producto}</h1>
+        <table class='table' style='font-size:12px'> 
+        <tr><td colspan='10' > <h1>Existentencias y Movimientos</h1><td></tr> 
+        <tr>
+        <td>Bodega</td>
+        <td>ultimo mov.</td>
+        <td>fecha</td>
+        <td>usuario</td>
+        <td>cnt. inicial</td>
+        <td>cnt. actual</td>
+        <td>ventas</td>
+        <td>compras</td>
+        <td>devoluciones</td>
+        <td>remisionada</td> 
+        </tr>
+       `;
+       // cantInicial, cantActual, compras, ventas, devoluciones, stock, remisionada,
+       
+       this.existenciasPrd!.forEach(pago=>{
+         pagosHtml +=`<tr> `;
+         pagosHtml +=`<td>${pago.nombreBodega}</td> `;
+         pagosHtml +=`<td nowrap>${pago.ult_mov}</td> `;
+         pagosHtml +=`<td nowrap>${pago.fecha_ultimo_cambio}</td> `;
+         pagosHtml +=`<td nowrap>${pago.nombreUsuario_ult_mov}</td> `;
+         pagosHtml +=`<td nowrap>${pago.cant_inicial}</td> `;
+         pagosHtml +=`<td nowrap>${pago.cant_actual}</td> `;
+         pagosHtml +=`<td nowrap>${pago.ventas}</td> `;
+         pagosHtml +=`<td nowrap>${pago.compras}</td> `;
+         pagosHtml +=`<td nowrap>${pago.devoluciones}</td> `;
+         pagosHtml +=`<td nowrap>${pago.remisiones}</td> `;
+         pagosHtml +=`</tr> `;
+       })
+   
+   
+       pagosHtml += '</table>'
+   
+   
+   
+       Swal.fire({html:pagosHtml, width: '900px'});
+
+
+
+
+      }else{
+        this.existenciasPrd = [];
+        Swal.fire( 'el producto ' + prd.nombre+ ' no posee existencias en ninguna bodega!!', '', 'error');
+      }
+     }
+     existencias_old(prd:ProductoModule){
       this.loading.show()
       this.productoService.getProductosExistencia(prd).subscribe(
         {
@@ -408,9 +494,8 @@ export class ProductosComponent implements OnInit {
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:ProductoModule , index:number )=>{
-        this.Productos[index] = dato;
-      }) 
+
+      this.Productos = datos.productos 
       console.log(this.Productos);
     }else{
       this.Productos = [];

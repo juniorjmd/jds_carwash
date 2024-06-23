@@ -9,8 +9,7 @@ import { ModelBase } from '../ModelBase';
 export class TiposServiciosModule extends ModelBase {
   constructor(
     @Inject(String) public nombre: string,
-    // @Inject(Number) public estado: number,
-    @Inject(String) public estadoNombre: string,
+    // @Inject(Number) public estado: number, 
     @Inject(String) public descripcion?: string
      // @Inject(Number) public id?: number
   ) {

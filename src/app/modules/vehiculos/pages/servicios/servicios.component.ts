@@ -44,18 +44,14 @@ export class ServiciosComponent implements OnInit {
 
 
    getTiposServicios(){ 
-    this.tiposServicio[0] =  new TiposServiciosModule('','','');
+    this.tiposServicio[0] =  new TiposServiciosModule('','' );
     this.loading.show()
     this.VehiculosService.getTiposServicios().subscribe(
       (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:TiposServiciosModule , index:number )=>{
-        this.tiposServicio[index] = new TiposServiciosModule(
-          dato.nombre, dato.estadoNombre , dato.descripcion 
-        ) ;
-      }) 
+      this.tiposServicio =   datos.data!  
       console.log(this.tiposServicio);
     }else{
       this.tiposServicio = [];

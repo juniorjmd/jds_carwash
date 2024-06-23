@@ -107,7 +107,7 @@ Swal.fire({
   this.tiposVehiculo  = [];
 
 
-    this.tiposServicio[0] =  new TiposServiciosModule('','','');
+    this.tiposServicio[0] =  new TiposServiciosModule('','' );
     this.loading.show()
     this.VehiculosService.getTiposServicios().subscribe(
       (datos:any)=>{
@@ -116,7 +116,7 @@ Swal.fire({
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:TiposServiciosModule , index:number )=>{
         this.tiposServicio[index] = new TiposServiciosModule(
-          dato.nombre , dato.estadoNombre , dato.descripcion 
+          dato.nombre ,  dato.descripcion 
         ) ;
       }) 
       console.log(this.tiposServicio);
@@ -182,12 +182,8 @@ Swal.fire({
       (datos:any)=>{
          console.log(datos);
          
-    if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:TipoVehiculoModule , index:number )=>{
-        this.tiposVehiculo[index] = new TipoVehiculoModule(
-          dato.nombre,  dato.estado , dato.estadoNombre , dato.descripcion , dato.id
-        ) ;
-      }) 
+    if (datos.numdata > 0 ){
+      this.tiposVehiculo = datos.data! ;   
       console.log(this.tiposVehiculo);
     }else{
       this.tiposVehiculo = [];

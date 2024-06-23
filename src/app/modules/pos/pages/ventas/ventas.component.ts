@@ -65,29 +65,38 @@ export class VentasComponent implements AfterViewInit, OnInit {
     private _Router: Router
   ) {  
     console.clear();
+    this.getUsuarioLogueado();
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {  
     this.getMediosP();
   }
 
   ngAfterViewInit(): void {
     this.irbuscarProducto();
   }
+  getUsuarioLogueado(){
+    this._ServLogin.getUsuarioLogeado().subscribe(
+      {
+        next:(request) => {
+          this.getMenuImage(request.data.usuario)
+        } ,
+        error: error=>{console.error('Error getUsuarioLogeado', error);} 
+      }
+    )
+  }
 
   getMenuImage(usuario: Usuario) {
     let menuCard: RecursoDetalle[] = [];
     let menu = usuario.permisos;
     let margin = 0;
-    console.log(usuario, menu);
+    console.log( 'permisos usuario' , usuario, menu);
 
-    menu!.forEach((detalle, index) => {
-      //console.log('recorrido', index, detalle); 
-      if (detalle.recurso.tipo === 'boton') {
-        menuCard[margin] = detalle.recurso;
-        margin = margin + 1;
+    let menuDetalleBtn =  usuario.permisos.filter(x=> x.recurso.tipo === 'BOTON' )
+    console.log(menuDetalleBtn);
+    menuDetalleBtn!.forEach((detalle ) => { 
 
-        switch (detalle.recurso.nombre_recurso) {
+        switch (detalle.recurso.nombre_recurso.trim()) {
           case 'crear cotizacion':
             this.cotiza = true; 
             break;
@@ -104,7 +113,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
             this.domicilio = true;
             break;
         }
-      }
+       
     });
 
     return menuCard;

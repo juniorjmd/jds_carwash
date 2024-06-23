@@ -241,6 +241,7 @@ eliminarTiposServicios(oldTipoVh:TiposServiciosModule){
  public guardarTiposServicios(nuevoTipo : TiposServiciosModule){
   let arrayDatos:any=new Object() 
   let where:any[] = []
+  arrayDatos['usuario_creacion'] = 'USUARIO_LOGUEADO'; 
   arrayDatos['nombre'] = nuevoTipo.nombre; 
   arrayDatos['descripcion'] = nuevoTipo.descripcion; 
   arrayDatos['estado'] = nuevoTipo.estado;
@@ -267,7 +268,7 @@ geTiposVehiculos(){
   let datos = {"action": actions.actionSelect ,
                "_tabla" : vistas.vehiculos_tipos
               };
-  console.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
+  console.log('servicios de servicios vehiculos activo - geTiposVehiculos' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
 } 
 

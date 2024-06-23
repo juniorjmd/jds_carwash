@@ -19,13 +19,27 @@
     <hr>
     <div class="row">
         <div class="col-sm-1"></div>
+        <div class="col-sm-10" >
+            <nav class="navbar bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand">Categorias</a>
+                    <div class="d-flex" role="search">
+                        <input type="text" [(ngModel)]='textFindProductos' (keyup.enter)="getProductosPorFiltro()" class="form-control" />
+                 
+                        <button class="btn btn-outline-success" (click)="getProductosPorFiltro()" type="button">Buscar</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <table class="table" *ngIf="Productos.length > 0">
                 <tr>
-
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; referencia&nbsp;&nbsp;&nbsp;&nbsp; </th>
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; nombre&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; Tipo&nbsp;&nbsp;&nbsp;&nbsp; </th> 
+                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; Tipo&nbsp;&nbsp;&nbsp;&nbsp; </th>
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; porcent_iva&nbsp;&nbsp;&nbsp;&nbsp; </th>
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; categoria&nbsp;&nbsp;&nbsp;&nbsp; </th>
                     <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; marca&nbsp;&nbsp;&nbsp;&nbsp; </th>
@@ -36,21 +50,17 @@
                 <tr *ngFor="let Producto of Productos">
                     <td>{{Producto.id }}</td>
                     <td>{{Producto.nombre }}</td>
-                    <td>{{Producto.tipo_prod_nombre }}</td> 
+                    <td>{{Producto.tipo_prod_nombre }}</td>
                     <td class="centrado">{{Producto.porcent_iva }} %</td>
                     <td noWrap>{{Producto.nombreMarca }}</td>
                     <td>{{Producto.categoria?.nombre }}</td>
                     <td title="editar producto">
-                        <i class="fas fa-pencil-alt boton_activo" (click)="editarPrd(Producto)"> </i> </td>
-
-                    <td title="mostrar existencias">
-                        <i class="fas fa-address-card boton_activo" (click)="existencias(Producto)"></i>
-
+                        <i class="bi bi-pencil-fill boton_activo" (click)="editarPrd(Producto)"></i>
                     </td>
-
+                    <td title="mostrar existencias">
+                        <i class="bi bi-card-list boton_activo" (click)="existencias(Producto)"></i>
+                    </td>
                 </tr>
-
-
             </table>
         </div>
     </div>
@@ -62,9 +72,8 @@
             <h2 class='centrado'>creacion nuevo de productos</h2>
         </div>
     </div>
-
     <div class="row">
-        <div class="col-sm-1"> </div>
+        <div class="col-sm-1"></div>
         <div class="col-sm-3">
             <div class="col-sm-10">Nombre : </div>
             <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.nombre" class="form-control" placeholder="nombre principal "></div>
@@ -76,96 +85,73 @@
         <div class="col-sm-3">
             <div class="col-sm-10">Categoria : </div>
             <div class="col-sm-12">
-                <select class="form-control" [(ngModel)]="newProducto.idCategoria">
-                    <option *ngFor="let categoria of categorias"  value ={{categoria.id}}>{{categoria.nombre}}</option>
+                <select class="form-control" [(ngModel)]="newProducto.idCategoria" (change)="setCategoria2()">
+                    <option *ngFor="let categoria of categorias" value="{{categoria.id}}">{{categoria.nombre}}</option>
                 </select>
-
             </div>
             <div class="col-sm-10">Categoria 2 : </div>
             <div class="col-sm-12">
-                <select class="form-control" [(ngModel)]="newProducto.idCategoria2">
-                    <option *ngFor="let categoria of categorias"  value ={{categoria.id}}>{{categoria.nombre}}</option>
+                <select class="form-control" [(ngModel)]="newProducto.idCategoria2" (change)="setCategoria3()">
+                    <option *ngFor="let categoria of categorias2" value="{{categoria.id}}">{{categoria.nombre}}</option>
                 </select>
-
             </div>
             <div class="col-sm-10">Categoria 3 : </div>
             <div class="col-sm-12">
                 <select class="form-control" [(ngModel)]="newProducto.idCategoria3">
-                    <option *ngFor="let categoria of categorias"  value ={{categoria.id}}>{{categoria.nombre}}</option>
+                    <option *ngFor="let categoria of categorias3" value="{{categoria.id}}">{{categoria.nombre}}</option>
                 </select>
-
             </div>
-
         </div>
         <div class="col-sm-3">
             <div class="col-sm-10">Marca : </div>
             <div class="col-sm-12">
                 <select class="form-control" [(ngModel)]="newProducto.idMarca">
-                 <option *ngFor="let marca of marcas"  value ={{marca.id}}>{{marca.nombre}}</option>
-             </select>
-
+                    <option *ngFor="let marca of marcas" value="{{marca.id}}">{{marca.nombre}}</option>
+                </select>
             </div>
             <div class="col-sm-10">Tipo de Producto : </div>
             <div class="col-sm-12">
                 <select class="form-control" [(ngModel)]="newProducto.tipo_producto">
-                 <option   *ngFor="let tipProducto of tipProductos"  value ={{tipProducto.id}}>{{tipProducto.nombre}}</option>
-             </select>
-
+                    <option *ngFor="let tipProducto of tipProductos" value="{{tipProducto.id}}">{{tipProducto.nombre}}</option>
+                </select>
             </div>
-
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-1"> </div> 
+        <div class="col-sm-1"></div>
         <div class="col-sm-3">
             <div class="col-sm-10">IVA (%) : </div>
             <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.porcent_iva" class="form-control" placeholder="nombre principal "></div>
-
         </div>
         <div class="col-sm-3">
             <div class="col-sm-10">precio de compra : </div>
             <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precioCompra" class="form-control" placeholder="nombre principal "></div>
-
         </div>
     </div>
-
-    
     <div class="row">
-        <div class="col-sm-1"> </div>
+        <div class="col-sm-1"></div>
         <div class="col-sm-3">
             <div class="col-sm-10">precio1 : </div>
             <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[0].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
-
         </div>
         <div class="col-sm-3">
             <div class="col-sm-10">precio2 : </div>
-            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[0].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
-
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[1].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
         </div>
         <div class="col-sm-3">
             <div class="col-sm-10">precio3 : </div>
-            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[0].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
-
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[2].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
         </div>
     </div>
-
-
-
     <hr>
     <div class="row">
-        <div class="col-sm-1"> </div>
+        <div class="col-sm-1"></div>
         <div class="col-sm-7">
-
-            <div class="col-sm-6">
-                Codigo de Barras
-            </div>
+            <div class="col-sm-6">Codigo de Barras</div>
             <div class="col-sm-12">
                 <input type="text" [(ngModel)]="newProducto.barcode" class="form-control" placeholder="CODIGO DE BARRAS">
             </div>
-
-            <div class="col-sm-6">
-                Descripcion
-            </div>
+            <div class="col-sm-6">Descripcion</div>
             <div class="col-sm-12">
                 <input type="text" [(ngModel)]="newProducto.descripcion" class="form-control" placeholder="Descripcion adicional">
             </div>
@@ -177,12 +163,9 @@
             <div class="col-sm-12">
                 <button type="button" class="btn btn-danger col-sm-12" (click)="limpiarFormulario()"> Cancelar </button>
             </div>
-
-
         </div>
     </div>
 </div>
-
 
 <div class="container-fluid contPrd" style="display: none;" id="ExistenciaPrdLinkDiv">
     <div class="row">
@@ -204,7 +187,7 @@
             <div class="col-sm-10">Bodega : </div>
             <div class="col-sm-12">
                 <select id="bodegasSelect" (change)="cargarPrecargue()" class="form-control" [(ngModel)]="inventario.bodega">
-                    <option *ngFor="let categoria of bodegas"  value ={{categoria.id}}>{{categoria.nombre}}</option>
+                    <option *ngFor="let categoria of bodegas" value="{{categoria.id}}">{{categoria.nombre}}</option>
                 </select>
             </div>
         </div>
@@ -212,7 +195,6 @@
             <div class="col-sm-10">Descripcion : </div>
             <div class="col-sm-12">
                 <input type="text" [(ngModel)]="inventario.descripcion" class="form-control" placeholder="descripcion inventario ">
-
             </div>
         </div>
     </div>
@@ -237,10 +219,7 @@
                     <td>{{item.nombreUsuario}}</td>
                     <td>{{item.nombreBodega}}</td>
                 </tr>
-
             </table>
         </div>
     </div>
-
-
 </div>

@@ -1,7 +1,7 @@
 <div class="container">
     <br>
     <div class="row">
-        <div class="col-sm-12  ">
+        <div class="col-sm-12">
             <h2 class="centrado">Tipos de servicios a vehiculos</h2>
         </div>
     </div>
@@ -15,61 +15,45 @@
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Descripcion</label>
-                <textarea [(ngModel)]="newTipoServicio.descripcion" class="form-control"></textarea> </div>
-
-
-
+                <textarea [(ngModel)]="newTipoServicio.descripcion" class="form-control"></textarea>
+            </div>
         </div>
         <div class="col-sm-3">
             <div class="form-group">
                 <label for="exampleInputEmail1">Estado</label>
-                <select [(ngModel)]="newTipoServicio.estado" class=" form-control ">
-                    <option value=0>Estado</option>
-                    <option value=1>Activo</option>
-                    <option value=2>Inactivo</option>
+                <select [(ngModel)]="newTipoServicio.estado" class="form-control">
+                    <option value="0">Estado</option>
+                    <option value="1">Activo</option>
+                    <option value="2">Inactivo</option>
                 </select>
-                <small id="nombreHelp " class="form-text text-muted ">(ej: Activo, Inactivo)</small>
+                <small id="nombreHelp" class="form-text text-muted">(ej: Activo, Inactivo)</small>
             </div>
-            <div class="form-group ">
+            <div class="form-group">
                 <br> <br>
-                <div class="btn-group btn-group-toggle " data-toggle="buttons ">
-                    <button type="button " (click)="manageTipoVehiculo()" class="btn btn-success ">Enviar</button>
-                    <button type="button " (click)="cancelar()" class="btn btn-danger ">Cancelar</button>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <button type="button" (click)="manageTipoVehiculo()" class="btn btn-success">Enviar</button>
+                    <button type="button" (click)="cancelar()" class="btn btn-danger">Cancelar</button>
                 </div>
             </div>
-
-
-
         </div>
-
-
-
     </div>
-
     <hr>
-    <div class="row " *ngIf="tiposServicio.length> 0">
+    <div class="row" *ngIf="tiposServicio.length > 0">
         <div class="col-sm-12">
             <table class="table">
                 <tr>
-
                     <th>Nombre</th>
                     <th>Descripcion</th>
                     <th>Estado</th>
-                    <th colspan="2">
-                        opcion
-                    </th>
+                    <th colspan="2">Opción</th>
                 </tr>
-
                 <tr *ngFor="let tipo_servicio of tiposServicio">
                     <td>{{tipo_servicio.nombre}}</td>
                     <td>{{tipo_servicio.descripcion}}</td>
-                    <td>{{tipo_servicio.estadoNombre }}</td>
-                    <td title="editar"><i class="fas fa-pencil-alt boton_activo" (click)="setActualizatipo_servicio(tipo_servicio)"></i> </td>
-                    <td title="eliminar"><i class="fas fa-trash boton_activo" (click)="borrarTipoVehiculo(tipo_servicio)"></i>
-
+                    <td>{{tipo_servicio.nombre_estado}}</td>
+                    <td title="editar"><i class="bi bi-pencil-fill boton_activo" (click)="setActualizatipo_servicio(tipo_servicio)"></i></td>
+                    <td title="eliminar"><i class="bi bi-trash boton_activo" (click)="borrarTipoVehiculo(tipo_servicio)"></i></td>
                 </tr>
-
-
             </table>
         </div>
     </div>

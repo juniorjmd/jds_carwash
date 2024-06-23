@@ -12,7 +12,7 @@ import { select } from 'src/app/interfaces/generales.interface';
 })
 export class TiposServiciosComponent implements OnInit {
   tiposServicio: TiposServiciosModule[] = [];
-  newTipoServicio: TiposServiciosModule = new TiposServiciosModule('', '', '');
+  newTipoServicio: TiposServiciosModule = new TiposServiciosModule('', '' );
 
   constructor(
     private VehiculosService: VehiculosService,
@@ -47,20 +47,15 @@ export class TiposServiciosComponent implements OnInit {
   }
 
   getTiposServicios() {
-    this.tiposServicio[0] = new TiposServiciosModule('', '', '');
+    this.tiposServicio[0] = new TiposServiciosModule('', '' );
     this.loading.show();
     this.VehiculosService.getTiposServicios().subscribe({
       next: (datos: any) => {
         console.log(datos);
 
         if (datos.numdata > 0) {
-          datos.data!.forEach((dato: TiposServiciosModule, index: number) => {
-            this.tiposServicio[index] = new TiposServiciosModule(
-              dato.nombre,
-              dato.estadoNombre,
-              dato.descripcion
-            );
-          });
+          this.tiposServicio = datos.data! 
+          
           console.log(this.tiposServicio);
         } else {
           this.tiposServicio = [];
@@ -93,7 +88,7 @@ export class TiposServiciosComponent implements OnInit {
 
         if (respuesta.error === 'ok') {
           Swal.fire('datos ingresados con exito');
-          this.newTipoServicio = new TiposServiciosModule('', '', '');
+          this.newTipoServicio = new TiposServiciosModule('', '');
           this.getTiposServicios();
         } else {
           Swal.fire(respuesta.error, '', 'error');
@@ -105,7 +100,7 @@ export class TiposServiciosComponent implements OnInit {
   }
 
   cancelar() {
-    this.newTipoServicio = new TiposServiciosModule('', '', '');
+    this.newTipoServicio = new TiposServiciosModule('', '' );
   }
 
   ngOnInit(): void {}
