@@ -7,7 +7,7 @@
    empleados:'empleados',
    vehiculos_servicios_costos:'vehiculos_servicios_costos',
    TiposServicios : 'inv_mst_tipos_servicios',// vehiculos_servicios_tipos
-   vehiculos_servicios :'vehiculos_servicios',
+   vehiculos_servicios :'inv_mst_servicios',
     SUCURSAL : DATOS_SUCURSAL ,
     ciudades : "ciudades" ,
     departamento: "departamento" ,
@@ -19,7 +19,7 @@
     medios:"documentos_medios_de_pago",
     tipoEstablecimiento:"tipo_establecimiento",
     contador:"contadores" , 
-    tiposVehiculos:"vehiculos_tipos"
+    tiposVehiculos:"inv_mst_tipos_vehiculos"
 
  }
 
