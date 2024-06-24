@@ -19,12 +19,10 @@ import Swal from 'sweetalert2';
   styleUrls: ['./productos.component.css']
 }) 
 export class ProductosComponent implements OnInit {
+  
+  auxBodega:BodegasModule = {nombre : 'SELECCIONAR LA BODEGA' ,estado:0,   id:0  , descripcion : ''}
   existenciasPrd:PrdExistenciasModule[]=[] ;
-  inventario:any={
-    nombre : '' , 
-    bodega : 0 , 
-    descripcion : ''
-  }
+  
   productoRetornoBusqueda!:ProductoModule ;
   AuxIngresoInventarioModule : AuxIngresoInventarioModule[] = [];
 
@@ -32,8 +30,12 @@ export class ProductosComponent implements OnInit {
   newIngresoPrecargue !:AuxIngresoInventarioModule ;
 
 
-  auxBodega:BodegasModule = {nombre : 'SELECCIONAR LA BODEGA' ,estado:0,   id:0  , descripcion : ''}
   bodegas :BodegasModule[] = [this.auxBodega];
+  inventario:any={
+    nombre : '' , 
+    bodega : this.bodegas[0] , 
+    descripcion : ''
+  }
   Productos :ProductoModule[] = [];
   categoriaAux :CategoriasModel  =  {id:0,  letra:'',     nombre:'Seleccione la categoria',     descripcion:'',     tipo:'',    contador :0   } ; 
   categorias :CategoriasModel[] = [ this.categoriaAux ]; 
@@ -95,12 +97,14 @@ export class ProductosComponent implements OnInit {
       this.categorias3  = [ this.categoriaAux ];
       this.categorias3  = this.categorias2.filter( x=> x.idPadreCategoria == this.newProducto.idCategoria  )
     }
-     busquedaAuxiliarProducto( ){ 
-      let text = $("#bodegasSelect option:anyed").text()
-      if(this.inventario.bodega <= 0) {
+     busquedaAuxiliarProducto( ){   
+      if(this.inventario.bodega.id <= 0) {
         Swal.fire( 'Debe seleccionar la bodega de ingreso', '', 'error');
         return;
        }
+       
+       let nomInventario = this.inventario.bodega.nombre;
+       console.log(JSON.stringify(this.inventario.bodega))
       this.newAbrirDialog.open(BuscarProdDirectoComponent   )
       .afterClosed()
       .subscribe(( response:responsePrd  )=>{
@@ -109,9 +113,9 @@ export class ProductosComponent implements OnInit {
         if (response.confirmado){
          this.productoRetornoBusqueda = response.datoDevolucion!;
           console.log('dato retornado busqueda directa',response.datoDevolucion);
-
           Swal.fire({
-            title: `ingrese la cantidad a ingresar del producto "${response.datoDevolucion!.nombre}" en la bodega  : "${text}"  .`, 
+            title: `ingrese la cantidad a ingresar del producto "${response.datoDevolucion!.nombre}"
+             en la bodega  : "${nomInventario}"  .`, 
             input: 'number',
             showCancelButton: true,
             confirmButtonText: 'Si', 
@@ -131,7 +135,7 @@ export class ProductosComponent implements OnInit {
                 if (respuesta.error === 'ok'){  
                     console.log(respuesta);
                if (respuesta.numdata > 0 ){ 
-                 this.AuxIngresoInventarioModule = respuesta.data;  
+                 this.AuxIngresoInventarioModule = respuesta.datos;  
                }else{
                  this.AuxIngresoInventarioModule = [];     
                  } 
@@ -158,18 +162,18 @@ export class ProductosComponent implements OnInit {
       this.productoService.getbodegas( ).subscribe({next : 
         (datos:any)=>{
            console.log('producto component - get bodegas' , datos);
-      if (datos.numdata > 0 ){ 
-        this.bodegas = datos.data! 
-      }else{
-        this.bodegas   = [this.auxBodega];   }
-          
-        } , error:
+          if (datos.numdata > 0 ){ 
+            this.bodegas = datos.data! 
+            this.bodegas.unshift(this.auxBodega);
+          }else{
+            this.bodegas   = [this.auxBodega];   }
+            } , error:
         error => {this.loading.hide();
           console.error('getbodegas',error) 
           try {
-            Swal.fire( error.error.error, '', 'error');
+            Swal.fire( error , 'error');
           } catch (error) {
-            Swal.fire( 'error interno, validar con el administrador del sitio', '', 'error');
+            Swal.fire( 'error interno, validar con el administrador del sitio', '' , 'error');
           }
         }
         , complete : ()=>this.loading.hide()    }  );
@@ -234,27 +238,37 @@ export class ProductosComponent implements OnInit {
          }
         );
      }
+     borrarIngreso(obj:AuxIngresoInventarioModule){
+
+       this.productoService.eliminaritemIngresoInventario(obj.id)
+       .subscribe({next:(data)=> { Swal.fire( "Elemento eliminado con exito" , '', 'error');
+         this.cargarPrecargue()
+                    },
+                    error:error=>Swal.fire( error.error.error, '', 'error')
+                  }
+     )
+     }
      cargarPrecargue(){
       if(this.inventario.bodega <= 0)
       {this.AuxIngresoInventarioModule=[];
       return;}
-      this.productoService.getPrecarguePorBodega(this.inventario.bodega).subscribe(
+      this.productoService.getPrecarguePorBodega(this.inventario.bodega.id).subscribe({next:
         (datos:any)=>{
            console.log(datos);
       if (datos.numdata > 0 ){ 
         this.AuxIngresoInventarioModule = datos.data;  
       }else{
         this.AuxIngresoInventarioModule = [];      }
-          this.loading.hide()
         } ,
-        error => {this.loading.hide();
+        error:error => {this.loading.hide();
           console.error('getPrecarguePorBodega',error) 
           try {
             Swal.fire( error.error.error, '', 'error');
           } catch (error) {
             Swal.fire( 'error interno, validar con el administrador del sitio', '', 'error');
           }
-        }
+        },complete:()=>
+          this.loading.hide() }
         );
      }
      editarPrd(prd:ProductoModule){

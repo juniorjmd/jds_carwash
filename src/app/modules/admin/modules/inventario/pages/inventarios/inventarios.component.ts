@@ -19,7 +19,7 @@ export class InventariosComponent implements OnInit {
     
   bsModalRef!: BsModalRef;
 constructor(   private modalService: BsModalService , private invService:InventarioService , private executeService:ExecuteService){ 
- 
+ this.getInventarios()
 }
 openModal() {
   this.executeService.cerrarModalInventario$.next(false);

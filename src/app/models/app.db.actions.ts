@@ -1,7 +1,7 @@
 
 // actions para servicio crud
 
- const actionDelete = '3f1b76f2d7c28054c92ab1d00ef626b45ab80a8a';
+ const actionDelete = 'DATABASE_GENERIC_CONTRUCT_DELETE';
  const actionUpdate = '9d9fa03fe878f82f47b0befd5421049b989eb5d2';
  const actionAsignarCajas = 'qwer12356yhn7ujm8ik';
  const actionInsert = 'da5cbea2f73b029d0ce3a1dc2a05a46e7f0461c4';
@@ -61,6 +61,7 @@
 
 
  export const actions = {
+  'get_categorias' : 'GET_CATEGORIAS',
   'get_all_products_by_name' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_NOMBRE',
   'get_all_products_by_brand' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_MARCA',
   'get_all_products_by_category' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_CATEGORIA',

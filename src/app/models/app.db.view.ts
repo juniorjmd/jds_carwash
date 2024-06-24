@@ -15,7 +15,7 @@
   cajas : "vw_cajas" ,
   medios : "vw_medios" ,
   tiposDeDocumentos:'vw_tipos_de_documentos',
-  prd_bodegas_inventario:'vw_prd_bodegas_inventario',
+  prd_bodegas_inventario:'vw_inv_bodegas',
   mediosPorCajaActiva : "vw_medios_de_cajas_activas" ,
    categorias : "vw_inv_categorias" ,
    cajasActivas : "vw_cajas_activas" ,
@@ -36,6 +36,6 @@
     productos:'vw_productos_con_existencia',
     marcas:'vw_inv_marcas' , 
     prd_inventario:'vw_prd_inventario',
-    aux_ingreso_inventario : 'vw_aux_ingreso_inventario'
+    aux_ingreso_inventario : 'vw_inv_inventario_ingreso_auxiliar'
  }
 

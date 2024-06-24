@@ -10,10 +10,7 @@ import { UlLinkComponent } from './componentes/ul-link/ul-link.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable'; 
 import { columnasTablaCnfg, confAmbiente } from './config';
 import { DropdownFndComponent } from './componentes/dropdown-fnd/dropdown-fnd.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FormsModule } from '@angular/forms';
 import { booleanpPipe } from 'src/app/pipes/booleanp.pipe';
 import { dataArrayOdooPipe } from 'src/app/pipes/dataArrayOdoo.pipe';
@@ -24,9 +21,9 @@ import { Modal1Component } from 'src/app/components/shared/modal1/modal1.compone
     booleanpPipe,
     ImgB64Pipe ,
     dataArrayOdooPipe,
-    TableTrComponent,
-    TableComponent ,
     TabComponent,
+    TableComponent,
+    TableTrComponent,
     UlLinkComponent,
     DropdownFndComponent],
   imports: [ NgbModule ,
@@ -36,13 +33,14 @@ import { Modal1Component } from 'src/app/components/shared/modal1/modal1.compone
 
   ],
   exports:[LiNavItemComponent ,DropdownFndComponent,
-    TableTrComponent,
-    TableComponent ,
     TabComponent,
+    TableComponent ,
+    TableTrComponent,
     UlLinkComponent , 
     booleanpPipe,
     ImgB64Pipe ,
-    dataArrayOdooPipe, Modal1Component]
+    dataArrayOdooPipe,
+    Modal1Component]
 })
 export class SharedModule { }
 

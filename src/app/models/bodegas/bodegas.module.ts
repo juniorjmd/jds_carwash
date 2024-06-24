@@ -1,5 +1,6 @@
 import { Inject, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModelBase } from '../ModelBase';
 
 
 
@@ -9,14 +10,14 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ]
 })
-export class BodegasModule {
+export class BodegasModule extends ModelBase {
   constructor(
-  @Inject(String) public nombre:string,
-  @Inject(Number) public estado:number,
-  
-  @Inject(String) public descripcion?:string,
-  @Inject(Number) public id?:number,
-  @Inject(String) public nombre_estado?:string){}
+  @Inject(String) public nombre:string,  
+  @Inject(String) public descripcion?:string ,  
+  @Inject(Number) public tipo?:number,
+  @Inject(String) public tipo_descripcion?:string ){
+    super();
+  }
 
 
 

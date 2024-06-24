@@ -4102,10 +4102,10 @@ $message = '<html><body>';
      }
     
     break;
-    case '3f1b76f2d7c28054c92ab1d00ef626b45ab80a8a'://delete
+    case 'DATABASE_GENERIC_CONTRUCT_DELETE'://delete
     /*
     delete 
-    action = 3f1b76f2d7c28054c92ab1d00ef626b45ab80a8a
+    action = DATABASE_GENERIC_CONTRUCT_DELETE
     _tabla 
     _dato
     _columna 

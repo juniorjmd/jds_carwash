@@ -19,7 +19,8 @@
     medios:"documentos_medios_de_pago",
     tipoEstablecimiento:"tipo_establecimiento",
     contador:"contadores" , 
-    tiposVehiculos:"vehiculos_tipos"
+    tiposVehiculos:"vehiculos_tipos",
+    inv_inventario_ingreso_auxiliar:'inv_inventario_ingreso_auxiliar'
 
  }
 

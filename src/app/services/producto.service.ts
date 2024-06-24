@@ -58,7 +58,9 @@ getbodegas(){
 
 getCategorias(){
   let datos = {"action": actions.actionSelect ,
-               "_tabla" : vistas.categorias
+               "_tabla" : vistas.categorias,
+              "_columnas": ['obj'],
+              "_obj": ['obj'],
               };
   console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
@@ -135,7 +137,16 @@ getPrecarguePorBodega(bodega:number){
  
 //#endregion
 
-
+// #region metodos delete genericos
+eliminaritemIngresoInventario(idDato:string | number | undefined){ 
+  let where =   [{"columna" : "id" , "tipocomp" : "=" , "dato" : idDato }];
+  let datos = {"action": actions.actionDelete ,
+  "_tabla" : TABLA.inv_inventario_ingreso_auxiliar,
+  "_where" : where  
+ };
+  return this.http.post(url.action , datos, httpOptions()) ;
+}
+//#endregion
 // #region metodos de inventarioController
 
  

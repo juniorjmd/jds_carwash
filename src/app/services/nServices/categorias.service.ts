@@ -1,6 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core'; 
+import { Observable } from 'rxjs';
 import { Categoria } from 'src/app/interfaces/nInterfaces/categoria';
+import { actions } from 'src/app/models/app.db.actions';
+import { httpOptions } from 'src/app/models/app.db.url';
 import { ambiente } from 'src/app/modules/shared/shared.module';
 
 @Injectable({
@@ -10,9 +13,7 @@ export class CategoriasService {
 
  
 
-  URL = ambiente.urlBaseBack + 'categorias';
-  headers = new HttpHeaders().set('Content-Type' , 'application/x-www-form-urlencoded');
-  optHeader =  {headers : this.headers } ;
+  URL = ambiente.urlBaseBack + 'inventario/'; 
 
   constructor(private http: HttpClient) { 
     console.log('clientes service inicializado');
@@ -20,9 +21,14 @@ export class CategoriasService {
   }
 
 
-  getCategorias(){
-      
-    return this.http.get<Categoria[]>( `${this.URL}` , this.optHeader);
+  getCategorias():Observable<any>{ 
+      let datos = { 
+              "action": actions.get_categorias  
+            }
+            console.log('servicios de categorias - getCategorias', this.URL, datos, httpOptions());
+   
+        return this.http.post<any>(this.URL, datos, httpOptions());
+    
  
   }
 

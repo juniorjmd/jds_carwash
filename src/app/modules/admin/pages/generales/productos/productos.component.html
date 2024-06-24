@@ -187,7 +187,7 @@
             <div class="col-sm-10">Bodega : </div>
             <div class="col-sm-12">
                 <select id="bodegasSelect" (change)="cargarPrecargue()" class="form-control" [(ngModel)]="inventario.bodega">
-                    <option *ngFor="let categoria of bodegas" value="{{categoria.id}}">{{categoria.nombre}}</option>
+                    <option *ngFor="let categoria of bodegas" [ngValue]="categoria">{{categoria.nombre}}</option>
                 </select>
             </div>
         </div>
@@ -213,11 +213,20 @@
     <div class="row">
         <div class="col-sm-12" style="max-height: 370px; overflow-y: auto;">
             <table class="table">
+                <thead>
+                    <th>producto</th>
+                    <th>cantidad</th>
+                    <th>usuario</th>
+                    <th>bodega</th>
+                    <th>-----0-----</th>
+                </thead>
                 <tr *ngFor="let item of AuxIngresoInventarioModule">
                     <td>{{item.nombreProducto}}</td>
                     <td>{{item.cantidad}}</td>
                     <td>{{item.nombreUsuario}}</td>
                     <td>{{item.nombreBodega}}</td>
+                    <td title="eliminar"><i class="bi bi-trash boton_activo" (click)="borrarIngreso(item)"></i></td>
+           
                 </tr>
             </table>
         </div>

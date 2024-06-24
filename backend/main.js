@@ -1505,7 +1505,7 @@ NewPaisComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineC
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "actions", function() { return actions; });
 // actions para servicio crud
-const actionDelete = '3f1b76f2d7c28054c92ab1d00ef626b45ab80a8a';
+const actionDelete = 'DATABASE_GENERIC_CONTRUCT_DELETE';
 const actionUpdate = '9d9fa03fe878f82f47b0befd5421049b989eb5d2';
 const actionAsignarCajas = 'qwer12356yhn7ujm8ik';
 const actionInsert = 'da5cbea2f73b029d0ce3a1dc2a05a46e7f0461c4';

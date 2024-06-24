@@ -28,10 +28,11 @@ constructor( private catService : CategoriasService , private modalService: BsMo
 ngOnInit() {
   this.catService.getCategorias().subscribe(
     {next:(value)=>{
-      this.datos = value;
-      console.log(value , this.datos);
-      
-    }}
+      this.datos = value.categorias;
+      console.log('CategoriasComponent - getCategorias' , value , this.datos); 
+    },
+    error:error=>console.error(error)
+  }
   )
 }
 

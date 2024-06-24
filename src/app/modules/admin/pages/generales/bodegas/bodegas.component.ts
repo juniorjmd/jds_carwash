@@ -27,15 +27,8 @@ export class BodegasComponent implements OnInit {
   @Inject(String) public descripcion?:string,
   @Inject(Number) public id?:number,
   @Inject(String) public nombre_estado?:string*/
-    if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:BodegasModule , index:number )=>{
-        this.bodegas[index] = new BodegasModule(dato.nombre,
-                                                dato.estado,
-                                                dato.descripcion,
-                                                dato.id,
-                                                dato.nombre_estado
-        ) ; 
-      }) 
+    if (datos.numdata > 0 ){
+      this.bodegas =  datos.data! ;
       console.log('bodegas',this.bodegas);
     }else{
       this.bodegas = [];

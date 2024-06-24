@@ -8,6 +8,8 @@
         { "name": "opcFila", "columna": "<----->", "eliminar": true, "procesar": "wrk" }
     ],
     "categorias": [{ "name": "nombre", "columna": "Nombre" },
+     {"name": "letra", "columna": "Letra" },
+     {"name": "contador", "columna": "Contados" },
         { "name": "descripcion", "columna": "Descripcion", "editabe": true }
     ]
 

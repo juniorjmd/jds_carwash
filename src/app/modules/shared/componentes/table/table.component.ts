@@ -25,7 +25,7 @@ export class TableComponent implements OnInit , AfterViewInit {
   showEditCol :any[][] = [] ;
 
   constructor( private updLinea : UpdateLineService){
-   
+   console.log(this.datosTabla);
   }
   ngOnInit() {
   this.cerrarEdicionAll();
