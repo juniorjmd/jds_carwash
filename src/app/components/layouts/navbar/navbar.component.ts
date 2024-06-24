@@ -105,9 +105,8 @@ export class NavbarComponent {
     this.moduleActive = `${module}`.split(',')[1];
     // alert( this.moduleActive)
     this._Router.navigate([`home/${this.moduleActive}`]);
-    if (this.moduleActive==='pos') {
-      this.moduleActive='punto de venta'
-      
+    if (this.moduleActive === 'pos') {
+      this.moduleActive = 'punto de venta';
     }
   }
 }

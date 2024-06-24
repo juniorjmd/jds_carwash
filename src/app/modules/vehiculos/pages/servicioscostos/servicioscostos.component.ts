@@ -176,7 +176,7 @@ Swal.fire({
 
 
 
-    this.tiposVehiculo[0] =  new TipoVehiculoModule('',0,'','');
+    this.tiposVehiculo[0] =  new TipoVehiculoModule('','');
     this.loading.show()
     this.VehiculosService.getVehiculoNoAsignadoAServicios(this.servicioSelecionado).subscribe(
       (datos:any)=>{
@@ -238,7 +238,7 @@ this.VehiculosService.guardarCostoServicio(this.newServiciosCostos).subscribe(
   this.tiposVehiculo = [];
   this.precio = 0;
   if ( this.servicioSelecionado <= 0){return;}
-  this.tiposVehiculo[0] =  new TipoVehiculoModule('',0,'','');
+  this.tiposVehiculo[0] =  new TipoVehiculoModule('','');
   this.loading.show()
   this.VehiculosService.getCostosServicios(this.servicioSelecionado).subscribe(
     (datos:any)=>{
