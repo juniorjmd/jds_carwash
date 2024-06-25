@@ -15,7 +15,15 @@
                                 <b>valor IVA : </b><small class="text-muted">{{ arrayDocPrd.producto?.valorIVA??0 }}</small>
                                 <br><b>Descuento: </b><small class="text-muted">{{ arrayDocPrd.producto?.descuento ??0}}</small>  
                                 <br><b>IVA: </b><small class="text-muted">{{ arrayDocPrd.producto?.porcent_iva}} %</small>
-                                <br><b>existencia: </b><small class="text-muted">{{ arrayDocPrd.producto?.cantidad }}</small></p>
+                                <br><b>existencia: </b><small class="text-muted">{{ existencia?.cant_actual??0 }}</small> 
+                                <br><b>precio: </b>
+                                
+                                <select class="form-control"  [(ngModel)]="precioVenta">
+                                    <option *ngFor='let precio of arrayDocPrd.producto?.precios' [ngValue]="precio">
+                                        {{precio.precio_con_iva}}   
+                                    </option>
+                                </select> 
+                                 </p>
                         </div>
                     </div>
                 </div>
@@ -24,7 +32,7 @@
         <div class="col-sm-5">
             <table>
                 <tr>
-                    <td colspan="3"> <input type="number" readonly [ngModel]="cantidadPrd" class="o_input form-control "></td>
+                    <td colspan="3"> <input type="number" readonly  [(ngModel)]="cantidadPrd" class="o_input form-control "></td>
                 </tr>
                 <tr>
                     <td><button [disabled]="disabled[0]" style="width: 100%;" (click)="enviarCnt(1)" class="btn btn-primary btn-sm">1</button></td>

@@ -14,6 +14,7 @@ import { ProductoModule } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { Observable } from 'rxjs';
 import { ProductoRequest } from '../interfaces/producto-request';
+import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 
 
 @Injectable({
@@ -25,6 +26,7 @@ private http = inject(HttpClient);
 private loading = inject(loading); 
 private readonly baseUrl:string = url.action ;
 private readonly   urlInventario =  `${this.baseUrl}inventario/`;
+private readonly   urlVentas =  `${this.baseUrl}ventas/`;
   constructor(  ){ 
     console.log('servicios productos inicializado');  
 }
@@ -50,7 +52,9 @@ getTiposDeDocumentos(){
 }  
 getbodegas(){
   let datos = {"action": actions.actionSelect ,
-               "_tabla" : vistas.prd_bodegas_inventario
+    "_columnas": ['obj'],
+    "_obj": ['obj'],
+    "_tabla" : vistas.prd_bodegas_inventario
               };
   console.log('servicios de usuarios activo - getbodegas' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
@@ -90,12 +94,13 @@ getCategorias_marcas(){
  
 // #region Métodos con procedimientos genericos en el codigo 
 
-CERRAR_INVENTARIO(bodega:number , nombre:string , desc:string){
+CERRAR_INVENTARIO(bodega:number , nombre:string , desc:string, tipo:number):Observable<any>{
   let arraydatos =  {  
      "USUARIO_LOGUEADO" : '0',
      "_BODEGA" :bodega  ,
      "_NOMBRE" : nombre,
-     "_DESCRIPCION" : desc
+     "_DESCRIPCION" : desc,
+     "_tipo_inventario" : tipo
     
  }
    let  datos = {"action": actions.actionProcedure ,
@@ -103,10 +108,11 @@ CERRAR_INVENTARIO(bodega:number , nombre:string , desc:string){
    "_arraydatos" : arraydatos
   };
    console.log('servicios CERRAR_INVENTARIO' ,this.baseUrl, datos, httpOptions());
-   return this.http.post(this.baseUrl, datos, httpOptions()) ;
+   return this.http.post<Observable<any>>(this.baseUrl, datos, httpOptions()) ;
  } 
 
 /*buscar producto por codigo de barra validando la existencia */
+
 getProductosCodBarrasVCnt(codPrd:string , caja:number){
  
   let arraydatos =  {      
@@ -161,14 +167,16 @@ borrarPrecarguePorBodega(bodega:number){
 
 //actionStockMoveDevolucion
 
-guardarPrdCompra(producto :ProductoModule , documentoActivo:number ){
+guardarPrdVentas(producto :ProductoModule , documentoActivo:DocumentosModel , precioVenta : PrdPreciosModule ){
 
   let datos = {"action": actions.action_insertar_producto_venta , 
-  "_producto_enviado" : producto , 
-  '_documento' : documentoActivo
+  "_producto_enviado" : producto.id , 
+  "_cantidadVenta" : producto.cantidadVendida ,
+  '_documento' : documentoActivo.orden,
+  '_precioVenta' : precioVenta 
 };
-  console.log('servicios guardarPrdCompra' ,this.urlInventario, datos, httpOptions());
-  return this.http.post(this.urlInventario, datos, httpOptions()) ;
+  console.log('servicios guardarPrdCompra' ,this.urlVentas, datos, httpOptions());
+  return this.http.post(this.urlVentas, datos, httpOptions()) ;
 }
 guardarNuevoProducto(producto :ProductoModule  ){
 
@@ -236,7 +244,15 @@ getProductosPorMarca(codMarca : any){
   console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 } 
+getProductoByIdOrCodBarra(idprd:string):Observable<ProductoRequest|any>{ 
+  
+  let  datos = {"action": actions.buscarProducto ,
+    "_id_producto" : idprd 
+   };
 
+  console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
+  return this.http.post<Observable<ProductoRequest|any>>(this.urlInventario, datos, httpOptions()) ;
+}
 // #endregion
  
 }

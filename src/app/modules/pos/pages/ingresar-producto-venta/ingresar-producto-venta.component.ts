@@ -6,6 +6,7 @@ import { loading } from 'src/app/models/app.loading';
 import { ProductoModule } from 'src/app/models/producto/producto.module';
 import { errorOdoo } from 'src/app/interfaces/odoo-prd';
 import { PrdExistenciasModule } from 'src/app/models/prd-existencias/prd-existencias.module';
+import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module';
 
 @Component({
   selector: 'pos-ingresar-producto-venta',
@@ -13,13 +14,14 @@ import { PrdExistenciasModule } from 'src/app/models/prd-existencias/prd-existen
   styleUrls: ['./ingresar-producto-venta.component.css']
 })
 export class IngresarProductoVentaComponent {
+  precioVenta?:PrdPreciosModule;
   cantidadPrd = 0 ; 
   disabled = [true,true,true,true,true,true,true,true,true,true]; 
   codPrd:string = '';  
   parceros : ProductoModule[] = []; 
   show = true ;
   show_reemplazo = false;  
-existencia:PrdExistenciasModule;
+  existencia?:PrdExistenciasModule;
   constructor(   private prdService : ProductoService,
     
     public dialogo: MatDialogRef<IngresarProductoVentaComponent>,
@@ -28,13 +30,65 @@ existencia:PrdExistenciasModule;
       
     public loading : loading) {
       console.log('arrayDocPrd' , this.arrayDocPrd); 
-      let idBodegaStock =   this.arrayDocPrd.documento.idStockOdooPOS??0
-      this.existencia =    this.arrayDocPrd.producto?.existencias?.filter(x=>x.id_bodega==idBodegaStock)[0]!;
-      this.cantidadPrd = 0 ;  
+     this.enabledBtnIngreso();
     }
 
 
-
+  enabledBtnIngreso()
+  { 
+    console.clear();
+    this.precioVenta = this.arrayDocPrd.producto?.precios[0]! 
+    let idBodegaStock =   this.arrayDocPrd.documento.idStockOdooPOS??0
+    try {
+       this.existencia =  (this.arrayDocPrd.producto?.existencias)?
+      this.arrayDocPrd.producto?.existencias?.filter(x=>x.id_bodega==idBodegaStock)[0]! : this.existencia;
+  
+    } catch (error) {
+      
+    }
+     console.log("existencia" , this.arrayDocPrd.producto?.existencias ,  this.existencia ) 
+if(this.existencia  ){
+     if(this.existencia.cant_actual > 10 ){
+    this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,false ];
+   }else{
+     switch (this.existencia.cant_actual){
+      case 0 : 
+        this.disabled = [true, true, true, true, true, true, true, true, true, true];
+      break;
+      case 1 : 
+        this.disabled = [false ,true, true, true, true, true, true, true, true, true];
+      break;
+      case 2 : 
+        this.disabled = [false ,false ,true, true, true, true, true, true, true, true];
+      break;
+      case 3 : 
+        this.disabled = [false ,false ,false ,true, true, true, true, true, true, true];
+      break;
+      case 4 : 
+        this.disabled = [false ,false ,false ,false ,true, true, true, true, true, true];
+      break;
+      case 5 : 
+        this.disabled = [false ,false ,false ,false ,false ,true, true, true, true, true];
+      break;
+      case 6 : 
+        this.disabled = [false ,false ,false ,false ,false ,false ,true, true, true, true];
+      break;
+      case 7 : 
+        this.disabled = [false ,false ,false ,false ,false ,false ,false ,true, true, true];
+      break;
+      case 8 : 
+        this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,true, true];
+      break;
+      case 9 : 
+        this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,true];
+      break;
+      case 10 : 
+        this.disabled = [true, true, true, true, true, true, true, true, true, false ];
+      break;
+     }  
+    }
+  }
+  }
     
   addCnt(cnt:number){
     this.cantidadPrd += cnt ;
@@ -46,11 +100,16 @@ existencia:PrdExistenciasModule;
   enviarCnt( cnt:number ){
     this.disabled = [true, true, true, true, true, true, true, true, true, true];
     this.cantidadPrd  += cnt ;
-    if (this.arrayDocPrd.producto !== undefined && this.cantidadPrd > 0 && this.arrayDocPrd.producto.cantidad! >= this.cantidadPrd){  
-            this.arrayDocPrd.producto.cantidadVendida = this.cantidadPrd;
-            this.loading.show() 
+    console.log( 'enviarCnt' ,this.arrayDocPrd.producto  )
+      console.log( 'enviarCnt' , this.cantidadPrd   )
+        console.log( 'enviarCnt' ,      this.existencia?.cant_actual??0 )
 
-            this.prdService.guardarPrdCompra(this.arrayDocPrd.producto ,  this.arrayDocPrd.documento.orden ).subscribe(
+    if (this.arrayDocPrd.producto !== undefined && this.cantidadPrd > 0 &&  
+      (this.existencia?.cant_actual??0)    >= this.cantidadPrd){  
+            this.arrayDocPrd.producto.cantidadVendida = this.cantidadPrd;
+            this.loading.show()  
+
+            this.prdService.guardarPrdVentas(this.arrayDocPrd.producto ,  this.arrayDocPrd.documento , this.precioVenta! ).subscribe(
               (respuesta:any)=>{
                 if (respuesta.error !== 'ok'){
                     alert(respuesta.error);
@@ -59,18 +118,14 @@ existencia:PrdExistenciasModule;
                   }
                   else{ this.dialogo.close(true); 
                     console.log('productoVendido',JSON.stringify(respuesta));}
-                  this.loading.hide() 
-
+                  this.loading.hide()  
                 },
                 (error:errorOdoo) =>{
-                  console.log(JSON.stringify( error) );
-                  
+                  console.log(JSON.stringify( error) ); 
                   alert(error.error.error +"\n" + error.error.msg); 
                   this.dialogo.close(false); 
                   this.loading.hide() 
-                }) 
-       
-        
+                })  
     }
   }
 

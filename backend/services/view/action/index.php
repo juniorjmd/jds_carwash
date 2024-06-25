@@ -2237,7 +2237,7 @@ switch ($action){
            
      }
         break;
-    case 'da5195132f73b029d0ce3a1dc2a05a46e7f0461c4':
+    case 'DATABASE_GENERIC_CONTRUCT_PROCEDURE':
            TRY {
        $conexion =\Class_php\DataBase::getInstance();
        $link = $conexion->getLink(); 
@@ -3543,10 +3543,10 @@ $queryFinal = "INSERT INTO  `$_tabla` ( $_columnas ) select $_valores from `$_ta
        
        
     break;
-    case 'e06c06e7e4ef58bdb0cf1858541b3017fdd35473'://select .
+    case 'DATABASE_GENERIC_CONTRUCT_SELECT'://select .
         /*
      
-    action = e06c06e7e4ef58bdb0cf1858541b3017fdd35473
+    action = DATABASE_GENERIC_CONTRUCT_SELECT
     _tabla =  nombre de la tabla 
     _where array({columna : nombrecolumna , tipocomp : tipocomp , dato : dato}) 
          * 
@@ -3693,7 +3693,7 @@ $queryFinal = "INSERT INTO  `$_tabla` ( $_columnas ) select $_valores from `$_ta
     case 'e06c06e7e4ef58bdbdd35473wdc741qaz'://select por usuario logueado .
         /*
      
-    action = e06c06e7e4ef58bdb0cf1858541b3017fdd35473
+    action = DATABASE_GENERIC_CONTRUCT_SELECT
     _tabla =  nombre de la tabla 
     _where array({columna : nombrecolumna , tipocomp : tipocomp , dato : dato}) 
          * 

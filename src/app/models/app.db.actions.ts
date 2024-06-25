@@ -6,8 +6,8 @@
  const actionAsignarCajas = 'qwer12356yhn7ujm8ik';
  const actionInsert = 'da5cbea2f73b029d0ce3a1dc2a05a46e7f0461c4';
  const actionInsertSelect = 'da5cbea2f73b029d00461c4aasdf1256sf';
- const actionProcedure = 'da5195132f73b029d0ce3a1dc2a05a46e7f0461c4';
- const actionSelect = 'e06c06e7e4ef58bdb0cf1858541b3017fdd35473';
+ const actionProcedure = 'DATABASE_GENERIC_CONTRUCT_PROCEDURE';
+ const actionSelect = 'DATABASE_GENERIC_CONTRUCT_SELECT';
  const actionSelects = 'e06c06e7e4ef58bdb0kieujfñ541b3017fdd35473';
  const actionSelectCajasPorUsuario = 'mnbvcxzxcxcxasdfewq15616'; 
 
@@ -38,7 +38,7 @@
  const actionChangeDocumentos = 'CAMBIAR_DOCUMENTO_ACTIVO_POR_USUARIO' ; 
  const actionCancelarDocumentos = 'CANCELAR_DOCUMENTO_POR_USUARIO' ; 
  const actionCambioCajaDocumento = 'CAMBIAR_DOCUMENTO_POR_CAJA';
- const actionBuscarProducto = 'BUSCAR_PRODUCTO_ODOO';
+ const actionBuscarProducto = 'BUSCAR_PRODUCTO';
  const actionCategoriasdoo = 'BUSCAR_ODOO_CATEGORIAS';
  const actionCategoriasPrddoo = 'BUSCAR_ODOO_CATEGORIAS_PRD'
  const actionAsignarPagosDoc = 'ASIGNAR_PAGOS_DOCUMENTOS';

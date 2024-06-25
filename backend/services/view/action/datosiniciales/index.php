@@ -550,10 +550,10 @@ switch ($action){
      }
        
        break;
-    case 'e06c06e7e4ef58bdb0cf1858541b3017fdd35473'://select .
+    case 'DATABASE_GENERIC_CONTRUCT_SELECT'://select .
         /*
      
-    action = e06c06e7e4ef58bdb0cf1858541b3017fdd35473
+    action = DATABASE_GENERIC_CONTRUCT_SELECT
     _tabla =  nombre de la tabla 
     _where array({columna : nombrecolumna , tipocomp : tipocomp , dato : dato}) 
          * 

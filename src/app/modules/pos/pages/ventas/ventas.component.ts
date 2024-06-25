@@ -238,21 +238,32 @@ export class VentasComponent implements AfterViewInit, OnInit {
       'documento': this.documentoActivo
     }; 
     if (this.codigoProducto.trim() !== '' && this.buscarClose) {
-      this.buscarClose = false;
-      this.newAbrirDialog.open(IngresarProductoVentaComponent, { data: dataAuxEnvio })
-        .afterClosed()
-        .pipe(
-          tap((confirmado: Boolean) => {
-            this.getDocumentos();
-            this.codigoProducto = '';
-            this.irbuscarProducto();
-            this.buscarClose = true;
-          })
-        ).subscribe({
-          next: () => {},
-          error: (error) => console.error('Error:', error),
-          complete: () => console.log('buscarProducto completo')
-        });
+      
+      this.loading.show();
+      this.productoService.getProductoByIdOrCodBarra(this.codigoProducto).subscribe({
+        next:(value)=>{console.log(value)
+          let datoAsignacion:DtoDocumentoProducto = {
+            'producto': value?.productos    ,
+             'documento':this.documentoActivo
+           }
+           this.newAbrirDialog.open(IngresarProductoVentaComponent, { data:  datoAsignacion })
+           .afterClosed()
+           .pipe(
+             tap((confirmado: Boolean) => {
+               if (confirmado) { 
+                 this.getDocumentos();
+               }
+             })
+           ).subscribe({
+             next: () => {},
+             error: (error) => console.error('Error:', error),
+             complete: () => console.log('moverDocumentoCaja completo')
+           });  
+        },
+      error:error=>console.error(error),complete:()=>
+        this.loading.hide() 
+      })
+     
     }
   }
 
@@ -572,7 +583,19 @@ export class VentasComponent implements AfterViewInit, OnInit {
              'producto': response.datoDevolucion    ,
               'documento':this.documentoActivo
             }
-            this.newAbrirDialog.open(IngresarProductoVentaComponent, { data:  datoAsignacion })  
+            this.newAbrirDialog.open(IngresarProductoVentaComponent, { data:  datoAsignacion })
+            .afterClosed()
+            .pipe(
+              tap((confirmado: Boolean) => {
+                if (confirmado) { 
+                  this.getDocumentos();
+                }
+              })
+            ).subscribe({
+              next: () => {},
+              error: (error) => console.error('Error:', error),
+              complete: () => console.log('moverDocumentoCaja completo')
+            });  
           } else { 
             this.codigoProducto = '';
             this.irbuscarProducto();

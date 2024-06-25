@@ -34,7 +34,8 @@ export class ProductosComponent implements OnInit {
   inventario:any={
     nombre : '' , 
     bodega : this.bodegas[0] , 
-    descripcion : ''
+    descripcion : '',
+    tipoInventario : 0
   }
   Productos :ProductoModule[] = [];
   categoriaAux :CategoriasModel  =  {id:0,  letra:'',     nombre:'Seleccione la categoria',     descripcion:'',     tipo:'',    contador :0   } ; 
@@ -44,10 +45,14 @@ export class ProductosComponent implements OnInit {
   marcasAux:MarcasModule = { nombre:"Seleccione La marca",  descripcion:'',   estado: 0 ,     nombre_estado:'' ,
     id:0 };
 
-  tipProductos:any = [{id:0 , nombre:'Seleccione el tipo de producto'},
-                     {id:1 , nombre:'prd.fisico '},
-                          {id:2 , nombre:'servicios' } 
-                        ];
+    tipProductos:any = [{id:0 , nombre:'Seleccione el tipo de producto'},
+      {id:1 , nombre:'prd.fisico '},
+           {id:2 , nombre:'servicios' } 
+         ];
+         tipInventario:any = [{id:0 , nombre:'Seleccione el tipo de inventario'},
+          {id:2 , nombre: 'Ajuste'},
+               {id:1 , nombre:'General' } 
+             ];
   marcas:MarcasModule[] = [this.marcasAux];
   newProducto:ProductoModule = new ProductoModule( '' , '' ,0 ,0,'0','0', 0,0,0,0,0,'','','',0, ''  ) ; 
   textFindProductos:string = '';
@@ -163,7 +168,7 @@ export class ProductosComponent implements OnInit {
         (datos:any)=>{
            console.log('producto component - get bodegas' , datos);
           if (datos.numdata > 0 ){ 
-            this.bodegas = datos.data! 
+            this.bodegas = datos.data!.map((x:any)=>x.obj) 
             this.bodegas.unshift(this.auxBodega);
           }else{
             this.bodegas   = [this.auxBodega];   }
@@ -179,23 +184,47 @@ export class ProductosComponent implements OnInit {
         , complete : ()=>this.loading.hide()    }  );
      }
      cerrarInventario(){
-      if(this.inventario.bodega <= 0)
+      if(this.inventario.bodega.id <= 0)
       { Swal.fire('Debe escoger la bodega!!!', '', 'error');
+      return;}
+      if(this.inventario.tipoInventario <= 0)
+      { Swal.fire('Debe escoger el tipo de inventario!!', '', 'error');
       return;}
       if(this.inventario.nombre.trim() === '')
       {  Swal.fire('Debe ingresar el nombre del inventario!!!', '', 'error');
-      return;}
-      //USUARIO_LOGUEADO
-  
-/*inventario:any={
-    nombre : '' , 
-    bodega : 0 , 
-    descripcion : ''
-  } */
+      return;} 
+        let msg = '';
+        console.log("inventario cerrar" , this.inventario)
+      switch(this.inventario.tipoInventario){
+        case 1 : 
+            msg = 'Ten en cuenta, el inventario tipo GENERAL borrara la existencia actual de los productos ingresados '+
+             'y los reemplazara con los nuevos valores '
+        break;
+        case 2 :   
+        msg = 'Ten en cuenta, el inventario tipo AJUSTE, sumara a la existencia actual de los productos ingresados '+
+             'los nuevos valores con actuales ,  es decir si un producto X tiene valor -10 e ingresas 10 el valor acual del producto sera 0 (cero)'
+        break;
+        default:
+          msg = 'Tipo de inventario no reconocido.';
+      }
+
+      msg  = msg + '. esta operacion no es reversible asi que es necesario que tengas muy claro esto antes de aplicar' ;
      
-      this.productoService.CERRAR_INVENTARIO(this.inventario.bodega, this.inventario.nombre ,this.inventario.descripcion).subscribe(
-        (respuesta:any)=>{console.log(respuesta)
-        
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: msg,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, ¡hazlo!',
+        cancelButtonText: 'No, cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          
+      this.productoService.CERRAR_INVENTARIO(this.inventario.bodega.id, this.inventario.nombre ,this.inventario.descripcion
+        ,this.inventario.tipoInventario ).subscribe(
+          {next :       (respuesta:any)=>{console.log(respuesta)        
           if (respuesta.error === 'ok'){ 
             this.AuxIngresoInventarioModule = [];   
             this.inventario ={
@@ -212,16 +241,28 @@ export class ProductosComponent implements OnInit {
            }
          
          }
-          this.loading.hide(); 
-         }
-        );
+         },error: error => 
+          { Swal.fire(JSON.stringify(error.error) , '', 'error') 
+                   console.error(error.error)       
+                     }  , complete:()=>
+          this.loading.hide()
+        }
+        )
+          // Aquí pones la lógica para la acción confirmada
+        } 
+      });
+
+
+
+
+
      }
      borrarPrecarga(){
       if(this.inventario.bodega <= 0)
       {this.AuxIngresoInventarioModule=[];
       return;}
       
-      this.productoService.borrarPrecarguePorBodega(this.inventario.bodega).subscribe(
+      this.productoService.borrarPrecarguePorBodega(this.inventario.bodega.id).subscribe(
         (respuesta:any)=>{console.log(respuesta)
         
           if (respuesta.error === 'ok'){ 
