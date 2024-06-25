@@ -52,9 +52,9 @@ export class TiposServiciosComponent implements OnInit {
     this.VehiculosService.getTiposServicios().subscribe({
       next: (datos: any) => {
         console.log(datos);
-
-        if (datos.numdata > 0) {
-          this.tiposServicio = datos.data! 
+        if (datos.numdata > 0) { 
+          
+          this.tiposServicio = datos.data!.map((x:any)=> x.obj);
           
           console.log(this.tiposServicio);
         } else {

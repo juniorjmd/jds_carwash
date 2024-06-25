@@ -4,7 +4,7 @@
  const actionDelete = 'DATABASE_GENERIC_CONTRUCT_DELETE';
  const actionUpdate = '9d9fa03fe878f82f47b0befd5421049b989eb5d2';
  const actionAsignarCajas = 'qwer12356yhn7ujm8ik';
- const actionInsert = 'da5cbea2f73b029d0ce3a1dc2a05a46e7f0461c4';
+ const actionInsert = 'DATABASE_GENERIC_CONTRUCT_INSERT';
  const actionInsertSelect = 'da5cbea2f73b029d00461c4aasdf1256sf';
  const actionProcedure = 'DATABASE_GENERIC_CONTRUCT_PROCEDURE';
  const actionSelect = 'DATABASE_GENERIC_CONTRUCT_SELECT';

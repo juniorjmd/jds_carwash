@@ -715,7 +715,7 @@ case 'b0ecfb6a24fa75f0108286c898f3dea3158655d2'://delete .
     break;
     
     
-    case 'da5cbea2f73b029d0ce3a1dc2a05a46e7f0461c4'://insert
+    case 'DATABASE_GENERIC_CONTRUCT_INSERT'://insert
         $_columnas = '';
         $_valores = '';
         $_coma = '';

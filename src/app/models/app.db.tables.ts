@@ -5,7 +5,7 @@
   empleados_pagos_anticipos : 'empleados_pagos_anticipos',
    PARAMETROS:'parametros',
    empleados:'empleados',
-   vehiculos_servicios_costos:'vehiculos_servicios_costos',
+   vehiculos_servicios_costos:'inv_mst_servicios_costos',
    TiposServicios : 'inv_mst_tipos_servicios',// vehiculos_servicios_tipos
    vehiculos_servicios :'inv_mst_servicios',
     SUCURSAL : DATOS_SUCURSAL ,
@@ -26,7 +26,7 @@
 
  export const PROCEDURE = { 
    insertaContador : 'sp_inserta_nuevo_contador',
-   getProductoConExistencia : 'getProductoConExistencia',
+   getProductoConExistencia : 'getProductoCompletoExistencia',
    sp_cerrar_inventario : 'sp_cerrar_inventario'
 
 }

@@ -20,7 +20,7 @@ export class ServicioscostosComponent implements OnInit {
   tipoVehiculo:number;
   servicioSelecionado:number;
   precio : number ;
-  newServiciosCostos:ServiciosCostosModule = new ServiciosCostosModule(0,0,0,0);
+  newServiciosCostos:ServiciosCostosModule = new ServiciosCostosModule(0,0,0);
   tipo_servicio:number; 
   constructor( private VehiculosService : VehiculosService ,  
                private loading : loading   )
@@ -109,27 +109,21 @@ Swal.fire({
 
     this.tiposServicio[0] =  new TiposServiciosModule('','' );
     this.loading.show()
-    this.VehiculosService.getTiposServicios().subscribe(
+    this.VehiculosService.getTiposServicios().subscribe({next:
       (datos:any)=>{
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:TiposServiciosModule , index:number )=>{
-        this.tiposServicio[index] = new TiposServiciosModule(
-          dato.nombre ,  dato.descripcion 
-        ) ;
-      }) 
+      this.tiposServicio = datos.data!.map((x:any)=>x.obj) ; 
       console.log(this.tiposServicio);
     }else{
       this.tiposServicio = [];
     }
 
-        this.loading.hide()
-      } ,
-      error => {this.loading.hide();
+      } , error:   error => {this.loading.hide();
         console.log(error)
         Swal.fire( error.error.error, '', 'error');
-      }
+      }, complete:()=>    this.loading.hide() }
       );
   }  
   getServiciosVehiculos( ){ 
@@ -141,10 +135,9 @@ Swal.fire({
     this.loading.show()
     this.VehiculosService.getServiciosPorTipo(this.tipo_servicio).subscribe(
       (datos:any)=>{
-         console.log(datos);
-         
+         console.log(datos); 
     if (datos.numdata > 0 ){ 
-      this.serviciosAVehiculos = datos.data! ;
+      this.serviciosAVehiculos = datos.data!.map((x:any)=>x.obj) ;
       console.log(this.serviciosAVehiculos);
     }else{
       this.serviciosAVehiculos = [];
@@ -183,8 +176,8 @@ Swal.fire({
          console.log(datos);
          
     if (datos.numdata > 0 ){
-      this.tiposVehiculo = datos.data! ;   
-      console.log(this.tiposVehiculo);
+      this.tiposVehiculo = datos.datos! 
+      console.log('getVehiculoNoAsignadoAServicios',this.tiposVehiculo);
     }else{
       this.tiposVehiculo = [];
     }
@@ -217,7 +210,7 @@ if( this.precio <= 0  ) {
 }
 this.loading.show(); 
 // newServiciosCostos:ServiciosCostosModule = new ServiciosCostosModule(0,0,0,0);
-this.newServiciosCostos = new ServiciosCostosModule(this.servicioSelecionado, this.tipoVehiculo ,this.precio ,1);
+this.newServiciosCostos = new ServiciosCostosModule(this.servicioSelecionado, this.tipoVehiculo ,this.precio );
 this.VehiculosService.guardarCostoServicio(this.newServiciosCostos).subscribe(
  (respuesta:any)=>{console.log(respuesta)
   
@@ -245,22 +238,9 @@ this.VehiculosService.guardarCostoServicio(this.newServiciosCostos).subscribe(
        console.log(datos);
        
   if (datos.numdata > 0 ){ 
-    datos.data!.forEach((dato:ServiciosCostosModule , index:number )=>{
-      this.arrServiciosCostos[index] = new ServiciosCostosModule( 
-        dato.cod_servicio,
-        dato.cod_tipo_vehiculo,
-        dato.valor,
-        dato.estado,
-        dato.id,
-        dato.estadoNombre,
-        dato.nombreServicio,
-        dato.descipcionServicio,
-        dato.tipo_servicio,
-        dato.nombre_tipo_servicio,
-        dato.nombreTipoVehiculo,
-        dato.descripcionTipoVehiculo
-      ) ;
-    }) 
+    
+    this.arrServiciosCostos = datos.data!; 
+   
     console.log(this.arrServiciosCostos);
   }else{
     this.arrServiciosCostos = [];
@@ -282,7 +262,7 @@ limpiar(){
   // this.servicioSelecionado = 0
     this.tipoVehiculo = 0 
     this.precio = 0  
-    this.newServiciosCostos = new ServiciosCostosModule(0,0,0,0);
+    this.newServiciosCostos = new ServiciosCostosModule(0,0,0 );
     this.getCostosServiciosVehiculos();  
 for (const servicio of this.serviciosAVehiculos) { 
   if(servicio.id == this.servicioSelecionado){

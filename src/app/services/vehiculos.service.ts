@@ -34,13 +34,15 @@ export class VehiculosService {
       _where: where,
     };
     console.log(
-      'servicios de costo servicio activo - getCostosServicios',
+      'vehiculo service  - getCostosServicios',
       url.action,
       datos,
       httpOptions()
     );
     return this.http.post(url.action, datos, httpOptions());
   }
+
+
   eliminarCostosServicios(oldTipoVh: ServiciosCostosModule) {
     let where = [{ columna: 'id', tipocomp: '=', dato: oldTipoVh.id }];
     let datos = {
@@ -168,8 +170,10 @@ export class VehiculosService {
 
   getServicios() {
     let datos = {
-      action: actions.actionSelect,
-      _tabla: vistas.vehiculos_servicios,
+      "action": actions.actionSelect,
+      "_tabla": vistas.vehiculos_servicios,
+      "_columnas": ['obj'],
+    "_obj": ['obj'],
     };
     console.log(
       'servicios de usuarios activo - getUsuarios',
@@ -182,7 +186,7 @@ export class VehiculosService {
 
   getVehiculoNoAsignadoAServicios(codServicio: number) {
     let arraydatos = {
-      idServicio: codServicio,
+      _id_servicio: codServicio,
     };
     let datos = {
       action: actions.actionProcedure,
@@ -190,7 +194,7 @@ export class VehiculosService {
       _arraydatos: arraydatos,
     };
     console.log(
-      'servicios de usuarios activo - getUsuarios',
+      'vehiculo service - getVehiculoNoAsignadoAServicios',
       url.action,
       datos,
       httpOptions()
@@ -204,9 +208,11 @@ export class VehiculosService {
       action: actions.actionSelect,
       _tabla: vistas.vehiculos_servicios,
       _where: where,
+      "_columnas": ['obj'],
+      "_obj": ['obj'],
     };
     console.log(
-      'servicios de usuarios activo - getUsuarios',
+      'vehiculoService - getServiciosPorTipo',
       url.action,
       datos,
       httpOptions()
@@ -220,6 +226,8 @@ export class VehiculosService {
       action: actions.actionSelect,
       _tabla: vistas.vehiculos_servicios_costos,
       _where: where,
+      "_columnas": ['obj'],
+      "_obj": ['obj'],
     };
     console.log(
       'servicios de usuarios activo - getUsuarios',
@@ -235,7 +243,7 @@ export class VehiculosService {
     let datos = {
       action: actions.actionSelect,
       _tabla: vistas.vehiculos_propietario,
-      _where: where,
+      _where: where, 
     };
     console.log(
       'servicios de VEHICULOS activo - getVehiculos_propietario',
@@ -257,6 +265,7 @@ export class VehiculosService {
   public guardarServicios(nuevoTipo: ServiciosModule) {
     let arrayDatos: any = new Object();
     let where: any[] = [];
+    arrayDatos['usuario_creacion'] = 'USUARIO_LOGUEADO';
     arrayDatos['nombre'] = nuevoTipo.nombre;
     arrayDatos['descripcion'] = nuevoTipo.descripcion;
     arrayDatos['estado'] = nuevoTipo.estado;
@@ -292,6 +301,8 @@ export class VehiculosService {
     let datos = {
       action: actions.actionSelect,
       _tabla: vistas.vehiculos_servicios_tipos,
+      "_columnas": ['obj'],
+    "_obj": ['obj'],
     };
     console.log(
       'servicios de usuarios activo - getUsuarios',

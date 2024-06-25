@@ -1508,7 +1508,7 @@ __webpack_require__.r(__webpack_exports__);
 const actionDelete = 'DATABASE_GENERIC_CONTRUCT_DELETE';
 const actionUpdate = '9d9fa03fe878f82f47b0befd5421049b989eb5d2';
 const actionAsignarCajas = 'qwer12356yhn7ujm8ik';
-const actionInsert = 'da5cbea2f73b029d0ce3a1dc2a05a46e7f0461c4';
+const actionInsert = 'DATABASE_GENERIC_CONTRUCT_INSERT';
 const actionSelect = 'DATABASE_GENERIC_CONTRUCT_SELECT';
 const actionlogin = 'ef2e1d89937fba9f888516293ab1e19e7ed789a5';
 const actionSelectPorUsuario = 'e06c06e7e4ef58bdbdd35473wdc741qaz';

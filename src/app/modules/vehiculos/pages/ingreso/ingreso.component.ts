@@ -300,24 +300,21 @@ export class IngresoComponent implements OnInit {
 
     this.tiposServicio[0] = new TiposServiciosModule('', '');
     this.loading.show();
-    this.VehiculosService.getTiposServicios().subscribe(
+    this.VehiculosService.getTiposServicios().subscribe({next:
       (datos: any) => {
         console.log(datos);
 
         if (datos.numdata > 0) {
-          this.tiposServicio = datos.data!;
-          console.log(this.tiposServicio);
+          this.tiposServicio = datos.data!.map((x:any) => x.obj );
+          console.log('tiposervicio' , this.tiposServicio);
         } else {
           this.tiposServicio = [];
-        }
-
-        this.loading.hide();
-      },
-      (error) => {
+        } 
+      },error:  (error) => {
         this.loading.hide();
         console.log(error);
         Swal.fire(error.error.error, '', 'error');
-      }
+      },complete:()=>  this.loading.hide() }
     );
   }
 
@@ -357,27 +354,12 @@ export class IngresoComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.getServiciosPorTipoVehiculo(
       this.ingreso.cod_tipo_vehiculo
-    ).subscribe(
+    ).subscribe({next:
       (datos: any) => {
         console.log(datos);
 
         if (datos.numdata > 0) {
-          datos.data!.forEach((dato: ServiciosCostosModule, index: number) => {
-            this.serviciosAVehiculos[index] = new ServiciosCostosModule(
-              dato.cod_servicio,
-              dato.cod_tipo_vehiculo,
-              dato.valor,
-              dato.estado,
-              dato.id,
-              dato.estadoNombre,
-              dato.nombreServicio,
-              dato.descipcionServicio,
-              dato.tipo_servicio,
-              dato.nombre_tipo_servicio,
-              dato.nombreTipoVehiculo,
-              dato.descripcionTipoVehiculo
-            );
-          });
+          this.serviciosAVehiculos = datos.data!;
           console.log(this.serviciosAVehiculos);
           this.mostrarServicioPorTipo();
         } else {
@@ -385,12 +367,12 @@ export class IngresoComponent implements OnInit {
         }
 
         this.loading.hide();
-      },
+      },error:
       (error) => {
         this.loading.hide();
         console.log(error);
         Swal.fire(error.error.error, '', 'error');
-      }
+      }}
     );
   }
 

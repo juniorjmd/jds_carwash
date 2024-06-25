@@ -69,7 +69,9 @@
                     <td>{{servicioAVehiculos.descripcion}}</td>
                     <td>{{servicioAVehiculos.nombre_estado}}</td>
                     <td>{{servicioAVehiculos.precio_general}}</td>
-                    <td>{{servicioAVehiculos.nombre_tipo_servicio}}</td>
+                    <td>{{servicioAVehiculos.
+                        tipo_servicio_detalle?.nombre
+                        }}</td>
                     <td title="editar"><i class="bi bi-pencil-square boton_activo" (click)="setActualiza_servicio_vehiculo(servicioAVehiculos)"></i></td>
                     <td title="eliminar"><i class="bi bi-trash boton_activo" (click)="borrarTipoVehiculo(servicioAVehiculos)"></i></td>
                 </tr>

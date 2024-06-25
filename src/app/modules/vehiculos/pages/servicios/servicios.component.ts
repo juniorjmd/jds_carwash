@@ -47,24 +47,21 @@ export class ServiciosComponent implements OnInit {
   getTiposServicios() {
     this.tiposServicio[0] = new TiposServiciosModule('', '');
     this.loading.show();
-    this.VehiculosService.getTiposServicios().subscribe(
+    this.VehiculosService.getTiposServicios().subscribe({next:
       (datos: any) => {
         console.log(datos);
 
         if (datos.numdata > 0) {
-          this.tiposServicio = datos.data!;
+          this.tiposServicio = datos.data!.map((x:any)=> x.obj);
           console.log(this.tiposServicio);
         } else {
           this.tiposServicio = [];
-        }
-
-        this.loading.hide();
-      },
-      (error) => {
+        } 
+      }, error: (error) => {
         this.loading.hide();
         console.log(error);
         Swal.fire(error.error.error, '', 'error');
-      }
+      },complete:()=>  this.loading.hide() }
     );
   }
   public setActualiza_servicio_vehiculo(tipo: ServiciosModule) {
@@ -93,11 +90,11 @@ export class ServiciosComponent implements OnInit {
   getServiciosVehiculos() {
     this.serviciosAVehiculos[0] = new ServiciosModule('', 0, 0);
     this.loading.show();
-    this.VehiculosService.getServicios().subscribe(
+    this.VehiculosService.getServicios().subscribe({next:
       (datos: any) => {
         console.log(datos);
         if (datos.numdata > 0) {
-          this.serviciosAVehiculos = datos.data!;
+          this.serviciosAVehiculos = datos.data!.map((x:any)=>x.obj);
           console.log(this.serviciosAVehiculos);
         } else {
           this.serviciosAVehiculos = [];
@@ -105,12 +102,13 @@ export class ServiciosComponent implements OnInit {
         this.mostrarServicioPorTipo();
         this.loading.hide();
       },
-      (error) => {
+      error:  (error) => {
         this.loading.hide();
         console.log(error);
         Swal.fire(error.error.error, '', 'error');
       }
-    );
+
+  });
   }
 
   manageServicioVehiculo(): any {

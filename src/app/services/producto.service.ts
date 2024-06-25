@@ -117,7 +117,8 @@ getProductosCodBarrasVCnt(codPrd:string , caja:number){
  
   let arraydatos =  {      
     "_id_producto" : codPrd  ,
-    "_id_caja" : caja
+    "_id_caja" : caja,
+    '_obj' : ['obj']
 }
   let  datos = {"action": actions.actionProcedure ,
     "_procedure" : PROCEDURE.getProductoConExistencia,
