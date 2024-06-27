@@ -5,6 +5,8 @@ import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { DocumentosModel } from '../models/ventas/documento.model';
+import { Observable } from 'rxjs';
+import { ClientesModule } from '../models/clientes/clientes.module';
 
 @Injectable({
     providedIn: 'root'
@@ -51,10 +53,10 @@ export class ClientesService {
       
     }
 
-    getClientesOdoo(){
-        let datos = {"action": actions.actionSelect , "_tabla" : vistas.documentos_clientes,  }
-        console.log('getClientesOdoo  ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+    getClientes():Observable<ClientesModule>{
+        let datos = {"action": actions.actionSelect , "_tabla" : vistas.vw_mst_per_clientes, _limit: 300 }
+        console.log('getClientes  ' ,url.action , datos, httpOptions());
+        return this.http.post<ClientesModule>(url.action , datos, httpOptions()) ;
     }
     
     getDatosClientePname(nombre:string){ 

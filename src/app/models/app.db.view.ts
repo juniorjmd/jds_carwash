@@ -36,6 +36,7 @@
     productos:'vw_productos_con_existencia',
     marcas:'vw_inv_marcas' , 
     prd_inventario:'vw_prd_inventario',
-    aux_ingreso_inventario : 'vw_inv_inventario_ingreso_auxiliar'
+    aux_ingreso_inventario : 'vw_inv_inventario_ingreso_auxiliar',
+    vw_mst_per_clientes : 'vw_mst_per_clientes'
  }
 

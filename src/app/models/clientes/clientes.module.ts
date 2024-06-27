@@ -1,42 +1,47 @@
-import {  Inject, NgModule } from '@angular/core';
+import { Inject, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModelBase } from '../ModelBase';
 
 @NgModule({
- declarations: [],
- imports: [
-  CommonModule
- ]
+  declarations: [],
+  imports: [
+    CommonModule
+  ]
 })
-export class ClientesModule { 
+export class ClientesModule extends ModelBase {
 
 
 
-  constructor( @Inject(String) public display_name:string  ,
-  @Inject(String) public company_type:string,
-  @Inject(String) public is_company?:string,
-  @Inject(String) public email?:string,
-  @Inject(String) public mobile?:string,
-  @Inject(String) public phone?:string,
-  @Inject(String) public type?:string,
-  @Inject(String) public vat?:string,
-  @Inject(String) public lang?:string,
-  @Inject(String) public street?:string,
-  @Inject(String) public city?:string,
-  @Inject(String) public street2?:string,
-  @Inject(String) public state_id?:string,
-  @Inject(String) public zip?:string,
-  @Inject(String) public country_id?:string,
-  @Inject(String) public  funcion?:string,
-  @Inject(String) public category_id?:string,
-  @Inject(String) public title?:string,
-  @Inject(String)  public l10n_latam_identification_type_id?:string,
-  @Inject(String)  public nombre_pais?:string,
-  @Inject(String)  public nombre_estado?:string,
-  @Inject(String)  public orden?:string,
-  @Inject(String)  public id?:number
+  constructor(
+    @Inject(Number) public tipoIdentificacion?: number, // Valor por defecto definido en el esquema
+    @Inject(String) public numIdentificacion?: string,
+    @Inject(String) public nombre?: string,
+    @Inject(String) public sec_nombre?: string,
+    @Inject(String) public apellido?: string,
+    @Inject(String) public sec_apellido?: string,
+    @Inject(String) public nombreCompleto?: string,
+    @Inject(String) public direccionRecibo?: string,
+    @Inject(String) public telefono?: string,
+    @Inject(String) public email?: string,
+    @Inject(Number) public tipDieccion?: number | null,
+    @Inject(String) public calle?: string | null,
+    @Inject(String) public calle2?: string | null,
+    @Inject(String) public barrio?: string | null,
+    @Inject(String) public pais?: string | null,
+    @Inject(Number) public departamento?: number | null,
+    @Inject(String) public ciudad?: string | null,
+    @Inject(String) public cod_postal?: string | null,
+    @Inject(String) public nif?: string | null,
+    @Inject(String) public puestoTrabajo?: string | null,
+    @Inject(String) public telefono2?: string | null,
+    @Inject(String) public pagina?: string | null,
+    @Inject(String) public titulo?: string | null,
+    @Inject(String) public categoria?: string | null,
 
 
-  )
-    {}
+
+
+
+
+  ) { super() }
 }
- 
