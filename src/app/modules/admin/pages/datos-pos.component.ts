@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select } from 'src/app/interfaces/generales.interface';
-import { Permisos, RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
+import {   RecursoDetalle, } from 'src/app/interfaces/usuario.interface';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { LoginService } from 'src/app/services/login.services';
 
@@ -35,7 +35,7 @@ export class DatosPosComponent implements OnInit {
   async getUsuarioLogeado(){
     try {
      
-      let usuarioPermisos : Permisos[] |any = [];  
+      let usuarioPermisos : RecursoDetalle[] |any = [];  
       const ServLogin = await  this._ServLogin.getUsuarioLogeadoAsync(); 
       const datos:any|select  = await ServLogin;  
       usuarioPermisos = datos.data.usuario.permisos; 
@@ -51,7 +51,7 @@ export class DatosPosComponent implements OnInit {
   }
 
   
-  getMenuImage(usuarioPermisos:Permisos[]|any[]){
+  getMenuImage(usuarioPermisos:RecursoDetalle[]|any[]){
  
     let menu = usuarioPermisos; 
     

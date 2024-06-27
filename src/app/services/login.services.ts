@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Permisos, Usuario  } from '../interfaces/usuario.interface';
+import {  RecursoDetalle, Usuario  } from '../interfaces/usuario.interface';
 import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
 import { Observable, firstValueFrom } from 'rxjs';
@@ -12,7 +12,7 @@ import { UsuarioResponseInterface } from '../interfaces/UsuarioResponse.Interfac
 })
 export class LoginService {
  usuario!:Usuario;
-    private permisosUsuario : Permisos[] = [];
+    private permisosUsuario : RecursoDetalle[] = [];
 
     constructor(private http: HttpClient){ 
         console.log('servicios loguin inicializado');        
@@ -39,7 +39,7 @@ export class LoginService {
     } 
 
 
-    private getPermisos(idPerfil:number):Permisos[]{
+    private getPermisos(idPerfil:number):RecursoDetalle[]{
         return this.permisosUsuario;
     }
     private getLlaveRegistro(){
@@ -71,14 +71,14 @@ export class LoginService {
     //     console.log('validar llave de session inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
     //     return await   this.http.post(url.login , datos, httpOptions()).toPromise() ; 
     // }
-    async getUsuarioLogeadoAsync(invoker: string = ''): Promise<any> {
+     getUsuarioLogeadoAsync(invoker: string = ''): Observable<any> {
         let datos = {
           action: actions.actionValidarKeylogin,
           _llaveSession: localStorage.getItem('sis41254#2@'),
           _invoker: invoker
         };
         console.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
-        return await firstValueFrom(this.http.post(url.login, datos, httpOptions()));
+        return  this.http.post(url.login, datos, httpOptions()) ;
       }
 }
  

@@ -50,11 +50,11 @@ export class InicioComponent implements OnInit {
     let margin = 0;
     console.log(usuario, menu);
     
-    menu!.forEach((detalle , index ) => {
+    menu!.forEach((recurso , index ) => {
       // console.log('recorrido',index ,detalle ); 
-        if(detalle.recurso.tipo === 'card'){
+        if(recurso.tipo === 'card'){
 
-          menuCard[margin]= detalle.recurso ;
+          menuCard[margin]=  recurso ;
           margin = margin + 1;
         }
       });

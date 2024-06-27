@@ -8,7 +8,7 @@ import { CiudadModel } from 'src/app/models/maestros.model';
 
 import { NewCiudadComponent } from './new-ciudad.component';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogoConfirmacionComponent } from 'src/app/components/shared/dialogo-confirmacion/dialogo-confirmacion.component';
+import { DialogoConfirmacionComponent } from 'src/app/modules/shared/componentes/dialogo-confirmacion/dialogo-confirmacion.component';
 
 
 @Component({

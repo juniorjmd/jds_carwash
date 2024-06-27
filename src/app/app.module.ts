@@ -1,13 +1,9 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';  
-
-import { DialogoConfirmacionComponent } from 'src/app/components/shared/dialogo-confirmacion/dialogo-confirmacion.component'
- 
 //servicios
 
 //componentes
-import { AppComponent } from './app.component';
-import { NavbarComponent } from './components/layouts/navbar/navbar.component';
+import { AppComponent } from './app.component'; 
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { InicioComponent } from './components/inicio/inicio.component';
@@ -19,12 +15,10 @@ import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle.co
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { ReporteDiarioComponent } from './components/reportes/reporte-diario.component'; 
 import { ReporteVentasPcajaComponent } from './components/reportes/reporte-ventas-pcaja.component';
-import { MenucardsComponent } from './components/shared/menucards/menucards.component';  
 
 
 import { CierresComponent } from './components/cierres/cierres.component';
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component'; 
-import { LoadingComponent } from './components/shared/loading/loading.component'; 
 import { loading } from './models/app.loading';
 import { UsuarioPerfilComponent } from './components/usuario/usuario-perfil.component'; 
 import { booleanpPipe } from './pipes/booleanp.pipe';
@@ -58,7 +52,6 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
 @NgModule({
   declarations: [ 
     AppComponent,
-    NavbarComponent,
     LoginComponent,
     HomeComponent,
     InicioComponent,
@@ -69,12 +62,9 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     UsuarioDetalleComponent,
     ReportesComponent,
     ReporteDiarioComponent, 
-    ReporteVentasPcajaComponent,
-    MenucardsComponent, 
+    ReporteVentasPcajaComponent, 
     CierresComponent,
-    MiUsuarioComponent, 
-    DialogoConfirmacionComponent,
-    LoadingComponent, 
+    MiUsuarioComponent,   
     UsuarioPerfilComponent, 
     EnviosComponent,
     DevolucionesComponent, 

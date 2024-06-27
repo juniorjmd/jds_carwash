@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { select } from 'src/app/interfaces/generales.interface';
+import { Component  } from '@angular/core';
+import { Router } from '@angular/router'; 
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
 import { LoginService } from 'src/app/services/login.services';
-import { DatosInicialesService } from '../../../services/DatosIniciales.services';
+import { DatosInicialesService } from '../../../../services/DatosIniciales.services';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { ModalService } from 'src/app/modal.service';
 @Component({
@@ -43,25 +42,16 @@ export class NavbarComponent {
     this.isDropdownActive = !this.isDropdownActive;
   }
   async getUsuarioLogeado() {
-    try {
-      const ServLogin = await this._ServLogin.getUsuarioLogeadoAsync();
-      const datos: any | select = await ServLogin;
-
-      let usuario: Usuario;
-      usuario = datos.data.usuario;
-      this.usuario = usuario;
-
-      this.menusUsuario = this.getMenuImage(usuario);
-      console.log(
-        'estoy en getUsuarioLogeado en navbar component',
-        this.menusUsuario
-      );
-    } catch (error: any) {
-      throw new Error(`Error al leer maestros : ${error}`);
+     
+      this._ServLogin.getUsuarioLogeadoAsync().subscribe({next:(datos)=>{
+       
+      this.usuario = datos.data.usuario; 
+        this.menusUsuario = this.getMenuImage(this.usuario!);
+      },error: (error: any) => { 
       console.log(error);
       alert(error.error.error);
       this._Router.navigate(['login']);
-    }
+    }})  
   }
 
   getMenuImage(usuario: Usuario) {
@@ -72,11 +62,12 @@ export class NavbarComponent {
 
     menu!.forEach((detalle, index) => {
       // console.log('recorrido',index ,detalle );
-      if (detalle.recurso.tipo === 'card') {
-        menuCard[margin] = detalle.recurso;
+      if (detalle.tipo === 'card') {
+        menuCard[margin] = detalle;
         margin = margin + 1;
       }
-    });
+    }); 
+    
     switch (margin) {
       case 1:
         this.margin = 4;
@@ -87,6 +78,8 @@ export class NavbarComponent {
       case 3:
         this.margin = 2;
         break;
+        default:
+          this.margin = 1;
     }
 
     return menuCard;

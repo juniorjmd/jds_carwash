@@ -2,6 +2,6 @@
 
     <div *ngIf="margin > 0" [ngClass]="'col-sm-'+margin"></div>
 
-    <app-menucards class="col-sm-2" style="background-color: transparent !important;" [menuDetalle]="menu" *ngFor="let menu of menusUsuario ; let i = index; ">
-    </app-menucards>
+    <shared-menucards class="col-sm-2" style="background-color: transparent !important;" [menuDetalle]="menu" *ngFor="let menu of menusUsuario ; let i = index; ">
+    </shared-menucards>
 </div>

@@ -92,11 +92,11 @@ export class VentasComponent implements AfterViewInit, OnInit {
     let margin = 0;
     console.log( 'permisos usuario' , usuario, menu);
 
-    let menuDetalleBtn =  usuario.permisos.filter(x=> x.recurso.tipo === 'BOTON' )
+    let menuDetalleBtn =  usuario.permisos.filter(x=> x.tipo === 'BOTON' )
     console.log(menuDetalleBtn);
-    menuDetalleBtn!.forEach((detalle ) => { 
+    menuDetalleBtn!.forEach((recurso ) => { 
 
-        switch (detalle.recurso.nombre_recurso.trim()) {
+        switch (recurso.nombre_recurso.trim()) {
           case 'crear cotizacion':
             this.cotiza = true; 
             break;

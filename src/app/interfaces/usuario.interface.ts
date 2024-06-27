@@ -6,7 +6,7 @@ export interface Usuario{
     id_perfil:number,
     nombre_perfil:string,
     key_registro:string,
-    permisos : Permisos[]
+    permisos : RecursoDetalle[]
 }
 
 export interface Perfil{
@@ -36,12 +36,7 @@ export interface Usuarios{
     libranza?:boolean;
 }
 
-export interface Permisos{
-    id:number,
-    id_perfil:number,
-    recurso:RecursoDetalle
-    
-}
+ 
 
 export interface RecursoDetalle{
     id?:number,
@@ -50,5 +45,6 @@ export interface RecursoDetalle{
     idtipo:number,
     tipo:string,
     estado?:number ,
-    direccion?:any
+    direccion?:any , 
+    recursosHijos ?: RecursoDetalle[]
 }

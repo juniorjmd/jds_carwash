@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { RecursoDetalle } from 'src/app/interfaces/usuario.interface';
 
 @Component({
-  selector: 'app-menucards',
+  selector: 'shared-menucards',
   templateUrl: './menucards.component.html',
   styleUrls: ['./menucards.component.css']
 })

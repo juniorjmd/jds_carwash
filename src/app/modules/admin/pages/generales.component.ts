@@ -66,16 +66,16 @@ export class GeneralesComponent implements OnInit {
     let cont_2 = 0;
     let flag = false ;
     
-    menu!.forEach((detalle   ) => {
-        if(detalle.recurso.tipo === 'link'){ 
+    menu!.forEach((recurso   ) => {
+        if(recurso.tipo === 'link'){ 
 
           if(flag){
             flag = false;
-            menuCardDer[cont_1]= detalle.recurso ; 
+            menuCardDer[cont_1]= recurso ; 
             cont_1++;
   
           }else{ flag = true;
-            menuCardIzq[cont_2]= detalle.recurso ; 
+            menuCardIzq[cont_2]= recurso ; 
           cont_2++;
 
           }
