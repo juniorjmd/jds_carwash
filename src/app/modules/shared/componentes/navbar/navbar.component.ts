@@ -5,6 +5,7 @@ import { LoginService } from 'src/app/services/login.services';
 import { DatosInicialesService } from '../../../../services/DatosIniciales.services';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { ModalService } from 'src/app/modal.service';
+import { usuarioService } from 'src/app/services/usuario.services';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -23,11 +24,11 @@ export class NavbarComponent {
   margin = 0;
   constructor(
     private modalService: ModalService,
-    private _datosInicialesService: DatosInicialesService,
+    private _datosInicialesService: DatosInicialesService,private usuarioService : usuarioService,
     private _ServLogin: LoginService,
     private _Router: Router
   ) {
-    this.getUsuarioLogeado();
+   
     this.llaveIncio = '';
     this._datosInicialesService.getDatosIniSucursal().subscribe({
       next: (data: any) => {
@@ -37,53 +38,14 @@ export class NavbarComponent {
       error: (error) => alert(error.error.error),
     });
   }
-
+  ngOnInit() {
+    this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ; 
+    });
+  }
   toggleDropdown() {
     this.isDropdownActive = !this.isDropdownActive;
-  }
-  async getUsuarioLogeado() {
-     
-      this._ServLogin.getUsuarioLogeadoAsync().subscribe({next:(datos)=>{
-       
-      this.usuario = datos.data.usuario; 
-        this.menusUsuario = this.getMenuImage(this.usuario!);
-      },error: (error: any) => { 
-      console.log(error);
-      alert(error.error.error);
-      this._Router.navigate(['login']);
-    }})  
-  }
-
-  getMenuImage(usuario: Usuario) {
-    let menuCard: RecursoDetalle[] = [];
-    let menu = usuario.permisos;
-    let margin = 0;
-    console.log(usuario, menu);
-
-    menu!.forEach((detalle, index) => {
-      // console.log('recorrido',index ,detalle );
-      if (detalle.tipo === 'card') {
-        menuCard[margin] = detalle;
-        margin = margin + 1;
-      }
-    }); 
-    
-    switch (margin) {
-      case 1:
-        this.margin = 4;
-        break;
-      case 2:
-        this.margin = 3;
-        break;
-      case 3:
-        this.margin = 2;
-        break;
-        default:
-          this.margin = 1;
-    }
-
-    return menuCard;
-  }
+  } 
+ 
   confirmLogout() {
     const message = '¿Estás seguro de que deseas cerrar sesión?';
     this.modalService.openConfirmationModal(message).then((result) => {

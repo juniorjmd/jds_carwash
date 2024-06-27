@@ -7,17 +7,25 @@ import { TABLA } from '../models/app.db.tables';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { UsuarioModel } from '../models/usuario.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class usuarioService {
 
+
+  private usuarioSource = new BehaviorSubject<any>(null);
+  currentUsuario = this.usuarioSource.asObservable();
     constructor(private http: HttpClient ,
         private loading : loading ){ 
         console.log('servicios usuarios inicializado');  
     }
     
+
+    changeUsuario(usuario: any) {
+        this.usuarioSource.next(usuario);
+      }
     getPerfiles(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : TABLA.perfiles

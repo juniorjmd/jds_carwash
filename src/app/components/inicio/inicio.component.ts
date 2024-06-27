@@ -4,6 +4,8 @@ import { select } from 'src/app/interfaces/generales.interface';
 import { RecursoDetalle, Usuario, Usuarios } from 'src/app/interfaces/usuario.interface';
 import { LoginService } from '../../services/login.services';
 import { LoginComponent } from '../login/login.component';
+import { usuarioService } from 'src/app/services/usuario.services';
+import { UsuarioModel } from 'src/app/models/usuario.model';
 
 
 @Component({
@@ -14,22 +16,17 @@ import { LoginComponent } from '../login/login.component';
 export class InicioComponent implements OnInit {
   keyLog:string = '123456qwerty';
   menusUsuario :RecursoDetalle[] = [];
+  usuario?:Usuario;
 
   margin = 0;
-  constructor( private _ServLogin:LoginService , 
-    private _Router : Router,) {  
-    this.getUsuarioLogeado();
+  constructor( private _ServLogin:LoginService , private usuarioService : usuarioService , 
+    private _Router : Router,) {   
   }
 
   async getUsuarioLogeado(){
     try {
-      const ServLogin = await  this._ServLogin.getUsuarioLogeadoAsync(); 
-      const datos:any|select  = await ServLogin; 
-  
-      console.log('retorno', datos);  
-      let usuario : Usuario ;
-      usuario = datos.data.usuario ; 
-      this.menusUsuario = this.getMenuImage(usuario) ;
+     console.log('usuario recibido' , this.usuario)
+      this.menusUsuario = this.getMenuImage(this.usuario!) ;
      console.log('estoy en getUsuarioLogeado',this.menusUsuario);
 
   } catch (error : any) {
@@ -41,8 +38,12 @@ export class InicioComponent implements OnInit {
    
   }
 
-  ngOnInit(): void {
-    }
+  
+  ngOnInit() {
+    this.usuarioService.currentUsuario.subscribe((usuario) => { this.usuario = usuario ; 
+      if(this.usuario)   this.getUsuarioLogeado();
+    });
+  }
   getMenuImage(usuario:Usuario){
 
     let menuCard:RecursoDetalle[] = [];
@@ -51,7 +52,7 @@ export class InicioComponent implements OnInit {
     console.log(usuario, menu);
     
     menu!.forEach((recurso , index ) => {
-      // console.log('recorrido',index ,detalle ); 
+       console.log('recorrido',index ,recurso ); 
         if(recurso.tipo === 'card'){
 
           menuCard[margin]=  recurso ;
