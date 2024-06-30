@@ -13,6 +13,7 @@
     </thead>
     <tbody class="">
       <tr class="tr-inicio" *ngFor="let cliente of clientes">
+        
         <input type="hidden" value="cliente.id" #idCliente />
 
         <td>{{ cliente.nombreCompleto?.trim() }}</td>

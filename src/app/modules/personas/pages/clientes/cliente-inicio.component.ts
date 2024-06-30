@@ -17,6 +17,9 @@ export class ClienteInicioComponent implements OnInit {
   constructor(public loading : loading, private ClienteService:ClientesService,   private newAbrirDialog: MatDialog,) { 
     this.getClientesOdoo() 
 
+  
+    
+
   }
   mostrarCliente(cliente:ClientesModule){
     this.newAbrirDialog.open(FndClienteComponent,{data: { clienteIngreso : cliente , invoker:'clienteListado' } })
@@ -41,7 +44,7 @@ export class ClienteInicioComponent implements OnInit {
   getClientesOdoo(){
     this.loading.show();
     this.ClienteService.getClientes().subscribe( {next:(respuesta:any)=>{ 
-       console.log('cerrarDocumento',respuesta); 
+      //  console.log('cerrarDocumento',respuesta); 
        if (respuesta.error === 'ok'){ 
         console.log(respuesta);
         this.clientes = respuesta.data ;  
