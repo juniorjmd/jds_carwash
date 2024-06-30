@@ -20,7 +20,7 @@ import { DocpagosModel } from '../models/ventas/pagos.model';
     providedIn: 'root'
 })
 export class cajasServices { 
-
+    urlVentas = url.action + "ventas/";
 
     constructor(private http: HttpClient ,
         private loading : loading ){ 
@@ -217,8 +217,8 @@ export class cajasServices {
         "_ordenDocumento" : idDocumento, 
          "_pagos" : pagos
        };
-       console.log('setPagoDocumento',url.action , datos, httpOptions())
-        return this.http.post(url.action , datos, httpOptions()) ;
+       console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())
+        return this.http.post(this.urlVentas  , datos, httpOptions()) ;
     }
     setCajasAUsuarios(idUsuario:number , cajas:number[] ){
         let datos = {"action": actions.actionAsignarCajas ,

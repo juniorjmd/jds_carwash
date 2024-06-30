@@ -1,7 +1,7 @@
 export class ModelBase {  
   id?:number|string;
-  usuario_creacion ?:number;
-  usuario_edicion ?:number;
+  usuario_creacion ?:any;
+  usuario_edicion ?:any;
   fecha_creacion ?:Date ;
   fecha_actualizacion ?:Date ; 
   estado ?:number ;  

@@ -31,17 +31,16 @@ export class PagosVentaComponent implements OnInit {
   finalizarOk(){
     //documentos_pagos
     this.serviceCaja.setPagoDocumento(this.Documento.orden ,this.pagos )
-     .subscribe(
-      (datos:any)=>{
+     .subscribe({next: (datos:any)=>{
          console.log(datos); 
     console.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
         this.dialogo.close(true);
       } ,
-      error => {this.loading.hide();
-        alert( error.error.error);
-      }
+      error: error  => {this.loading.hide();
+        console.error('finalizarOk', error.error.error);
+      } } 
       );
   }
   cancelar(){

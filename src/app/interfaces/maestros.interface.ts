@@ -27,8 +27,7 @@ export interface maestros{
     "datos"?:datosMaestros[]
 }
 export interface departamento   {
-        "id" : number , 
-        "cod_departamento" : number  , 
+        "id" : number ,   
         "nombre" : string , 
         "nombre_pais" : string,
         "cod_pais" : number

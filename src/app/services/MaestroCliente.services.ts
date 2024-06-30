@@ -164,7 +164,7 @@ export class MaestroClienteServices {
     ///departamentos
     
     setDepartamentos( dep:DepartamentoModel){
-        let  arraydatos = { "cod_departamento":dep.cod_departamento,
+        let  arraydatos = { "id":dep.id,
           "cod_pais" : dep.cod_pais , "nombre" : dep.nombre }
         let datos = {"action": actions.actionInsert ,
         "_tabla" : TABLA.departamento,
@@ -177,7 +177,7 @@ export class MaestroClienteServices {
 
     actualizarDepartamentos( dep:DepartamentoModel){ 
         let where =   [{"columna" : "id" , "tipocomp" : "=" , "dato" : dep.id }];
-        let  arraydatos = { "cod_departamento": dep.cod_departamento,
+        let  arraydatos = { "id": dep.id,
         "cod_pais" : dep.cod_pais , "nombre" : dep.nombre }
         let datos = {"action": actions.actionUpdate ,
         "_tabla" : TABLA.departamento,

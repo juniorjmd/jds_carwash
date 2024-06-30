@@ -1,53 +1,61 @@
-<div class="container-fluit">
+<div class="container-fluid">
     <div *ngIf="listo">
-        <table class="table" style="min-width: 350px;">
-            <tr>
-                <th>Medio de Pago</th>
-                <th>Cantidad</th>
-            </tr>
-            <tr *ngFor="let pago  of pagos ; let i = index ">
-                <td>{{pago.nombreMedio}}</td>
-                <td *ngIf="i===indexEfectivo">
-                    <input type="number" readonly [(ngModel)]="pagos[i].valorPagado">
-                    <br>
-                    <table>
-                        <tr>
-                            <td><span style="font-size: x-small;"><b>Recibido</b></span> </td>
-                            <td><span style="font-size: x-small;"><b>Vueltos</b></span></td>
-                        </tr>
-                        <tr>
-                            <td><input type="number" (keyup.enter)='setVueltos(i)' (blur)="setVueltos(i)" [(ngModel)]="pagos[i].valorRecibido"></td>
-                            <td><input *ngIf="i===indexEfectivo" type="number" readonly [(ngModel)]="pagos[i].vueltos"></td>
-                        </tr>
-                    </table>
-
-
-                </td>
-                <td *ngIf="i!==indexEfectivo">
-
-                    <input (change)="cambioDeValor(i)" type="number" [(ngModel)]="pagos[i].valorPagado">
-
-                    <table>
-                        <tr>
-                            <td><span style="font-size: x-small;"><b>Referencia de pago =>  </b></span> <input type="text" [(ngModel)]="pagos[i].referencia"></td>
-                        </tr>
-                    </table>
-                </td>
-
-
-
-
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align: center;">
-                    <hr>
-                    <button class="btn btn-success" (click)="finalizarOk()">Cerrar Factura</button>
-                    <button class="btn btn-warning" style="margin-left: 5%;" (click)="cancelar()">Continuar Facturando</button>
-                    <hr>
-                </td>
-            </tr>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Medio de Pago</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pago of pagos; let i = index">
+                    <td style="align-content: center;">{{pago.nombreMedio}}</td>
+                    <td  style="align-content: center;" *ngIf="i === indexEfectivo">
+                        <input type="number" readonly class="form-control" [(ngModel)]="pagos[i].valorPagado">
+                    </td> 
+                    <td *ngIf="i === indexEfectivo">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th><span style="font-size: x-small;"><b>Recibido</b></span></th>
+                                    <th><span style="font-size: x-small;"><b>Vueltos</b></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="number" class="form-control form-control-sm" (keyup.enter)='setVueltos(i)' (blur)="setVueltos(i)" [(ngModel)]="pagos[i].valorRecibido"></td>
+                                    <td><input *ngIf="i === indexEfectivo" type="number" readonly class="form-control form-control-sm" [(ngModel)]="pagos[i].vueltos"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td  style="align-content: center;" *ngIf="i !== indexEfectivo">
+                        <input (change)="cambioDeValor(i)" type="number" class="form-control" [(ngModel)]="pagos[i].valorPagado"></td>
+                        <td *ngIf="i !== indexEfectivo"  style="align-content: center;">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th><span style="font-size: x-small;"><b>Referencia de pago =></b></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="form-control form-control-sm" [(ngModel)]="pagos[i].referencia"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <hr>
+                        <button class="btn btn-success" (click)="finalizarOk()">Cerrar Factura</button>
+                        <button class="btn btn-warning" style="margin-left: 5%;" (click)="cancelar()">Continuar Facturando</button>
+                        <hr>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
-    <div *ngIf="!listo"><i class="fas fa-spinner fa-pulse"></i>
-    </div>
+    <div *ngIf="!listo"><i class="bi bi-arrow-repeat" style="font-size: 2rem;"></i></div>
 </div>

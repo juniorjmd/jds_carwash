@@ -50,7 +50,7 @@ export class NewCiudadComponent implements OnInit {
     this.dep!.forEach(departamentos =>{
       console.log(this.cityN.cod_departamento, departamentos.id);
      if ( this.cityN.cod_departamento === departamentos.id){
-      codDep =departamentos.cod_departamento;
+      codDep =departamentos.id;
      }
     })
     this.cityN.cod_dane = ( codDep! * 1000) +  this.cityN.cod_ciudad ;

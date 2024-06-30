@@ -1,4 +1,4 @@
-<li *ngIf="recurso.recursosHijos!.length === 0" class="nav-item">
+<li *ngIf="recurso.recursosHijos!.length === 0 && recurso.direccion  != '' " class="nav-item">
     <a class="nav-link" [routerLink]="recurso.direccion">
        {{recurso.nombre_recurso}}
     </a>

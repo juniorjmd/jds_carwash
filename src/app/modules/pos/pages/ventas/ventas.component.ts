@@ -92,9 +92,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
     let margin = 0;
     console.log( 'permisos usuario' , usuario, menu);
 
-    let menuDetalleBtn =  usuario.permisos.filter(x=> x.tipo === 'BOTON' )
-    console.log(menuDetalleBtn);
-    menuDetalleBtn!.forEach((recurso ) => { 
+    let menuDetalleBtn =  usuario.permisos.filter(x=> x.nombre_recurso === "Punto de Venta" )
+    console.log( 'permisos usuario',  menuDetalleBtn[0].recursosHijos);
+    menuDetalleBtn[0].recursosHijos!.forEach((recurso ) => { 
 
         switch (recurso.nombre_recurso.trim()) {
           case 'crear cotizacion':
@@ -140,11 +140,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
           }
           this.asignarMediosDePagoValoresIniciales();
         
-            try {
-              this.pagos[this.indexEfectivo].valorPagado = this.documentoActivo.totalFactura?? 0;
-            } catch (error: any) {
-              console.error('Error setting pagos', error);
-            }
+          
           
           this.irbuscarProducto();
         } else {
@@ -170,8 +166,8 @@ export class VentasComponent implements AfterViewInit, OnInit {
           if (this.documentoActivo.pagos === undefined || this.documentoActivo.pagos.length === 0){
             this.documentoActivo.pagos = this.MedioP.map((value: any , index) => {
               let valorPago = 0;
-               if (index == this.indexEfectivo){
-                valorPago = this.documentoActivo.totalFactura
+               if (value.nombre.toUpperCase() == 'EFECTIVO'){
+                 valorPago = this.documentoActivo.totalFactura
                }
                 let auxpago:DocpagosModel = {
                   idDocumento: this.documentoActivo.orden,
@@ -185,16 +181,19 @@ export class VentasComponent implements AfterViewInit, OnInit {
               return auxpago;
             })
           } 
-           let doc = this.documentoActivo ; 
+           let docPagos = [...this.documentoActivo.pagos] ; 
+                      console.log("asignar pagos" , docPagos)
            this.MedioP.forEach(medio => {
-            const pago = doc.pagos!.find((p: DocpagosModel) => p.idMedioDePago === medio.id);
+           console.log(medio.id);
+            const pago = docPagos.find((p: DocpagosModel) => p.idMedioDePago == medio.id);
+            console.log('get pagos iteracion ' , pago )
             if (pago) {
-              medio.valor_aux = pago.valorTotalAPagar;
+              medio.valor_aux = pago.valorPagado;
             }
-          });
-          
+          }); 
+
             this.pagos = this.documentoActivo.pagos!;
-            console.log('pagos factura', this.pagos);
+            console.log('pagos factura', this.pagos,'medios de pagos ', this.MedioP);
 
   }
 
@@ -330,6 +329,10 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 
   asignarPagosAVenta() {
+    if (typeof(this.documentoActivo.listado) === 'undefined' || this.documentoActivo.listado.length === 0) { 
+      Swal.fire('No posee elementos a facturar', 'Debe incluir minimo un producto o servicio en la factura', 'error');
+      return;
+    } 
     this.newAbrirDialog.open(PagosVentaComponent, { data: this.documentoActivo })
       .afterClosed()
       .pipe(
@@ -381,37 +384,32 @@ export class VentasComponent implements AfterViewInit, OnInit {
     }
 
     this.loading.show();
-    this.documentoService.cerrarDocumento(this.documentoActivo.orden).pipe(
-      tap((respuesta: any) => {
-        if (respuesta.error === 'ok') {
-          this.documentoRetorno = respuesta.data.documentoFinal;
-          console.log('facturarDocumento', this.documentoRetorno);
-          this.printer_factura_final();
-          this.crearDocumento();
-        } else {
-          try {
-            Swal.fire(respuesta.error, '', 'error');
-           } catch (error : any) {
-            Swal.fire('error en el servidor', '', 'error');
-           }
-        }
-        this.loading.hide();
-        this.irbuscarProducto();
-      }),
-      catchError((error: any) => {
-        this.loading.hide(); 
+    this.documentoService.cerrarDocumento(this.documentoActivo.orden).subscribe({next:(respuesta: any) => {
+      if (respuesta.error === 'ok') {
+        this.documentoRetorno = respuesta.data.documentoFinal;
+        console.log('facturarDocumento', this.documentoRetorno);
+        this.printer_factura_final();
+        this.crearDocumento();
+      } else {
+        try {
+          Swal.fire(respuesta.error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
+      }
+      this.loading.hide();
+      this.irbuscarProducto();
+    }
+      ,error: (error: any) => {
+         
         try {
           Swal.fire(error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
+         }},complete:()=>{console.log('facturarDocumento completo');
+            this.loading.hide()
          }
-        return of(null);
-      })
-    ).subscribe({
-      next: () => {},
-      error: (error) => console.error('Error:', error),
-      complete: () => console.log('facturarDocumento completo')
-    });
+    })
   }
 
   cambiarDocumentoActivo() {
@@ -491,7 +489,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       return;
     }
     if (this.documentoActivo.cliente === 0) {
-      this.newAbrirDialog.open(FndClienteComponent, { data: this.documentoActivo })
+      this.newAbrirDialog.open(FndClienteComponent, { data: { docActivo : this.documentoActivo , invoker:'ventas' }})
         .afterClosed()
         .pipe(
           tap((confirmado: Boolean) => {
@@ -613,10 +611,11 @@ export class VentasComponent implements AfterViewInit, OnInit {
     .afterClosed()
     .pipe(
       tap((confirmado: Boolean)=>{
-        this.getDocumentos();
-        this.codigoProducto = '';
-        this.irbuscarProducto();
-        this.buscarClose = true;
+        if (confirmado) { 
+          this.getDocumentos();  
+          this.codigoProducto = '';
+          this.irbuscarProducto();
+          this.buscarClose = true;}
       })
     ).subscribe({
       next: () => {},

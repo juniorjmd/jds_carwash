@@ -2,7 +2,7 @@
 // actions para servicio crud
 
  const actionDelete = 'DATABASE_GENERIC_CONTRUCT_DELETE';
- const actionUpdate = '9d9fa03fe878f82f47b0befd5421049b989eb5d2';
+ const actionUpdate = 'DATABASE_GENERIC_CONTRUCT_UPDATE';
  const actionAsignarCajas = 'qwer12356yhn7ujm8ik';
  const actionInsert = 'DATABASE_GENERIC_CONTRUCT_INSERT';
  const actionInsertSelect = 'da5cbea2f73b029d00461c4aasdf1256sf';
@@ -34,7 +34,7 @@
 
 
  const actionCrearDocumentos = 'CREAR_DOCUMENTO_POR_USUARIO' ; 
- const actionCerarDocumentos = 'CREAR_STOCK_PICKING_FINAL' ; 
+ const actionCerarDocumentos = 'CERRAR_DOCUMENTO_FACTURA' ; 
  const actionChangeDocumentos = 'CAMBIAR_DOCUMENTO_ACTIVO_POR_USUARIO' ; 
  const actionCancelarDocumentos = 'CANCELAR_DOCUMENTO_POR_USUARIO' ; 
  const actionCambioCajaDocumento = 'CAMBIAR_DOCUMENTO_POR_CAJA';
@@ -96,6 +96,7 @@
     'actionProcedure' :actionProcedure,
     'actionSelect' :actionSelect ,
     'actionSelects' :actionSelects ,
+    'MAESTROS_CLIENTES' :'GET_MAESTROS_CLIENTES',
     'actionBuscarPaisesOdoo' : 'BUSCAR_ODOO_PAIS',
     'actionBuscarStatesOdoo' : 'BUSCAR_ODOO_DEP',
     'actionBuscarCiudadOdoo' : 'BUSCAR_ODOO_CIUDAD',

@@ -27,20 +27,18 @@ export class ClientesModule extends ModelBase {
     @Inject(String) public calle?: string | null,
     @Inject(String) public calle2?: string | null,
     @Inject(String) public barrio?: string | null,
-    @Inject(String) public pais?: string | null,
+    @Inject(Number) public pais?: number | null,
     @Inject(Number) public departamento?: number | null,
-    @Inject(String) public ciudad?: string | null,
+    @Inject(Number) public ciudad?: number | null,
     @Inject(String) public cod_postal?: string | null,
     @Inject(String) public nif?: string | null,
     @Inject(String) public puestoTrabajo?: string | null,
     @Inject(String) public telefono2?: string | null,
     @Inject(String) public pagina?: string | null,
     @Inject(String) public titulo?: string | null,
-    @Inject(String) public categoria?: string | null,
-
-
-
-
+    @Inject(String) public categoria?: string | null, 
+    @Inject(Boolean) public is_empresa?: boolean | null,
+    @Inject(Number) public padre_id?: number | null, 
 
 
   ) { super() }
