@@ -7,7 +7,7 @@ import { loading } from 'src/app/models/app.loading';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import {ClientesService} from 'src/app/services/Clientes.services' 
 import { error } from 'jquery';
-import { ClientesModule } from 'src/app/models/clientes/clientes.module';
+import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { MaestroCliente, fndCliente } from 'src/app/interfaces/maestro-cliente';
 import { clienteRequest } from 'src/app/interfaces/producto-request';
 import Swal from 'sweetalert2';
@@ -26,7 +26,7 @@ export class FndClienteComponent implements OnInit {
   Provincias:any[] = [] ;
   titulos:any[] = [] ;
   categorias:any[] = [] ; 
-  NwCliente:ClientesModule = new ClientesModule();  
+  NwCliente:ClientesModel = new ClientesModel();  
   Ciudades:CiudadModel[] = [];
   departamentos:DepartamentoModel[] = [];
   busqueda:boolean = true;
@@ -41,6 +41,7 @@ export class FndClienteComponent implements OnInit {
 
     private clientesService:ClientesService       
     ) {  
+     // console.log('datos de ingreso ' ,  this.dataIngreso)
       this.documentoActivo = this.dataIngreso.docActivo! ; 
       this.NwCliente = this.dataIngreso.clienteIngreso?? new DocumentosModel() ; 
       if(this.dataIngreso.invoker == 'clienteListado'){
@@ -48,8 +49,8 @@ export class FndClienteComponent implements OnInit {
       }
       if(this.dataIngreso.invoker == 'nuevoCliente'){
         this.busqueda = false;
-      }
-      if(this.dataIngreso.invoker !== 'ventas'){
+      } 
+      if(this.dataIngreso.invoker != 'ventas'){
         this.asignarADoc = false;
       }
   }

@@ -8,7 +8,7 @@ import { ModelBase } from '../ModelBase';
     CommonModule
   ]
 })
-export class ClientesModule extends ModelBase {
+export class ClientesModel extends ModelBase {
 
 
 

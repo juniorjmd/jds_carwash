@@ -607,7 +607,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 
   buscarCliente(){
-    this.newAbrirDialog.open(FndClienteComponent,{data:this.documentoActivo })
+    this.newAbrirDialog.open(FndClienteComponent,{ data: { docActivo : this.documentoActivo , invoker:'ventas' } })
     .afterClosed()
     .pipe(
       tap((confirmado: Boolean)=>{

@@ -1,0 +1,25 @@
+<!-- subcuenta.component.html -->
+<form #subcuentaForm="ngForm">
+    <div class="form-group">
+        <label for="codCuenta">Código de Cuenta</label>
+        <select id="codCuenta" class="form-control" [(ngModel)]="newSubcuenta.cod_cuenta" name="cod_cuenta" required>
+          <option *ngFor="let cuenta of cuentas" [value]="cuenta.cod_cuenta">{{ cuenta.nombre_cuenta }}</option>
+        </select>
+      </div>
+      
+    
+    <div class="form-group">
+      <label for="nroCuenta">Número de Cuenta</label>
+      <input type="number" id="nroCuenta" class="form-control" [(ngModel)]="newSubcuenta.nro_cuenta" name="nro_cuenta">
+    </div>
+    
+    
+    
+    <div class="form-group">
+      <label for="nombreCuenta">Nombre de Cuenta</label>
+      <input type="text" id="nombreCuenta" class="form-control" [(ngModel)]="newSubcuenta.nombre_cuenta" name="nombre_cuenta">
+    </div>
+    
+    <button type="submit" class="btn btn-primary" [disabled]="!subcuentaForm.form.valid">Submit</button>
+  </form>
+  

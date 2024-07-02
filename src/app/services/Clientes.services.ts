@@ -5,7 +5,7 @@ import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { DocumentosModel } from '../models/ventas/documento.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ClientesModule } from '../models/clientes/clientes.module';
+import { ClientesModel } from '../models/clientes/clientes.module';
 import { clienteRequest } from '../interfaces/producto-request';
 import { TABLA } from '../models/app.db.tables';
 
@@ -13,7 +13,7 @@ import { TABLA } from '../models/app.db.tables';
     providedIn: 'root'
 })
 export class ClientesService {
-    private clientes:ClientesModule[] = []  ;
+    private clientes:ClientesModel[] = []  ;
     private urlpersona = url.action+'personas/';
     private clienteSource = new BehaviorSubject<any>(null);
     currentUsuario = this.clienteSource.asObservable();
@@ -48,8 +48,8 @@ export class ClientesService {
         return this.clientes;
       
     }
-    getDatosCliente(id:number):ClientesModule{ 
-        let clienteF:ClientesModule = new ClientesModule();
+    getDatosCliente(id:number):ClientesModel{ 
+        let clienteF:ClientesModel = new ClientesModel();
        for(let cliente of this.clientes){
            if ( cliente.id === id )
               clienteF = cliente;
@@ -58,10 +58,10 @@ export class ClientesService {
       
     }
 
-    getClientes():Observable<ClientesModule>{
+    getClientes():Observable<ClientesModel>{
         let datos = {"action": actions.actionSelect , "_tabla" : vistas.vw_mst_per_clientes, _limit: 300 }
         console.log('getClientes  ' ,url.action , datos, httpOptions());
-        return this.http.post<ClientesModule>(url.action , datos, httpOptions()) ;
+        return this.http.post<ClientesModel>(url.action , datos, httpOptions()) ;
     }
     getClientesByNumAndTipId( numId:string , tipId:number):Observable<clienteRequest>{
         let datos = {
@@ -80,7 +80,7 @@ export class ClientesService {
     }
     
     getDatosClientePname(nombre:string){  
-        let clienteF:ClientesModule = new ClientesModule();
+        let clienteF:ClientesModel = new ClientesModel();
        for(let cliente of this.clientes){
            if ( cliente.nombre === nombre )
               clienteF = cliente;
@@ -88,7 +88,7 @@ export class ClientesService {
         return clienteF;
       
     }
-    getClientesModulePorCedula( cliente:ClientesModule , limit : number ){
+    getClientesModulePorCedula( cliente:ClientesModel , limit : number ){
 
         let datos = {"action": actions.actionSelectClienteOdoo ,
         "_tipo_busqueda" : "id" ,
@@ -100,7 +100,7 @@ export class ClientesService {
         return this.http.post(url.action , datos, httpOptions()) ;
     }
  
-    setClienteOdoo( cliente:ClientesModule   ){
+    setClienteOdoo( cliente:ClientesModel   ){
         cliente.name_usuario_creacion =  undefined    ;
         cliente.name_usuario_edicion =  undefined    ;
         cliente.nombreCompleto =  undefined    ;
@@ -121,7 +121,7 @@ export class ClientesService {
         return this.http.post(url.action , datos, httpOptions()) ;
     }
 
-    pasarClienteOdooACntYasignarDoc( cliente:ClientesModule , documento : DocumentosModel  ){
+    pasarClienteOdooACntYasignarDoc( cliente:ClientesModel , documento : DocumentosModel  ){
 
         let datos = {"action": actions.actionPasarClienteAControl ,
         _arraydatos : cliente ,
@@ -131,7 +131,7 @@ export class ClientesService {
         console.log('setClienteOdoo  ' ,JSON.stringify(cliente),url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
-    updateClienteOdoo( cliente:ClientesModule   ){
+    updateClienteOdoo( cliente:ClientesModel   ){
 
         let datos = {"action": actions.actionActualizarClienteOdoo ,
         _arraydatos : cliente   
@@ -139,7 +139,7 @@ export class ClientesService {
         console.log('setClienteOdoo  ' ,JSON.stringify(cliente),url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
-    getClienteOdooPorCedula( cliente:ClientesModule ){
+    getClienteOdooPorCedula( cliente:ClientesModel ){
 
         let datos = {"action": actions.actionSelectClienteOdoo ,
         "_tipo_busqueda" : "id" ,

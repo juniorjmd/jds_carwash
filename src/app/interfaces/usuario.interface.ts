@@ -41,6 +41,7 @@ export interface Usuarios{
 export interface RecursoDetalle{
     id?:number,
     nombre_recurso:string,
+    display_nombre:string,
     img?:string,
     idtipo:number,
     tipo:string,

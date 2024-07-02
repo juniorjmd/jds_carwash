@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClientesService, cliente } from 'src/app/services/Clientes.services';
 
 import { loading } from 'src/app/models/app.loading';  
-import { ClientesModule } from 'src/app/models/clientes/clientes.module';
+import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { FndClienteComponent } from './fnd-cliente/fnd-cliente.component';
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
@@ -13,7 +13,7 @@ import { tap } from 'rxjs';
   styleUrls: ['./cliente-inicio.component.css']
 })
 export class ClienteInicioComponent implements OnInit {
-  clientes:ClientesModule[] = [];
+  clientes:ClientesModel[] = [];
   constructor(public loading : loading, private ClienteService:ClientesService,   private newAbrirDialog: MatDialog,) { 
     this.getClientesOdoo() 
 
@@ -21,7 +21,7 @@ export class ClienteInicioComponent implements OnInit {
     
 
   }
-  mostrarCliente(cliente:ClientesModule){
+  mostrarCliente(cliente:ClientesModel){
     this.newAbrirDialog.open(FndClienteComponent,{data: { clienteIngreso : cliente , invoker:'clienteListado' } })
     .afterClosed()
     .pipe(

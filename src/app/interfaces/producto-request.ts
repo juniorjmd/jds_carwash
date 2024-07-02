@@ -1,4 +1,4 @@
-import { ClientesModule } from "../models/clientes/clientes.module";
+import { ClientesModel } from "../models/clientes/clientes.module";
 import { ProductoModule } from "../models/producto/producto.module";
 
 export interface ProductoRequest { 
@@ -10,7 +10,7 @@ export interface ProductoRequest {
 
 
 export interface clienteRequest { 
-  data: ClientesModule[];
+  data: ClientesModel[];
   query: string;
   numdata: number;
   error: string;

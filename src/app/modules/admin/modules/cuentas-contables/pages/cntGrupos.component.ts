@@ -1,0 +1,50 @@
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { CntClasesModel } from 'src/app/models/cnt-clases/cnt-clases.module';
+import { CntGruposModel } from 'src/app/models/cnt-grupos/cnt-grupos.module';
+
+@Component({
+  selector: 'app-cnt-grupos',  
+  template: `<!-- cnt-grupos.component.html -->
+  <form #cntGruposForm="ngForm">
+    <div class="form-group">
+      <label for="codClase">Código de Clase</label>
+      <select id="codClase" class="form-control" [(ngModel)]="newCntGrupos.cod_clase" name="cod_clase" required>
+        <option *ngFor="let clase of clases" [value]="clase.id_clase">{{ clase.nombre_clase }}</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="codGrupo">Código de Grupo</label>
+      <input type="number" id="codGrupo" class="form-control" [(ngModel)]="newCntGrupos.cod_grupo" name="cod_grupo" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="nombreGrupo">Nombre de Grupo</label>
+      <input type="text" id="nombreGrupo" class="form-control" [(ngModel)]="newCntGrupos.nombre_grupo" name="nombre_grupo">
+    </div>
+    
+    <button type="submit" class="btn btn-primary" [disabled]="!cntGruposForm.form.valid">Submit</button>
+  </form>
+  `,
+  styleUrls: ['./cntGrupos.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class CntGruposComponent implements OnInit {
+
+  newCntGrupos:CntGruposModel = new CntGruposModel();
+  clases:CntClasesModel[] =[] ;
+  ngOnInit() {
+    // Aquí deberías cargar los datos de `cnt_clase` desde el servicio correspondiente
+    this.clases = [
+      { id_clase: 1, cod_clase: 100, nombre_clase: 'Clase 1' },
+      { id_clase: 2, cod_clase: 200, nombre_clase: 'Clase 2' },
+      // Agrega más clases según tus datos
+    ];
+  }
+
+  onSubmit() {
+    // Aquí puedes manejar la lógica de envío del formulario
+    console.log(this.newCntGrupos);
+  }
+ }

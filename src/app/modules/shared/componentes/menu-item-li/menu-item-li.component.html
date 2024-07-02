@@ -1,11 +1,11 @@
 <li *ngIf="recurso.recursosHijos!.length === 0 && recurso.direccion  != '' " class="nav-item">
     <a class="nav-link" [routerLink]="recurso.direccion">
-       {{recurso.nombre_recurso}}
+       {{recurso.display_nombre}}
     </a>
   </li>
   <li *ngIf="recurso.recursosHijos!.length > 0" class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown{{recurso.id}}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      {{recurso.nombre_recurso}}
+      {{recurso.display_nombre}}
     </a>
     <ul class="dropdown-menu" [attr.aria-labelledby]="'navbarDropdown' + recurso.id">
       <ng-container *ngFor="let subRecurso of recurso.recursosHijos">

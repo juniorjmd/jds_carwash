@@ -7,7 +7,7 @@ import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services
 
 import { loading } from 'src/app/models/app.loading';
 import { answDfltOdoo } from 'src/app/models/app.db.answDfltOdoo.model';
-import { ClientesModule } from 'src/app/models/clientes/clientes.module';
+import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 
 @Component({
   selector: 'app-cliente-nuevo',
@@ -15,7 +15,7 @@ import { ClientesModule } from 'src/app/models/clientes/clientes.module';
   styleUrls: ['./cliente-nuevo.component.css'],
 })
 export class ClienteNuevoComponent implements OnInit {
-  newCliente: ClientesModule = new ClientesModule()
+  newCliente: ClientesModel = new ClientesModel()
 
   // Ciudades: any[] = [];
   // paises: any[] = [];
@@ -92,7 +92,7 @@ export class ClienteNuevoComponent implements OnInit {
   // }
 
   cancelar() {
-    this.newCliente = new ClientesModule();
+    this.newCliente = new ClientesModel();
   }
   // async setMaestros() {
   //   this.loading.show();

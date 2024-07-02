@@ -21,9 +21,7 @@ export class DatosPosComponent implements OnInit {
       this.listado = {
         'derecho' : auxmenusUsuario  , 
         'izquierdo' : auxmenusUsuario, 
-      }; 
-      console.clear()
-      this.getUsuarioLogeado(); }
+      }; }
 
 
   ngOnInit(): void {
@@ -31,43 +29,6 @@ export class DatosPosComponent implements OnInit {
   saltar(salto:any[]){
     
   }
-
-  async getUsuarioLogeado(){
-    try {
-     
-      let usuarioPermisos : RecursoDetalle[] |any = [];  
-      const ServLogin = await  this._ServLogin.getUsuarioLogeadoAsync(); 
-      const datos:any|select  = await ServLogin;  
-      usuarioPermisos = datos.data.usuario.permisos; 
-       this.getMenuImage(usuarioPermisos) ; 
-
-  } catch (error:any) {
-      throw new Error(`Error al leer maestros : ${error}`);
-      console.log(error);
-      alert( error.error.error);
-      this._Router.navigate(['login']); 
-    }  
-   
-  }
-
   
-  getMenuImage(usuarioPermisos:RecursoDetalle[]|any[]){
- 
-    let menu = usuarioPermisos; 
-    
-    menu!.forEach((detalle   ) => {
-        if(detalle.recurso.tipo === 'boton'){
-          switch(detalle.recurso.nombre_recurso){
-            case 'Mantenimientos de cajas' : 
-              this.cajasBtn = true;
-            break;
-          }
-      console.log('recorrido datos pos', detalle ); 
-
-         
-
-        }
-      });   
-  }
 
 }
