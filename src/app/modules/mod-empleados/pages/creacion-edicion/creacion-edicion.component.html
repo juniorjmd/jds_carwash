@@ -10,25 +10,25 @@
         <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Primer nombre</label>
-                <input type="text" [(ngModel)]="nuevoEmpleado.nombre1" class="form-control" aria-describedby="nombreHelp" placeholder="pri. nombre">
+                <input type="text" [(ngModel)]="nuevoEmpleado.persona.nombre" class="form-control" aria-describedby="nombreHelp" placeholder="pri. nombre">
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Segundo nombre</label>
-                <input type="text" [(ngModel)]="nuevoEmpleado.nombre2" class="form-control" aria-describedby="nombreHelp" placeholder="Seg. nombre">
+                <input type="text" [(ngModel)]="nuevoEmpleado.persona.sec_nombre" class="form-control" aria-describedby="nombreHelp" placeholder="Seg. nombre">
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Primer Apellido</label>
-                <input type="text" [(ngModel)]="nuevoEmpleado.apellido1" class="form-control" aria-describedby="nombreHelp" placeholder="Apellido">
+                <input type="text" [(ngModel)]="nuevoEmpleado.persona.apellido" class="form-control" aria-describedby="nombreHelp" placeholder="Apellido">
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Segundo Apellido</label>
-                <input type="text" [(ngModel)]="nuevoEmpleado.apellido2" class="form-control" aria-describedby="nombreHelp" placeholder="Seg. Apellido">
+                <input type="text" [(ngModel)]="nuevoEmpleado.persona.sec_apellido" class="form-control" aria-describedby="nombreHelp" placeholder="Seg. Apellido">
             </div>
         </div>
 
@@ -86,9 +86,9 @@
                 </tr>
 
                 <tr *ngFor="let empleado of empleados">
-                    <td>{{empleado.nombreCompleto}}</td>
+                    <td>{{empleado.persona.nombreCompleto}}</td>
                     <td>{{empleado.nombretipo}}</td>
-                    <td>{{empleado.nombreEstado}}</td>
+                    <td>{{empleado.nombre_estado}}</td>
                     <td>{{empleado.monto_dia}}</td>
                     <td title="editar"><i class="fas fa-pencil-alt boton_activo" (click)="editarEmpleado(empleado)"></i> </td>
                     <td title="eliminar"><i class="fas fa-trash boton_activo"></i>

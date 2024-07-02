@@ -47,7 +47,7 @@ getEmpleadosLavador(){
 
 
 
-getEmpleadosAcumulados( id:number , fechas:fechaBusqueda){
+getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
   let where = [{"columna" : "cod_empleado" , "tipocomp" : '=' , "dato" :  id },
   {"columna" : "fecha" , "tipocomp" : '>=' , "dato" :  fechas.fechaInicio },
   {"columna" : "fecha" , "tipocomp" : '<=' , "dato" :  fechas.fechaFin }
@@ -95,10 +95,10 @@ guardarEmpleado(nuevoTipo:EmpleadoModel){
   let arrayDatos:any=new Object() 
   let where:any[] = []
   //id, cod_servicio, cod_tipo_vehiculo, valor, estado
-  arrayDatos['apellido1'] = nuevoTipo.apellido1; 
+  /*arrayDatos['apellido1'] = nuevoTipo.apellido1; 
   arrayDatos['apellido2'] = nuevoTipo.apellido2; 
-  arrayDatos['nombre1'] = nuevoTipo.nombre1; 
-  arrayDatos['nombre2'] = nuevoTipo.nombre2;
+  arrayDatos['nombre1'] = nuevoTipo.nombre1; */
+  arrayDatos['idPersona'] = nuevoTipo.idPersona;
   arrayDatos['estado'] = nuevoTipo.estado; 
   arrayDatos['monto_dia'] = nuevoTipo.monto_dia; 
   arrayDatos['tipo'] = nuevoTipo.tipo; 

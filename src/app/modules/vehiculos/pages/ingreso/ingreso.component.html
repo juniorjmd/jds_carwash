@@ -69,7 +69,7 @@
         <div class="col-sm-2">Empleado Asignado</div>
         <div class="col-sm-3"><select class=" form-control " [(ngModel)]="ingreso.lavador"> 
             <option value =0>Escoger lavador</option> 
-            <option *ngFor="let empleado of empleados"  value ={{empleado.id}}>{{empleado.nombreCompleto}}</option> 
+            <option *ngFor="let empleado of empleados"  value ={{empleado.id}}>{{empleado.persona.nombreCompleto}}</option> 
         </select>
         </div>
 

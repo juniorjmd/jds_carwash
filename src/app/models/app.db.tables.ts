@@ -2,9 +2,10 @@
  
 
  export const TABLA = {
-  empleados_pagos_anticipos : 'empleados_pagos_anticipos',
+  empleados_pagos_anticipos : 'mov_empleado_pagos_anticipos',
+  empleados_acumulados : 'mov_empleado_acumulados',
    PARAMETROS:'parametros',
-   empleados:'empleados',
+   empleados:'mst_per_empleados',
    personas:'mst_per_clientes',
    vehiculos_servicios_costos:'inv_mst_servicios_costos',
    TiposServicios : 'inv_mst_tipos_servicios',// vehiculos_servicios_tipos

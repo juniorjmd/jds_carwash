@@ -21,15 +21,15 @@ export class CreacionEdicionComponent implements OnInit {
    }
 
    manageEmpleado(){
-    if( this.nuevoEmpleado.nombre1 ==='' ){ Swal.fire( 'Debe ingresar el primer nombre', '', 'error');
+    if( this.nuevoEmpleado.persona.nombre ==='' ){ Swal.fire( 'Debe ingresar el primer nombre', '', 'error');
     return ;
      }
-  if( this.nuevoEmpleado.apellido1==='' ){ Swal.fire( 'Debe ingresar el primer apellido', '', 'error');
+  if( this.nuevoEmpleado.persona.apellido ==='' ){ Swal.fire( 'Debe ingresar el primer apellido', '', 'error');
   return;
 }
 
 
-if( this.nuevoEmpleado.monto_dia<= 0 ){ Swal.fire( 'Debe ingresar el valor del Dia para los empleados administrativos o el porcentaje del pago por servicio para los cleaners', '', 'error');
+if( this.nuevoEmpleado.monto_dia!<= 0 ){ Swal.fire( 'Debe ingresar el valor del Dia para los empleados administrativos o el porcentaje del pago por servicio para los cleaners', '', 'error');
 return;
 }
 
@@ -53,7 +53,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
    
    }
    mostarPagos(empleado:EmpleadoModel){
-    let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.nombreCompleto}</h1>
+    let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.persona.nombreCompleto}</h1>
      <table class='table' style='font-size:12px'> 
      <tr>
      <td class="centrado"  colspan="6">Pagos Realizados</td></tr>
@@ -112,7 +112,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
     this.nuevoEmpleado = empleado;
   }
   mostarAcumulado(empleado:EmpleadoModel){
-    let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.nombreCompleto}</h1>
+    let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.persona.nombreCompleto}</h1>
      <table class='table' style='font-size:12px'> 
      <tr>
      <td>Empleado</td>
@@ -130,7 +130,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
       pagosHtml +=`<td nowrap>${pago.fecha}</td> `;
       pagosHtml +=`<td nowrap>${pago.hora}</td> `;
       pagosHtml +=`<td nowrap>${pago.valor}</td> `;
-      pagosHtml +=`<td nowrap>${pago.nombreEstado}</td> `;
+      pagosHtml +=`<td nowrap>${pago.nombre_estado}</td> `;
       pagosHtml +=`</tr> `;
     });
     
@@ -177,11 +177,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:TiposEmpleadoModule , index :number)=>{
-        this.tipoEmpleado[index] = new TiposEmpleadoModule(
-          dato.nombre,  dato.estado , dato.id ,dato.descripcion , dato.nombre_estado 
-        ) ;
-      }) 
+      this.tipoEmpleado = datos.data ; 
       console.log(this.tipoEmpleado);
     }else{
       this.tipoEmpleado = [];

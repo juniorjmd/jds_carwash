@@ -1,5 +1,6 @@
 import { Inject, NgModule } from '@angular/core';
 import { CommonModule, Time } from '@angular/common'; 
+import { ModelBase } from '../ModelBase';
 
 
 
@@ -9,14 +10,11 @@ import { CommonModule, Time } from '@angular/common';
     CommonModule
   ]
 })
-export class PagosEmpleadoModel {
-   public idUsuario:number = 0;
+export class PagosEmpleadoModel extends ModelBase { 
    public codEmpleado:number = 0; 
    public totalParcial:number = 0; 
    public anticipos:number = 0;
-   public totalPagado:number = 0;
-   public estado:number = 1; 
-   public id?:number;
+   public totalPagado:number = 0; 
    public diasTrabajados?:number; 
    public serviciosTrabajados?:number; 
    public idSucursal?:number; 

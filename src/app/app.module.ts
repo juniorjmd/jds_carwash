@@ -20,13 +20,11 @@ import { ReporteVentasPcajaComponent } from './components/reportes/reporte-venta
 import { CierresComponent } from './components/cierres/cierres.component';
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component'; 
 import { loading } from './models/app.loading';
-import { UsuarioPerfilComponent } from './components/usuario/usuario-perfil.component'; 
-import { booleanpPipe } from './pipes/booleanp.pipe';
+import { UsuarioPerfilComponent } from './components/usuario/usuario-perfil.component';  
 import { EnviosComponent } from './components/envios/envios.component';
-import { DevolucionesComponent } from './components/devoluciones/devoluciones.component'; 
-import { EmpleadosComponent } from './components/modEmpleados/empleados/empleados.component';
-import { PagosComponent } from './components/modEmpleados/pagos/pagos.component';
-import { CreacionEdicionComponent } from './components/modEmpleados/creacion-edicion/creacion-edicion.component';
+import { DevolucionesComponent } from './components/devoluciones/devoluciones.component';
+
+
 import { ParametrosComponent } from './components/parametros/parametros.component';
 import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
 import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
@@ -68,9 +66,6 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     UsuarioPerfilComponent, 
     EnviosComponent,
     DevolucionesComponent, 
-    EmpleadosComponent,  
-    PagosComponent, 
-    CreacionEdicionComponent,  
        ParametrosComponent,
         ReimpimirFacturasComponent,
          InicioReportesComponent,

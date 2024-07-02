@@ -28,7 +28,7 @@ export class PagosComponent implements OnInit {
    this.getEmpleados();
   }
   generarAticipo(){
-    if(this.empleado.id! <= 0){Swal.fire('Es necesario escoger un empleado para generar el anticipo','')
+    if(this.empleado.id != undefined){Swal.fire('Es necesario escoger un empleado para generar el anticipo','')
       return;
     }
     if(this.valorAnticipo <= 0){Swal.fire('Es necesario ingresar un valor mayor a cero para generar el anticipo','')
@@ -67,7 +67,7 @@ this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo
   }
 
   validarElPago(empleado:EmpleadoModel, index:number , fechas:fechaBusqueda){
-   let pagosHtml:string =  `<h1>empleado :${empleado.nombreCompleto}</h1><hr>
+   let pagosHtml:string =  `<h1>empleado :${empleado.persona.nombreCompleto}</h1><hr>
    pago de la liquidacion desde el <b>${fechas.fechaInicio}</b> al <b>${fechas.fechaFin}</b><hr>
    <h3>total acumulado : <b>${empleado.TotalAcumuladoPendientes} </b> menos de anticipos <b> ${empleado.valorADescontarEnPago}</b></h3> <hr>
     total a Pagar : <h3><b>${empleado.TotalAcumuladoPendientes! - empleado.valorADescontarEnPago!}</b></h3> 

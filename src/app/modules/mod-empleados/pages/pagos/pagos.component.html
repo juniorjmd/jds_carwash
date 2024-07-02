@@ -31,7 +31,7 @@
             </div>
             <div class="row " *ngFor="let item of empleadosConAcumulados; let i = index">
                 <div class="col-sm-3 ">
-                    <h4> {{item.nombreCompleto}} </h4><br>
+                    <h4> {{item.persona.nombreCompleto}} </h4><br>
                     <h4>total acumulado :<b> {{item.TotalAcumuladoPendientes | currency: 'USD' }}</b> </h4>
                     <h4> pagos o anticipos :<b> {{item.TotalAnticiposPendientes | currency: 'USD' }} </b></h4>
                     <h4>maximo a descontar :<b> {{item.maximoDescuento | currency: 'USD' }} </b></h4>
@@ -103,14 +103,14 @@
                     <div class="form-group">
                         <label for="">Empleado</label>
                         <select [(ngModel)]="indexEmpleado" (change)="validarEmpleado()" class="form-control">
-                         <option *ngFor="let item of empleados, let i = index"  [value] = i   >{{item.nombreCompleto}}</option> 
+                         <option *ngFor="let item of empleados, let i = index"  [value] = i   >{{item.persona.nombreCompleto}}</option> 
                         </select>
                     </div>
                 </div>
                 <div class="col-sm-9 ">
                     <div class="row">
                         <div class="col-sm-12 ">
-                            {{empleado.nombreCompleto}}
+                            {{empleado.persona.nombreCompleto}}
                             <hr> total acumulado a la fecha : {{empleado.TotalAcumuladoPendientes|currency:'USD'}} total anticipos sin descontar : {{empleado.TotalAnticiposPendientes|currency:'USD'}}
 
                         </div>

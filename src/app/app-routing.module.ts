@@ -8,10 +8,7 @@ import { CierresComponent } from './components/cierres/cierres.component';
 import { ReportesComponent } from './components/reportes/reportes.component'; 
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component'; 
 import { DevolucionesComponent } from './components/devoluciones/devoluciones.component';
-import { EnviosComponent } from './components/envios/envios.component';
-import { EmpleadosComponent } from './components/modEmpleados/empleados/empleados.component';
-import { CreacionEdicionComponent } from './components/modEmpleados/creacion-edicion/creacion-edicion.component';
-import { PagosComponent } from './components/modEmpleados/pagos/pagos.component';
+import { EnviosComponent } from './components/envios/envios.component'; 
 import { ParametrosComponent } from './components/parametros/parametros.component';
 import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
 import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
@@ -31,11 +28,8 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
         { path : 'miUsuario' , component : MiUsuarioComponent}, 
         { path : 'parametrosDelSistema' , component : ParametrosComponent}, 
         { path : 'inicio' ,component : InicioComponent, },
-        { path : 'empleados' ,component : EmpleadosComponent, children:[
-          { path : 'Mantenimiento' , component : CreacionEdicionComponent},
-          { path : 'Pagos' , component : PagosComponent}, 
-          { path : '**' , pathMatch:'full' , redirectTo : 'Mantenimiento'}, 
-         ]},
+        { path : 'empleados' , loadChildren: () => import('./modules/mod-empleados/mod-empleados.module').then(m => m.ModEmpleadosModule) },
+       
         { path : 'devoluciones' , component : DevolucionesComponent},
         { path : 'envios' , component : EnviosComponent},
         { path : 'cierres' ,      component: CierresComponent},
