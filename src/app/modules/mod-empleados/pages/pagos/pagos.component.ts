@@ -67,7 +67,7 @@ this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo
   }
 
   validarElPago(empleado:EmpleadoModel, index:number , fechas:fechaBusqueda){
-   let pagosHtml:string =  `<h1>empleado :${empleado.persona.nombreCompleto}</h1><hr>
+   let pagosHtml:string =  `<h1>empleado :${empleado.persona?.nombreCompleto}</h1><hr>
    pago de la liquidacion desde el <b>${fechas.fechaInicio}</b> al <b>${fechas.fechaFin}</b><hr>
    <h3>total acumulado : <b>${empleado.TotalAcumuladoPendientes} </b> menos de anticipos <b> ${empleado.valorADescontarEnPago}</b></h3> <hr>
     total a Pagar : <h3><b>${empleado.TotalAcumuladoPendientes! - empleado.valorADescontarEnPago!}</b></h3> 

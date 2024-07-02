@@ -4,6 +4,10 @@ import { TiposEmpleadoModule } from 'src/app/models/tipos-empleado/tipos-emplead
 import { EmpleadosService } from 'src/app/services/empleados.service'; 
 import Swal from 'sweetalert2'; 
 import { loading } from 'src/app/models/app.loading';   
+import { ClientesModel } from 'src/app/models/clientes/clientes.module';
+import { MatDialog } from '@angular/material/dialog';
+import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd-cliente/fnd-cliente.component';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-creacion-edicion',
@@ -12,48 +16,59 @@ import { loading } from 'src/app/models/app.loading';
 })
 export class CreacionEdicionComponent implements OnInit {
   nuevoEmpleado : EmpleadoModel = new EmpleadoModel() ;
+  nuevaPersona : ClientesModel = new ClientesModel() ;
   tipoEmpleado :TiposEmpleadoModule[] = [];
   empleados :EmpleadoModel[] = [];
 
-  constructor( private empleadosServices :EmpleadosService ,  private loading : loading ) {
+  constructor( private empleadosServices :EmpleadosService ,  private loading : loading ,   private newAbrirDialog: MatDialog,) { 
+    this.nuevaPersona.nombre =''; 
+    this.nuevaPersona.sec_nombre ='';  
+    this.nuevaPersona.apellido =''; 
+    this.nuevaPersona.sec_apellido =''; 
+
     this.getTipoEmpleado();
     this.getEmpleados();
    }
 
-   manageEmpleado(){
-    if( this.nuevoEmpleado.persona.nombre ==='' ){ Swal.fire( 'Debe ingresar el primer nombre', '', 'error');
-    return ;
-     }
-  if( this.nuevoEmpleado.persona.apellido ==='' ){ Swal.fire( 'Debe ingresar el primer apellido', '', 'error');
-  return;
-}
-
-
-if( this.nuevoEmpleado.monto_dia!<= 0 ){ Swal.fire( 'Debe ingresar el valor del Dia para los empleados administrativos o el porcentaje del pago por servicio para los cleaners', '', 'error');
-return;
-}
-
-alert(this.nuevoEmpleado.tipo ) ;
-if( this.nuevoEmpleado.tipo == 0 ){ Swal.fire( 'debe seleccionar el tipo de empleado', '', 'error');
-  return;
-}
-this.loading.show(); 
-this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
- (respuesta:any)=>{console.log(respuesta)
-  
- if (respuesta.error === 'ok'){
-  Swal.fire('datos ingresados con exito');  
-   this.nuevoEmpleado =    new    EmpleadoModel( ); 
-   //this.getServiciosVehiculos();
- }else{ 
-  Swal.fire(respuesta.error, '', 'error');
- }
- this.loading.hide(); 
- })
+   abrirBuscarCliente(){
+    this.newAbrirDialog.open(FndClienteComponent,{data:{invoker:'Empleados'} })
+    .afterClosed()
+    .pipe(
+      tap((response: {response:boolean , empleado:ClientesModel})=>{
+        if (response.response) {  
+          this.nuevaPersona = response.empleado;
+          this.nuevoEmpleado.persona  = response.empleado; 
+          this.nuevoEmpleado.idPersona = typeof this.nuevaPersona.id === 'string' ? parseInt(this.nuevaPersona.id, 10) : this.nuevaPersona.id!;
+          
+        }
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCliente completo')
+    });   
+  }
+  manageEmpleado(){
+    if( this.nuevaPersona?.nombre ==='' ){ Swal.fire( 'Debe ingresar el primer nombre', '', 'error');    return ;     }
+    if( this.nuevaPersona?.apellido ==='' ){ Swal.fire( 'Debe ingresar el primer apellido', '', 'error');  return;}
+    if( this.nuevoEmpleado.monto_dia! < 0 ){ Swal.fire( 'Debe ingresar el valor del Dia para los empleados administrativos o el porcentaje del pago por servicio para los cleaners', '', 'error');  return;}
+    if( this.nuevoEmpleado.tipo == 0 ){ Swal.fire( 'debe seleccionar el tipo de empleado', '', 'error');  return; }
+    this.loading.show(); 
+    this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).
+    subscribe({next: (respuesta:any)=>{console.log(respuesta)
+      if (respuesta.error === 'ok'){
+         Swal.fire('datos ingresados con exito');  
+         this.nuevoEmpleado =    new    EmpleadoModel( ); 
+         this.nuevaPersona =    new    ClientesModel( );  
+         this.getEmpleados();
+        }else{   Swal.fire(respuesta.error, '', 'error');  }
+     },
+     error:error=>  {Swal.fire('Error' , error.error.error,'error');this.loading.hide();} , 
+     complete: () => this.loading.hide() })
    
    }
    mostarPagos(empleado:EmpleadoModel){
-    let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.persona.nombreCompleto}</h1>
+    let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.persona?.nombreCompleto}</h1>
      <table class='table' style='font-size:12px'> 
      <tr>
      <td class="centrado"  colspan="6">Pagos Realizados</td></tr>
@@ -67,6 +82,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
      </tr>
     `;
     
+    if(empleado.pagosEmpleados != undefined){
     empleado.pagosEmpleados!.forEach(pago=>{
       pagosHtml +=`<tr> `;
       pagosHtml +=`<td>${pago.porConceptoDe}</td> `;
@@ -77,7 +93,9 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
       pagosHtml +=`<td nowrap>${pago.totalPagado}</td> `;
       pagosHtml +=`</tr> `;
     })
+  }
     let cont = 0;
+    if( empleado.pagosAnticiposEmpleados != undefined){
     empleado.pagosAnticiposEmpleados!.forEach(pago=>{
       if (pago.NombreEstado!.trim() =='PENDIENTE_POR_LIQUIDAR'){
         if(cont === 0){ 
@@ -100,8 +118,8 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
       pagosHtml +=`<td nowrap>${pago.totalPagado - pago.anticipos}</td> `;
       pagosHtml +=`</tr> `;
       cont++;
-    }
-    })
+        }} 
+  )}
     pagosHtml += '</table>'
 
 
@@ -109,10 +127,12 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
     Swal.fire({html:pagosHtml, width: '900px'});
   }
   editarEmpleado(empleado:EmpleadoModel){
-    this.nuevoEmpleado = empleado;
+    this.nuevoEmpleado = {...empleado};
+
+    this.nuevaPersona = empleado.persona!
   }
   mostarAcumulado(empleado:EmpleadoModel){
-    let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.persona.nombreCompleto}</h1>
+    let pagosHtml:string =  `<h1>Pagos realizados al empleado : <br>${empleado.persona?.nombreCompleto}</h1>
      <table class='table' style='font-size:12px'> 
      <tr>
      <td>Empleado</td>
@@ -122,7 +142,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
      <td>Valor</td>
      <td>Estado</td>
      </tr>`;
-
+  if (empleado.AcumuladosEmpleados != undefined){
     empleado.AcumuladosEmpleados!.forEach(pago=>{
       pagosHtml +=`<tr> `;
       pagosHtml +=`<td>${pago.nombreEmpleado}</td> `;
@@ -133,6 +153,7 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
       pagosHtml +=`<td nowrap>${pago.nombre_estado}</td> `;
       pagosHtml +=`</tr> `;
     });
+  }
     
     pagosHtml += '</table>'
 
@@ -144,11 +165,12 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
    cancelar(){
     this.nuevoEmpleado = new EmpleadoModel( );
    }
+   eliminarEmpleado(empleado:EmpleadoModel){}
    getEmpleados(){ 
     this.empleados = []; 
      this.loading.show()
-     this.empleadosServices.getEmpleados().subscribe(
-       (datos:any)=>{
+     this.empleadosServices.getEmpleados()
+     .subscribe({next: (datos:any)=>{
           console.log(datos);
           
      if (datos.numdata > 0 ){ 
@@ -162,10 +184,10 @@ this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).subscribe(
  
          this.loading.hide();
        } ,
-       error => {this.loading.hide();
+       error: error => {this.loading.hide();
          console.log(error)
-         Swal.fire( error.error.error, '', 'error');
-       }
+         Swal.fire('Error Busqueda', error.error.error,  'error');
+       }}
        );
    }  
    

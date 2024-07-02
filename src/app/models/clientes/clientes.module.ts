@@ -41,5 +41,6 @@ export class ClientesModel extends ModelBase {
     @Inject(Number) public padre_id?: number | null, 
 
 
-  ) { super() }
+  ) { super() 
+   }
 }

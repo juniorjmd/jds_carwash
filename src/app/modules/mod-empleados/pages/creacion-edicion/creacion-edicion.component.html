@@ -6,34 +6,34 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-2"></div>
+        <div class="col-sm-2"> 
+            <label for="exampleInputEmail1">Agregar Persona</label>
+            <button class="btn btn-primary" (click)="abrirBuscarCliente()">Persona</button>
+        </div>
         <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Primer nombre</label>
-                <input type="text" [(ngModel)]="nuevoEmpleado.persona.nombre" class="form-control" aria-describedby="nombreHelp" placeholder="pri. nombre">
+                <input type="text" readonly [(ngModel)]="nuevaPersona.nombre" class="form-control" aria-describedby="nombreHelp" placeholder="Pri. Nombre">
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Segundo nombre</label>
-                <input type="text" [(ngModel)]="nuevoEmpleado.persona.sec_nombre" class="form-control" aria-describedby="nombreHelp" placeholder="Seg. nombre">
+                <input type="text" readonly [(ngModel)]="nuevaPersona.sec_nombre" class="form-control" aria-describedby="nombreHelp" placeholder="Seg. Nombre">
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Primer Apellido</label>
-                <input type="text" [(ngModel)]="nuevoEmpleado.persona.apellido" class="form-control" aria-describedby="nombreHelp" placeholder="Apellido">
+                <input type="text" readonly [(ngModel)]="nuevaPersona.apellido" class="form-control" aria-describedby="nombreHelp" placeholder="Apellido">
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Segundo Apellido</label>
-                <input type="text" [(ngModel)]="nuevoEmpleado.persona.sec_apellido" class="form-control" aria-describedby="nombreHelp" placeholder="Seg. Apellido">
+                <input type="text" readonly [(ngModel)]="nuevaPersona.sec_apellido" class="form-control" aria-describedby="nombreHelp" placeholder="Seg. Apellido">
             </div>
         </div>
-
-
-
     </div>
     <div class="row">
         <div class="col-sm-1"></div>
@@ -41,32 +41,45 @@
             <div class="form-group">
                 <label for="exampleInputEmail1">Tipo de Empleado</label>
                 <select [(ngModel)]="nuevoEmpleado.tipo" class="form-control">
-                    <option value=0>tipo de empleado</option>
-                    <option *ngFor="let tipo of tipoEmpleado" value={{tipo.id}}>{{tipo.nombre}}</option>
+                    <option value="0">Tipo de Empleado</option>
+                    <option *ngFor="let tipo of tipoEmpleado" [value]="tipo.id">{{tipo.nombre}}</option>
                 </select>
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-group">
-                <label for="exampleInputEmail1">Valor Día / % pago</label>
-                <input type="number" [(ngModel)]="nuevoEmpleado.monto_dia" class="form-control" aria-describedby="nombreHelp" placeholder="valor del dia">
+                <label for="exampleInputEmail1">Valor Día</label>
+                <input type="number" [(ngModel)]="nuevoEmpleado.monto_dia" class="form-control" aria-describedby="nombreHelp" placeholder="Valor del día">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="exampleInputEmail1">% por Servicio</label>
+                <input type="number" [(ngModel)]="nuevoEmpleado.porcentaje_servicio" class="form-control" aria-describedby="nombreHelp" placeholder="% por servicio">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="exampleInputEmail1">% Productos</label>
+                <input type="number" [(ngModel)]="nuevoEmpleado.porcentaje_productos" class="form-control" aria-describedby="nombreHelp" placeholder="% productos">
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">Estado</label>
                 <select [(ngModel)]="nuevoEmpleado.estado" class="form-control">
-                    <option value=0>estado de empleado</option> 
-                    <option value=1>Activo</option> 
-                    <option value=2>Inactivo</option> 
-                </select> </div>
+                    <option value="0">Estado del Empleado</option>
+                    <option value="1">Activo</option>
+                    <option value="2">Inactivo</option>
+                </select>
+            </div>
         </div>
         <div class="col-sm-2">
-            <div class="form-group ">
+            <div class="form-group">
                 <br>
-                <div class="btn-group btn-group-toggle " data-toggle="buttons ">
-                    <button type="button " (click)="manageEmpleado()" class="btn btn-success ">Enviar</button>
-                    <button type="button " (click)="cancelar()" class="btn btn-danger ">Cancelar</button>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <button type="button" (click)="manageEmpleado()" class="btn btn-success">Enviar</button>
+                    <button type="button" (click)="cancelar()" class="btn btn-danger">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -74,29 +87,37 @@
     <hr>
     <div class="row">
         <div class="col-sm-1"></div>
-
         <div class="col-sm-10">
             <table class="table">
-                <tr>
-                    <th>Empleado</th>
-                    <th>Tipo</th>
-                    <th>Estado</th>
-                    <th>Valor Dia/%</th>
-                    <th colspan="4" class=" centrado">opciones</th>
-                </tr>
-
-                <tr *ngFor="let empleado of empleados">
-                    <td>{{empleado.persona.nombreCompleto}}</td>
-                    <td>{{empleado.nombretipo}}</td>
-                    <td>{{empleado.nombre_estado}}</td>
-                    <td>{{empleado.monto_dia}}</td>
-                    <td title="editar"><i class="fas fa-pencil-alt boton_activo" (click)="editarEmpleado(empleado)"></i> </td>
-                    <td title="eliminar"><i class="fas fa-trash boton_activo"></i>
-                        <td title="mostrar pagos"><i class="far fa-money-bill-alt boton_activo" (click)="mostarPagos(empleado)" aria-hidden="true"></i> </td>
-                        <td title="mostrar acumulados activos"><i class="fas fa-archive boton_activo" (click)="mostarAcumulado(empleado)" aria-hidden="true"></i></td>
-
-
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Empleado</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Valor Día/%</th>
+                        <th colspan="4" class="centrado">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let empleado of empleados">
+                        <td>{{empleado.persona?.nombreCompleto}}</td>
+                        <td>{{empleado.nombretipo}}</td>
+                        <td>{{empleado.nombre_estado}}</td>
+                        <td>{{empleado.monto_dia}}</td>
+                        <td title="Editar">
+                            <i class="bi bi-pencil-fill boton_activo" (click)="editarEmpleado(empleado)"></i>
+                        </td>
+                        <td title="Eliminar">
+                            <i class="bi bi-trash boton_activo" (click)="eliminarEmpleado(empleado)"></i>
+                        </td>
+                        <td title="Mostrar Pagos">
+                            <i class="bi bi-currency-dollar boton_activo" (click)="mostarPagos(empleado)" aria-hidden="true"></i>
+                        </td>
+                        <td title="Mostrar Acumulados Activos">
+                            <i class="bi bi-archive-fill boton_activo" (click)="mostarAcumulado(empleado)" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>

@@ -30,10 +30,12 @@ export class FndClienteComponent implements OnInit {
   Ciudades:CiudadModel[] = [];
   departamentos:DepartamentoModel[] = [];
   busqueda:boolean = true;
+  empresaShwich : boolean = true;
   crear:boolean = true ; 
   asignarADoc = true;
   documentoActivo:DocumentosModel;
   maestro?:MaestroCliente;
+   asignarEmpleado = false;
   constructor( public loading : loading, private MaestroClienteServices :MaestroClienteServices , 
 
     public dialogo: MatDialogRef<FndClienteComponent>,
@@ -47,6 +49,10 @@ export class FndClienteComponent implements OnInit {
       if(this.dataIngreso.invoker == 'clienteListado'){
         this.busqueda = false;
       }
+      if(this.dataIngreso.invoker == 'Empleados'){
+        this.empresaShwich = false;
+        this.asignarEmpleado = true;
+      }
       if(this.dataIngreso.invoker == 'nuevoCliente'){
         this.busqueda = false;
       } 
@@ -54,7 +60,9 @@ export class FndClienteComponent implements OnInit {
         this.asignarADoc = false;
       }
   }
-
+  pasarComoEmpleado(){
+    {this.dialogo.close({response:true , empleado: this.NwCliente})}
+  }
   asignarClienteAlDocumento(){
     if(this.NwCliente.id !== undefined)
      { this.loading.show();
@@ -129,7 +137,11 @@ this.clientesService.setClienteOdoo({...this.NwCliente}).subscribe(
             this.asignarClienteAlDocumento();
           }else{
             this.clientesService.changeCliente( this.NwCliente);
-            this.dialogo.close(true)
+            if (this.asignarEmpleado){
+              this.pasarComoEmpleado();
+            }else{
+                this.dialogo.close(true)
+            }
           }
      }else{
        switch(respuesta.error){

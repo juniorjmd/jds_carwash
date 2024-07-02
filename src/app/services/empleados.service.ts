@@ -93,14 +93,12 @@ guardarAnticipoEmpleado(nuevoTipo:EmpleadoModel , valor:any , descripcion:string
 
 guardarEmpleado(nuevoTipo:EmpleadoModel){ 
   let arrayDatos:any=new Object() 
-  let where:any[] = []
-  //id, cod_servicio, cod_tipo_vehiculo, valor, estado
-  /*arrayDatos['apellido1'] = nuevoTipo.apellido1; 
-  arrayDatos['apellido2'] = nuevoTipo.apellido2; 
-  arrayDatos['nombre1'] = nuevoTipo.nombre1; */
+  let where:any[] = [] 
   arrayDatos['idPersona'] = nuevoTipo.idPersona;
   arrayDatos['estado'] = nuevoTipo.estado; 
   arrayDatos['monto_dia'] = nuevoTipo.monto_dia; 
+  arrayDatos['porcentaje_servicio'] = nuevoTipo.porcentaje_servicio ; 
+  arrayDatos['porcentaje_productos'] = nuevoTipo.porcentaje_productos; 
   arrayDatos['tipo'] = nuevoTipo.tipo; 
 
   let datos:any = {"action": actions.actionInsert ,
@@ -110,6 +108,7 @@ guardarEmpleado(nuevoTipo:EmpleadoModel){
    };
   if ( typeof( nuevoTipo.id )!== 'undefined' ){//actualiza
     where = [{"columna" : "id" , "tipocomp" : '=' , "dato" : nuevoTipo.id}]
+    datos._arraydatos.idPersona = null; 
     datos._where = where;
     datos.action = actions.actionUpdate
   }
