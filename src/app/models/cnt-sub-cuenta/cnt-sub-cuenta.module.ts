@@ -22,3 +22,26 @@ export class CntSubCuentaModel {
     this.modificar = 'S';
     this.nombre_cuenta = '';
   }}
+
+
+  export class vwCntSubCuentaModel { 
+    id_scuenta?: number; 
+     nro_scuenta?: number;  
+     nombre_scuenta?: string; 
+    modificar: string;
+     digito?: number;
+
+    cod_cuenta: number;
+    nro_cuenta?: number; 
+    nombre_cuenta?: string; 
+
+     cod_clase?: number;
+     nombre_clase?: string;
+     cod_grupo?: number;
+     nombre_grupo?: string; 
+    constructor() {
+      this.id_scuenta = 0;
+      this.cod_cuenta = 0; 
+      this.modificar = 'S';
+      this.nombre_cuenta = '';
+    }}

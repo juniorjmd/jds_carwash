@@ -9,7 +9,7 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
   templateUrl: './cnt-sub-cuentas.component.html',
   styleUrls: ['./cnt-sub-cuentas.component.css']
 })
-export class CntSubCuentasComponent implements OnInit { 
+export class ModalCntSubCuentasComponent implements OnInit { 
 newSubcuenta: vwCntSubCuentaModel = new vwCntSubCuentaModel();
 cuentas: CntCuentaMModel[] = []; // Esta lista debería ser llenada con los datos de la tabla `cnt_cuenta`
 constructor(private cntService:CntContablesService){

@@ -5,7 +5,7 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
 
 @Component({
   selector: 'app-cnt-clase',  
-  template: `<!-- cnt-clase.component.html --> 
+  template: `<!-- cnt-clase.component.html -->
   <form #cntClaseForm="ngForm">
     <div class="form-group">
       <label for="codClase">Código de Clase</label>
@@ -22,7 +22,7 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
   styleUrls: ['./cnt_clase.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CntClaseComponent implements OnInit {
+export class ModalCntClaseComponent implements OnInit {
 
   newCntClase:CntClasesModel  = new CntClasesModel();
 

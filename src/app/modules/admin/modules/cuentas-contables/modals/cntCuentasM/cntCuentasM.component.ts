@@ -32,7 +32,7 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
   styleUrls: ['./cntCuentasM.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CntCuentasMComponent {
+export class ModalCntCuentasMComponent {
 
   newCntCuenta: CntCuentaMModel = new CntCuentaMModel();
   grupos: CntGruposModel[] = []; // Esta lista debería ser llenada con los datos de la tabla `cnt_grupos`

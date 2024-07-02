@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { cntClaseRequest } from 'src/app/interfaces/producto-request';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'; 
 import { CntClasesModel } from 'src/app/models/cnt-clases/cnt-clases.module';
 import { CntGruposModel } from 'src/app/models/cnt-grupos/cnt-grupos.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
@@ -32,7 +31,7 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
   styleUrls: ['./cntGrupos.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CntGruposComponent implements OnInit {
+export class ModalCntGruposComponent implements OnInit {
 
   newCntGrupos:CntGruposModel = new CntGruposModel();
   clases:CntClasesModel[] =[] ;

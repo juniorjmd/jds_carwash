@@ -1,5 +1,11 @@
 import { ClientesModel } from "../models/clientes/clientes.module";
+import { CntClasesModel } from "../models/cnt-clases/cnt-clases.module";
+import { CntCuentaMModel } from "../models/cnt-cuenta-m/cnt-cuenta-m.module";
+import { CntGruposModel } from "../models/cnt-grupos/cnt-grupos.module";
+import { CntOperacionesModel } from "../models/cnt-operaciones/cnt-operaciones.module";
+import { CntSubCuentaModel, vwCntSubCuentaModel } from "../models/cnt-sub-cuenta/cnt-sub-cuenta.module";
 import { ProductoModule } from "../models/producto/producto.module";
+import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
 
 export interface ProductoRequest { 
   data: ProductoModule[];
@@ -11,6 +17,46 @@ export interface ProductoRequest {
 
 export interface clienteRequest { 
   data: ClientesModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+
+export interface cntClaseRequest { 
+  data: CntClasesModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+export interface cntGrupoRequest { 
+  data: CntGruposModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface cntCuentaMayorRequest { 
+  data: CntCuentaMModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface cntSubCuentaRequest { 
+  data: CntSubCuentaModel[]|vwCntSubCuentaModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface cntOperacionesRequest { 
+  data: CntOperacionesModel[] ;
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+export interface cntTransaccionesRequest { 
+  data: TransaccionesModel[] |vwTransaccionesModel[];
   query: string;
   numdata: number;
   error: string;

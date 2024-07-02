@@ -1,0 +1,48 @@
+<div class="container-fluid" >  
+  <table class="table table-bordered table-striped">
+     
+      <tr>  <th>comprobante : </th>   <td>{{ operacion?.id }}</td>  
+        <th>Usuario Creador : </th>  <td>{{ operacion?.nombreUsuario }}</td></tr> 
+          <tr>   <th>Tercero : </th>  <td>{{ operacion?.nombrePersona??'N-A' }}</td></tr> 
+          <tr>  <th>Fecha Operación</th> <td>{{ operacion?.fechaOperacion | date: 'short' }}</td>  <th>Fecha Creación</th> <td>{{ operacion?.fechaCreacion | date: 'short' }}</td></tr>
+              <tr>   <th>Total Débito</th><td>{{ operacion?.totalDebito | number: '1.2-2' }}</td>  <th>Total Crédito</th> <td>{{ operacion?.totalCredito | number: '1.2-2' }}</td></tr>
+                 
+  </table>
+  <!-- transacciones.component.html -->
+<div  >
+  <h3>Transacciones</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr> 
+        <th>Nro. Subcuenta</th>
+        <th>Nombre Cuenta</th>
+        <th>Nombre Subcuenta</th>
+        <th>Valor Débito</th>
+        <th>Valor Crédito</th> 
+        <th>Relación Tabla</th>
+        <th>Ingreso Saldos</th>  
+        <th>Origen Comprobante</th>
+        <th>Clase</th>
+        <th>Grupo</th>
+        <th>Digito</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaccion of transacciones"> 
+        <td>{{ transaccion.nro_subcuenta }}</td>
+        <td>{{ transaccion.nombre_cuenta }}</td>
+        <td>{{ transaccion.nombre_subcuenta }}</td>
+        <td>{{ transaccion.varlor_debito | number: '1.2-2' }}</td>
+        <td>{{ transaccion.varlor_credito | number: '1.2-2' }}</td> 
+        <td>{{ transaccion.relacion_tabla }}</td>
+        <td>{{ transaccion.ingreso_saldos }}</td> 
+        <td>{{ transaccion.origen_comprobante }}</td>
+        <td>{{ transaccion.nombre_clase }}</td>
+        <td>{{ transaccion.nombre_grupo }}</td>
+        <td>{{ transaccion.digito }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>

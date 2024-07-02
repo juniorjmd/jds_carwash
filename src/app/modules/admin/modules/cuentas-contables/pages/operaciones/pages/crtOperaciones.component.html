@@ -1,0 +1,126 @@
+<!-- cnt-transacciones.component.html -->
+<form #cntTransaccionesForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="clase">Clase</label>
+        <select id="clase" class="form-control" [(ngModel)]="selectedClase" name="clase" (change)="onClaseChange()">
+          <option *ngFor="let clase of clases" [value]="clase.id_clase">{{ clase.nombre_clase }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group col-md-3">
+        <label for="grupo">Grupo</label>
+        <select id="grupo" class="form-control" [(ngModel)]="selectedGrupo" name="grupo" (change)="onGrupoChange()">
+          <option *ngFor="let grupo of grupos" [value]="grupo.id_grupo">{{ grupo.nombre_grupo }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group col-md-3">
+        <label for="cuentaMayor">Cuenta Mayor</label>
+        <select id="cuentaMayor" class="form-control" [(ngModel)]="selectedCuentaMayor" name="cuentaMayor" (change)="onCuentaMayorChange()">
+          <option *ngFor="let cuenta of cuentasMayores" [value]="cuenta.cod_cuenta">{{ cuenta.nombre_cuenta }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group col-md-3">
+        <label for="idCuenta">Cuenta</label>
+        <select id="idCuenta" class="form-control" [(ngModel)]="newCntTransacciones.id_cuenta" name="id_cuenta" required>
+          <option *ngFor="let cuenta of cuentas" [value]="cuenta.id_scuenta">{{ cuenta.nro_scuenta +"-" + cuenta.nombre_cuenta }}</option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="valorCredito">Valor Crédito</label>
+        <input type="number" id="valorCredito" class="form-control" [(ngModel)]="newCntTransacciones.valor_credito" name="valor_credito" required>
+      </div>
+  
+      <div class="form-group col-md-3">
+        <label for="valorDebito">Valor Débito</label>
+        <input type="number" id="valorDebito" class="form-control" [(ngModel)]="newCntTransacciones.valor_debito" name="valor_debito" required>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="fechaTransaccion">Fecha Transacción</label>
+        <input type="date" id="fechaTransaccion" class="form-control" [(ngModel)]="newCntTransacciones.fecha_transaccion" name="fecha_transaccion" required>
+      </div>
+   
+      <div class="form-group col-md-3"> <label for="fechaTransaccion">&nbsp;</label>
+        <button type="submit" class="btn btn-primary" [disabled]="!cntTransaccionesForm.form.valid">Submit</button>     </div> 
+    </div>
+  
+   <!---   <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="ingresoSaldos">Ingreso Saldos</label>
+        <select id="ingresoSaldos" class="form-control" [(ngModel)]="newCntTransacciones.ingreso_saldos" name="ingreso_saldos" required>
+          <option value="N">No</option>
+          <option value="S">Sí</option>
+        </select>
+      </div>
+  
+      <div class="form-group col-md-3">
+        <label for="usuario">Usuario</label>
+        <input type="text" id="usuario" class="form-control" [(ngModel)]="newCntTransacciones.usuario" name="usuario">
+      </div>
+  
+      <div class="form-group col-md-3">
+        <label for="fechaIngreso">Fecha Ingreso</label>
+        <input type="datetime-local" id="fechaIngreso" class="form-control" [(ngModel)]="newCntTransacciones.fecha_ingreso" name="fecha_ingreso">
+      </div>
+  
+      <div class="form-group col-md-3">
+        <label for="codTercero">Código Tercero</label>
+        <input type="text" id="codTercero" class="form-control" [(ngModel)]="newCntTransacciones.cod_tercero" name="cod_tercero">
+      </div>
+    </div>
+  
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="codComprobante">Código Comprobante</label>
+        <input type="text" id="codComprobante" class="form-control" [(ngModel)]="newCntTransacciones.cod_comprobante" name="cod_comprobante" required>
+      </div>
+  
+      <div class="form-group col-md-3">
+        <label for="origenComprobante">Origen Comprobante</label>
+        <input type="text" id="origenComprobante" class="form-control" [(ngModel)]="newCntTransacciones.origen_comprobante" name="origen_comprobante" required>
+      </div>
+    </div>
+-->
+   
+  </form>
+
+  <div  >
+    <h3>Transacciones</h3>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr> 
+          <th>Nro. Subcuenta</th>
+          <th>Nombre Cuenta</th>
+          <th>Nombre Subcuenta</th>
+          <th>Valor Débito</th>
+          <th>Valor Crédito</th> 
+          <th>Relación Tabla</th>
+          <th>Ingreso Saldos</th>  
+          <th>Origen Comprobante</th>
+          <th>Clase</th>
+          <th>Grupo</th>
+          <th>Digito</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaccion of operCntTransacciones"> 
+          <td>{{ transaccion.nro_subcuenta }}</td>
+          <td>{{ transaccion.nombre_cuenta }}</td>
+          <td>{{ transaccion.nombre_subcuenta }}</td>
+          <td>{{ transaccion.valor_debito | number: '1.2-2' }}</td>
+          <td>{{ transaccion.valor_credito | number: '1.2-2' }}</td> 
+          <td>{{ transaccion.relacion_tabla }}</td>
+          <td>{{ transaccion.ingreso_saldos }}</td> 
+          <td>{{ transaccion.origen_comprobante }}</td>
+          <td>{{ transaccion.nombre_clase }}</td>
+          <td>{{ transaccion.nombre_grupo }}</td>
+          <td>{{ transaccion.digito }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -39,6 +39,17 @@
     marcas:'vw_inv_marcas' , 
     prd_inventario:'vw_prd_inventario',
     aux_ingreso_inventario : 'vw_inv_inventario_ingreso_auxiliar',
-    vw_mst_per_clientes : 'vw_mst_per_clientes'
+    vw_mst_per_clientes : 'vw_mst_per_clientes' ,
+
+    vw_cnt_clase: 'vw_cnt_clase',
+vw_cnt_grupos: 'vw_cnt_grupos',
+vw_cnt_scuentas: 'vw_cnt_scuentas',
+vw_cnt_operaciones:'vw_cnt_operaciones',
+vw_cnt_cuenta_mayores: 'vw_cnt_cuenta',
+vw_transacciones: 'vw_transacciones'
+
+
+
+
  }
 

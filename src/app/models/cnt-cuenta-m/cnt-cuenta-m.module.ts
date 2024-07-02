@@ -13,7 +13,13 @@ export class CntCuentaMModel {
   id_cuenta?: number;
   cod_grupo: number;
   cod_cuenta: number;
-  nombre_cuenta: string;
+  nombre_cuenta: string; 
+  id_grupo?: number; 
+  cod_clase?: number;
+   nombre_grupo?: string; 
+   id_clase?: number;
+   nombre_clase?: string;
+   digito?: number; 
 
   constructor() {
     this.id_cuenta = 0;

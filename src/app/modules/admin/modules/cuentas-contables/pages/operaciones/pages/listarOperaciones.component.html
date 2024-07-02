@@ -1,0 +1,29 @@
+<div class="container-fluid" > 
+  <h3>Operaciones</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Fecha Operación</th>
+        <th>Fecha Creación</th>
+        <th>Total Débito</th>
+        <th>Total Crédito</th>
+        <th>Nombre Usuario</th>
+        <th>Nombre Persona</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let operacion of operaciones" style="cursor: pointer;" (click) = "enviarOperacionCurrent(operacion)">
+        <td>{{ operacion.id }}</td>
+        <td>{{ operacion.usuario }}</td>
+        <td>{{ operacion.fechaOperacion | date: 'short' }}</td>
+        <td>{{ operacion.fechaCreacion | date: 'short' }}</td>
+        <td>{{ operacion.totalDebito | number: '1.2-2' }}</td>
+        <td>{{ operacion.totalCredito | number: '1.2-2' }}</td>
+        <td>{{ operacion.nombreUsuario }}</td>
+        <td>{{ operacion.nombrePersona }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
