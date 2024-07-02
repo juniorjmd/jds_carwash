@@ -53,7 +53,7 @@ getCajas(){
       );
 }
 seleccionarCajaAestablecer(caja:cajaModel){ 
-this.dialogo.close(caja);
+    this.dialogo.close(caja);
 }
 
 /*

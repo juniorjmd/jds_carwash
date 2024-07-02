@@ -113,7 +113,7 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
         next :
       
        (datos:any)=>{
-          console.log(datos);
+          console.log('getEmpleados' , datos);
           
      if (datos.numdata > 0 ){ 
        datos.data!.forEach((dato:any , index:number )=>{ 

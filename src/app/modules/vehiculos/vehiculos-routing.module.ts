@@ -6,10 +6,12 @@ import { ServiciosComponent } from './pages/servicios/servicios.component';
 import { ServicioscostosComponent } from './pages/servicioscostos/servicioscostos.component';
 import { TiposServiciosComponent } from './pages/tipos-servicios/tipos-servicios.component';
 import { TiposComponent } from './pages/tipos/tipos.component';
+import { EstablecerCajaComponent } from './pages/establecer-caja/establecer-caja.component';
 
 const routes: Routes = [
   { path : '' ,component : HomeVhComponent, children:[
-    { path : 'Ingresos' , component : IngresoComponent},
+    
+    { path : 'Ingresos' , component : IngresoComponent}, 
     { path : 'Servicios' , component : ServiciosComponent}, 
     { path : 'Tipos' , component : TiposComponent}, 
     { path : 'Costos' , component : ServicioscostosComponent},   

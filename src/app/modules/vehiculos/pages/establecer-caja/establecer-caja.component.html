@@ -6,7 +6,6 @@
             <th class="centrado">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;estado actual&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
             <th class="centrado">&nbsp;&nbsp;&nbsp;&nbsp;Descripcion&nbsp;&nbsp;&nbsp;&nbsp;</th>
             <th class="centrado">&nbsp;&nbsp;&nbsp;&nbsp;opcion&nbsp;&nbsp;&nbsp;&nbsp;</th>
-
         </tr>
     </thead>
     <tbody>
@@ -15,8 +14,9 @@
             <td>&nbsp;&nbsp;&nbsp;&nbsp;{{caja.nombre}}</td>
             <td class="centrado">&nbsp;&nbsp;&nbsp;&nbsp;{{caja.nombreEstado}}</td>
             <td>&nbsp;&nbsp;&nbsp;&nbsp;{{caja.descripcion}}</td>
-            <td class="centrado" style="margin: 10px;"><i class="fas fa-check-circle boton_activo" (click)="seleccionarCajaAestablecer(caja)"></i> </td>
+            <td class="centrado" style="margin: 10px;">
+                <i class="bi bi-check-circle-fill boton_activo" (click)="seleccionarCajaAestablecer(caja)"></i>
+            </td>
         </tr>
-
     </tbody>
 </table>

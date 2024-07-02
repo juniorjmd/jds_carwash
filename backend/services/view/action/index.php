@@ -2705,7 +2705,7 @@ switch ($action){
            
      }
         break;   
-        CASE 'da5cbea2f73b029d00461c4aasdf1256sf':
+        CASE 'DATABASE_GENERIC_CONTRUCT_INSERT_SELECT':
            
         $_columnas = '';
         $_valores = '';

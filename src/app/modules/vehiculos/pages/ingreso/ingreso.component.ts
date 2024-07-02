@@ -87,6 +87,9 @@ export class IngresoComponent implements OnInit {
               }
             });
           }
+          if(this.cajaEStablecida.id == undefined){
+            
+          }
         }
 
         this.loading.hide();

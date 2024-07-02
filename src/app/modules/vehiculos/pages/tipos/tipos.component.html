@@ -51,7 +51,7 @@
                 <tr *ngFor="let tipo_vehiculo of tiposVehiculo">
                     <td>{{tipo_vehiculo.nombre}}</td>
                     <td>{{tipo_vehiculo.descripcion}}</td>
-                    <!-- <td>{{tipo_vehiculo.estadoNombre}}</td> -->
+                      <td>{{tipo_vehiculo.nombre_estado}}</td> 
                     <td title="editar">
                         <i class="bi bi-pencil-square boton_activo" (click)="setActualizatipo_vehiculo(tipo_vehiculo)"></i>
                     </td>

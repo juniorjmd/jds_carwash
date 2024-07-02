@@ -5,7 +5,7 @@
  const actionUpdate = 'DATABASE_GENERIC_CONTRUCT_UPDATE';
  const actionAsignarCajas = 'qwer12356yhn7ujm8ik';
  const actionInsert = 'DATABASE_GENERIC_CONTRUCT_INSERT';
- const actionInsertSelect = 'da5cbea2f73b029d00461c4aasdf1256sf';
+ const actionInsertSelect = 'DATABASE_GENERIC_CONTRUCT_INSERT_SELECT';
  const actionProcedure = 'DATABASE_GENERIC_CONTRUCT_PROCEDURE';
  const actionSelect = 'DATABASE_GENERIC_CONTRUCT_SELECT';
  const actionSelects = 'e06c06e7e4ef58bdb0kieujfñ541b3017fdd35473';
