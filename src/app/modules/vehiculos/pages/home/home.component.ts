@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
+import { UsuarioModel } from 'src/app/models/usuario.model';
+import { usuarioService } from 'src/app/services/usuario.services';
 
 @Component({
   selector: 'app-home',
@@ -7,10 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeVhComponent implements OnInit {
 [x: string]: any;
-
-  constructor() { }
+usuario?:Usuario;
+permisos?:RecursoDetalle;
+  constructor(private usuarioService:usuarioService) { }
 
   ngOnInit(): void {
+    this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ; 
+      console.log('usuario homeComponent',this.usuario)
+      this.permisos =  this.usuario?.permisos.filter(x=> x.display_nombre == "Vehiculos")[0];
+    });
+
   }
 
 }

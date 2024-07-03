@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-
+.nav-link.active{
+    color : rgb(4 156 248) !important;
+}
 
 .menuPrincipalLink {
     color: #4e085a !important;

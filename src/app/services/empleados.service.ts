@@ -34,7 +34,10 @@ getEmpleados(){
 
 
 getEmpleadosLavador(){
-  let where = [{"columna" : "id" , "tipocomp" : '=f' , "dato" :  "getIdTipoEmpleado('cleaner')"  }]
+  let where = [{"columna" : "tipo" , "tipocomp" : '=f' , "dato" :  "getIdEmpleadoPorTipNombre('operario')" ,"relacion" : 'or'  },
+    {"columna" : "tipo" , "tipocomp" : '=f' , "dato" :  "getIdEmpleadoPorTipNombre('operario vendedor')" 
+      }
+  ]
   let datos = {"action": actions.actionSelect ,
                "_tabla" : vistas.empleados,
                "_where" : where , 

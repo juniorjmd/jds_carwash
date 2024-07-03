@@ -14,6 +14,7 @@ import { Establecimientos } from '../interfaces/establecimientos.interface';
 import { Contador } from '../interfaces/contador';
 import { MediosDePagoModel } from '../models/ventas/medios-de-pago.model';
 import { DocpagosModel } from '../models/ventas/pagos.model';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -22,10 +23,18 @@ import { DocpagosModel } from '../models/ventas/pagos.model';
 export class cajasServices { 
     urlVentas = url.action + "ventas/";
 
+    private cajaSource = new BehaviorSubject<any>(null);
+    currentCaja = this.cajaSource.asObservable();
     constructor(private http: HttpClient ,
         private loading : loading ){ 
         console.log('servicios cajas inicializado');  
     }
+
+    asignarCaja(caja:cajaModel){
+        this.cajaSource.next( caja) 
+    }
+
+
     abrirCaja(caja : cajaModel,  valorIngresar : number){
         let datos = {"action": actions.actionAbrirCaja ,
                      "_parametro" : {"idCaja" : caja.id } , 

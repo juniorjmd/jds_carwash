@@ -16,6 +16,9 @@ import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { caja } from 'src/app/interfaces/caja.interface';
 import { ParametrosModule } from 'src/app/models/parametros/parametros.module';
+import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd-cliente/fnd-cliente.component';
+import { ClientesModel } from 'src/app/models/clientes/clientes.module';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-ingreso',
@@ -23,14 +26,7 @@ import { ParametrosModule } from 'src/app/models/parametros/parametros.module';
   styleUrls: ['./ingreso.component.css'],
 })
 export class IngresoComponent implements OnInit {
-  ingreso: VehiculosIngresoServicioModule = new VehiculosIngresoServicioModule(
-    '',
-    0,
-    '',
-    '',
-    0,
-    0
-  );
+  ingreso: VehiculosIngresoServicioModule = new VehiculosIngresoServicioModule(  );
   // serviciosAVehiculos:ServiciosModule[] = [];
   cajaEStablecida: cajaModel = new cajaModel(undefined);
 
@@ -40,7 +36,7 @@ export class IngresoComponent implements OnInit {
   tiposServicio: TiposServiciosModule[] = [];
   tipo_servicio: number = 0;
   empleados: EmpleadoModel[] = [];
-  constructor(
+  constructor(   
     private serviceCaja: cajasServices,
     private newAbrirDialog: MatDialog,
     private VehiculosService: VehiculosService,
@@ -51,6 +47,25 @@ export class IngresoComponent implements OnInit {
     this.getTiposServicios();
     this.getTiposVehiculos();
     this.getEmpleados();
+  }
+  asignarPropietario(){
+    this.ingreso.nombrePropietario = 'voy a buscarlo - perate';
+    this.ingreso.propietario = 0 ; 
+    this.newAbrirDialog.open(FndClienteComponent,{data:{invoker:'Empleados'} })
+    .afterClosed()
+    .pipe(
+      tap((response: {response:boolean , empleado:ClientesModel})=>{
+        if (response.response) {  
+          this.ingreso.nombrePropietario =response.empleado.nombreCompleto!;
+          this.ingreso.propietario = typeof response.empleado.id === 'string' ? parseInt(response.empleado.id, 10) : response.empleado.id!;
+        }
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCliente completo')
+    });   
+    
   }
   //**************************************************************************/
   //*****establecer caja predeterminada cuando esta es una sola**************/
@@ -112,11 +127,14 @@ export class IngresoComponent implements OnInit {
       .afterClosed()
       .subscribe((caja: cajaModel) => {
         console.log('caja_seleccionada', caja);
-        if (typeof caja != 'undefined') this.cajaEStablecida = caja;
+        if (typeof caja != 'undefined') {this.cajaEStablecida = caja;
+          this.serviceCaja.asignarCaja(caja);
+        }
       });
   }
   generarIngresoApatios() {
-    if (this.cajaEStablecida.id <= 0) {
+    console.log('caja establecida',this.cajaEStablecida)
+    if (this.cajaEStablecida == undefined || this.cajaEStablecida.id == undefined) {
       Swal.fire(
         'Debe establecer una caja para asignar el servicio creado',
         '',
@@ -125,27 +143,23 @@ export class IngresoComponent implements OnInit {
       this.establecerCaja();
       return;
     }
-    if (this.ingreso.lavador <= 0) {
+    if (this.ingreso.lavador === undefined) {
       Swal.fire('Debe escoger el lavador', '', 'error');
       return;
     }
-    if (this.ingreso.cod_tipo_vehiculo <= 0) {
+    if (this.ingreso.cod_tipo_vehiculo == undefined) {
       Swal.fire('Debe escoger el tipo de vehiculo', '', 'error');
       return;
     }
-    if (this.ingreso.cod_servicio <= 0) {
+    if (this.ingreso.cod_servicio == undefined) {
       Swal.fire('Debe escoger el servicio', '', 'error');
       return;
     }
-    if (this.ingreso.propietario.trim() === '') {
+    if (this.ingreso.propietario == undefined) {
       Swal.fire('Debe ingresar el propietario', '', 'error');
       return;
-    }
-    if (this.ingreso.telefono.trim() === '') {
-      Swal.fire('Debe ingresar el telefono', '', 'error');
-      return;
-    }
-    if (this.ingreso.placaVehiculo.trim() === '') {
+    } 
+    if (this.ingreso.placaVehiculo == undefined) {
       Swal.fire('Debe ingresar la placa del vehiculo', '', 'error');
       return;
     }
@@ -226,73 +240,77 @@ export class IngresoComponent implements OnInit {
   }
 
   cancelar() {
-    this.ingreso = new VehiculosIngresoServicioModule('', 0, '', '', 0, 0);
+    this.ingreso = new VehiculosIngresoServicioModule();
   }
 
   getEmpleados() {
     this.empleados = [];
     this.loading.show();
-    this.empleadosServices.getEmpleadosLavador().subscribe(
-      (datos: any) => {
+    this.empleadosServices.getEmpleadosLavador()
+    .subscribe({next:     (datos: any) => {
         console.log(datos);
 
         if (datos.numdata > 0) {
           datos.data!.forEach((dato: any, index: number) => {
             this.empleados.push(dato.objeto);
           });
-          console.log('empleados', this.empleados);
+          console.log('getEmpleadosLavador - empleados', this.empleados);
         } else {
           this.empleados = [];
         }
 
         this.loading.hide();
-      },
+      },error:
       (error) => {
         this.loading.hide();
-        console.log(error);
+        console.log('error getEmpleadosLavador',error);
         Swal.fire(error.error.error, '', 'error');
-      }
+      }}
     );
   }
   validarPlaca() {
     //vw_vehiculos_propietario
 
-    if (this.ingreso.placaVehiculo.trim() === '') {
+    if (this.ingreso.placaVehiculo == undefined) {
       return;
     }
     this.loading.show();
     this.VehiculosService.getVehiculos_propietario(
-      this.ingreso.placaVehiculo
-    ).subscribe(
+      this.ingreso.placaVehiculo!
+    ).subscribe({next:
       (datos: any) => {
-        console.log(datos);
+        console.log('getVehiculos_propietario',datos);
         let dato: any = {
           placaVehiculo: '',
-          propietario: '',
+          propietario: 0,
+          nombrePropietario : '',
           telefono: '',
           cod_tipo_vehiculo: 0,
           idDocumento: 0,
-          cajaAsignada: 0,
+          cajaAsignada: 0,  
+          tipoDocumento:0, 
+		      nombreCajaAsignada:'',   
+		     nombreTipoDoc:'' 
         };
 
         if (datos.numdata > 0) {
           dato = datos.data[0];
           console.log(dato);
-          this.ingreso.propietario = dato.propietario;
-          this.ingreso.telefono = dato.telefono;
+          this.ingreso.propietario = dato.propietario; 
+          this.ingreso.nombrePropietario = dato.nombrePropietario; 
           this.ingreso.cod_tipo_vehiculo = dato.cod_tipo_vehiculo;
-          this.ingreso.idDocumento = dato.idDocumento;
-          this.ingreso.cajaAsignada = dato.cajaAsignada;
-          this.ingreso.nombreCajaAsignada = dato.nombreCajaAsignada;
+          this.ingreso.idDocumento = (dato.nombreTipoDoc == 'EnBlanco' ) ? dato.idDocumento:undefined;
+          this.ingreso.cajaAsignada =(dato.nombreTipoDoc == 'EnBlanco' ) ? dato.cajaAsignada:undefined;
+          this.ingreso.nombreCajaAsignada = (dato.nombreTipoDoc == 'EnBlanco' ) ? dato.nombreCajaAsignada:'';
         }
         this.getServiciosVehiculos();
         this.loading.hide();
-      },
+      },error:
       (error) => {
         this.loading.hide();
         console.log(error);
         Swal.fire(error.error.error, '', 'error');
-      }
+      }}
     );
   }
 
@@ -305,8 +323,7 @@ export class IngresoComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.getTiposServicios().subscribe({next:
       (datos: any) => {
-        console.log(datos);
-
+        console.log(datos); 
         if (datos.numdata > 0) {
           this.tiposServicio = datos.data!.map((x:any) => x.obj );
           console.log('tiposervicio' , this.tiposServicio);
@@ -338,20 +355,15 @@ export class IngresoComponent implements OnInit {
       return;
     }
     let cont = 0;
-    this.serviciosAVehiculos!.forEach((servicio: ServiciosCostosModule) => {
-      if (servicio.tipo_servicio == this.tipo_servicio) {
-        cont++;
-        this.serviciosAmostrar[cont] = {
-          id: servicio.cod_servicio,
-          nombre: servicio.nombreServicio,
-        };
-      }
-    });
+    console.log('mostrarServicioPorTipo' , this.serviciosAVehiculos, 'tipo de servicio' , this.tipo_servicio )
+    this.serviciosAmostrar = this.serviciosAVehiculos.filter(x=>x.tipo_servicio == this.tipo_servicio)
+    console.log(this.serviciosAmostrar)
+    
   }
   getServiciosVehiculos() {
     this.serviciosAVehiculos = [];
     // alert(this.ingreso.cod_tipo_vehiculo  )
-    if (this.ingreso.cod_tipo_vehiculo <= 0) {
+    if (this.ingreso.cod_tipo_vehiculo == undefined) {
       return;
     }
     this.loading.show();
@@ -362,7 +374,7 @@ export class IngresoComponent implements OnInit {
         console.log(datos);
 
         if (datos.numdata > 0) {
-          this.serviciosAVehiculos = datos.data!;
+          this.serviciosAVehiculos = datos.data.map( (x:any)=>x.obj!);
           console.log(this.serviciosAVehiculos);
           this.mostrarServicioPorTipo();
         } else {
@@ -383,31 +395,27 @@ export class IngresoComponent implements OnInit {
     this.tiposVehiculo = [];
     this.tiposVehiculo[0] = new TipoVehiculoModule('', '');
     this.loading.show();
-    this.VehiculosService.geTiposVehiculos().subscribe(
+    this.VehiculosService.geTiposVehiculos().subscribe({next:
       (datos: any) => {
         console.log('geTiposVehiculos', datos);
 
         if (datos.numdata > 0) {
-          datos.data!.forEach((dato: TipoVehiculoModule, index: number) => {
-            this.tiposVehiculo[index] = new TipoVehiculoModule(
-              dato.nombre,
-              dato.descripcion
-            );
-          });
+          this.tiposVehiculo = datos.data  
           console.log(this.tiposVehiculo);
         } else {
           this.tiposVehiculo = [];
         }
 
         this.loading.hide();
-      },
-      (error) => {
+      },error:   (error) => {
         this.loading.hide();
         console.log(error);
         Swal.fire(error.error.error, '', 'error');
-      }
+      }}
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.serviceCaja.currentCaja.subscribe({next:(caja)=>  this.cajaEStablecida = (caja!= undefined) ? caja : this.cajaEStablecida })
+  }
 }

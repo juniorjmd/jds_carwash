@@ -119,30 +119,60 @@ export class FndClienteComponent implements OnInit {
           ,complete:()=>this.loading.hide()})
           }
       }
+
+  buscarClienteFinal(){
+        if (this.NwCliente.numIdentificacion !== undefined && this.NwCliente.tipoIdentificacion!== undefined ){
+          this.loading.show();
+                this.clientesService.getClientesByNumAndTipId(
+                  this.NwCliente.numIdentificacion , this.NwCliente.tipoIdentificacion
+                ).subscribe({next:(value:clienteRequest)=>{
+                  console.log(value)
+                  if(value.numdata== 0){
+                    Swal.fire( {title:'Persona no encontrada',
+                       text:'Desea crearla e ingresarla a la venta?',
+                       icon:'question', 
+                      showCancelButton: true,
+                      confirmButtonText: 'Si', 
+                      cancelButtonText:'No'}
+    
+                    )
+                    .then((result) => {
+                      if (result.isConfirmed) {  
+                        this.busqueda =  false
+                      }}); 
+                  }else{
+                    this.NwCliente =  value.data[0]
+                    if (this.documentoActivo != undefined){
+                      this.asignarClienteAlDocumento();
+                    }else{
+                      this.clientesService.changeCliente( this.NwCliente);
+                      if (this.asignarEmpleado){
+                        this.pasarComoEmpleado();
+                      }else{
+                          this.dialogo.close(true)
+                      }
+                    }
+                  }
+                },error:(error)=>console.error(error)
+              ,complete:()=>this.loading.hide()})
+              }
+          }    
      
 crearCliente(){
  
   this.loading.show() 
   //this.documentoActivo.orden;
-this.clientesService.setClienteOdoo({...this.NwCliente}).subscribe(
+this.clientesService.setClienteOdoo(this.NwCliente ).subscribe(
   (respuesta:any)=>{
     let cont = 0;
      console.log('setClienteOdoo',respuesta); 
      if (respuesta.error === 'ok'){
        alert('Datos creados con exito!!')
        if(respuesta.idGenerado){
-        this.NwCliente.id =  respuesta.idGenerado[0].Id;
-       }
-       if (this.documentoActivo != undefined){
-            this.asignarClienteAlDocumento();
-          }else{
-            this.clientesService.changeCliente( this.NwCliente);
-            if (this.asignarEmpleado){
-              this.pasarComoEmpleado();
-            }else{
-                this.dialogo.close(true)
-            }
-          }
+        this.NwCliente.id =  respuesta.idGenerado[0].Id; 
+       } 
+       this.buscarClienteFinal()
+     
      }else{
        switch(respuesta.error){
          case 'ok_no_insert' :

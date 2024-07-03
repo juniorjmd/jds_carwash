@@ -18,7 +18,9 @@ import { VehiculosIngresoServicioModule } from '../models/vehiculos-ingreso-serv
 @Injectable({
   providedIn: 'root',
 })
+ 
 export class VehiculosService {
+  urlVehiculo =  url.action + 'vehiculos/';
   constructor(private http: HttpClient, private loading: loading) {
     console.log('servicios usuarios inicializado');
   }
@@ -59,8 +61,7 @@ export class VehiculosService {
     //id, cod_servicio, cod_tipo_vehiculo, valor, estado
     arrayDatos['placaVehiculo'] = nuevoTipo.placaVehiculo;
     arrayDatos['cod_servicio'] = nuevoTipo.cod_servicio;
-    arrayDatos['propietario'] = nuevoTipo.propietario;
-    arrayDatos['telefono'] = nuevoTipo.telefono;
+    arrayDatos['propietario'] = nuevoTipo.propietario; 
     arrayDatos['cod_tipo_vehiculo'] = nuevoTipo.cod_tipo_vehiculo;
     arrayDatos['lavador'] = nuevoTipo.lavador;
     arrayDatos['cajaAsignada'] = nuevoTipo.cajaAsignada;
@@ -91,8 +92,7 @@ export class VehiculosService {
     //id, cod_servicio, cod_tipo_vehiculo, valor, estado
     arrayDatos['placaVehiculo'] = nuevoTipo.placaVehiculo;
     arrayDatos['cod_servicio'] = nuevoTipo.cod_servicio;
-    arrayDatos['propietario'] = nuevoTipo.propietario;
-    arrayDatos['telefono'] = nuevoTipo.telefono;
+    arrayDatos['propietario'] = nuevoTipo.propietario; 
     arrayDatos['cod_tipo_vehiculo'] = nuevoTipo.cod_tipo_vehiculo;
     arrayDatos['lavador'] = nuevoTipo.lavador;
     arrayDatos['cajaAsignada'] = nuevoTipo.cajaAsignada;
@@ -108,11 +108,11 @@ export class VehiculosService {
 
     console.log(
       ' servicios de vehiculos activo guardarNuevoIngresoServicio',
-      url.action,
+      this.urlVehiculo,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.urlVehiculo, datos, httpOptions());
   }
   //-----------------------
   guardarCostoServicio(nuevoTipo: ServiciosCostosModule) {
