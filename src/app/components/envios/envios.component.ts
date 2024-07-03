@@ -12,6 +12,7 @@ import { select } from 'src/app/interfaces/generales.interface';
 import { ConectorPlugin } from 'src/app/models/app.printer.con';
 import { printer, url } from 'src/app/models/app.db.url';
 import { DomiciliosModel } from 'src/app/models/domicilios/domicilios.model';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-envios',
   templateUrl: './envios.component.html',
@@ -30,7 +31,34 @@ export class EnviosComponent implements OnInit {
 
                 this.getDomicilios();
               }
-              MostrarDetalle(pedidos:DocumentosModel){}
+  MostrarDetalle(pedidos:DocumentosModel){
+    console.log(pedidos);
+    
+   let pagosHtml:string =  `
+   <table class='table' style='font-size:12px'>  
+   <tr>
+   <td>producto</td>
+   <td>cantidad</td>
+   <td>precio</td>
+   <td>total</td>
+   </tr>`;
+ 
+   pedidos.listado!.forEach(item=>{
+    pagosHtml +=`<tr> `;
+    pagosHtml +=` <td>${item.nombreProducto}</td> `;
+    pagosHtml +=` <td>${item.cant_real_descontada}</td> `; 
+    pagosHtml +=` <td>${item.presioVenta}</td> `; 
+    pagosHtml +=` <td>${item.valorTotal}</td> `; 
+    pagosHtml +=`</tr> `;
+  });
+  
+  pagosHtml += '</table>'
+
+
+
+  Swal.fire({html:pagosHtml, width: '400px'});
+
+  }
   generarPago( envio:DocumentosModel){ 
     
       console.log('envio generado',envio);

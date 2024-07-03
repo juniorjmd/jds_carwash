@@ -17,7 +17,7 @@ export class CortesDeCajaPagosModule {
    
     @Inject(Number) public valor:number,
    
-    @Inject(String) public cod_cierre:string,
+    @Inject(String) public cod_cierre:number|string,
    
     @Inject(String) public nombre:string) {}
  }

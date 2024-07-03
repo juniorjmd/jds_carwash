@@ -23,25 +23,40 @@ export class CierresComponent implements OnInit {
 
   getCierresTotalesYparciales(){
     this.loading.show();
-  this._serviceCierre.getCierresTotalesYparciales().subscribe(
+  this._serviceCierre.getCierresTotalesYparciales().subscribe({next:
     (respuesta:any)=>{
       let cont = 0;
        console.log('getCierresTotalesYparciales',respuesta); 
-       if (respuesta[0].error === 'ok' || respuesta[1].error === 'ok' || respuesta[2].error === 'ok'){ 
-         if (respuesta[0].numdata > 0)
-         {//respuesta.data[0]; 
-        console.log('datos cierres',respuesta[0].data);
-        this.cierres = respuesta[0].data;
-        this.cierresP = respuesta[1].data;
-        this.cierresPagos = respuesta[2].data;
-
-        }
-
-       }else{
-         alert(respuesta.error);
+       if (respuesta.error !== undefined){
+        console.error(respuesta.error)
+        this.loading.hide();
+        return;
        }
+       respuesta.forEach((resp:any , index:number )=>{
+        if(resp.error=='ok'){
+          switch(index)
+          {
+            case 0 :
+              this.cierres = resp.data??[];
+              break;
+              case 1: 
+              this.cierresP = resp.data??[]; 
+              break;
+              case 2 : 
+              this.cierresPagos = resp.data??[]; 
+                break; 
+          }
+        }else{
+          console.error(resp.error)
+        }
+       })
+        
+
+        
        this.loading.hide();
-  }) 
+       
+  }, error:(error)=>{console.error(error.error.error);this.loading.hide();}
+}) 
 
   }
 
@@ -145,8 +160,8 @@ mostrarProductosVendidosPorCierre(cierreActual:CortesDeCajaModule){
    <td>Total</td>
    </tr>`;
 
-
-   this.cierresPagos!.forEach(item=>{
+   let pagos = this.cierresPagos.filter(x=> x.cod_cierre == item2.id)
+    pagos!.forEach(item=>{
     pagosHtml +=`<tr> `;
     pagosHtml +=` <td>${item.nombre}</td> `;
     pagosHtml +=` <td>${item.valor}</td> `; 

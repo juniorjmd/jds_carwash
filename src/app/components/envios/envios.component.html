@@ -43,18 +43,17 @@
                         <td>{{pedidos.valorIVA}}</td>
                         <td>{{pedidos.valorTotal}}</td>
                         <td>{{pedidos.nombre_estado}}</td>
-                        <td>{{pedidos.fecha}} - {{pedidos.hora}}
-                        </td>
+                        <td>{{pedidos.fecha}} - {{pedidos.hora}}</td>
                         <td>{{pedidos.direccion}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button (click)="generarPago(pedidos.objetoDocumento)" class="btn btn-success">
-                                <i class="fas fa-hand-holding-usd"></i>
-                            </button>
-
+                                    <i class="bi bi-currency-dollar"></i>
+                                </button>
                                 <button (click)="MostrarDetalle(pedidos.objetoDocumento)" class="btn btn-info">
-                                <i class="far fa-eye"></i>
-                            </button></div>
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

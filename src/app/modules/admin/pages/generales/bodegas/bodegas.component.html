@@ -1,12 +1,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <h2 class='centrado'>Bodegas de productos</h2>
+            <h2 class="text-center">Bodegas de productos</h2>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-sm-12">
-            <button type="button" class="btn btn-primary">Nueva Bodega</button>
+            <button type="button" class="btn btn-primary"  >Nueva Bodega</button>
         </div>
     </div>
     <hr>
@@ -14,28 +14,27 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <table class="table" *ngIf="bodegas.length > 0">
-                <tr>
-
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>estado</th>
-                    <th colspan="2">
-                        opcion
-                    </th>
-                </tr>
-                <tr *ngFor="let categoria of bodegas">
-                    <td>{{categoria.nombre }}</td>
-                    <td>{{categoria.descripcion.trim()}}</td>
-                    <td>{{categoria.nombre_estado }}</td>
-                    <td title="editar categoria"><i class="fas fa-pencil-alt boton_activo" (click)="setActualizacategoria(categoria)"></i> </td>
-
-                    <td title="Asignar caracteristicas de categoria"><i class="fas fa-address-card boton_activo" (click)="setAgregarPerfil(categoria)"></i>
-
-                    </td>
-
-                </tr>
-
-
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th colspan="2">Opción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let bodega of bodegas">
+                        <td>{{bodega.nombre}}</td>
+                        <td>{{bodega.descripcion.trim()}}</td>
+                        <td>{{bodega.nombre_estado}}</td>
+                        <td title="Editar bodega">
+                            <i class="fas fa-pencil-alt boton_activo" (click)="setActualizacategoria(bodega)" aria-label="Editar"></i>
+                        </td>
+                        <td title="Asignar características de bodega">
+                            <i class="fas fa-address-card boton_activo" (click)="setAgregarPerfil(bodega)" aria-label="Asignar características"></i>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>

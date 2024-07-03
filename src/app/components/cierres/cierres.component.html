@@ -16,16 +16,17 @@
                         <div class="col-sm-6 centrado">
                             <div class="form-group">
                                 <select class="form-control" name="" id="">
-                               <option value="1">Fecha Inicio del Cierre</option>
-                               <option value="2">Fecha Fin del Cierre</option>
-                             </select>
+                                    <option value="1">Fecha Inicio del Cierre</option>
+                                    <option value="2">Fecha Fin del Cierre</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6 centrado">
                             <label class=" col-sm-12">Inicio</label>
-                            <input type="date" class="form-control col-sm-12"></div>
+                            <input type="date" class="form-control col-sm-12">
+                        </div>
                         <div class="col-sm-6 centrado">
                             <label class=" col-sm-12">Fin</label>
                             <input type="date" class="form-control col-sm-12">
@@ -50,7 +51,6 @@
                     <td>Usuario Abre</td>
                     <td>Usuario cierre</td>
                     <td>opciones</td>
-
                 </tr>
                 <tr *ngFor="let item of cierres">
                     <td>{{item.fecha_apertura}}</td>
@@ -63,12 +63,11 @@
                     <td>{{item.nombreCajaCierre}}</td>
                     <td>{{item.nombreUsuarioApertura}}</td>
                     <td>{{item.nombreUsuarioCierre}}</td>
-                    <td>
-                        <i (click)="mostrarCierresParciales(item)" class="fab fa-product-hunt boton_activo" title="mostrar cierres parciales"></i> &nbsp; &nbsp;
-                        <i title="mostrar los pagos del cierre" _ngcontent-use-c192="" (click)="mostrarCierresPagos(item)" aria-hidden="true" class="far fa-money-bill-alt boton_activo"></i> &nbsp; &nbsp;
-                        <i (click)="mostrarProductosVendidosPorCierre(item)" class="fas fa-cart-plus boton_activo" title="mostrar los productos vendidos del cierre"></i>
-                    </td>
-
+                    <td>  <div class="d-flex justify-content-between">
+                        <i (click)="mostrarCierresParciales(item)" class="bi bi-eye boton_activo" title="mostrar cierres parciales"></i> &nbsp; &nbsp;
+                        <i (click)="mostrarCierresPagos(item)" class="bi bi-currency-dollar boton_activo" title="mostrar los pagos del cierre"></i> &nbsp; &nbsp;
+                        <i (click)="mostrarProductosVendidosPorCierre(item)" class="bi bi-cart-plus boton_activo" title="mostrar los productos vendidos del cierre"></i>
+                  </div>  </td>
                 </tr>
             </table>
         </div>

@@ -1,18 +1,18 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12 centrado">
-            <h1> Reimpresion de facturas</h1>
+        <div class="col-sm-12 text-center">
+            <h1>Reimpresión de facturas</h1>
         </div>
     </div>
     <hr>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-sm-3">
-            Digite el numero o codigo de la factura
+            <label for="facturaInput">Digite el número o código de la factura</label>
         </div>
         <div class="col-sm-3">
             <div class="form-group">
-                <input type="text" (keyup.enter)="getDocumentos()" [(ngModel)]="codFactura" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
-                <small id="helpId" class="form-text text-muted">código  o el número de la factura a impimir el programa buscara la o las facturas que coincidad con el valor ingresado</small>
+                <input type="text" id="facturaInput" (keyup.enter)="getDocumentos()" [(ngModel)]="codFactura" class="form-control" placeholder="">
+                <small id="facturaHelp" class="form-text text-muted">Código o el número de la factura a imprimir. El programa buscará la o las facturas que coincidan con el valor ingresado.</small>
             </div>
         </div>
         <div class="col-sm-2">
@@ -21,38 +21,44 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12 centrado">
-            listado de facturas
+        <div class="col-sm-12 text-center">
+            <h2>Listado de facturas</h2>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12  ">
-            <table class="table">
-                <tr>
-                    <td>factura id</td>
-                    <td>Cliente</td>
-                    <td>cantidad</td>
-                    <td>valor parcial</td>
-                    <td>descuento</td>
-                    <td>IVA</td>
-                    <td>Total</td>
-                    <td colspan="4">OPCIONES</td>
-                </tr>
-                <tr *ngFor="let venta of documentos">
-                    <td>{{venta.idDocumentoFinal}}</td>
-                    <td>{{venta.clienteNombre}}</td>
-                    <td>{{venta.cantidadVendida}}</td>
-                    <td>{{venta.valorParcial|currency:'USD'}}</td>
-                    <td>{{venta.descuento|currency:'USD'}}</td>
-                    <td>{{venta.valorIVA|currency:'USD'}}</td>
-                    <td>{{venta.valorTotal|currency:'USD'}}</td>
-                    <td><i class="fas fa-print boton_activo" (click)="imprimirFactura(venta)"></i> </td>
-                    <td> <i class="fas fa-list boton_activo" (click)="VerFactura(venta)"></i></td>
-                    <td> </td>
-
-                </tr>
+    <div class="row" *ngIf="documentos && documentos.length > 0">
+        <div class="col-sm-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Factura ID</th>
+                        <th>Cliente</th>
+                        <th>Cantidad</th>
+                        <th>Valor Parcial</th>
+                        <th>Descuento</th>
+                        <th>IVA</th>
+                        <th>Total</th>
+                        <th colspan="2">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let venta of documentos">
+                        <td>{{venta.idDocumentoFinal}}</td>
+                        <td>{{venta.clienteNombre}}</td>
+                        <td>{{venta.cantidadVendida}}</td>
+                        <td>{{venta.valorParcial | currency:'USD'}}</td>
+                        <td>{{venta.descuento | currency:'USD'}}</td>
+                        <td>{{venta.valorIVA | currency:'USD'}}</td>
+                        <td>{{venta.valorTotal | currency:'USD'}}</td>
+                        <td><i class="fas fa-print boton_activo" (click)="imprimirFactura(venta)"></i></td>
+                        <td><i class="fas fa-list boton_activo" (click)="VerFactura(venta)"></i></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
-
+    <div class="row" *ngIf="documentos && documentos.length === 0">
+        <div class="col-sm-12 text-center">
+            <p>No se encontraron facturas con el código ingresado.</p>
+        </div>
+    </div>
 </div>
