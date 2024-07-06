@@ -26,6 +26,7 @@ import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd
 import Swal from 'sweetalert2';
 import { IngresarProductoVentaComponent } from '../ingresar-producto-venta/ingresar-producto-venta.component';
 import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto';
+import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 
 @Component({
   selector: 'app-ventas',
@@ -384,9 +385,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
     }
 
     this.loading.show();
-    this.documentoService.cerrarDocumento(this.documentoActivo.orden).subscribe({next:(respuesta: any) => {
-      if (respuesta.error === 'ok') {
-        this.documentoRetorno = respuesta.data.documentoFinal;
+    this.documentoService.cerrarDocumento(this.documentoActivo.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
+      if (respuesta.error === 'ok') {  
+        this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
         console.log('facturarDocumento', this.documentoRetorno);
         this.printer_factura_final();
         this.crearDocumento();
@@ -624,87 +625,12 @@ export class VentasComponent implements AfterViewInit, OnInit {
     });   
   }
 
+
+
   async printer_factura_final() {
-    console.log(this.documentoRetorno); 
-    let fecha = new Date();
-    let dayOfMonth = fecha.getDate();
-    let month = fecha.getMonth() + 1;
-    let year = fecha.getFullYear();
-    let hour = fecha.getHours();
-    let minutes = fecha.getMinutes(); 
-    let auxStr: string;
-    let fechaStr =  dayOfMonth + "/" + month + "/" + year + ' ' + hour + ':' + minutes; 
-    let nombreImpresora = printer.namePrinterGenerico;
-    if (!nombreImpresora) return console.log("Selecciona una impresora");
-    let conector = new ConectorPlugin(null);
-    conector.cortar();
-    conector.establecerTamanioFuente(1, 1);
-    conector.establecerEnfatizado(0);
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
-    conector.texto(this.documentoRetorno.nombreEsta + "\n");
-    conector.texto('Vende : ' + this.documentoRetorno.vendedorNombre + "\n"); 
-    conector.texto("Fecha/Hora:" + fechaStr + "\n");
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
-    conector.texto("     Resolucion:" + this.documentoRetorno.resolucion + "\n"); 
-    conector.texto("     Desde :" + this.documentoRetorno.consecutivoDesde + " Hasta :" + this.documentoRetorno.consecutivoHasta + "\n"); 
-    conector.texto("     Fecha:" + this.documentoRetorno.fechaInicioResolucion + " Hasta :" + this.documentoRetorno.fechaFinResolucion + "\n"); 
-    conector.texto("--------------------------------\n"); 
-    conector.texto("Factura " + this.documentoRetorno.idDocumentoFinal + "\n");
-    conector.texto("--------------------------------\n");
-    this.documentoRetorno.listado!.forEach((lista: DocumentoListado) => {
-      conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
-      conector.texto("  " + lista.nombreProducto + "\n");
-      conector.texto("|    Precio   | cnt |    dest    |    total    |\n");
-      auxStr = lista.presioVenta.toString();
-      lista.presioVenta = parseInt(auxStr);
-      conector.texto(lista.presioVenta.toString().padStart(13));
-      auxStr = lista.cantidadVendida.toString();
-      lista.cantidadVendida = parseInt(auxStr);
-      conector.texto(lista.cantidadVendida.toString().padStart(6));
-      auxStr = lista.descuento.toString();
-      lista.descuento = parseInt(auxStr);
-      conector.texto(lista.descuento.toString().padStart(14));
-      auxStr = lista.valorTotal.toString();
-      lista.valorTotal = parseInt(auxStr);
-      conector.texto(lista.valorTotal.toString().padStart(14) +  "\n\n");
-    });
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
-    conector.texto("------------------------------------\n");
-    auxStr = this.documentoRetorno.valorParcial.toString();  
-    conector.texto("Valor Parcial  :  " + auxStr.padStart(16, ' ') + "\n");
-    auxStr = this.documentoRetorno.valorIVA.toString();  
-    conector.texto("          IVA  :  " + auxStr.padStart(16, ' ') + "\n");
-    auxStr = this.documentoRetorno.valorTotal.toString();  
-    conector.texto("Total Factura  :  " + auxStr.padStart(16, ' ') + "\n");
-    auxStr = this.documentoRetorno.totalFactura.toString();   
-    conector.texto("------------------------------------\n\n");
-    conector.texto("-----------------------------------------------\n");
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
-    conector.texto("Medios de Pago\n"); 
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
-    conector.texto("-----------------------------------------------\n\n"); 
-    let tamanio = 0;
-    this.documentoRetorno.pagos!.forEach((pago: DocpagosModel) => {
-      tamanio = 42 - pago.nombreMedio!.trim().length; 
-      conector.texto('     ' + pago.nombreMedio!.trim() + pago.valorPagado.toString().padStart(tamanio) + "\n");
-      if (pago.valorRecibido > 0) {
-        conector.texto(" Recibido                       vueltos\n");
-        conector.texto("      " + pago.valorRecibido + pago.vueltos.toString().padStart(30, '.') + "\n");
-      } else {
-        conector.texto("     Referencia" + pago.referencia.padStart(30, '.') + "\n");
-      }
-    });
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
-    conector.texto("\n-----------------------------------------------\n\n");    
-    conector.texto("***Gracias por su compra***\n");
-    conector.feed(4);
-    conector.abrirCajon(); // Abrir cajón de dinero. Opcional
-    conector.cortar();
-    const respuestaAlImprimir = await conector.imprimirEn(nombreImpresora);
-    if (respuestaAlImprimir === true) {
-      console.log("Impreso correctamente");
-    } else {
-      console.log("Error. La respuesta es: " + respuestaAlImprimir);
-    }
+    let doc = new DocumentosModel();
+    doc = this.documentoRetorno;
+    console.log('documento retorno',doc); 
+   await doc.printReceipt();
   }
 }

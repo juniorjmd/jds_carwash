@@ -13,6 +13,17 @@ export class HomeComponent implements OnInit {
   usuario?:Usuario
   constructor(private _ServLogin : LoginService ,   private _Router: Router , private usuarioService:usuarioService) { }
 
+  print() {
+    const printContent = document.getElementById('print-section');
+    const WindowPrt = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0')!;
+    WindowPrt.document.write(printContent!.innerHTML);
+    WindowPrt.document.close();
+    WindowPrt.focus();
+    WindowPrt.addEventListener('afterprint', () => {
+      WindowPrt.close();
+    });
+    WindowPrt.print();
+  }
   ngOnInit(): void {this.getUsuarioLogeado(); }
   getUsuarioLogeado() {
      
