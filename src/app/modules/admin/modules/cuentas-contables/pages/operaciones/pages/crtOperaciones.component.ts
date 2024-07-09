@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { cntTransaccionesRequest } from 'src/app/interfaces/producto-request';
 import { CntClasesModel } from 'src/app/models/cnt-clases/cnt-clases.module';
 import { CntCuentaMModel } from 'src/app/models/cnt-cuenta-m/cnt-cuenta-m.module';
 import { CntGruposModel } from 'src/app/models/cnt-grupos/cnt-grupos.module';
@@ -38,7 +39,8 @@ export class CrearOperacionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      
+
+    this.getTransaccionesTemporales();
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.clases = value??[] ;
       console.log(this.clases) 
@@ -81,6 +83,12 @@ export class CrearOperacionesComponent implements OnInit {
      this.slcuentas= undefined;
     this.cuentas  = this.Mcuentas.filter(x=>x.cod_cuenta == this.selectedCuentaMayor)
   }
+
+  getTransaccionesTemporales(){
+    this.cntService.getCntTransaccionesTmp().subscribe({next:(value:cntTransaccionesRequest)=>{
+      this.operCntTransacciones = value.data
+    }})
+  }
   onSubmit() {
     // Aquí puedes manejar la lógica de envío del formulario
     this.slcuentas= this.cuentas.filter(x=>x.id_scuenta == this.newCntTransacciones.id_cuenta)[0];
@@ -90,6 +98,10 @@ export class CrearOperacionesComponent implements OnInit {
     this.newCntTransacciones.nombre_grupo = this.slcuentas.nombre_grupo ; 
     this.newCntTransacciones.nombre_clase = this.slcuentas.nombre_clase ;  
     console.log(this.newCntTransacciones);
-    this.operCntTransacciones.push(this.newCntTransacciones)
+    this.cntService.setCntTransaccionesTmp(this.newCntTransacciones).subscribe({next:(value:any)=>{ 
+      this.getTransaccionesTemporales();
+    }})
+   
+
   }
 }

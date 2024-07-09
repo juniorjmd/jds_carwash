@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select } from 'src/app/interfaces/generales.interface';
 import { RecursoDetalle, Usuario, Usuarios } from 'src/app/interfaces/usuario.interface';
-import { LoginService } from '../../services/login.services';
-import { LoginComponent } from '../login/login.component';
+import { LoginService } from '../../services/login.services'; 
 import { usuarioService } from 'src/app/services/usuario.services';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 

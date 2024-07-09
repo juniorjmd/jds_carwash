@@ -29,7 +29,8 @@ export class CntSubCuentaModel {
      nro_scuenta?: number;  
      nombre_scuenta?: string; 
     modificar: string;
-     digito?: number;
+    digito?: number;
+    digitoShow?: number;
 
     cod_cuenta: number;
     nro_cuenta?: number; 

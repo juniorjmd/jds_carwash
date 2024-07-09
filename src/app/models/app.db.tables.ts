@@ -2,6 +2,7 @@
  
 
  export const TABLA = {
+   subCuentasContables : 'cnt_cuentas',
   empleados_pagos_anticipos : 'mov_empleado_pagos_anticipos',
   empleados_acumulados : 'mov_empleado_acumulados',
    PARAMETROS:'parametros',
@@ -23,7 +24,8 @@
     tipoEstablecimiento:"tipo_establecimiento",
     contador:"contadores" , 
     tiposVehiculos:"inv_mst_tipos_vehiculos",
-    inv_inventario_ingreso_auxiliar:'inv_inventario_ingreso_auxiliar'
+    inv_inventario_ingreso_auxiliar:'inv_inventario_ingreso_auxiliar',
+    transacciones_tmp:'cnt_transacciones_tmp'
 
  }
 

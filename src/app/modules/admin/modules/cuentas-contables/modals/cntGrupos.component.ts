@@ -5,7 +5,7 @@ import { CntGruposModel } from 'src/app/models/cnt-grupos/cnt-grupos.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 
 @Component({
-  selector: 'app-cnt-grupos',  
+  selector: 'modal-cnt-grupos',  
   template: `<!-- cnt-grupos.component.html -->
   <form #cntGruposForm="ngForm">
     <div class="form-group">

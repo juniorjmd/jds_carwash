@@ -11,6 +11,8 @@ import { CntClasesModel } from '../models/cnt-clases/cnt-clases.module';
 import { CntCuentaMModel } from '../models/cnt-cuenta-m/cnt-cuenta-m.module';
 import { vwCntSubCuentaModel } from '../models/cnt-sub-cuenta/cnt-sub-cuenta.module';
 import { CntOperacionesModel } from '../models/cnt-operaciones/cnt-operaciones.module';
+import { TABLA } from '../models/app.db.tables';
+import { TransaccionesModel } from '../models/transacciones/transacciones.module';
 
 @Injectable({
   providedIn: 'root'
@@ -27,15 +29,11 @@ export class CntContablesService {
   private cuentaMSource = new BehaviorSubject<CntCuentaMModel[]|null>(null);
   currentCntcuentaM = this.cuentaMSource.asObservable(); 
   private subcuentaSource = new BehaviorSubject<vwCntSubCuentaModel[]|null>(null);
-  currentsubcuenta = this.subcuentaSource.asObservable();
-
-
-  
+  currentsubcuenta = this.subcuentaSource.asObservable();  
   private operacionSource = new BehaviorSubject<CntOperacionesModel|null>(null);
   currentoperacion = this.operacionSource.asObservable();
 
-  constructor(private http: HttpClient  ) { 
-    
+  constructor(private http: HttpClient  ) {  
     console.log('servicios cuentas contables inicializado');  
   }
 
@@ -56,8 +54,61 @@ export class CntContablesService {
   changeSubCuenta(clase: any) {
     this.subcuentaSource.next(clase);
   }
+  
+  getMediosCajaActiva(){
+    let datos = {"action": actions.actionSelectPorUsuario ,
+                 "_tabla" : vistas.mediosPorCajaActiva,
+                 "_columnaUsuario": 'usuarioCaja'
+                };
+    console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
+    return this.http.post(url.action , datos, httpOptions()) ;
+} 
+getCntTransaccionesTmp():Observable<cntTransaccionesRequest>{
+  let datos = {"action": actions.actionSelectPorUsuario , 
+    "_tabla" : vistas.vw_transacciones_tmp,
+    "_columnaUsuario": 'usuario'
+   }; 
+   
+   console.log('getCntTransaccionesTmp',url.action , datos, httpOptions()) ;
+   return this.http.post<cntTransaccionesRequest>(url.action , datos, httpOptions()) ;
+}
+
+setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
+  
+  let datos ;
+  let  arraydatos ; 
+  if (data.cod_transaccion !== undefined &&  data.cod_transaccion > 0 ){
+    
+
+
+    let where =   [{"columna" : "cod_transaccion" , "tipocomp" : "=" , "dato" : data.cod_transaccion }]
+    arraydatos =  { 
+      "id_cuenta" : data.id_cuenta  ,
+      "valor_credito" : data.valor_credito,
+      "valor_debito" : data.valor_debito,};
+    datos = {"action": actions.actionUpdate ,
+      "_tabla" : TABLA.transacciones_tmp, "_where" : where ,
+      "_arraydatos" : arraydatos
+     };
+  }else{
+    arraydatos =  {  
+      "id_cuenta" : data.id_cuenta  ,
+      "valor_credito" : data.valor_credito,
+      "valor_debito" : data.valor_debito,
+      "fecha_transaccion" : data.fecha_transaccion ,
+      "relacion_tabla" : data.relacion_tabla,
+      "usuario" : 'USUARIO_LOGUEADO'}
+    datos = {"action": actions.actionInsert ,
+      "_tabla" : TABLA.transacciones_tmp,
+      "_arraydatos" : arraydatos
+     };
+  } 
+   return this.http.post<any>(url.action , datos, httpOptions()) ;
+}
 
  
+
+
   getCntGrupos():Observable<cntGrupoRequest>{
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_cnt_grupos,
@@ -74,15 +125,73 @@ export class CntContablesService {
   }
   getCntCuentasMayores():Observable<cntCuentaMayorRequest>{
     let datos = {"action": actions.actionSelect , 
-      "_tabla" : vistas.vw_cnt_cuenta_mayores, 
+      "_tabla" : vistas.vw_cnt_cuenta_mayores
      }; 
+
+    console.log('getCntCuentasMayores' , url.action , datos, httpOptions())
      return this.http.post<cntCuentaMayorRequest>(url.action , datos, httpOptions()) ;
+  }
+  setNewSubCuenta(subCnt:vwCntSubCuentaModel){
+    let datos ;
+    
+    let  arraydatos ;
+    
+    if (subCnt.id_scuenta != undefined && subCnt.id_scuenta  > 0 ){
+      
+        let where =   [{"columna" : "id_cuenta" , "tipocomp" : "=" , "dato" : subCnt.id_scuenta }]
+        arraydatos =
+            { "nro_cuenta": `${subCnt.cod_cuenta}${subCnt.digitoShow}`, 
+              "nombre_cuenta":   subCnt.nombre_scuenta        }
+        
+        datos = {"action": actions.actionUpdate ,
+        "_tabla" : TABLA.subCuentasContables, "_where" : where ,
+        "_arraydatos" : arraydatos
+       };
+    }
+    else{
+      arraydatos =
+      { 
+        "cod_cuenta": subCnt.cod_cuenta,
+        "modificar": "S",   
+        "nro_cuenta": `${subCnt.cod_cuenta}${subCnt.digitoShow}`, 
+        "nombre_cuenta":   subCnt.nombre_scuenta   
+    }
+        datos = {"action": actions.actionInsert ,
+        "_tabla" : TABLA.subCuentasContables,
+        "_arraydatos" : arraydatos
+       };
+
+    } 
+    
+   console.log(datos);
+   
+    return this.http.post(url.action , datos, httpOptions()) ;
   }
   getCntCuentas():Observable<cntSubCuentaRequest>{
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_cnt_scuentas,
+       _limit: 300,  
       "_where" : [{columna : 'digito' , tipocomp : '>' , dato : 0 }]
      }; 
+     return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
+  }
+
+  getCntCuentasByIdCM(id:number):Observable<cntSubCuentaRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_scuentas, 
+      "_where" : [{columna : 'cod_cuenta' , tipocomp : '=' , dato : id }
+                ,{columna : 'digito' , tipocomp : '>' , dato : 0 }]
+     }; 
+
+     return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
+  }
+  getCntCuentasByName(id:string):Observable<cntSubCuentaRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_scuentas, 
+      "_where" : [{columna : 'nombre_scuenta' , tipocomp : 'like' , dato : id }
+                ,{columna : 'digito' , tipocomp : '>' , dato : 0 }]
+     }; 
+
      return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
   }
   getCntOperaciones():Observable<cntOperacionesRequest>{

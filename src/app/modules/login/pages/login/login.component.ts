@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
     this._datosInicialesService.getDatosIniSucursal().subscribe(
       (data:any)=>{
       this.sucursal = data;
+      _datosInicialesService.chageSucursal(this.sucursal[0])
       console.log(this.sucursal);
     } ,
     error => {console.log(error)

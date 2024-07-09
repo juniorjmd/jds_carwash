@@ -4,7 +4,7 @@ import { CntClasesModel } from 'src/app/models/cnt-clases/cnt-clases.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 
 @Component({
-  selector: 'app-cnt-clase',  
+  selector: 'modal-cnt-clase',  
   template: `<!-- cnt-clase.component.html -->
   <form #cntClaseForm="ngForm">
     <div class="form-group">

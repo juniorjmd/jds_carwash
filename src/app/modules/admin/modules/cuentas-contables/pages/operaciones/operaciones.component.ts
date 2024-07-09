@@ -35,21 +35,21 @@ export class OperacionesComponent implements OnInit {
       
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.clases = value??[] ;
-      console.log(this.clases) 
+      console.log('Clases = >',this.clases) 
     },error : (e:any)=>console.error(e.error.error)})
     
     this.cntService.currentCntGrupo.subscribe({next:(value:CntGruposModel[] | null)=>{
       this.Mgrupos = value??[] ;
-      console.log(this.clases) 
+      console.log('Grupos = >',this.Mgrupos) 
     },error : (e:any)=>console.error(e.error.error)})
  
     this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[] | null)=>{
       this.McuentasMayores = value??[] ;
-      console.log(this.clases) 
+      console.log('Cuentas = >',this.McuentasMayores) 
     },error : (e:any)=>console.error(e.error.error)})
     this.cntService.currentsubcuenta.subscribe({next:(value:vwCntSubCuentaModel[] | null)=>{
       this.Mcuentas = value??[] ;
-      console.log(this.clases) 
+      console.log('subCuentas = >',this.Mcuentas) 
     },error : (e:any)=>console.error(e.error.error)})
     
 

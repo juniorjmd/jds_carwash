@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
+import { CommonModule } from '@angular/common'; 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
 import { FormsModule } from '@angular/forms';
@@ -18,8 +17,7 @@ import { ImpuestosComponent } from './pages/generales/impuestos/impuestos.compon
 import { MediosDePagoComponent } from './pages/generales/medios-de-pago/medios-de-pago.component';
 import { ProductosComponent } from './pages/generales/productos/productos.component';
 import { TiposDeDocumentosComponent } from './pages/generales/tipos-de-documentos/tipos-de-documentos.component';
-import { TiposEstablComponent } from './pages/generales/establecimientos/tipos-establ.component';
-import { AppModule } from 'src/app/app.module';
+import { TiposEstablComponent } from './pages/generales/establecimientos/tipos-establ.component'; 
 import { SharedModule } from '../shared/shared.module'; 
 
  
@@ -42,8 +40,10 @@ import { SharedModule } from '../shared/shared.module';
     CajasDetalleComponent 
   ],
   imports: [
-    CommonModule,RouterModule, 
-    AdminRoutingModule,FormsModule, 
+    CommonModule,
+    RouterModule, 
+    AdminRoutingModule,
+    FormsModule, 
     SharedModule
   ]
 })

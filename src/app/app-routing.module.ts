@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';  
-import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
+import { HomeComponent } from './components/home/home.component'; 
 import { InicioComponent } from './components/inicio/inicio.component';
 import { UsuarioComponent } from './components/usuario/usuario.component'; 
 import { CierresComponent } from './components/cierres/cierres.component';
@@ -14,8 +13,8 @@ import { InicioReportesComponent } from './components/reportes/inicio-reportes/i
 import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
 import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-facturas.component'; 
 
- const routes:  Routes = [
-    { path : 'login' , component : LoginComponent}, 
+ const routes:  Routes = [ 
+    { path: 'login', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule) },
     { path : 'home' , 
     component : HomeComponent ,
       children : [      

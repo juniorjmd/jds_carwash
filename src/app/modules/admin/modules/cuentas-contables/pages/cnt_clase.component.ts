@@ -6,35 +6,51 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
 @Component({
   selector: 'app-cnt-clase',  
   template: `<!-- cnt-clase.component.html --> 
-  <form #cntClaseForm="ngForm">
-    <div class="form-group">
-      <label for="codClase">Código de Clase</label>
-      <input type="number" id="codClase" class="form-control" [(ngModel)]="newCntClase.cod_clase" name="cod_clase">
+   <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h2 class="text-center">Listado de Clases</h2>
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr style="text-align: center;"> 
+            <th colspan="2" style="background-color: #b1bdc7;">Clase</th> 
+            </tr>
+            <tr>
+              
+            <th style="background-color: #b1bdc7;">Código</th>
+              <th style="background-color: #b1bdc7;">Nombre</th>  
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of Clases">
+               
+              <td>{{ item.cod_clase }}</td>
+              <td>{{ item.nombre_clase }}</td>   
+               
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    
-    <div class="form-group">
-      <label for="nombreClase">Nombre de Clase</label>
-      <input type="text" id="nombreClase" class="form-control" [(ngModel)]="newCntClase.nombre_clase" name="nombre_clase" required>
-    </div>
-    
-    <button type="submit" class="btn btn-primary" [disabled]="!cntClaseForm.form.valid">Submit</button>
-  </form>`,
+  </div>
+  `,
   styleUrls: ['./cnt_clase.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CntClaseComponent implements OnInit {
-
-  newCntClase:CntClasesModel  = new CntClasesModel();
-
+ 
+  Clases:CntClasesModel[] = [];
   constructor(private cntService:CntContablesService){
 
   }
   
-  onSubmit() {
-    // Aquí puedes manejar la lógica de envío del formulario
-    console.log(this.newCntClase);
-  }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    
+    this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
+      this.Clases = (value != undefined)? [...value]:[] ;
+      console.log(this.Clases) 
+    },error : (e:any)=>console.error(e.error.error)})
+   }
 
 }

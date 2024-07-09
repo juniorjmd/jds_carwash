@@ -27,6 +27,8 @@ import Swal from 'sweetalert2';
 import { IngresarProductoVentaComponent } from '../ingresar-producto-venta/ingresar-producto-venta.component';
 import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto';
 import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
+import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
+import { vwsucursal } from 'src/app/models/app.db.interfaces';
 
 @Component({
   selector: 'app-ventas',
@@ -53,7 +55,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   documentoActivo: DocumentosModel = new DocumentosModel();
   documentoRetorno: DocumentosModel = new DocumentosModel();
   documentoSeleccionadoActivo: DocumentosModel = new DocumentosModel(); 
-
+  sucursal?:vwsucursal;
   @ViewChild('codProd') codProdlement!: ElementRef;
 
   constructor(
@@ -63,7 +65,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     private documentoService: DocumentoService,
     private productoService: ProductoService,
     private _ServLogin: LoginService, 
-    private _Router: Router
+    private _Router: Router, private dInicialServ: DatosInicialesService
   ) {  
     console.clear();
     this.getUsuarioLogueado();
@@ -71,6 +73,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {  
     this.getMediosP();
+    this.dInicialServ.currentSucursal.subscribe({next:(suc)=>{ 
+       this.sucursal =  suc;
+    }})
   }
 
   ngAfterViewInit(): void {
@@ -164,7 +169,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
     this.MedioP = this.MedioPInicial.map(x=>x);
     console.log('documentoActivo' , this.documentoActivo); 
-          if (this.documentoActivo.pagos === undefined || this.documentoActivo.pagos.length === 0){
+          if (this.documentoActivo.pagos === undefined ){
             this.documentoActivo.pagos = this.MedioP.map((value: any , index) => {
               let valorPago = 0;
                if (value.nombre.toUpperCase() == 'EFECTIVO'){
@@ -182,14 +187,14 @@ export class VentasComponent implements AfterViewInit, OnInit {
               return auxpago;
             })
           } 
-           let docPagos = [...this.documentoActivo.pagos] ; 
+           let docPagos:DocpagosModel[]  = (this.documentoActivo.pagos === undefined )?[...this.documentoActivo.pagos] : [] ; 
                       console.log("asignar pagos" , docPagos)
            this.MedioP.forEach(medio => {
            console.log(medio.id);
-            const pago = docPagos.find((p: DocpagosModel) => p.idMedioDePago == medio.id);
+            const pago:DocpagosModel = docPagos.find((p: DocpagosModel) => p.idMedioDePago == medio.id)!;
             console.log('get pagos iteracion ' , pago )
-            if (pago) {
-              medio.valor_aux = pago.valorPagado;
+            if (pago != undefined) {
+              medio.valor_aux = pago?.valorPagado ;
             }
           }); 
 
@@ -386,9 +391,11 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
     this.loading.show();
     this.documentoService.cerrarDocumento(this.documentoActivo.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
+      //console.clear();
+      console.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
         this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
-        console.log('facturarDocumento', this.documentoRetorno);
+        console.log('facturarDocumento =>>>>>', this.documentoRetorno);
         this.printer_factura_final();
         this.crearDocumento();
       } else {
@@ -631,6 +638,6 @@ export class VentasComponent implements AfterViewInit, OnInit {
     let doc = new DocumentosModel();
     doc = this.documentoRetorno;
     console.log('documento retorno',doc); 
-   await doc.printReceipt();
+    if(this.sucursal != undefined)   await doc.printReceipt(this.sucursal);
   }
 }

@@ -14,7 +14,7 @@
 
 
  const actionlogin = 'ef2e1d89937fba9f888516293ab1e19e7ed789a5';
- const actionSelectPorUsuario = 'e06c06e7e4ef58bdbdd35473wdc741qaz';
+ const actionSelectPorUsuario = 'DATABASE_GENERIC_CONTRUCT_SELECT_BY_USER_LOGGED';
  const actionTipDocOdoo = 'BUSCAR_ODOO_TIPO_ID' ;
  const actionEmpresasOdoo = 'BUSCAR_ODOO_TIPO_COMPANIA';
 

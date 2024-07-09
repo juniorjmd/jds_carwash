@@ -120,6 +120,21 @@ export class cajasServices {
         console.log('servicios cajas - getLocacionesVirtuales ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
+
+
+    getBodegasDisponibles(){ 
+         let datos = {"action": actions.actionSelect ,
+                        "_tabla" : vistas.prd_bodegas_inventario, 
+                        "_columnas": ['obj'],
+                        "_obj": ['obj'],
+                        "_where" : [{columna : 'estado' , tipocomp : '=' , dato : 1}]
+                       };
+           console.log('servicios cajas - getTiposDocumentosConContadores ' ,url.action , datos, httpOptions());
+           return this.http.post(url.action , datos, httpOptions()) ;
+
+        console.log('servicios cajas - getLocacionesFisicas ' ,url.action , datos, httpOptions());
+        return this.http.post(url.action , datos, httpOptions()) ;
+    }
     getLocacionesFisicas(){
         let datos = {"action": actions.actionBuscarLocacionesExternas  ,
         "_fisicas" : true

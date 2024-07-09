@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 //servicios
 
 //componentes
-import { AppComponent } from './app.component'; 
-import { LoginComponent } from './components/login/login.component';
+import { AppComponent } from './app.component';  
 import { HomeComponent } from './components/home/home.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { AdminLayoutComponent } from './components/layouts/admin-layout/admin-layout.component';
@@ -49,8 +48,7 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
 
 @NgModule({
   declarations: [ 
-    AppComponent,
-    LoginComponent,
+    AppComponent, 
     HomeComponent,
     InicioComponent,
     AdminLayoutComponent,

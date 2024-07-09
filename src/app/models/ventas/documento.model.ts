@@ -3,6 +3,8 @@ import { Clientes } from "../../interfaces/clientes.interface";
 import { DocumentoImpuestos, DocumentoListado } from "../../interfaces/documento.interface";
 import { DocpagosModel } from "./pagos.model";
 import { cajaModel } from "./cajas.model";
+import { cajasServices } from "src/app/services/Cajas.services";
+import { vwsucursal } from "../app.db.interfaces";
 
 export class DocumentosModel {
         orden!:number;
@@ -46,7 +48,7 @@ export class DocumentosModel {
         nameStockOdooPOS?:string;
         idStockOdooVtl?:number;
         nameStockOdooVtl?:string;  
-        clienteobj?: Clientes[];
+        clienteobj?: Clientes ;
         cajaObj?: cajaModel[];
         impuestos?:DocumentoImpuestos[];
         listado?:DocumentoListado[];
@@ -61,10 +63,12 @@ export class DocumentosModel {
         resolucion?:string;
         fechaInicioResolucion?:number|Date;
         fechaFinResolucion?:number|Date;
-        nombreUsuarioResolucion ?:string;
+        nombreUsuarioResolucion ?:string; 
+        sucursal?:vwsucursal;
 
          // Método para generar el HTML de la tirilla de punto de venta
     generateReceiptHTML(): string {
+
       const fecha = new Date();
       const dayOfMonth = fecha.getDate();
       const month = fecha.getMonth() + 1;
@@ -77,6 +81,8 @@ export class DocumentosModel {
         <div style="font-family: Arial, sans-serif; width: 300px;">
           <div style="text-align: center;">
             <h2>${this.nombreEsta}</h2>
+            <h2>${this.nombreEsta}</h2>
+            <p>Nit: ${this.sucursal?.nit_sucursal}</p>
             <p>Vende: ${this.vendedorNombre}</p>
             <p>Fecha/Hora: ${fechaStr}</p>
           </div>
@@ -88,6 +94,7 @@ export class DocumentosModel {
           <hr>
           <div style="text-align: center;">
             <p>Factura ${this.idDocumentoFinal}</p>
+            <p>cliente ${this.clienteobj!.nombreCompleto!}</p>
           </div>
           <hr>
           <div style="text-align: left;">
@@ -103,12 +110,12 @@ console.log('listado',this.listado);
         const valorTotal = typeof lista.valorTotal === 'number' ? lista.valorTotal : parseFloat(lista.valorTotal??'0');
 
         receiptHTML += `
-         <tr> <th colspan = '4' >${lista.nombreProducto}</p> </th> </tr>
-         <tr><th>Precio </th><th>Cant</th><th>Desc</th><th>Total </th></tr>
-         <tr><th>${presioVenta.toFixed(2).padStart(13)} </th>
-         <th>${cantidadVendida.toFixed(2).padStart(6)}</th>
-         <th>${descuento.toFixed(2).padStart(14)}</th>
-         <th>${valorTotal.toFixed(2).padStart(14)} </th></tr> 
+         <tr> <th colspan = '4'  style="text-align: left;" >${lista.nombreProducto}</p> </th> </tr>
+         <tr><td>Precio </td><td>Cant</td><td>Desc</td><td>Total </td></tr>
+         <tr><td>${presioVenta.toFixed(2).padStart(13)} </td>
+         <td>${cantidadVendida.toFixed(2).padStart(6)}</td>
+         <td>${descuento.toFixed(2).padStart(14)}</td>
+         <td>${valorTotal.toFixed(2).padStart(14)} </td></tr> 
          <hr>
         `;
     });
@@ -163,7 +170,8 @@ receiptHTML += `</table>`
   }
 
   // Método para imprimir la tirilla de punto de venta
-  public printReceipt() {
+  public printReceipt(sucursal:vwsucursal) {
+    this.sucursal=sucursal;
       const printContent = this.generateReceiptHTML();
       console.log("html a imprimir" , printContent)
       const WindowPrt = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0')!;  

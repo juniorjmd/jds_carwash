@@ -21,9 +21,10 @@ import { LoadingComponent } from './componentes/loading/loading.component';
 import { MenucardsComponent } from './componentes/menucards/menucards.component';
 import { MenuItemLiComponent } from './componentes/menu-item-li/menu-item-li.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
+import { OnlyNumberDirective } from 'src/app/directives/OnlyNumberDirective';
  
 @NgModule({
-  declarations: [LiNavItemComponent ,
+  declarations: [LiNavItemComponent ,OnlyNumberDirective,
     Modal1Component   ,
     MenucardsComponent,
     DialogoConfirmacionComponent,
@@ -56,7 +57,7 @@ import { NavbarComponent } from './componentes/navbar/navbar.component';
     MenucardsComponent,
     DialogoConfirmacionComponent,
     NavbarComponent,
-    LoadingComponent
+    LoadingComponent, OnlyNumberDirective
   ]
 })
 export class SharedModule { }

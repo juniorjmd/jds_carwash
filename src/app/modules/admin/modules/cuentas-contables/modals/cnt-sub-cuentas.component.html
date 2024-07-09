@@ -22,4 +22,35 @@
     
     <button type="submit" class="btn btn-primary" [disabled]="!subcuentaForm.form.valid">Submit</button>
   </form>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h2 class="text-center">Listado de Subcuentas</h2>
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>ID Cuenta</th>
+              <th>Código Cuenta</th>
+              <th>Número Cuenta</th>
+              <th>Nombre Cuenta</th>
+              <th>Modificar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let subcuenta of Subcuentas">
+              <td>{{ subcuenta.id_scuenta }}</td>
+              <td>{{ subcuenta.nro_scuenta }}</td>
+              <td>{{ subcuenta.nombre_scuenta }}</td> 
+              <td>
+                <button class="btn btn-primary" (click)="modificarSubcuenta(subcuenta)">
+                  <i class="bi bi-pencil-fill"></i> Modificar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
   

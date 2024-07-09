@@ -20,5 +20,6 @@ export interface Clientes  {
 'telefono2'?:string,
 'pagina'?:string,
 'titulo'?:string,
-'categoria'?:string
+'categoria'?:string ,
+"nombreCompleto"?:string ,
  }
