@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CategoriasModel } from 'src/app/models/categorias.model';
 
 import { loading } from 'src/app/models/app.loading';
 import { ProductoService } from 'src/app/services/producto.service';
 import { select } from 'src/app/interfaces/generales.interface';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
+import { categoriaRequest, ProductoRequest } from 'src/app/interfaces/producto-request';
+import { MatDialog } from '@angular/material/dialog';
+import { AdminCategoriasComponent } from '../../../modals/admin-categorias/admin-categorias.component';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-categorias',
@@ -13,28 +17,44 @@ import { Categoria } from 'src/app/interfaces/categoria.interface';
 })
 export class CategoriasComponent implements OnInit {
   categorias: CategoriasModel[] = []; 
+  
+private newAbrirDialog =  inject(MatDialog)
+
   constructor( private loading : loading,
    private productoService:ProductoService
-    ) {this.getUsuarios() }
+    ) {this.getAllCategorias() }
   crearCategoria(){
-
+    this.newAbrirDialog.open(AdminCategoriasComponent, { data:  null })
+    .afterClosed() 
+    .pipe(
+      tap((response: any) => {
+        console.log('AdminCategoriasComponent',response); 
+        if(response){
+        this.getAllCategorias();
+        }
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCuentasContables completo')
+    }); 
   }
+
   setActualizacategoria(categoria:CategoriasModel){
 
   }
 
   setAgregarPerfil(categoria:CategoriasModel){}
-  getUsuarios(){ 
+  getAllCategorias(){ 
     this.loading.show()
     this.productoService.getCategorias().subscribe({
-       next :       (datos:any)=>{
-         console.log(datos);
+       next :(datos:categoriaRequest)=>{
+         console.log('getAllCategorias',datos);
          
-    if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:Categoria , index:number )=>{
-        this.categorias[index] = new CategoriasModel(dato) ;
-      }) 
-      console.log(this.categorias);
+    if (datos.numdata > 0 ){  
+        this.categorias = datos.data!.map((x:any)=>x.obj) 
+        this.productoService.asignarCategorias(this.categorias);
+        console.log(this.categorias);
     }else{
       this.categorias = [];
     }
@@ -48,7 +68,7 @@ export class CategoriasComponent implements OnInit {
       );
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
   }
 
 }

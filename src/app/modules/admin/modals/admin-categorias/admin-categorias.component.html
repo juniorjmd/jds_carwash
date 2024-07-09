@@ -1,0 +1,43 @@
+<div class="container mt-5">
+    <h2>Crear Categoría</h2>
+    <form [formGroup]="categoriaForm!" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="categoriaPadre1">Categoría Padre 1</label>
+          <select id="categoriaPadre1" (change)="filtrarPadre2()" class="form-control" formControlName="categoriaPadre1">
+            <option *ngFor="let cat of categoriasPadre1" [value]="cat.id">{{ cat.nombre }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="categoriaPadre2">Categoría Padre 2</label>
+          <select id="categoriaPadre2"  (change)="filtrarPadre3()" class="form-control" formControlName="categoriaPadre2">
+            <option *ngFor="let cat of categoriasPadre2" [value]="cat.id">{{ cat.nombre }}</option>
+          </select>
+        </div>  
+        
+        <div class="form-group"> 
+          <label for="cuentaContable">Cuenta contable</label> 
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" readonly placeholder="cuenta contable"  formControlName="cuentaContable" 
+            id="cuentaContable"  aria-label="cuentaContable"  aria-describedby="basic-addon1">  
+              <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables()'>
+                  <i class="bi bi-search"></i>  
+              </button>
+          </div>
+
+        </div>
+      <div class="form-group">
+        <label for="letra">Letra</label>
+        <input type="text" id="letra" class="form-control" formControlName="letra">
+      </div>
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" class="form-control" formControlName="nombre">
+      </div>
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" class="form-control" formControlName="descripcion"></textarea>
+      </div>   
+      <button type="submit" class="btn btn-primary" [disabled]="categoriaForm?.invalid">Crear</button>
+    </form>
+  </div>
+  

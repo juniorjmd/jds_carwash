@@ -12,9 +12,10 @@ import { AuxIngresoInventarioModule } from '../models/aux-ingreso-inventario/aux
 import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModule } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
-import { Observable } from 'rxjs';
-import { ProductoRequest } from '../interfaces/producto-request';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { categoriaRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
+import { CategoriasModel } from '../models/categorias.model';
 
 
 @Injectable({
@@ -23,12 +24,34 @@ import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 export class ProductoService {
  
 private http = inject(HttpClient); 
-private loading = inject(loading); 
+private loading = inject(loading);  
 private readonly baseUrl:string = url.action ;
 private readonly   urlInventario =  `${this.baseUrl}inventario/`;
 private readonly   urlVentas =  `${this.baseUrl}ventas/`;
+
+private categoriasSource = new BehaviorSubject<CategoriasModel[]|null>(null);
+currentCategorias = this.categoriasSource.asObservable();
+
   constructor(  ){ 
     console.log('servicios productos inicializado');  
+}
+
+
+
+ 
+
+asignarCategorias(categoria:CategoriasModel[]){
+    this.categoriasSource.next( categoria) 
+}
+setCategorias(CATEGORIA:CategoriasModel){
+  let datos  = {"action": actions.actionInsert ,
+      "_tabla" : TABLA.categorias,
+      "_arraydatos" : CATEGORIA
+     };
+     
+ console.log('crear nueva categoria' , url.action , datos, httpOptions());
+ 
+  return this.http.post(url.action , datos, httpOptions()) ; 
 }
 
 
@@ -60,14 +83,14 @@ getbodegas(){
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
 
-getCategorias(){
+getCategorias():Observable<categoriaRequest>{
   let datos = {"action": actions.actionSelect ,
                "_tabla" : vistas.categorias,
               "_columnas": ['obj'],
               "_obj": ['obj'],
               };
   console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
-  return this.http.post(this.baseUrl, datos, httpOptions()) ;
+  return this.http.post<categoriaRequest>(this.baseUrl, datos, httpOptions()) ;
 } 
 
 getProductosCodBarras(codPrd:any){

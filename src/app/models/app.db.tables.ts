@@ -2,6 +2,7 @@
  
 
  export const TABLA = {
+  categorias : 'inv_categorias',
    subCuentasContables : 'cnt_cuentas',
   empleados_pagos_anticipos : 'mov_empleado_pagos_anticipos',
   empleados_acumulados : 'mov_empleado_acumulados',

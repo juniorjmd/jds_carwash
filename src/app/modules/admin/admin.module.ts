@@ -18,7 +18,8 @@ import { MediosDePagoComponent } from './pages/generales/medios-de-pago/medios-d
 import { ProductosComponent } from './pages/generales/productos/productos.component';
 import { TiposDeDocumentosComponent } from './pages/generales/tipos-de-documentos/tipos-de-documentos.component';
 import { TiposEstablComponent } from './pages/generales/establecimientos/tipos-establ.component'; 
-import { SharedModule } from '../shared/shared.module'; 
+import { SharedModule } from '../shared/shared.module';
+import { AdminCategoriasComponent } from './modals/admin-categorias/admin-categorias.component'; 
 
  
 @NgModule({
@@ -37,7 +38,8 @@ import { SharedModule } from '../shared/shared.module';
     CuentasCntComponent,
     ImpuestosComponent,
     CajasNuevaComponent,
-    CajasDetalleComponent 
+    CajasDetalleComponent,
+    AdminCategoriasComponent 
   ],
   imports: [
     CommonModule,

@@ -1,3 +1,4 @@
+import { CategoriasModel } from "../models/categorias.model";
 import { ClientesModel } from "../models/clientes/clientes.module";
 import { CntClasesModel } from "../models/cnt-clases/cnt-clases.module";
 import { CntCuentaMModel } from "../models/cnt-cuenta-m/cnt-cuenta-m.module";
@@ -72,6 +73,13 @@ export interface cntOperacionesRequest {
 
 export interface cntTransaccionesRequest { 
   data: TransaccionesModel[] |vwTransaccionesModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+export interface categoriaRequest { 
+  data: CategoriasModel[] ;
   query: string;
   numdata: number;
   error: string;

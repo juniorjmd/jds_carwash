@@ -11,7 +11,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { columnasTablaCnfg, confAmbiente } from './config';
 import { DropdownFndComponent } from './componentes/dropdown-fnd/dropdown-fnd.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { booleanpPipe } from 'src/app/pipes/booleanp.pipe';
 import { dataArrayOdooPipe } from 'src/app/pipes/dataArrayOdoo.pipe';
 import { ImgB64Pipe } from 'src/app/pipes/imgB64.pipe';
@@ -57,7 +57,8 @@ import { OnlyNumberDirective } from 'src/app/directives/OnlyNumberDirective';
     MenucardsComponent,
     DialogoConfirmacionComponent,
     NavbarComponent,
-    LoadingComponent, OnlyNumberDirective
+    LoadingComponent, OnlyNumberDirective,
+    ReactiveFormsModule 
   ]
 })
 export class SharedModule { }

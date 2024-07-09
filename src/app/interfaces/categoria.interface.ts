@@ -5,5 +5,7 @@ export interface Categoria {
     'descripcion':string, 
     'tipo':string,
     'tipoDescripcion' ?:string,
-    'contador'?:number,
+    'contador'?:number, 
+  idCuentaContable?:number,
+  NombreCuentaContable?:string,
 }
