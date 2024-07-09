@@ -14,7 +14,8 @@ import { Establecimientos } from '../interfaces/establecimientos.interface';
 import { Contador } from '../interfaces/contador';
 import { MediosDePagoModel } from '../models/ventas/medios-de-pago.model';
 import { DocpagosModel } from '../models/ventas/pagos.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { cajaRequest, DocumentoCierreRequest } from '../interfaces/producto-request';
 
 
 @Injectable({
@@ -166,12 +167,12 @@ export class cajasServices {
         console.log('servicios cajas - get vw_tipo_establecimiento ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
-    getCajas(){
+    getCajas():Observable<cajaRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.cajas
                     };
         console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     } 
     getMediosCajaActiva(){
         let datos = {"action": actions.actionSelectPorUsuario ,
@@ -255,7 +256,7 @@ export class cajasServices {
     setCaja(caja:cajaModel){
         let datos ;
         let  arraydatos ;
-        if (caja.id > 0 ){
+        if (caja.id != undefined &&  caja.id  > 0 ){
             let where =   [{"columna" : "id" , "tipocomp" : "=" , "dato" : caja.id }]
             arraydatos =  {  "nombre" : caja.nombre  ,
             "descripcion" : caja.descripcion,
@@ -265,6 +266,8 @@ export class cajasServices {
             "fechaEstadoCaja" : caja.fechaEstadoCaja ,
             "usuarioEstadoCaja" : caja.usuarioEstadoCaja,
             "usuarioEstadoGeneral" : caja.usuarioEstadoGeneral,
+            "cuentaContableGastos" : caja.cuentaContableGastos,
+            "cuentaContableEfectivo" : caja.cuentaContableEfectivo,
             "establecimiento" : caja.establecimiento};
             
             datos = {"action": actions.actionUpdate ,
@@ -281,6 +284,8 @@ export class cajasServices {
             "fechaEstadoGeneral" : caja.fechaEstadoGeneral,
             "fechaEstadoCaja" : caja.fechaEstadoCaja ,
             "usuarioEstadoCaja" : caja.usuarioEstadoCaja,
+            "cuentaContableGastos" : caja.cuentaContableGastos,
+            "cuentaContableEfectivo" : caja.cuentaContableEfectivo,
             "usuarioEstadoGeneral" : caja.usuarioEstadoGeneral}
             datos = {"action": actions.actionInsert ,
             "_tabla" : TABLA.caja,

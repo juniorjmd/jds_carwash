@@ -2,24 +2,34 @@
 import { caja } from "../../interfaces/caja.interface";
 
 export class cajaModel{
-    id !: number; 
-    nombre !: string;
-    descripcion !:string;
-    estadoGeneral !: number;
-    estadoCaja !: number;
-    fechaEstadoGeneral !: Date;
-    fechaEstadoCaja !: Date;
-    usuarioEstadoCaja !: number;
-    usuarioEstadoGeneral !: number;
-    nombreEstadoGeneral !: string;
-    nombreEstado!: string; 
+    id ?: number; 
+    nombre ?: string;
+    descripcion ?:string;
+    estadoGeneral ?: number;
+    estadoCaja ?: number;
+    fechaEstadoGeneral ?: Date;
+    fechaEstadoCaja ?: Date;
+    usuarioEstadoCaja ?: number;
+    usuarioEstadoGeneral ?: number;
+    nombreEstadoGeneral ?: string;
+    nombreEstado?: string; 
     asignada ?:boolean;
     idUsuario ?:number;
     establecimiento?:number;
     nombreEstablecimiento?:string;
     estadoEsta?:number;
     nombreUsuarioEstadoCaja?:string;
-    documentoActivoCaja?:number;
+    documentoActivoCaja?:number;  
+ cuentaContableGastos?:number;
+ cuentaContableEfectivo?:number;
+ nro_scuenta_venta?:number;
+ nombre_scuenta_venta?:string;
+ cod_cuenta_venta?:number;
+ nombre_cuenta_venta?:string;
+ nro_scuenta_gastos?:number;
+ nombre_scuenta_gastos?:string;
+ cod_cuenta_gastos?:number;
+ nombre_cuenta_gastos?:string;  
     constructor(cargaCaja : caja|undefined){
         this.estadoCaja = 0 ;
         this.estadoGeneral = 0;
@@ -41,36 +51,10 @@ export class cajaModel{
             this.nombreEstablecimiento = cargaCaja.nombreEstablecimiento;
             this.nombreUsuarioEstadoCaja = cargaCaja.nombreUsuarioEstadoCaja;
             this.documentoActivoCaja = cargaCaja.documentoActivoCaja;
-            
-        }
-        this.setNombreEstado();
+             
+        } 
+       
 
     }
-    public setNombreEstado(){ 
-        switch(this.estadoCaja.toString()){
-            case '1' : this.nombreEstado = 'Abierta'; 
-            break; 
-            case '2' : this.nombreEstado = 'Cerrada'; 
-            break; 
-            case '3' : this.nombreEstado = 'Pausa'; 
-            break; 
-            case '0' :
-            default : this.nombreEstado = 'without first use'; 
-            break; 
-        }
-        switch(this.estadoGeneral.toString()){
-            case '1' : 
-            this.nombreEstadoGeneral = 'Activo'; 
-             break; 
-            case '2' : 
-            this.nombreEstadoGeneral = 'Inactivo';  
-            break; 
-            case '0' :
-            default : 
-            this.nombreEstadoGeneral = 'Inactiva';  
-            break; 
-
-        }
-      
-    }
+     
 }

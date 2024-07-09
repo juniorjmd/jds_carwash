@@ -103,8 +103,8 @@ guardarRelacion(){
   let OpcionesEnvio:number[] = []; 
   let count = 0;
   this.opciones!.forEach((values,index)=>{
-    if(values){
-      OpcionesEnvio[count] = this.cajas[index].id;
+    if(values && this.cajas[index].id != undefined){
+      OpcionesEnvio[count] = this.cajas[index].id!;
       count++;
     }
     

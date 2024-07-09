@@ -1,3 +1,4 @@
+import { CntSubCuentaModel, vwCntSubCuentaModel } from "../models/cnt-sub-cuenta/cnt-sub-cuenta.module"
 import { ProductoModule } from "../models/producto/producto.module"
 
 export interface OdooPrd {
@@ -50,4 +51,8 @@ export interface impuesto{
 export interface responsePrd{
     "confirmado": Boolean, 
     "datoDevolucion" ?: ProductoModule
+}
+export interface responseSubC{
+    "confirmado": Boolean, 
+    "datoDevolucion" ?: vwCntSubCuentaModel
 }

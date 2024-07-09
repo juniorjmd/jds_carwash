@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest } from 'src/app/interfaces/producto-request';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
+import { CntContablesService } from 'src/app/services/cntContables.service';
 import { LoginService } from 'src/app/services/login.services';
 import { usuarioService } from 'src/app/services/usuario.services';
 
@@ -11,7 +13,7 @@ import { usuarioService } from 'src/app/services/usuario.services';
 })
 export class HomeComponent implements OnInit {
   usuario?:Usuario
-  constructor(private _ServLogin : LoginService ,   private _Router: Router , private usuarioService:usuarioService) { }
+  constructor(private _ServLogin : LoginService,private cntService:CntContablesService ,   private _Router: Router , private usuarioService:usuarioService) { }
 
   print() {
     const printContent = document.getElementById('print-section');
@@ -24,7 +26,36 @@ export class HomeComponent implements OnInit {
     });
     WindowPrt.print();
   }
-  ngOnInit(): void {this.getUsuarioLogeado(); }
+  ngOnInit(): void {this.getUsuarioLogeado(); 
+    this.cntService.getCntCuentasMayores().subscribe({next:(value:cntCuentaMayorRequest)=>{ 
+      this.cntService.changeCuentasM(value.data); 
+      console.log("getCntCuentasMayores",value.data )
+    },error : (e)=>console.error(e.error.error)})
+    
+    this.cntService.getCntGrupos().subscribe({
+      next:(value:cntGrupoRequest)=>{ 
+      this.cntService.changeGrupo(value.data); 
+      console.log("getCntGrupos",value.data )
+
+    },error : (e)=>console.error(e.error.error)})
+
+    this.cntService.getCntCuentas().subscribe({
+      next:(value:cntSubCuentaRequest)=>{ 
+      this.cntService.changeSubCuenta(value.data); 
+      console.log("getCntCuentas",value.data )
+
+    },error : (e)=>console.error(e.error.error)})
+
+
+    this.cntService.getCntClases().subscribe({next:(value:cntClaseRequest)=>{ 
+      this.cntService.changeClase(value.data); 
+      console.log("getCntClases",value.data )
+
+    },error : (e)=>console.error(e.error.error)})
+    // Aquí deberías cargar los datos de `cnt_cuenta` desde el servicio correspondiente
+    
+  }
+
   getUsuarioLogeado() {
      
     this._ServLogin.getUsuarioLogeadoAsync().subscribe({next:(datos)=>{

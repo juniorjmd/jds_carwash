@@ -1,50 +1,64 @@
 <!-- subcuenta.component.html -->
 <form #subcuentaForm="ngForm">
-    <div class="form-group">
+  <div class="row">
+    <div class="col">
+        <div class="form-group">
         <label for="codCuenta">Código de Cuenta</label>
-        <select id="codCuenta" class="form-control" [(ngModel)]="newSubcuenta.cod_cuenta" name="cod_cuenta" required>
+        <select id="codCuenta" (change)="filtrarSubCuentas()" class="form-control" [(ngModel)]="newSubcuenta.cod_cuenta" name="cod_cuenta" required   >
           <option *ngFor="let cuenta of cuentas" [value]="cuenta.cod_cuenta">{{ cuenta.nombre_cuenta }}</option>
         </select>
       </div>
-      
-    
-    <div class="form-group">
-      <label for="nroCuenta">Número de Cuenta</label>
-      <input type="number" id="nroCuenta" class="form-control" [(ngModel)]="newSubcuenta.nro_cuenta" name="nro_cuenta">
     </div>
-    
-    
-    
+    <div class="col"> <div class="form-group">
+      <label for="nroCuenta">Número de Cuenta</label> 
+      <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">{{newSubcuenta.cod_cuenta}}</span>
+      <input type="text"  appOnlyNumber id="nroCuenta" required  class="form-control" [(ngModel)]="newSubcuenta.digitoShow" name="nro_cuenta" >
+    </div></div></div>
+  
+  <div class="col">  
     <div class="form-group">
       <label for="nombreCuenta">Nombre de Cuenta</label>
-      <input type="text" id="nombreCuenta" class="form-control" [(ngModel)]="newSubcuenta.nombre_cuenta" name="nombre_cuenta">
+      <input type="text" id="nombreCuenta" class="form-control" required (keyup.enter)="filtrarPorNombre()" [(ngModel)]="newSubcuenta.nombre_scuenta" name="nombre_cuenta" >
     </div>
-    
-    <button type="submit" class="btn btn-primary" [disabled]="!subcuentaForm.form.valid">Submit</button>
+  </div>
+  
+  <div class="col">   <div class="input-group mb-3"> <button type="submit" class="btn btn-primary" [disabled]="!subcuentaForm.form.valid"
+    (click)="enviarNewRegistro()" 
+    >Guardar</button>
+    <button type="button" (click)="cancelar()" class="btn btn-danger"  >Cancelar</button>
+  </div>     </div>   </div>  
+   
   </form>
-  <div class="container">
+  <div class="container" style="  height: 400px !important;">
     <div class="row">
       <div class="col-sm-12">
         <h2 class="text-center">Listado de Subcuentas</h2>
         <table class="table table-striped">
           <thead class="thead-dark">
             <tr>
-              <th>ID Cuenta</th>
+              
               <th>Código Cuenta</th>
-              <th>Número Cuenta</th>
               <th>Nombre Cuenta</th>
+              <th>Auxiliar</th>
+              <th>Nombre</th>
               <th>Modificar</th>
+              <th>Seleccionar</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let subcuenta of Subcuentas">
-              <td>{{ subcuenta.id_scuenta }}</td>
+               
+              <td>{{ subcuenta.cod_cuenta }}</td>
+              <td>{{ subcuenta.nombre_cuenta!.trim() }}</td>
               <td>{{ subcuenta.nro_scuenta }}</td>
-              <td>{{ subcuenta.nombre_scuenta }}</td> 
-              <td>
-                <button class="btn btn-primary" (click)="modificarSubcuenta(subcuenta)">
-                  <i class="bi bi-pencil-fill"></i> Modificar
-                </button>
+              <td>{{ subcuenta.nombre_scuenta }}</td>  <td> 
+                  <i class="bi bi-pencil-fill" style="cursor: pointer;"   (click)="modificarSubcuenta(subcuenta)" ></i> 
+                
+              </td>
+              <td> 
+                  <i class="bi bi-cursor-fill" style="cursor: pointer;"   (click)="retornarRegistroBusqueda(subcuenta)" ></i> 
+                
               </td>
             </tr>
           </tbody>
@@ -52,5 +66,4 @@
       </div>
     </div>
   </div>
-  
   

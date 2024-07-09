@@ -6,6 +6,7 @@ import { CntOperacionesModel } from "../models/cnt-operaciones/cnt-operaciones.m
 import { CntSubCuentaModel, vwCntSubCuentaModel } from "../models/cnt-sub-cuenta/cnt-sub-cuenta.module";
 import { ProductoModule } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
+import { cajaModel } from "../models/ventas/cajas.model";
 import { DocumentosModel } from "../models/ventas/documento.model";
 
 export interface ProductoRequest { 
@@ -30,7 +31,12 @@ export interface clienteRequest {
   numdata: number;
   error: string;
 }
-
+export interface cajaRequest { 
+  data: cajaModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
 
 export interface cntClaseRequest { 
   data: CntClasesModel[];
