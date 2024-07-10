@@ -14,7 +14,8 @@ import { ResumenCajaComponent } from './pages/resumen-caja/resumen-caja.componen
 import { VentasComponent } from './pages/ventas/ventas.component';
 import { FormsModule } from '@angular/forms';  
 import { SharedModule } from '../shared/shared.module';
-import { IngresarProductoVentaComponent } from './pages/ingresar-producto-venta/ingresar-producto-venta.component';
+import { IngresarProductoVentaComponent } from './pages/ingresar-producto-venta/ingresar-producto-venta.component'; 
+import { NewGastoComponent } from './modals/new-gasto/new-gasto.component';
  
 
 @NgModule({
@@ -29,12 +30,14 @@ import { IngresarProductoVentaComponent } from './pages/ingresar-producto-venta/
     MostrarProductoComponent,
     PagosVentaComponent,
     BuscarProdDirectoComponent,
-    IngresarProductoVentaComponent 
+    IngresarProductoVentaComponent , 
+    NewGastoComponent
   ],
   imports: [
     CommonModule,
     PosRoutingModule,
-    FormsModule ,SharedModule
+    FormsModule ,
+    SharedModule,
   ]
 })
 export class PosModule { }

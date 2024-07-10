@@ -10,7 +10,7 @@ import { ParametrosService } from 'src/app/services/parametros.service';
 import { ParametrosModule } from 'src/app/models/parametros/parametros.module';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalCntSubCuentasComponent } from '../../modules/cuentas-contables/modals/cnt-sub-cuentas.component';
+import { ModalCntSubCuentasComponent } from '../../modals/cuentasContables/cnt-sub-cuentas.component';
 import { tap } from 'rxjs';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { cajaRequest } from 'src/app/interfaces/producto-request';

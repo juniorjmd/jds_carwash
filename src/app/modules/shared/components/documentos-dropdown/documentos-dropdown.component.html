@@ -1,0 +1,36 @@
+ 
+  <div class="d-flex input-group">  
+                <div class="btn-group dropend">
+
+                    <button type="button"class="btn btn-outline-success ">
+                        <ng-container *ngIf="selectedValue?.campo_info_1 !== undefined  && selectedValue?.campo_info_1 != ''">
+                            <i class="bi bi-gear"></i>  {{selectedValue?.campo_info_1}} ==>
+                        </ng-container>
+                        <ng-container *ngIf="selectedValue?.campo_info_1  == undefined || selectedValue?.campo_info_1 == ''">
+                            <i class="bi bi-receipt"></i> ==>
+                        </ng-container>
+                        <span>{{selectedValue?.orden?.toString()?.padStart(10, '0000000000')}}</span>
+                    </button>
+    <button type="button"class="btn btn-outline-primary "  (click)="triggerExternalFunction()">
+        <i class="bi bi-arrow-repeat" [ngClass]="{'fa-spin': vueltas==true}"></i>
+    </button>
+
+    <button type="button"class="btn btn-outline-primary  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        
+    </button>
+<ul class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+    <li *ngFor="let option of options" (click)="selectOption(option)">  
+        <a class="dropdown-item">
+            <span style="cursor: pointer;">
+        <ng-container *ngIf="option.campo_info_1 !== undefined && option.campo_info_1 != ''">
+           <i class="bi bi-gear"></i> ==> {{option.campo_info_1}} :: 
+        </ng-container>
+        <ng-container *ngIf="option.campo_info_1 === undefined || option?.campo_info_1 == ''">
+             <i class="bi bi-receipt"></i>==>
+        </ng-container>
+        {{option.orden.toString().padStart(10, '0000000000')}}</span>  
+    </a>  
+      </li>
+  </ul>
+</div></div>
+ 

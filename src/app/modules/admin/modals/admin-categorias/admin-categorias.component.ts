@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { CategoriasModel } from 'src/app/models/categorias.model';
 import { ProductoService } from 'src/app/services/producto.service';
-import { ModalCntSubCuentasComponent } from '../../modules/cuentas-contables/modals/cnt-sub-cuentas.component';
+import { ModalCntSubCuentasComponent } from '../cuentasContables/cnt-sub-cuentas.component';
 import { tap } from 'rxjs';
 import { loading } from 'src/app/models/app.loading';
 import { categoriaRequest } from 'src/app/interfaces/producto-request';

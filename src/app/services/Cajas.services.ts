@@ -219,14 +219,14 @@ export class cajasServices {
         return this.http.post(url.action , datos, httpOptions()) ;
     } 
     
-    getCajasUsuario(){
+    getCajasUsuario():Observable<cajaRequest>{
         let datos = {"action": actions.actionSelectPorUsuario ,
                      "_tabla" : vistas.cajas_por_usuario,
                      "_columnaUsuario": 'idUsuario',
                      "_where" : [{columna : 'estadoEsta' , tipocomp : '=' , dato : 1}]
                     };
         console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     } 
     
     getCajasPorUsuario(usuario:number){

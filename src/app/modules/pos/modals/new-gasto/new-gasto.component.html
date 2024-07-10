@@ -1,0 +1,27 @@
+<div class="container mt-5">
+    <h2>Registrar Gasto</h2>
+    <form [formGroup]="gastoForm!" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nombre">Nombre del Gasto</label>
+        <input type="text" id="nombre" class="form-control" formControlName="nombre">
+        <div *ngIf="gastoForm?.get('nombre')?.invalid && (gastoForm?.get('nombre')?.dirty || gastoForm?.get('nombre')?.touched)" class="text-danger">
+          El nombre es requerido.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="valor">Valor del Gasto</label>
+        <input type="text" id="valor" class="form-control" formControlName="valor">
+        <div *ngIf="gastoForm?.get('valor')?.invalid && (gastoForm?.get('valor')?.dirty || gastoForm?.get('valor')?.touched)" class="text-danger">
+          El valor es requerido y debe ser un número positivo.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="descripcion">Descripción del Gasto</label>
+        <textarea id="descripcion" class="form-control" formControlName="descripcion"></textarea>
+        <div *ngIf="gastoForm?.get('descripcion')!.invalid && (gastoForm?.get('descripcion')?.dirty || gastoForm?.get('descripcion')?.touched)" class="text-danger">
+          La descripción es requerida.
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="gastoForm?.invalid">Registrar</button>
+    </form>
+  </div>

@@ -22,6 +22,8 @@ import { MenucardsComponent } from './componentes/menucards/menucards.component'
 import { MenuItemLiComponent } from './componentes/menu-item-li/menu-item-li.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { OnlyNumberDirective } from 'src/app/directives/OnlyNumberDirective';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { DocumentosDropdownComponent } from './components/documentos-dropdown/documentos-dropdown.component';
  
 @NgModule({
   declarations: [LiNavItemComponent ,OnlyNumberDirective,
@@ -38,14 +40,20 @@ import { OnlyNumberDirective } from 'src/app/directives/OnlyNumberDirective';
     UlLinkComponent,
     DropdownFndComponent,
     NavbarComponent,
-    MenuItemLiComponent],
+    MenuItemLiComponent,
+    DropdownComponent,
+    DocumentosDropdownComponent],
   imports: [ NgbModule ,
     NgxBootstrapIconsModule.pick(allIcons)  ,
-    NgxDatatableModule,RouterModule,FormsModule,CommonModule
+    NgxDatatableModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule
 
 
   ],
-  exports:[LiNavItemComponent ,DropdownFndComponent,
+  exports:[LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,
     TabComponent,
     TableComponent ,
     TableTrComponent,

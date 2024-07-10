@@ -19,17 +19,17 @@
                         <th>Nombre</th>
                         <th>Letra</th>
                         <th>Tipo</th>
-                        <th>Descripción</th>
+                        <th>cuenta contable</th>
                         <th>Contador</th>
                         <th>Opción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let categoria of categorias">
+                    <tr *ngFor="let categoria of categorias" title="{{categoria.descripcion}}">
                         <td>{{categoria.nombre}}</td>
                         <td>{{categoria.letra}}</td>
                         <td>{{categoria.tipoDescripcion}}</td>
-                        <td>{{categoria.descripcion}}</td>
+                        <td>{{categoria.NombreCuentaContable}}</td>
                         <td>{{categoria.contador}}</td>
                         <td>
                             <i class="bi bi-pencil-fill boton_activo" (click)="setActualizacategoria(categoria)" title="Editar categoría" aria-label="Editar categoría"></i>

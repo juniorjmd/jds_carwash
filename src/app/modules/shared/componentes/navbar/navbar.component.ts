@@ -5,6 +5,7 @@ import { LoginService } from 'src/app/services/login.services';
 import { DatosInicialesService } from '../../../../services/DatosIniciales.services';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { ModalService } from 'src/app/modal.service';
+import { Location } from '@angular/common';
 import { usuarioService } from 'src/app/services/usuario.services';
 @Component({
   selector: 'app-navbar',
@@ -22,7 +23,7 @@ export class NavbarComponent {
   moduleActive = '';
 
   margin = 0;
-  constructor(
+  constructor(private location: Location,
     private modalService: ModalService,
     private _datosInicialesService: DatosInicialesService,private usuarioService : usuarioService,
     private _ServLogin: LoginService,
@@ -37,6 +38,9 @@ export class NavbarComponent {
       },
       error: (error) => alert(error.error.error),
     });
+  }
+  goBack(): void {
+    this.location.back();
   }
   ngOnInit() {
     this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ; 

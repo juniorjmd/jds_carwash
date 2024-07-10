@@ -1,8 +1,8 @@
-<div class="container-fluid" (click)='irbuscarProducto()' (keyup)='irbuscarProducto()'>
+<div *ngIf="documentoActivo != undefined" class="container-fluid" (click)='irbuscarProducto()' (keyup)='irbuscarProducto()'>
     <div class="row">
         <div class="col-sm-12">
-            <h3 class="centrado">Punto De Venta {{documentoActivo.nombreEsta}}
-                <h4 class="centrado subtitulosEspeciales"> {{documentoActivo.nombreCaja}}</h4>
+            <h3 class="centrado">Punto De Venta {{documentoActivo!.nombreEsta}}
+                <h4 class="centrado subtitulosEspeciales"> {{documentoActivo!.nombreCaja}}</h4>
             </h3>
         </div>
     </div>
@@ -16,22 +16,12 @@
                     <td colspan="2"> Cod producto</td>
                 </tr>
                 <tr>
-                    <td>{{documentoActivo.clienteNombre!}}</td>
-                    <td>{{documentoActivo.vendedorNombre!}}</td>
+                    <td>{{documentoActivo!.clienteNombre!}}</td>
+                    <td>{{documentoActivo!.vendedorNombre!}}</td>
                     <td>
-                        <div class="input-group mb-3">
-                            <select class="o_input form-control" (blur)='irbuscarProductoObl()' (change)='cambiarDocumentoActivo() ;irbuscarProductoObl()' [(ngModel)]="documentoActivo">
-                                <option *ngFor='let doc of documentos' [ngValue]="doc">
-                                    {{doc.orden.toString().padStart(10,'0000000000')}}   
-                                </option>
-
-
-                            </select>
-                            <div class="input-group-append">
-                                <button type="button" (click)='getDocumentos()' class="btn btn-primary">
-                                    <i class="bi bi-arrow-repeat" [ngClass]="{'fa-spin': vueltas===true}"></i>
-                                </button>
-                            </div>
+                        <div class="input-group mb-3">  
+                           <elemt-docDropdown [options] ="documentos" (clickBtnRefress)="getDocumentos()" (selectionChange)="cambiarDocumentoActivo($event);"
+                           [selectedValue]="documentoActivo" ></elemt-docDropdown> 
                         </div>
                     </td>
                     <td>
@@ -57,7 +47,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of documentoActivo.listado">
+                    <tr *ngFor="let item of documentoActivo!.listado">
                         <td><i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-x-circle" style="cursor:pointer" (click)="eliminarLinea(item)"></i></td>
                         <td>{{item.nombreProducto}}</td>
                         <td>{{item.cantidadVendida}}</td>
@@ -80,9 +70,16 @@
                 <button *ngIf="pasaAotraCaja" type="button" title="Mover Documento a otra caja" (click)='moverDocumentoCaja()' class="btn btn-danger" style="background-color: #4d4444; border-color: #4d4444;"><i class="bi bi-arrow-left-right"></i>&nbsp;<i class="bi bi-cash"></i></button>
             </div>
             <div class="btn-group" role="group" style="margin-top: 5px;" aria-label="Basic example">
+
+                <button *ngIf="CrtGasto" type="button" class="btn" (click)="generarGasto()" style="background-color: rgb(197, 174, 69);" 
+                title="Ingresar Nuevo Gasto">
+                <i class="bi bi-file-earmark-plus"></i> </button>
+            
                 <button *ngIf="domicilio" type="button" class="btn" (click)="generarEnvio()" style="background-color: rgb(41, 39, 39);" title="Guardar como Envio"><img src="assets/img/img_menu_interno/deliveri_truck.png" style="width:100%;height:30px" /></button>
                 <button *ngIf="libranza" type="button" class="btn btn-success" title="Libranza"><i class="bi bi-hand-index-thumb"></i> Libranza</button>
                 <button *ngIf="cotiza" type="button" class="btn btn-info" title="Guardar Como cotizacion"><i class="bi bi-hand-index-thumb"></i> Cotizacion</button>
+            
+            
             </div>
             <table class="table">
                 <tr>
@@ -113,13 +110,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{documentoActivo.valorParcial}}</td>
-                        <td>{{documentoActivo.descuento}}</td>
-                        <td>{{documentoActivo.valorIVA}}</td>
+                        <td>{{documentoActivo!.valorParcial}}</td>
+                        <td>{{documentoActivo!.descuento}}</td>
+                        <td>{{documentoActivo!.valorIVA}}</td>
                         <td>0</td>
-                        <td>{{documentoActivo.valorTotal}}</td>
-                        <td>{{documentoActivo.ajusteAlpeso}}</td>
-                        <td>{{documentoActivo.totalFactura}}</td>
+                        <td>{{documentoActivo!.valorTotal}}</td>
+                        <td>{{documentoActivo!.ajusteAlpeso}}</td>
+                        <td>{{documentoActivo!.totalFactura}}</td>
                     </tr>
                 </tbody>
             </table>

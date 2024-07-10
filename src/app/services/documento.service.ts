@@ -6,6 +6,7 @@ import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { loading } from 'src/app/models/app.loading';
 import { cajaModel } from '../models/ventas/cajas.model';
+import { ValuesFormuGasto } from '../interfaces/valuesFormularios';
 
 @Injectable({
   providedIn: 'root'
@@ -158,6 +159,13 @@ export class DocumentoService {
   crearDocumento(): Observable<any> {
     let datos = {"action": actions.actionCrearDocumentos};
     console.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+
+  
+  crearDocumentoGasto(nuevoGasto:ValuesFormuGasto): Observable<any> {
+    let datos = {"action": actions.actionCrearNewGasto ,"_arraydatos" : nuevoGasto};
+    console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
 }

@@ -29,6 +29,8 @@ import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto'
 import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
+import { NewGastoComponent } from '../../modals/new-gasto/new-gasto.component';
+import { PrinterManager } from 'src/app/models/printerManager';
 
 @Component({
   selector: 'app-ventas',
@@ -41,6 +43,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   libranza = false; 
   pasaAotraCaja = false;
   planSepare = false;
+  CrtGasto = false;
   domicilio = false;
   pagos: pagosModel[] = []; 
   indexEfectivo!: number;
@@ -52,7 +55,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   vueltas: boolean = false;
   menusUsuario: RecursoDetalle[] = [];
   documentos: DocumentosModel[] = [];
-  documentoActivo: DocumentosModel = new DocumentosModel();
+  documentoActivo:DocumentosModel | null = null;
   documentoRetorno: DocumentosModel = new DocumentosModel();
   documentoSeleccionadoActivo: DocumentosModel = new DocumentosModel(); 
   sucursal?:vwsucursal;
@@ -73,13 +76,20 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {  
     this.getMediosP();
+    this.getAsyncDocumentos();
     this.dInicialServ.currentSucursal.subscribe({next:(suc)=>{ 
        this.sucursal =  suc;
+       PrinterManager.setSucursal(this.sucursal!);
+
     }})
   }
 
   ngAfterViewInit(): void {
-    this.irbuscarProducto();
+    if(this.documentoActivo!=null){
+      setTimeout(() => {
+        this.irbuscarProducto();
+      }, 5000);
+    }
   }
   getUsuarioLogueado(){
     this._ServLogin.getUsuarioLogeado().subscribe(
@@ -117,6 +127,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
             break;
           case 'domicilio':
             this.domicilio = true;
+            break; 
+          case 'crearGastoPV':
+            this.CrtGasto = true;
             break;
         }
        
@@ -125,9 +138,45 @@ export class VentasComponent implements AfterViewInit, OnInit {
     return menuCard;
   }
 
-  getDocumentos() { 
+  async getAsyncDocumentos() { 
     this.vueltas = true; 
-    this.documentoService.getDocumentosCaja().pipe(
+    await this.documentoService.getDocumentosCaja().pipe(
+      tap((datos: any) => {
+        this.documentos = [];
+        let documentoSeleccionado: DocumentosModel[] ;
+        console.log('getDocumentos', datos.numdata);
+        console.log('getDocumentos_recuest', datos);
+        if (datos.numdata > 0) {
+          this.documentos = datos.data ; 
+          console.log('getDocumentos_recuest', this.documentos);
+          if (datos.numdata === 1) {
+            this.documentoActivo = datos.data[0];
+          } else {
+            documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ; 
+          console.log('documentoSeleccionado' , documentoSeleccionado);
+            this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
+          } 
+          this.asignarMediosDePagoValoresIniciales();  
+        } else {
+          this.crearDocumento();
+        }
+        this.vueltas = false;
+      }),
+      catchError((error: any) => {
+        console.error('error', error );
+        return of(null); // Devuelve un observable vacío en caso de error
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('getDocumentos completo')
+    });
+  }
+
+  
+   getDocumentos() { 
+    this.vueltas = true; 
+     this.documentoService.getDocumentosCaja().pipe(
       tap((datos: any) => {
         this.documentos = [];
         let documentoSeleccionado: DocumentosModel[] ;
@@ -144,9 +193,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
           console.log('documentoSeleccionado' , documentoSeleccionado);
             this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
           }
-          this.asignarMediosDePagoValoresIniciales();
-        
-          
+          this.asignarMediosDePagoValoresIniciales(); 
           
           this.irbuscarProducto();
         } else {
@@ -169,14 +216,14 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
     this.MedioP = this.MedioPInicial.map(x=>x);
     console.log('documentoActivo' , this.documentoActivo); 
-          if (this.documentoActivo.pagos === undefined ){
-            this.documentoActivo.pagos = this.MedioP.map((value: any , index) => {
+          if (this.documentoActivo!.pagos === undefined ){
+            this.documentoActivo!.pagos = this.MedioP.map((value: any , index) => {
               let valorPago = 0;
                if (value.nombre.toUpperCase() == 'EFECTIVO'){
-                 valorPago = this.documentoActivo.totalFactura
+                 valorPago = this.documentoActivo!.totalFactura
                }
                 let auxpago:DocpagosModel = {
-                  idDocumento: this.documentoActivo.orden,
+                  idDocumento: this.documentoActivo!.orden,
                   idMedioDePago: value.id,
                   valorPagado: valorPago,
                   valorTotalAPagar: valorPago,
@@ -187,7 +234,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
               return auxpago;
             })
           } 
-           let docPagos:DocpagosModel[]  = (this.documentoActivo.pagos === undefined )?[...this.documentoActivo.pagos] : [] ; 
+           let docPagos:DocpagosModel[]  = (this.documentoActivo!.pagos === undefined )?[...this.documentoActivo!.pagos] : [] ; 
                       console.log("asignar pagos" , docPagos)
            this.MedioP.forEach(medio => {
            console.log(medio.id);
@@ -198,7 +245,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
             }
           }); 
 
-            this.pagos = this.documentoActivo.pagos!;
+            this.pagos = this.documentoActivo!.pagos!;
             console.log('pagos factura', this.pagos,'medios de pagos ', this.MedioP);
 
   }
@@ -240,7 +287,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     console.log('buscarProducto', this.codigoProducto);
     let dataAuxEnvio: productoDocumento = {
       'idproducto': this.codigoProducto,
-      'documento': this.documentoActivo
+      'documento': this.documentoActivo!
     }; 
     if (this.codigoProducto.trim() !== '' && this.buscarClose) {
       
@@ -249,7 +296,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         next:(value)=>{console.log(value)
           let datoAsignacion:DtoDocumentoProducto = {
             'producto': value?.productos    ,
-             'documento':this.documentoActivo
+             'documento':this.documentoActivo!
            }
            this.newAbrirDialog.open(IngresarProductoVentaComponent, { data:  datoAsignacion })
            .afterClosed()
@@ -324,9 +371,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
   irbuscarProducto() {
     let activeTextarea = document.activeElement!.tagName; 
-    console.log(activeTextarea);
+    console.log('elemento==>',activeTextarea);
     if (activeTextarea.toUpperCase().indexOf('SELECT') < 0) {
-      this.codProdlement.nativeElement.focus();
+       this.codProdlement.nativeElement.focus();
     }
   }
 
@@ -335,7 +382,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 
   asignarPagosAVenta() {
-    if (typeof(this.documentoActivo.listado) === 'undefined' || this.documentoActivo.listado.length === 0) { 
+    if (typeof(this.documentoActivo!.listado) === 'undefined' || this.documentoActivo!.listado.length === 0) { 
       Swal.fire('No posee elementos a facturar', 'Debe incluir minimo un producto o servicio en la factura', 'error');
       return;
     } 
@@ -355,23 +402,23 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 
   facturarDocumento() {
-    this.documentoActivo.pagos = [];
-    if (typeof(this.documentoActivo.pagos) === 'undefined' || this.documentoActivo.pagos.length === 0) {
-      this.documentoActivo.pagos[0] = new DocpagosModel();
-      this.documentoActivo.pagos[0].idDocumento = this.documentoActivo.orden;
+    this.documentoActivo!.pagos = [];
+    if (typeof(this.documentoActivo!.pagos) === 'undefined' || this.documentoActivo!.pagos.length === 0) {
+      this.documentoActivo!.pagos[0] = new DocpagosModel();
+      this.documentoActivo!.pagos[0].idDocumento = this.documentoActivo!.orden;
       try {
-        this.documentoActivo.pagos[0].idMedioDePago = this.pagos[this.indexEfectivo].idMedioDePago;
-        this.documentoActivo.pagos[0].referencia = 'Efectivo';
-        this.documentoActivo.pagos[0].valorPagado = this.pagos[this.indexEfectivo].valorPagado;
+        this.documentoActivo!.pagos[0].idMedioDePago = this.pagos[this.indexEfectivo].idMedioDePago;
+        this.documentoActivo!.pagos[0].referencia = 'Efectivo';
+        this.documentoActivo!.pagos[0].valorPagado = this.pagos[this.indexEfectivo].valorPagado;
       } catch (error: any) {
-        this.documentoActivo.pagos[0].idMedioDePago = 1;
-        this.documentoActivo.pagos[0].referencia = 'Efectivo';
-        this.documentoActivo.pagos[0].valorPagado = this.documentoActivo.valorTotal;
+        this.documentoActivo!.pagos[0].idMedioDePago = 1;
+        this.documentoActivo!.pagos[0].referencia = 'Efectivo';
+        this.documentoActivo!.pagos[0].valorPagado = this.documentoActivo!.valorTotal;
       }
     } else {
-      console.log(this.documentoActivo.pagos);
+      console.log(this.documentoActivo!.pagos);
     }
-    if (this.documentoActivo.listado!.length === 0) {
+    if (this.documentoActivo!.listado!.length === 0) {
       let error = 'Debe ingresar los productos a facturar' ; 
       try {
         Swal.fire(error, '', 'error');
@@ -380,7 +427,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
        }
       return;
     }
-    if (parseInt(this.documentoActivo.totalFactura.toString()) === 0) { 
+    if (parseInt(this.documentoActivo!.totalFactura.toString()) === 0) { 
       try {
         Swal.fire('el total de la factura debe ser mayor a cero', '', 'error');
        } catch (error : any) {
@@ -390,7 +437,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     }
 
     this.loading.show();
-    this.documentoService.cerrarDocumento(this.documentoActivo.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
+    this.documentoService.cerrarDocumento(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
       //console.clear();
       console.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
@@ -420,9 +467,10 @@ export class VentasComponent implements AfterViewInit, OnInit {
     })
   }
 
-  cambiarDocumentoActivo() {
+  cambiarDocumentoActivo(doc:DocumentosModel) {
+    this.documentoActivo = doc;
     this.loading.show();
-    this.documentoService.cambiarDocumento(this.documentoActivo.orden).pipe(
+    this.documentoService.cambiarDocumento(this.documentoActivo!.orden).pipe(
       tap((respuesta: any) => {
         if (respuesta.error !== 'ok') {  
           try {
@@ -458,7 +506,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
   cancelarDocumento() {
     this.loading.show();
-    this.documentoService.cancelarDocumento(this.documentoActivo.orden).pipe(
+    this.documentoService.cancelarDocumento(this.documentoActivo!.orden).pipe(
       tap((respuesta: any) => {
         if (respuesta.error === 'ok') {
           this.getDocumentos(); 
@@ -490,13 +538,13 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 //generar factura domicilio
   generarEnvio() { 
-    if (this.documentoActivo.totalFactura <= 0) { 
+    if (this.documentoActivo!.totalFactura <= 0) { 
       
       Swal.fire('El valor en la factura debe ser mayor a cero', '', 'error');
       
       return;
     }
-    if (this.documentoActivo.cliente === 0) {
+    if (this.documentoActivo!.cliente === 0) {
       this.newAbrirDialog.open(FndClienteComponent, { data: { docActivo : this.documentoActivo , invoker:'ventas' }})
         .afterClosed()
         .pipe(
@@ -516,7 +564,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
   generarDomicilio() {
     this.loading.show();
-    this.documentoService.generarDomicilioDocumento(this.documentoActivo.orden).pipe(
+    this.documentoService.generarDomicilioDocumento(this.documentoActivo!.orden).pipe(
       tap((respuesta: any) => {
         if (respuesta.error === 'ok') {
           this.getDocumentos(); 
@@ -576,7 +624,22 @@ export class VentasComponent implements AfterViewInit, OnInit {
       complete: () => console.log('getMediosP completo')
     });
   }
-
+  generarGasto(){
+    this.newAbrirDialog.open(NewGastoComponent, { data: null })
+    .afterClosed()
+    .pipe(
+      tap((response: {result : boolean , documento :  DocumentosModel } ) => {
+        if (response.result) { 
+             Swal.fire("ok" , "gasto generado con exito" , 'info')
+             this.documentoRetorno = response.documento;
+             this.printer_factura_final()  ;
+        }})
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('busquedaAuxiliarProducto completo')
+    });
+  }
   busquedaAuxiliarProducto() { 
     this.buscarClose = false;
     this.newAbrirDialog.open(BuscarProdDirectoComponent, { data: this.codigoProducto })
@@ -587,7 +650,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
             let datoAsignacion:DtoDocumentoProducto = {
              'producto': response.datoDevolucion    ,
-              'documento':this.documentoActivo
+              'documento':this.documentoActivo!
             }
             this.newAbrirDialog.open(IngresarProductoVentaComponent, { data:  datoAsignacion })
             .afterClosed()
@@ -637,7 +700,10 @@ export class VentasComponent implements AfterViewInit, OnInit {
   async printer_factura_final() {
     let doc = new DocumentosModel();
     doc = this.documentoRetorno;
-    console.log('documento retorno',doc); 
-    if(this.sucursal != undefined)   await doc.printReceipt(this.sucursal);
+
+    console.log('documento retorno',doc,'sucursal ', this.sucursal); 
+    let printM =  new PrinterManager();
+    printM.setDocumento(this.documentoRetorno);
+    printM.printReceipt();
   }
 }

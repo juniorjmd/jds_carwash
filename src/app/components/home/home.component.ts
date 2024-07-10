@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest } from 'src/app/interfaces/producto-request';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { LoginService } from 'src/app/services/login.services';
 import { usuarioService } from 'src/app/services/usuario.services';
 
@@ -13,7 +14,11 @@ import { usuarioService } from 'src/app/services/usuario.services';
 })
 export class HomeComponent implements OnInit {
   usuario?:Usuario
-  constructor(private _ServLogin : LoginService,private cntService:CntContablesService ,   private _Router: Router , private usuarioService:usuarioService) { }
+  constructor(private _ServLogin : LoginService,
+    private inicioService:DatosInicialesService ,
+    private cntService:CntContablesService ,   private _Router: Router , private usuarioService:usuarioService) { }
+
+    
 
   print() {
     const printContent = document.getElementById('print-section');
@@ -26,7 +31,27 @@ export class HomeComponent implements OnInit {
     });
     WindowPrt.print();
   }
-  ngOnInit(): void {this.getUsuarioLogeado(); 
+  ngOnInit(): void {
+    
+    this.inicioService.getDatosIniSucursal().subscribe({next :  (data:any)=>{
+       data;
+      this.inicioService.chageSucursal(data[0])
+      console.log('sucursal',data[0]);
+    } ,
+    error: error => {
+      console.error(error.error.error)
+      alert( error.error.error)
+    }}
+      ); 
+   
+    
+    
+
+    this.getUsuarioLogeado(); 
+
+
+
+    
     this.cntService.getCntCuentasMayores().subscribe({next:(value:cntCuentaMayorRequest)=>{ 
       this.cntService.changeCuentasM(value.data); 
       console.log("getCntCuentasMayores",value.data )

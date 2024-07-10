@@ -9,11 +9,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { DefinirBaseCajaComponent } from '../definir-base-caja/definir-base-caja.component';
 import { ResumenCajaComponent } from '../resumen-caja/resumen-caja.component';
 import { cajasResumenModel } from 'src/app/models/ventas/cajasResumen.model';
+import { cajaRequest } from 'src/app/interfaces/producto-request';
 @Component({
   selector: 'app-abrir-caja',
   templateUrl: './abrir-caja.component.html',
   styleUrls: ['./abrir-caja.component.css']
 })
+
+
+
 export class AbrirCajaComponent implements OnInit {
   cajas : cajaModel[]=[];
   cajaAbierta !: cajaModel;
@@ -125,32 +129,20 @@ export class AbrirCajaComponent implements OnInit {
     this.loading.show()
     this.serviceCaja.getCajasUsuario()
        .subscribe( {next:
-        (datos:any)=>{
+        (datos:cajaRequest)=>{
           let cont = 0;
            console.log('getCajasUsuario',datos);
            this.cajaAbiertaFlag = false;   
       if (datos.numdata > 0 ){ 
-        datos.data!.forEach((dato:caja , index:number )=>{
-          cajaAux =  new cajaModel( dato ); 
-          if (cajaAux.nombreEstado === "Abierta" && cajaAux.idUsuario == cajaAux.usuarioEstadoCaja){
-            this.loading.hide() 
-            this.cajaAbierta = cajaAux;
-            this.cajaAbiertaFlag = true;cont++;
-            return;
-          }else{
-            if (cajaAux.nombreEstado !== "Abierta" ){
-                this.cajas[cont] = cajaAux;
-                  cont++;
-                }
-              
-              
-              }
-               
-        }) 
-        if(cont <= 0 ) {
-          this.flagCajasDisponibles = false;
-        }
-        console.log('cajas resultando',this.cajas);
+
+        cajaAux = datos.data.filter(x=>x.nombreEstado === "Abierta" && x.idUsuario == x.usuarioEstadoCaja)[0] ;
+        if (cajaAux !== undefined){
+          this.loading.hide() 
+          this.cajaAbierta = cajaAux;
+          this.cajaAbiertaFlag = true; 
+        }else{
+          this.cajas = datos.data;
+        }  
       }else{
         this.cajas = [];
         this.flagCajasDisponibles = false;
