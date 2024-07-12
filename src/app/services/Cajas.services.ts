@@ -15,7 +15,7 @@ import { Contador } from '../interfaces/contador';
 import { MediosDePagoModel } from '../models/ventas/medios-de-pago.model';
 import { DocpagosModel } from '../models/ventas/pagos.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { cajaRequest, DocumentoCierreRequest } from '../interfaces/producto-request';
+import { cajaRequest, DocumentoCierreRequest, establecimientosRequest } from '../interfaces/producto-request';
 
 
 @Injectable({
@@ -61,6 +61,15 @@ export class cajasServices {
         return this.http.post(url.action , datos, httpOptions()) ;
     }
 
+    getCuentasContablesEstablecimientoUsuario():Observable<cajaRequest>{
+       
+        let datos = {"action": actions.actionSelectPorUsuario ,
+            "_tabla" : vistas.cajasActivas,
+            "_columnaUsuario": 'usuarioEstadoCaja'  
+           };
+console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
+return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+    }
     cerrarCajaParcial(caja : cajaModel){
         let datos = {"action": actions.actionCerarCajaParcial ,
                      "_parametro" : {"idCaja" : caja.id } 
@@ -78,20 +87,20 @@ export class cajasServices {
         return this.http.post(url.action , datos, httpOptions()) ;
     }
 
-    getEstablecimientos(){
+    getEstablecimientos():Observable<establecimientosRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.establecimiento,
                      "_where" : [{columna : 'estado' , tipocomp : '=' , dato : 1}]
                     };
         console.log('servicios cajas - get establecimiento ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post<establecimientosRequest>(url.action , datos, httpOptions()) ;
     }
-    getAllEstablecimientos(){
+    getAllEstablecimientos():Observable<establecimientosRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.establecimiento
                     };
         console.log('servicios cajas - get establecimiento ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post<establecimientosRequest>(url.action , datos, httpOptions()) ;
     }
     
     getAllTiposEstablecimientos(){
@@ -384,6 +393,9 @@ export class cajasServices {
             "nombreAuxiliar" : newEsta.nombreAuxiliar ,
             "NameBodegaStock" : newEsta.NameBodegaStock ,
             "NameBodegaVirtual" : newEsta.NameBodegaVirtual ,
+            "idCCntCompras" : newEsta.idCCntCompras ,
+            "idCCntCCobrar" : newEsta.idCCntCCobrar ,
+            "idCCntCPagar" : newEsta.idCCntCPagar ,
         "usuario_creacion" : 'USUARIO_LOGUEADO' };
         
             
@@ -393,9 +405,15 @@ export class cajasServices {
            };
         }
         else{
-            arraydatos =  { "id" : newEsta.id  , 
+            arraydatos =  {  
 			"nombre" : newEsta.nombre  ,
             "descripcion" : newEsta.descripcion,
+            "idAuxiliar" : newEsta.idBodegaStock ,
+            "idBodegaStock" : newEsta.idBodegaStock ,
+            "idBodegaVitual" :newEsta.idBodegaStock ,
+            "idCCntCompras" : newEsta.idCCntCompras ,
+            "idCCntCCobrar" : newEsta.idCCntCCobrar ,
+            "idCCntCPagar" : newEsta.idCCntCPagar ,
             "tipo" : newEsta.tipo,
             "estado" : newEsta.estado ,
             "usuario_creacion" : 'USUARIO_LOGUEADO' }

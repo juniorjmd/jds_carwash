@@ -176,6 +176,27 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
      return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
   }
 
+  getCntCuentasByIdGrupo(id:number):Observable<cntSubCuentaRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_scuentas, 
+      "_where" : [{columna : 'cod_grupo' , tipocomp : '=' , dato : id }
+                ,{columna : 'digito' , tipocomp : '>' , dato : 0 }]
+     }; 
+
+     return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
+  }
+
+  getCntCuentasByIdClase(id:number):Observable<cntSubCuentaRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_scuentas, 
+      "_where" : [{columna : 'cod_clase' , tipocomp : '=' , dato : id }
+                ,{columna : 'digito' , tipocomp : '>' , dato : 0 }]
+     }; 
+
+     return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
+  }
+
+
   getCntCuentasByIdCM(id:number):Observable<cntSubCuentaRequest>{
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_cnt_scuentas, 
@@ -185,6 +206,7 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
 
      return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
   }
+
   getCntCuentasByName(id:string):Observable<cntSubCuentaRequest>{
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_cnt_scuentas, 

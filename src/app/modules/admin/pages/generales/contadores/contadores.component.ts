@@ -8,6 +8,7 @@ import { Establecimientos } from 'src/app/interfaces/establecimientos.interface'
 import { caja } from 'src/app/interfaces/caja.interface';
 import { TipoDocumento } from 'src/app/interfaces/tipo-documento';
 import { Contador } from 'src/app/interfaces/contador';
+import { establecimientosRequest } from 'src/app/interfaces/producto-request';
 
 @Component({
   selector: 'app-contadores',
@@ -79,25 +80,18 @@ export class ContadoresComponent implements OnInit {
       getEstablecimiento(){
         this.newContador.establecimiento = 0;
         this.serviceCaja.getEstablecimientos()
-         .subscribe(
-          (datos:any)=>{
-             console.log('datos establecimientos',datos);
+         .subscribe({next:        (datos:establecimientosRequest)=>{
+             console.log('datos establecimientosRequest',datos);
              this.esta = [];   
-        if (datos.numdata > 0 ){ 
-          
-          datos.data!.forEach((dato:Establecimientos , index:number )=>{
-            this.esta[index] =  dato ;
-          }) 
-          console.log(this.esta);
-        }
-    
+            if (datos.numdata > 0 ){ 
+              this.esta =  datos.data??[]; 
+              console.log(this.esta);
+            }
             this.loading.hide()
-          } ,
-          error => {this.loading.hide();
-            
-        this.esta = [];
+          } , error:   error => {this.loading.hide(); 
+         this.esta = [];
             alert( error.error.error);
-          }
+          }}
           );
       }
       setActualizaCaja(cajaActualizar : Contador){

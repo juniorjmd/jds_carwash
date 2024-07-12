@@ -26,11 +26,12 @@ import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd
 import Swal from 'sweetalert2';
 import { IngresarProductoVentaComponent } from '../ingresar-producto-venta/ingresar-producto-venta.component';
 import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto';
-import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
+import { cajaRequest, DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
 import { NewGastoComponent } from '../../modals/new-gasto/new-gasto.component';
-import { PrinterManager } from 'src/app/models/printerManager';
+import { PrinterManager } from 'src/app/models/printerManager'; 
+import { cajaModel } from 'src/app/models/ventas/cajas.model';
 
 @Component({
   selector: 'app-ventas',
@@ -60,18 +61,19 @@ export class VentasComponent implements AfterViewInit, OnInit {
   documentoSeleccionadoActivo: DocumentosModel = new DocumentosModel(); 
   sucursal?:vwsucursal;
   @ViewChild('codProd') codProdlement!: ElementRef;
+  continuar = false;
 
   constructor(
-    public loading: loading,
+    public loading: loading, 
     private serviceCaja: cajasServices,
     private newAbrirDialog: MatDialog,
     private documentoService: DocumentoService,
     private productoService: ProductoService,
     private _ServLogin: LoginService, 
     private _Router: Router, private dInicialServ: DatosInicialesService
-  ) {  
-    console.clear();
-    this.getUsuarioLogueado();
+  ) {    
+          this.getUsuarioLogueado();
+      
   }
 
   ngOnInit(): void {  
@@ -81,6 +83,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
        this.sucursal =  suc;
        PrinterManager.setSucursal(this.sucursal!);
 
+    }})
+    this.dInicialServ.continueVenta.subscribe({next:(value)=>{
+      this.continuar = value;
     }})
   }
 

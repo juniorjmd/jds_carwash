@@ -27,12 +27,14 @@
                         <td>{{bodega.nombre}}</td>
                         <td>{{bodega.descripcion.trim()}}</td>
                         <td>{{bodega.nombre_estado}}</td>
+                        
                         <td title="Editar bodega">
-                            <i class="fas fa-pencil-alt boton_activo" (click)="setActualizacategoria(bodega)" aria-label="Editar"></i>
+                            <i class="bi bi-pencil-fill boton_activo" (click)="setActualizacategoria(bodega)" aria-label="Editar"></i>
                         </td>
                         <td title="Asignar características de bodega">
-                            <i class="fas fa-address-card boton_activo" (click)="setAgregarPerfil(bodega)" aria-label="Asignar características"></i>
+                            <i class="bi bi-card-text boton_activo" (click)="setAgregarPerfil(bodega)" aria-label="Asignar características"></i>
                         </td>
+
                     </tr>
                 </tbody>
             </table>

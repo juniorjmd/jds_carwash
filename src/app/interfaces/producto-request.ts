@@ -9,6 +9,7 @@ import { ProductoModule } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
 import { cajaModel } from "../models/ventas/cajas.model";
 import { DocumentosModel } from "../models/ventas/documento.model";
+import { establecimientoModel } from "../models/ventas/establecimientos.model";
 
 export interface ProductoRequest { 
   data: ProductoModule[];
@@ -80,6 +81,12 @@ export interface cntTransaccionesRequest {
 
 export interface categoriaRequest { 
   data: CategoriasModel[] ;
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface establecimientosRequest { 
+  data: establecimientoModel[] ;
   query: string;
   numdata: number;
   error: string;

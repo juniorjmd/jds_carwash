@@ -35,7 +35,9 @@ export class cajaModel {
   idBodegaVitual?: number;
   NameBodegaStock?: string;
   NameBodegaVirtual?: string;
-
+  idCCntCCobrar: number = 0;
+  idCCntCompras: number = 0;
+  idCCntCPagar: number = 0;
   constructor(cargaCaja: caja | undefined) {
     this.estadoCaja = 0;
     this.estadoGeneral = 0;

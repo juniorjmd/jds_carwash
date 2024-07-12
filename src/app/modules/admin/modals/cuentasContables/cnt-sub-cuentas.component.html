@@ -1,4 +1,23 @@
 <!-- subcuenta.component.html -->
+ <div class="container-fluid p-4" style="background-color: aliceblue !important;">
+<div class="row ">
+  <div class="col">
+    <div class="form-group">
+    <label for="codCuenta">Código de Cuenta</label>
+    <select id="codCuenta" (change)="filtrarSubCuentasPorClase()" class="form-control"   name="cod_cuenta"  [(ngModel)]="codClase"    >
+      <option *ngFor="let cuenta of clases" [value]="cuenta.cod_clase">{{ cuenta.nombre_clase }}</option>
+    </select>
+  </div>
+</div>
+<div class="col">
+  <div class="form-group">
+  <label for="codCuenta">Código de Cuenta</label>
+  <select id="codCuenta" (change)="filtrarSubCuentasPorGrupo()" class="form-control" [(ngModel)]="codGrupo" name="cod_cuenta"     >
+    <option *ngFor="let cuenta of grupos" [value]="cuenta.cod_grupo">{{ cuenta.nombre_grupo }}</option>
+  </select>
+</div>
+</div>
+</div>
 <form #subcuentaForm="ngForm">
   <div class="row">
     <div class="col">
@@ -66,4 +85,4 @@
       </div>
     </div>
   </div>
-  
+</div>

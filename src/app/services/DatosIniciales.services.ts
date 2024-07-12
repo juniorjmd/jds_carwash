@@ -15,13 +15,19 @@ export class DatosInicialesService {
 
 
     private sucursalSource = new BehaviorSubject<any>(null);
-    currentSucursal = this.sucursalSource.asObservable();
+    currentSucursal = this.sucursalSource.asObservable(); 
+    private continue = new BehaviorSubject<boolean>(false);
+    continueVenta = this.continue.asObservable();
 
     constructor(private http: HttpClient){}
 
     chageSucursal(sucursal:vwsucursal){
         this.sucursalSource.next(sucursal);
     }
+    chageContinueVenta(val:boolean){
+        this.continue.next(val);
+    }
+
     getDatosIniSucursal(){
        
         let datos = {"action": actions.datosInicialesSucursal};

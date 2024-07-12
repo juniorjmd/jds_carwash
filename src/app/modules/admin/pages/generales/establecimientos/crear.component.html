@@ -33,12 +33,49 @@
         </div>
         <div class="col-sm-1">Locación Fisica(bodega)</div>
         <div class="col-sm-3">
-            <select class="o_input" (change)="asignarLocation(  aLocationFisico)" [(ngModel)]="aLocationFisico">
-                <option [ngValue]="objIni">{{objIni.nombre}}</option>
-                <option *ngFor="let item of locationStore" [ngValue]="item">{{item.nombre}}</option> 
+            <select class="o_input"   [(ngModel)]="newEsta.idBodegaStock"> 
+                <option *ngFor="let item of locationStore" [ngValue]="item.id">{{item.nombre}}</option> 
             </select>
         </div>
     </div>
+    <hr> 
+ <div class="row">
+
+    <div class="col-sm-2">&nbsp;</div>
+
+    <div class="col-sm-3" style="margin-right: 15px;">
+        <label for="establecimientoCaja">Cuenta para inventario</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta inventario" [(ngModel)]="newEsta.nombreCCntCompras" name="nombreCCntCompras"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("compras")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div>
+    <div class="col-sm-3" style="margin-right: 15px;">
+        <label for="establecimientoCaja">Cuenta Para obligaciones</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta obligaciones" [(ngModel)]="newEsta.nombreCCntCPagar" name="nombreCCntCPagar"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("cuentasPorPagar")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div>
+    <div class="col-sm-3" style="margin-right: 15px;">
+        <label for="establecimientoCaja">Cuenta Para cartera</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta cartera" [(ngModel)]="newEsta.nombreCCntCCobrar" name="nombreCCntCCobrar"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("cuentasPorCobrar")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div>
+
+ </div>
+    
     <hr> 
     <div class="row">
         <div class="col-sm-2">&nbsp;</div>

@@ -9,6 +9,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { TiposEstablComponent } from './tipos-establ.component'; 
 import Swal from 'sweetalert2';
 import { BodegasModule } from 'src/app/models/bodegas/bodegas.module'; 
+import { ModalCntSubCuentasComponent } from '../../../modals/cuentasContables/cnt-sub-cuentas.component';
+import { responseSubC } from 'src/app/interfaces/odoo-prd';
+import { tap } from 'rxjs';
+import { establecimientosRequest } from 'src/app/interfaces/producto-request';
 
 @Component({
   selector: 'app-crear',
@@ -28,7 +32,8 @@ export class CrearComponent implements OnInit {
   locationPOS:BodegasModule[]  = [];
   locationVirtual:BodegasModule[]  = [];
   newEsta : establecimientoModel = new establecimientoModel(undefined); 
-  constructor( private serviceCaja : cajasServices ,  
+  constructor( private serviceCaja : cajasServices , 
+    private newAbrirDialog: MatDialog, 
     private newEstablecimientoDialog : MatDialog ,   
     private loading : loading ) {
       this.Cancelar();
@@ -37,7 +42,35 @@ export class CrearComponent implements OnInit {
      this.getLocacionPrincipales();
     
   }
-
+  buscarCuentasContables(nombreBusqueda:string){
+    this.newAbrirDialog.open(ModalCntSubCuentasComponent, { data:  null })
+    .afterClosed() 
+    .pipe(
+      tap((response: responseSubC) => {
+        console.log('buscarCuentasContablesGastos',response);
+        if (response.confirmado && response.datoDevolucion !== undefined ) {  
+          switch(nombreBusqueda){
+            case 'compras' : 
+            this.newEsta.nombreCCntCompras = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idCCntCompras = response.datoDevolucion.id_scuenta!; 
+            break
+            case 'cuentasPorPagar' :  
+            this.newEsta.nombreCCntCPagar = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idCCntCPagar = response.datoDevolucion.id_scuenta!; 
+            break
+            case 'cuentasPorCobrar' : 
+            this.newEsta.nombreCCntCCobrar = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idCCntCCobrar = response.datoDevolucion.id_scuenta!; 
+            break
+          }
+        }  
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCuentasContables completo')
+    }); 
+  }
   asignarLocation( b:BodegasModule){
     console.log("asignar datos al elemento",b) 
       this.newEsta.idAuxiliar =   (typeof ( b.id! ) === 'number'  )? b.id! : parseInt(b.id!) ;
@@ -90,15 +123,10 @@ this.locationStore = [this.auxBodega];
   }
   getEstablecimiento(){ 
     this.serviceCaja.getAllEstablecimientos()
-     .subscribe({next:   (datos:any)=>{
-         console.log(datos);
-         this.establecimientos = [];   
+     .subscribe({next:   (datos:establecimientosRequest )=>{
+         console.log(datos);   
     if (datos.numdata > 0 ){ 
-      
-      datos.data!.forEach((dato:Establecimientos , index:number )=>{
-        this.establecimientos[index] = new establecimientoModel( dato );
-      }) 
-    //  this.aLocationFisico  = {'id':0};
+      this.establecimientos = datos.data??[];
       console.log(this.establecimientos);
       this.newEsta.tipo = 0;
       this.newEsta.estado = 0;

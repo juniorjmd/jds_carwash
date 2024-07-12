@@ -20,7 +20,13 @@ export class establecimientoModel{
     NameBodegaVirtual?:string ;
     estockExistencia?:number ;
     bodegaInventarioPgm?:number;
-    NameBodegaExistencia?:string ;
+    NameBodegaExistencia?:string ;  
+    nombreCCntCompras:string = ''; 
+    nombreCCntCCobrar:string  = '';  
+    nombreCCntCPagar:string  = '';
+    idCCntCompras:number = 0;
+    idCCntCCobrar:number = 0;
+    idCCntCPagar:number = 0;
     constructor(cargaEsta : Establecimientos|undefined){
         this.estado = 0;
         this.tipo = 0;

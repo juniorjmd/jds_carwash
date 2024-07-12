@@ -19,4 +19,11 @@ idBodegaVitual?:number ;
     estockExistencia?:number ;
     NameBodegaExistencia?:string ;
     bodegaInventarioPgm?:number;
+     
+    nombreCCntCompras?:string  ; 
+    nombreCCntCCobrar?:string  ;  
+    nombreCCntCPagar?:string  ;
+    idCCntCompras?:number  ;
+    idCCntCCobrar?:number  ;
+    idCCntCPagar?:number  ;
 }

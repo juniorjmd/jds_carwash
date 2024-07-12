@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest } from 'src/app/interfaces/producto-request';
+import { cajaRequest, cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest } from 'src/app/interfaces/producto-request';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
+import { cajasServices } from 'src/app/services/Cajas.services';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { LoginService } from 'src/app/services/login.services';
@@ -16,7 +17,9 @@ export class HomeComponent implements OnInit {
   usuario?:Usuario
   constructor(private _ServLogin : LoginService,
     private inicioService:DatosInicialesService ,
-    private cntService:CntContablesService ,   private _Router: Router , private usuarioService:usuarioService) { }
+    private cntService:CntContablesService ,  
+    private serviceCaja:cajasServices ,  
+    private _Router: Router , private usuarioService:usuarioService) { }
 
     
 
@@ -44,7 +47,17 @@ export class HomeComponent implements OnInit {
     }}
       ); 
    
-    
+      this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
+        console.log('getCuentasContablesEstablecimientoUsuario' , value)
+        if(value.numdata == 0 || value.data[0] == undefined
+          || value.data[0]!.idCCntCCobrar == 0
+          || value.data[0]!.idCCntCPagar == 0
+          || value.data[0]!.idCCntCompras == 0 ) {
+            this.inicioService.chageContinueVenta(false) ;
+          }else{
+            this.inicioService.chageContinueVenta(true) ;
+          }
+      }})
     
 
     this.getUsuarioLogeado(); 

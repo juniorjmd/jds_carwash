@@ -20,15 +20,9 @@ export class BodegasComponent implements OnInit {
     this.loading.show()
     this.productoService.getbodegas().subscribe(
       {next:   (datos:any)=>{
-         console.log(datos);
-         /* @Inject(String) public nombre:string,
-  @Inject(Number) public estado:number,
-  
-  @Inject(String) public descripcion?:string,
-  @Inject(Number) public id?:number,
-  @Inject(String) public nombre_estado?:string*/
+         console.log('getBodegas',datos); 
     if (datos.numdata > 0 ){
-      this.bodegas =  datos.data! ;
+      this.bodegas =  datos.data!.map((x:any)=>x.obj)  ;
       console.log('bodegas',this.bodegas);
     }else{
       this.bodegas = [];
