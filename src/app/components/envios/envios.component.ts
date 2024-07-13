@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DocpagosModel } from 'src/app/models/ventas/pagos.model';
 import { Documento, DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
-import { PagosVentaComponent } from '../../modules/pos/pages/pagos-venta/pagos-venta.component';
+import { PagosVentaComponent } from '../../modules/pos/modals/pagos-venta/pagos-venta.component';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { select } from 'src/app/interfaces/generales.interface';
 import { ConectorPlugin } from 'src/app/models/app.printer.con';

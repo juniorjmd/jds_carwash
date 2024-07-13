@@ -1,13 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { select } from 'src/app/interfaces/generales.interface';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
-import { loading } from 'src/app/models/app.loading';
-import { cajaModel } from 'src/app/models/ventas/cajas.model';
+import { loading } from 'src/app/models/app.loading'; 
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocpagosModel, pagosModel } from 'src/app/models/ventas/pagos.model';
-import { cajasServices } from 'src/app/services/Cajas.services';
-import { DocumentoService } from 'src/app/services/documento.service';
+import { cajasServices } from 'src/app/services/Cajas.services'; 
 
 @Component({
   selector: 'app-pagos-venta',

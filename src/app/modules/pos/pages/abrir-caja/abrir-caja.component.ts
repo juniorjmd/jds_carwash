@@ -6,8 +6,8 @@ import { caja } from 'src/app/interfaces/caja.interface';
 import { cajaResumen } from 'src/app/interfaces/cajaResumen.interface';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DefinirBaseCajaComponent } from '../definir-base-caja/definir-base-caja.component';
-import { ResumenCajaComponent } from '../resumen-caja/resumen-caja.component';
+import { DefinirBaseCajaComponent } from '../../modals/definir-base-caja/definir-base-caja.component';
+import { ResumenCajaComponent } from '../../modals/resumen-caja/resumen-caja.component';
 import { cajasResumenModel } from 'src/app/models/ventas/cajasResumen.model';
 import { cajaRequest } from 'src/app/interfaces/producto-request';
 @Component({

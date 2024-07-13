@@ -10,7 +10,7 @@ import { PrdExistenciasModule } from 'src/app/models/prd-existencias/prd-existen
 import { BodegasModule } from 'src/app/models/bodegas/bodegas.module';
 import { AuxIngresoInventarioModule } from 'src/app/models/aux-ingreso-inventario/aux-ingreso-inventario.module';
 import { MatDialog } from '@angular/material/dialog';
-import { BuscarProdDirectoComponent } from 'src/app/modules/pos/pages/buscar-prod-directo/buscar-prod-directo.component';
+import { BuscarProdDirectoComponent } from 'src/app/modules/pos/modals/buscar-prod-directo/buscar-prod-directo.component';
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import Swal from 'sweetalert2';
 @Component({
