@@ -85,7 +85,7 @@ export class ContadoresComponent implements OnInit {
              this.esta = [];   
             if (datos.numdata > 0 ){ 
               this.esta =  datos.data??[]; 
-              console.log(this.esta);
+              console.log('establecimientos',this.esta);
             }
             this.loading.hide()
           } , error:   error => {this.loading.hide(); 

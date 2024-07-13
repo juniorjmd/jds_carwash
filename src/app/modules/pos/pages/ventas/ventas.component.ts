@@ -1,20 +1,16 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { loading } from 'src/app/models/app.loading';
-import { select } from 'src/app/interfaces/generales.interface';
+import { loading } from 'src/app/models/app.loading'; 
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocumentoService } from 'src/app/services/documento.service';
-import { MatDialog } from '@angular/material/dialog';
-import { OdooPrd, responsePrd } from 'src/app/interfaces/odoo-prd';
+import { MatDialog } from '@angular/material/dialog'; 
 import { MoverDocumentosComponent } from '../../modals/mover-documentos/mover-documentos.component'; 
 import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { ProductoService } from 'src/app/services/producto.service';
-import { errorOdoo } from 'src/app/interfaces/odoo-prd';
+import { errorOdoo, responsePrd } from 'src/app/interfaces/odoo-prd';
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { DocpagosModel, pagosModel } from 'src/app/models/ventas/pagos.model';
-import { PagosVentaComponent } from '../../modals/pagos-venta/pagos-venta.component';
-import { printer, url } from 'src/app/models/app.db.url';
-import { ConectorPlugin } from 'src/app/models/app.printer.con';
+import { PagosVentaComponent } from '../../modals/pagos-venta/pagos-venta.component'; 
 import { BuscarProdDirectoComponent } from '../../modals/buscar-prod-directo/buscar-prod-directo.component'; 
 import { productoDocumento } from 'src/app/interfaces/clientes-odoo';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
@@ -30,8 +26,8 @@ import { cajaRequest, DocumentoCierreRequest } from 'src/app/interfaces/producto
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
 import { NewGastoComponent } from '../../modals/new-gasto/new-gasto.component';
-import { PrinterManager } from 'src/app/models/printerManager'; 
-import { cajaModel } from 'src/app/models/ventas/cajas.model';
+import { PrinterManager } from 'src/app/models/printerManager';  
+import { GenerarCntPorCobrarComponent } from '../../modals/generar-cnt-por-cobrar/generar-cnt-por-cobrar.component';
 
 @Component({
   selector: 'app-ventas',
@@ -70,7 +66,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     private documentoService: DocumentoService,
     private productoService: ProductoService,
     private _ServLogin: LoginService, 
-    private _Router: Router, private dInicialServ: DatosInicialesService
+    private dInicialServ: DatosInicialesService
   ) {    
           this.getUsuarioLogueado();
       
@@ -109,8 +105,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
   getMenuImage(usuario: Usuario) {
     let menuCard: RecursoDetalle[] = [];
-    let menu = usuario.permisos;
-    let margin = 0;
+    let menu = usuario.permisos; 
     console.log( 'permisos usuario' , usuario, menu);
 
     let menuDetalleBtn =  usuario.permisos.filter(x=> x.nombre_recurso === "Punto de Venta" )
@@ -149,8 +144,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       tap((datos: any) => {
         this.documentos = [];
         let documentoSeleccionado: DocumentosModel[] ;
-        console.log('getDocumentos', datos.numdata);
-        console.log('getDocumentos_recuest', datos);
+        console.log('getDocumentos', datos.numdata); 
         if (datos.numdata > 0) {
           this.documentos = datos.data ; 
           console.log('getDocumentos_recuest', this.documentos);
@@ -406,6 +400,34 @@ export class VentasComponent implements AfterViewInit, OnInit {
       });
   }
 
+  asignarPagosACuentaPorCobrar() {
+    if (typeof(this.documentoActivo!.listado) === 'undefined' || (
+       this.documentoActivo!.listado !== undefined &&
+      this.documentoActivo!.listado.length === 0) ){ 
+      Swal.fire('No posee elementos a facturar', 'Debe incluir minimo un producto o servicio en la factura', 'error');
+      return;
+    } 
+    if (typeof(this.documentoActivo!.cliente) === 'undefined' || this.documentoActivo!.clienteNombre == "CLIENTE GENERICO") { 
+      Swal.fire('error en cliente', 'Debe incluir incluir al cliente', 'error');
+      return;
+    } 
+    this.newAbrirDialog.open(GenerarCntPorCobrarComponent, { data: this.documentoActivo })
+      .afterClosed()
+      .pipe(
+        tap((confirmado:  {result : boolean , documento :  DocumentosModel }) => {
+          if (confirmado.result) { 
+          this.documentoRetorno = Object.assign(new DocumentosModel(), confirmado.documento); 
+          console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+          this.printer_factura_final();
+          this.crearDocumento();
+          }
+        })
+      ).subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () => console.log('asignarPagosAVenta completo')
+      });
+  }
   facturarDocumento() {
     this.documentoActivo!.pagos = [];
     if (typeof(this.documentoActivo!.pagos) === 'undefined' || this.documentoActivo!.pagos.length === 0) {

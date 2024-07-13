@@ -99,7 +99,8 @@ if(this.existencia != undefined  ){
       this.enviarCnt(10);
     }else{
     this.cantidadPrd += cnt ;
-    if (this.existencia?.cant_actual ?? 0  < this.cantidadPrd){
+   // console.log('existencia actual',this.existencia, (this.existencia?.cant_actual!   < this.cantidadPrd)); 
+    if (this.existencia?.cant_actual!    < this.cantidadPrd){
        this.cantidadPrd =  this.existencia?.cant_actual ?? 0 ;
     }}
   }

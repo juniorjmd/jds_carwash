@@ -43,6 +43,7 @@
  const actionCategoriasdoo = 'BUSCAR_ODOO_CATEGORIAS';
  const actionCategoriasPrddoo = 'BUSCAR_ODOO_CATEGORIAS_PRD'
  const actionAsignarPagosDoc = 'ASIGNAR_PAGOS_DOCUMENTOS';
+ const actionAsignarPagosDocCredito = 'ASIGNAR_PAGOS_DOCUMENTOS_CREDITO';
 
 
 
@@ -89,6 +90,7 @@
     'actionCerarDocumentos':actionCerarDocumentos,
     'datosInicialesSucursal' : datosInicialesSucursal,
     'actionAsignarDocumentosPagos':actionAsignarPagosDoc , 
+    'actionAsignarNewCredito':actionAsignarPagosDocCredito , 
     'actionBuscarMarcas' : actionBuscarMarcas,
     'actionAsignarCajas':actionAsignarCajas,
     'actionDelete' :actionDelete ,

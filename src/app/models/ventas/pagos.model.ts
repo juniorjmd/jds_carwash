@@ -10,8 +10,8 @@ export class pagosModel{
     idDocumento !:number ; 
     nombreMedio ?:string ; 
     idMedioDePago !:number ; 
-    valorPagado !:number ; 
-    valorTotalAPagar !:number ; 
-    valorRecibido !:number ; 
-    vueltos !:number ; 
+    valorPagado :number = 0; 
+    valorTotalAPagar :number = 0 ; 
+    valorRecibido :number = 0 ; 
+    vueltos :number  = 0; 
     referencia!:string }

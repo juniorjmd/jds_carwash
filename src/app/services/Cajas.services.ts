@@ -186,7 +186,8 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     getMediosCajaActiva(){
         let datos = {"action": actions.actionSelectPorUsuario ,
                      "_tabla" : vistas.mediosPorCajaActiva,
-                     "_columnaUsuario": 'usuarioCaja'
+                     "_columnaUsuario": 'usuarioCaja' , 
+                     "_orderBy" : [['nombre', 'DESC']]
                     };
         console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
@@ -253,6 +254,14 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
        };
        console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())
         return this.http.post(this.urlVentas  , datos, httpOptions()) ;
+    }
+    setPagoDocumentoCredito(idDocumento:number , pagos:DocpagosModel[] ):Observable<DocumentoCierreRequest>{
+        let datos = {"action": actions.actionAsignarNewCredito ,
+        "_ordenDocumento" : idDocumento, 
+         "_pagos" : pagos
+       };
+       console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())
+        return this.http.post<DocumentoCierreRequest>(this.urlVentas  , datos, httpOptions()) ;
     }
     setCajasAUsuarios(idUsuario:number , cajas:number[] ){
         let datos = {"action": actions.actionAsignarCajas ,

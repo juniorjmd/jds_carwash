@@ -8,8 +8,8 @@
     <div class="row">
         <div class="col-sm-2">&nbsp;</div>
         <div class="col-sm-1">Codigo :</div>
-        <div class="col-sm-1">
-            <input type="text" class="o_input" maxlength="4" [(ngModel)]="newContador.codContador" placeholder="Nombre de la caja...">
+        <div class="col-sm-2">
+            <input type="text" class="o_input" maxlength="4" [(ngModel)]="newContador.codContador" placeholder="Prefijo...">
         </div>
         <div class="col-sm-2" style="margin-right: 15px;text-align: end;">Tipo Contador :</div>
         <div class="col-sm-2">
@@ -24,7 +24,7 @@
         <div class="col-sm-2" style="margin-right: 15px; text-align: end;">Establecimiento :</div>
         <div class="col-sm-2">
             <select class=" o_input " [(ngModel)]="newContador.establecimiento">
-                <option value=0>Establecimiento</option>
+                <option [ngValue]=0>Establecimiento</option>
                 <option *ngFor="let item of esta" [ngValue]="item.id">{{item.nombre}}</option> 
             </select>
         </div>
@@ -79,7 +79,7 @@
     <br>
     <div class="row" style="
     overflow: auto;
-    height: 220px;">
+    height: 350px;">
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <table class="table">
@@ -90,28 +90,20 @@
 
                     <th>tipo</th>
                     <th>contador</th>
-                    <th>conteo general</th>
-                    <th>estado</th>
-                    <th>desde</th>
-                    <th>hasta</th>
+                    <th>conteo general</th>  
                     <th>resolucion</th>
                     <th>Inicio</th>
-                    <th>Fin</th>
-                    <th>usuario</th>
+                    <th>Fin</th> 
                 </tr>
                 <tr *ngFor="let Contador of contadores">
                     <td>{{Contador.codContador}}</td>
                     <td>{{Contador.nombreEstablecimiento}}</td>
                     <td>{{Contador.nombreTipo}}</td>
                     <td>{{Contador.contador }}</td>
-                    <td>{{Contador.contador_real_establecimiento }}</td>
-                    <td>{{Contador.nombre_estado}}</td>
-                    <td>{{Contador.desde}}</td>
-                    <td>{{Contador.hasta}}</td>
+                    <td>{{Contador.contador_real_establecimiento }}</td> 
                     <td>{{Contador.resolucion}}</td>
                     <td>{{Contador.fechaInicioResolucion}}</td>
-                    <td>{{Contador.fechaFinResolucion}}</td>
-                    <td>{{Contador.nombreUsuario}}</td>
+                    <td>{{Contador.fechaFinResolucion}}</td> 
 
 
                 </tr>
