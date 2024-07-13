@@ -6,6 +6,10 @@ import { cajasServices } from 'src/app/services/Cajas.services';
 import { loading } from 'src/app/models/app.loading';
 import { select } from 'src/app/interfaces/generales.interface';
 import { MediosDePagoModel } from 'src/app/models/ventas/medios-de-pago.model';
+import { responseSubC } from 'src/app/interfaces/odoo-prd';
+import { ModalCntSubCuentasComponent } from '../../../modals/cuentasContables/cnt-sub-cuentas.component';
+import { MatDialog } from '@angular/material/dialog';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-medios-de-pago',
@@ -19,11 +23,12 @@ export class MediosDePagoComponent implements OnInit {
     descripcion: '',
     estado: 0,
     cuentaContable: 0,
-    establecimiento: 0
+    establecimiento: 0,
+    nombreCuentaContable:''
   };
 MedioP:MediosDePago[] = [] ;
   esta:Establecimientos[] =[] ;
-  constructor(private serviceCaja : cajasServices ,    
+  constructor(private serviceCaja : cajasServices , private  newAbrirDialog : MatDialog,  
     private loading : loading ) { 
       this.Cancelar();
      this.getEstablecimiento(); 
@@ -31,6 +36,24 @@ MedioP:MediosDePago[] = [] ;
     }
 
   ngOnInit(): void {
+  }
+
+  buscarCuentasContables(){
+    this.newAbrirDialog.open(ModalCntSubCuentasComponent, { data:  null })
+    .afterClosed() 
+    .pipe(
+      tap((response: responseSubC) => {
+        console.log('buscarCuentasContablesGastos',response);
+        if (response.confirmado && response.datoDevolucion !== undefined ) {   
+            this.newMedioP.nombreCuentaContable = response.datoDevolucion.nombre_scuenta!;
+            this.newMedioP.cuentaContable = response.datoDevolucion.id_scuenta!;  
+        }  
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCuentasContables completo')
+    }); 
   }
    
 

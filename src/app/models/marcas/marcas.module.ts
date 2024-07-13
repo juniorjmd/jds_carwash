@@ -11,7 +11,7 @@ import { ModelBase } from '../ModelBase';
   ]
 })
 
-export class MarcasModule extends ModelBase { 
+export class MarcasModel extends ModelBase { 
    nombre!:string; 
    descripcion?:string ;  
 }

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { cajaRequest, cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest } from 'src/app/interfaces/producto-request';
+import { cajaRequest, categoriaRequest, cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest, marcaRequest } from 'src/app/interfaces/producto-request';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { LoginService } from 'src/app/services/login.services';
+import { ProductoService } from 'src/app/services/producto.service';
 import { usuarioService } from 'src/app/services/usuario.services';
 
 @Component({
@@ -15,11 +16,14 @@ import { usuarioService } from 'src/app/services/usuario.services';
 })
 export class HomeComponent implements OnInit {
   usuario?:Usuario
-  constructor(private _ServLogin : LoginService,
+  constructor(
+    private _servProducto:ProductoService,
+    private _ServLogin : LoginService,
     private inicioService:DatosInicialesService ,
     private cntService:CntContablesService ,  
-    private serviceCaja:cajasServices ,  
-    private _Router: Router , private usuarioService:usuarioService) { }
+    private serviceCaja:cajasServices , 
+    private _Router: Router , private usuarioService:usuarioService,  
+  ) { }
 
     
 
@@ -52,7 +56,14 @@ export class HomeComponent implements OnInit {
         if(value.numdata == 0 || value.data[0] == undefined
           || value.data[0]!.idCCntCCobrar == 0
           || value.data[0]!.idCCntCPagar == 0
-          || value.data[0]!.idCCntCompras == 0 ) {
+          || value.data[0]!.idCCntCompras == 0   
+          || value.data[0]!.idCCntIvaCompra == 0 
+          || value.data[0]!.idCCnttIvaVenta == 0  
+          || value.data[0]!.idCCntCostoVenta == 0 
+          || value.data[0]!.idCCntVenta == 0  
+          || value.data[0]!.cuentaContableGastos == undefined  || value.data[0]!.cuentaContableGastos! == 0  
+          || value.data[0]!.cuentaContableEfectivo == undefined  || value.data[0]!.cuentaContableEfectivo! == 0   
+        ) {
             this.inicioService.chageContinueVenta(false) ;
           }else{
             this.inicioService.chageContinueVenta(true) ;
@@ -64,6 +75,13 @@ export class HomeComponent implements OnInit {
 
 
 
+    this._servProducto.getCategorias().subscribe({next:(datos:categoriaRequest)=>{ 
+      this._servProducto.asignarCategorias(datos.data.map((x:any)=>x.obj) ) 
+   }, error : (e)=>console.error(e.error.error)})
+
+    this._servProducto.getMarcas().subscribe({next:(datos:marcaRequest)=>{ 
+      this._servProducto.asignarMarcas(datos.data ) 
+   }, error : (e)=>console.error(e.error.error)})
     
     this.cntService.getCntCuentasMayores().subscribe({next:(value:cntCuentaMayorRequest)=>{ 
       this.cntService.changeCuentasM(value.data); 

@@ -53,9 +53,7 @@ export class vwTransaccionesModel {
   nro_cuenta?:number;
   nombre_cuenta?: string; 
   nro_subcuenta?:number;
-   nombre_subcuenta?: string;
-   varlor_debito?:number;
-   varlor_credito?:number;  
+   nombre_subcuenta?: string; 
     cod_comprobante?:number;  
     cod_clase?:number; 
      nombre_clase?: string; 

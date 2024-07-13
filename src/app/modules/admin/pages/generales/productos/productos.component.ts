@@ -5,7 +5,7 @@ import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { loading } from 'src/app/models/app.loading';
 import { ProductoService } from 'src/app/services/producto.service'; 
 import { ProductoModule } from 'src/app/models/producto/producto.module';
-import { MarcasModule } from 'src/app/models/marcas/marcas.module'; 
+import { MarcasModel } from 'src/app/models/marcas/marcas.module'; 
 import { PrdExistenciasModule } from 'src/app/models/prd-existencias/prd-existencias.module';
 import { BodegasModule } from 'src/app/models/bodegas/bodegas.module';
 import { AuxIngresoInventarioModule } from 'src/app/models/aux-ingreso-inventario/aux-ingreso-inventario.module';
@@ -42,7 +42,7 @@ export class ProductosComponent implements OnInit {
   categorias :CategoriasModel[] = [ this.categoriaAux ]; 
   categorias2 :CategoriasModel[] = [ this.categoriaAux ];
   categorias3 :CategoriasModel[] = [ this.categoriaAux ];
-  marcasAux:MarcasModule = { nombre:"Seleccione La marca",  descripcion:'',   estado: 0 ,     nombre_estado:'' ,
+  marcasAux:MarcasModel = { nombre:"Seleccione La marca",  descripcion:'',   estado: 0 ,     nombre_estado:'' ,
     id:0 };
 
     tipProductos:any = [{id:0 , nombre:'Seleccione el tipo de producto'},
@@ -53,7 +53,7 @@ export class ProductosComponent implements OnInit {
           {id:2 , nombre: 'Ajuste'},
                {id:1 , nombre:'General' } 
              ];
-  marcas:MarcasModule[] = [this.marcasAux];
+  marcas:MarcasModel[] = [this.marcasAux];
   newProducto:ProductoModule = new ProductoModule( '' , '' ,0 ,0,'0','0', 0,0,0,0,0,'','','',0, ''  ) ; 
   textFindProductos:string = '';
   constructor(private loading : loading,
@@ -465,7 +465,7 @@ export class ProductosComponent implements OnInit {
     }
     if (datos[1].numdata > 0 ){ 
       cont = 1 ; 
-      datos[1].data!.forEach((dato:MarcasModule , index:number )=>{
+      datos[1].data!.forEach((dato:MarcasModel , index:number )=>{
         this.marcas[cont] = dato;
         cont++;
       }) 

@@ -18,8 +18,9 @@
                                 <br><b>existencia: </b><small class="text-muted">{{ existencia?.cant_actual??0 }}</small> 
                                 <br><b>precio: </b>
                                 
-                                <select class="form-control"  [(ngModel)]="precioVenta">
-                                    <option *ngFor='let precio of arrayDocPrd.producto?.precios' [ngValue]="precio">
+                                <select *ngIf=" arrayDocPrd.producto?.precios" class="form-control"  [(ngModel)]="precioVenta">
+
+                                    <option *ngFor='let precio of arrayDocPrd.producto?.precios ' [ngValue]="precio">
                                         {{precio.precio_con_iva}}   
                                     </option>
                                 </select> 
@@ -62,24 +63,6 @@
 
 
 
-    <hr *ngIf="show_reemplazo">
-    <h3 *ngIf="show_reemplazo">Productos Reemplazo</h3>
-    <div *ngIf="show_reemplazo" class="row">
-        <div *ngFor="let parcero  of parceros" class="col-sm-3">
-            <div class="card mb-3" style="max-width: 540px;" (click)="codPrd = parcero.id!.toString(); ">
-                <div class="row g-0">
-                    <div class="col-md-2">
-                        <img style="max-height: 50px;" [src]="(parcero.imagen ??'') | ImgB64" alt="{{parcero.imagen}}">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <p class="card-text">{{ parcero.nombre }}</p>
-                            <p class="card-text"><b>precio: </b><small class="text-muted">{{ parcero.precioVenta }}</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  
 
 </div>

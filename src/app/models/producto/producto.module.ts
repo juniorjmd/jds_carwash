@@ -6,7 +6,7 @@ import { PrdPreciosModule } from '../prd-precios/prd-precios.module';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { CategoriasModel } from '../categorias.model';
 import { ImagesModule } from '../images/images.module';
-import { MarcasModule } from '../marcas/marcas.module';
+import { MarcasModel } from '../marcas/marcas.module';
 
 
 
@@ -22,7 +22,7 @@ export class ProductoModule extends ModelBase {
   public existencias :PrdExistenciasModule[] = [] ;
   public images :ImagesModule[] = [] ;
   public categoria :CategoriasModel | undefined ;
-  public marca :MarcasModule | undefined ;
+  public marca :MarcasModel | undefined ;
     
     precioVenta?:number; 
     PrecioSinIVA ?:number; 

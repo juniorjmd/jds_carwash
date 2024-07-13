@@ -39,11 +39,18 @@
         </div>
     </div>
     <hr> 
+    <div class="row"> 
+        <div class="col-sm-2">&nbsp;</div>
+        <div class="col-sm-1" style="margin-right: 15px;">Descripción</div>
+        <div class="col-sm-3">
+            <textarea [(ngModel)]="newEsta.descripcion" class="o_input" placeholder="Descripcion..."></textarea>
+        </div>
+    </div>
+    <hr> 
  <div class="row">
+ 
 
-    <div class="col-sm-2">&nbsp;</div>
-
-    <div class="col-sm-3" style="margin-right: 15px;">
+    <div class="col-sm-3" >
         <label for="establecimientoCaja">Cuenta para inventario</label> 
         <div class="input-group mb-3">
            
@@ -53,7 +60,7 @@
             </button>
         </div>
     </div>
-    <div class="col-sm-3" style="margin-right: 15px;">
+    <div class="col-sm-3" >
         <label for="establecimientoCaja">Cuenta Para obligaciones</label> 
         <div class="input-group mb-3">
            
@@ -63,7 +70,7 @@
             </button>
         </div>
     </div>
-    <div class="col-sm-3" style="margin-right: 15px;">
+    <div class="col-sm-3" >
         <label for="establecimientoCaja">Cuenta Para cartera</label> 
         <div class="input-group mb-3">
            
@@ -73,25 +80,65 @@
             </button>
         </div>
     </div>
+    <div class="col-sm-3 justify-content-center">
+        <button class="btn btn-outline-primary" role="button" (click)='guardarCaja()'>
+            <i class="bi bi-save"></i> Guardar
+        </button>
+        <button class="btn btn-outline-danger" role="button" (click)='Cancelar()'>
+            <i class="bi bi-trash"></i> Cancelar
+        </button>
+    </div>
+
+ </div>
+
+
+ <div class="row"> 
+
+    <div class="col-sm-3"  >
+        <label for="establecimientoCaja">Cuenta para iva en compra</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta iva en compra" [(ngModel)]="newEsta.nombreCCntIvaCompra" name="nombreCCntIvaCompra"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("ivaEnCompras")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div>
+    <div class="col-sm-3"  >
+        <label for="establecimientoCaja">Cuenta Para iva en ventas</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta iva en ventas" [(ngModel)]="newEsta.nombreCCnttIvaVenta" name="nombreCCnttIvaVenta"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("ivaEnVenta")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div> 
+    <div class="col-sm-3"  >
+        <label for="establecimientoCaja">Cuenta Para costo en ventas</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta costo en ventas" [(ngModel)]="newEsta.nombreCCntCostoVenta" name="nombreCCntCostoVenta"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("costoEnVenta")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div> 
+
+    <div class="col-sm-3" >
+        <label for="establecimientoCaja">Cuenta Para ventas</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta de ventas" [(ngModel)]="newEsta.nombreCCntVentas" name="nombreCCntVentas"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("venta")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div> 
 
  </div>
     
-    <hr> 
-    <div class="row">
-        <div class="col-sm-2">&nbsp;</div>
-        <div class="col-sm-4 justify-content-center">
-            <button class="btn btn-outline-primary" role="button" (click)='guardarCaja()'>
-                <i class="bi bi-save"></i> Guardar
-            </button>
-            <button class="btn btn-outline-danger" role="button" (click)='Cancelar()'>
-                <i class="bi bi-trash"></i> Cancelar
-            </button>
-        </div>
-        <div class="col-sm-1" style="margin-right: 15px;">Descripción</div>
-        <div class="col-sm-3">
-            <textarea [(ngModel)]="newEsta.descripcion" class="o_input" placeholder="Descripcion..."></textarea>
-        </div>
-    </div>
+  
     <hr>
     <br>
     <div class="row">

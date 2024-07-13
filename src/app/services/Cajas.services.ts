@@ -377,7 +377,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
 
         
     }
-    setEstablecimiento(newEsta:Establecimientos){
+    setEstablecimiento(newEsta:establecimientoModel){
         let datos ;
         let  arraydatos ;
         //id, nombre, descripcion, tipo, fecha_creacion, usuario_creacion, estado
@@ -395,8 +395,12 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "NameBodegaVirtual" : newEsta.NameBodegaVirtual ,
             "idCCntCompras" : newEsta.idCCntCompras ,
             "idCCntCCobrar" : newEsta.idCCntCCobrar ,
-            "idCCntCPagar" : newEsta.idCCntCPagar ,
-        "usuario_creacion" : 'USUARIO_LOGUEADO' };
+            "idCCntCPagar" : newEsta.idCCntCPagar , 
+            "idCCntIvaCompra" :newEsta.idCCntIvaCompra,
+            "idCCnttIvaVenta" :newEsta.idCCnttIvaVenta,
+            "idCCntCostoVenta" :newEsta.idCCntCostoVenta,
+            'idCCntVenta':newEsta.idCCntVenta,
+            "usuario_creacion" : 'USUARIO_LOGUEADO' };
         
             
             datos = {"action": actions.actionUpdate ,
@@ -413,7 +417,11 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "idBodegaVitual" :newEsta.idBodegaStock ,
             "idCCntCompras" : newEsta.idCCntCompras ,
             "idCCntCCobrar" : newEsta.idCCntCCobrar ,
-            "idCCntCPagar" : newEsta.idCCntCPagar ,
+            "idCCntCPagar" : newEsta.idCCntCPagar ,  
+            "idCCntIvaCompra" :newEsta.idCCntIvaCompra,
+            "idCCnttIvaVenta" :newEsta.idCCnttIvaVenta,
+            "idCCntCostoVenta" :newEsta.idCCntCostoVenta,
+            'idCCntVenta':newEsta.idCCntVenta,
             "tipo" : newEsta.tipo,
             "estado" : newEsta.estado ,
             "usuario_creacion" : 'USUARIO_LOGUEADO' }

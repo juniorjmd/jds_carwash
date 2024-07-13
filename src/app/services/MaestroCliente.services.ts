@@ -9,6 +9,8 @@ import { DepartamentoModel, PaisModel , CiudadModel } from '../models/maestros.m
 import { select } from '../interfaces/generales.interface';
 
 import { loading } from 'src/app/models/app.loading';  
+import { CategoriasModel } from '../models/categorias.model';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -21,11 +23,20 @@ export class MaestroClienteServices {
     paises: pais[]=[]; 
     finP1 : boolean = false ;
 
+     
 
-    constructor(private http: HttpClient ,
+    
+    private cateSource = new BehaviorSubject<CategoriasModel[]|[]>([]);
+    currentCategorias = this.cateSource.asObservable(); 
+  constructor(private http: HttpClient ,
         private loading : loading ){ 
         console.log('servicios datos iniciales inicializado');  
     }
+    asignarCategorias(cat:CategoriasModel[]){
+        this.cateSource.next( cat) 
+    }
+
+   
     getCiudades(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.ciudades

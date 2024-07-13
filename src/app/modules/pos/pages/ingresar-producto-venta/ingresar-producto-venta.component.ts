@@ -28,7 +28,7 @@ export class IngresarProductoVentaComponent {
     
     @Inject(MAT_DIALOG_DATA) public arrayDocPrd:DtoDocumentoProducto,
       
-    public loading : loading) {
+    public loading : loading) { // console.clear();
       console.log('arrayDocPrd' , this.arrayDocPrd); 
      this.enabledBtnIngreso();
     }
@@ -36,21 +36,21 @@ export class IngresarProductoVentaComponent {
 
   enabledBtnIngreso()
   { 
-    console.clear();
+   
     this.precioVenta = this.arrayDocPrd.producto?.precios[0]! 
-    let idBodegaStock =   this.arrayDocPrd.documento.idStockOdooPOS??0
-    try {
-       this.existencia =  (this.arrayDocPrd.producto?.existencias)?
-      this.arrayDocPrd.producto?.existencias?.filter(x=>x.id_bodega==idBodegaStock)[0]! : this.existencia;
+    let idBodegaStock =   this.arrayDocPrd.documento.idStockOdooPOS??0 
+    try { 
+      if (Array.isArray(this.arrayDocPrd.producto?.existencias)) {
+        this.existencia = this.arrayDocPrd.producto?.existencias?.filter(x => x.id_bodega === idBodegaStock)[0] || this.existencia;
+      } 
   
     } catch (error) {
-      
+      console.error(error)
     }
      console.log("existencia" , this.arrayDocPrd.producto?.existencias ,  this.existencia ) 
-if(this.existencia  ){
-     if(this.existencia.cant_actual > 10 ){
-    this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,false ];
-   }else{
+if(this.existencia != undefined  ){
+     
+    console.log('menor o igual a 10' , typeof(this.existencia.cant_actual ) , this.existencia.cant_actual )
      switch (this.existencia.cant_actual){
       case 0 : 
         this.disabled = [true, true, true, true, true, true, true, true, true, true];
@@ -82,19 +82,26 @@ if(this.existencia  ){
       case 9 : 
         this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,true];
       break;
-      case 10 : 
-        this.disabled = [true, true, true, true, true, true, true, true, true, false ];
+      case 10 :  
+        this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,false];
       break;
-     }  
+      default : 
+          this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,false ];
+      break;
+      
+      
     }
   }
   }
     
   addCnt(cnt:number){
+    if (this.existencia!.cant_actual == 10 ){
+      this.enviarCnt(10);
+    }else{
     this.cantidadPrd += cnt ;
     if (this.existencia?.cant_actual ?? 0  < this.cantidadPrd){
        this.cantidadPrd =  this.existencia?.cant_actual ?? 0 ;
-    }
+    }}
   }
 
   enviarCnt( cnt:number ){

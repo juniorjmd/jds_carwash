@@ -13,9 +13,10 @@ import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModule } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { categoriaRequest, ProductoRequest } from '../interfaces/producto-request';
+import { categoriaRequest, marcaRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
+import { MarcasModel } from '../models/marcas/marcas.module';
 
 
 @Injectable({
@@ -31,6 +32,8 @@ private readonly   urlVentas =  `${this.baseUrl}ventas/`;
 
 private categoriasSource = new BehaviorSubject<CategoriasModel[]|null>(null);
 currentCategorias = this.categoriasSource.asObservable();
+private marcasSource = new BehaviorSubject<MarcasModel[]|null>(null);
+currentMarcas = this.marcasSource.asObservable();
 
   constructor(  ){ 
     console.log('servicios productos inicializado');  
@@ -38,7 +41,9 @@ currentCategorias = this.categoriasSource.asObservable();
 
 
 
- 
+asignarMarcas(marcas:MarcasModel[]){
+    this.marcasSource.next( marcas) 
+}
 
 asignarCategorias(categoria:CategoriasModel[]){
     this.categoriasSource.next( categoria) 
@@ -88,6 +93,13 @@ getCategorias():Observable<categoriaRequest>{
                "_tabla" : vistas.categorias,
               "_columnas": ['obj'],
               "_obj": ['obj'],
+              };
+  console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
+  return this.http.post<categoriaRequest>(this.baseUrl, datos, httpOptions()) ;
+} 
+getMarcas():Observable<marcaRequest>{
+  let datos = {"action": actions.actionSelect ,
+               "_tabla" : vistas.marcas 
               };
   console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
   return this.http.post<categoriaRequest>(this.baseUrl, datos, httpOptions()) ;

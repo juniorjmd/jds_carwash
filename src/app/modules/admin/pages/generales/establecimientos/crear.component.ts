@@ -61,7 +61,25 @@ export class CrearComponent implements OnInit {
             case 'cuentasPorCobrar' : 
             this.newEsta.nombreCCntCCobrar = response.datoDevolucion.nombre_scuenta!;
             this.newEsta.idCCntCCobrar = response.datoDevolucion.id_scuenta!; 
+            break 
+            case 'ivaEnCompras' : 
+            this.newEsta.nombreCCntIvaCompra = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idCCntIvaCompra = response.datoDevolucion.id_scuenta!; 
+            break 
+            case 'ivaEnVenta' : 
+            this.newEsta.nombreCCnttIvaVenta = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idCCnttIvaVenta = response.datoDevolucion.id_scuenta!; 
             break
+
+            case 'costoEnVenta' : 
+            this.newEsta.nombreCCntCostoVenta = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idCCntCostoVenta = response.datoDevolucion.id_scuenta!; 
+            break
+            case 'venta' : 
+            this.newEsta.nombreCCntVentas = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idCCntVenta = response.datoDevolucion.id_scuenta!; 
+            break
+
           }
         }  
       })

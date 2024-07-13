@@ -18,9 +18,11 @@ export class cajaModel {
   nombreEstablecimiento?: string;
   estadoEsta?: number;
   nombreUsuarioEstadoCaja?: string;
-  documentoActivoCaja?: number;  
+  documentoActivoCaja?: number; 
+   
   cuentaContableGastos?: number;
   cuentaContableEfectivo?: number;
+
   nro_scuenta_venta?: number;
   nombre_scuenta_venta?: string;
   cod_cuenta_venta?: number;
@@ -37,7 +39,12 @@ export class cajaModel {
   NameBodegaVirtual?: string;
   idCCntCCobrar: number = 0;
   idCCntCompras: number = 0;
-  idCCntCPagar: number = 0;
+  idCCntCPagar: number = 0; 
+  idCCntIvaCompra: number = 0;
+  idCCnttIvaVenta: number = 0;
+  idCCntCostoVenta: number = 0;
+  idCCntVenta: number = 0;
+  
   constructor(cargaCaja: caja | undefined) {
     this.estadoCaja = 0;
     this.estadoGeneral = 0;

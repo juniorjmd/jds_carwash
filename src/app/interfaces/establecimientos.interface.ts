@@ -26,4 +26,13 @@ idBodegaVitual?:number ;
     idCCntCompras?:number  ;
     idCCntCCobrar?:number  ;
     idCCntCPagar?:number  ;
+ 
+    idCCntVenta?:number  ;
+    nombreCCnttIvaVenta:string   ;  
+    nombreCCntIvaCompra:string  ;
+    idCCntIvaCompra:number  ;
+    idCCnttIvaVenta:number ;
+    idCCntCostoVenta:number  ; 
+    nombreCCntCostoVenta:string   ; 
+    nombreCCntVentas:string   ; 
 }

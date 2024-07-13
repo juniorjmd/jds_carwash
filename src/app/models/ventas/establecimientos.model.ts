@@ -20,13 +20,24 @@ export class establecimientoModel{
     NameBodegaVirtual?:string ;
     estockExistencia?:number ;
     bodegaInventarioPgm?:number;
-    NameBodegaExistencia?:string ;  
+    NameBodegaExistencia?:string ; 
+    
+    
     nombreCCntCompras:string = ''; 
     nombreCCntCCobrar:string  = '';  
     nombreCCntCPagar:string  = '';
     idCCntCompras:number = 0;
     idCCntCCobrar:number = 0;
-    idCCntCPagar:number = 0;
+    idCCntCPagar:number = 0; 
+
+    nombreCCnttIvaVenta:string  = '';  
+    nombreCCntIvaCompra:string  = '';
+    idCCntIvaCompra:number = 0;
+    idCCnttIvaVenta:number = 0;
+    idCCntCostoVenta:number = 0; 
+    idCCntVenta:number = 0; 
+    nombreCCntCostoVenta:string  = '';  
+    nombreCCntVentas:string  = '';  
     constructor(cargaEsta : Establecimientos|undefined){
         this.estado = 0;
         this.tipo = 0;

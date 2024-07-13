@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MaestroClienteServices } from '../../../../services/MaestroCliente.services';
 import { loading } from 'src/app/models/app.loading';
 import { dfltAnswOdoo2 } from 'src/app/interfaces/clientes-odoo'; 
@@ -7,12 +7,14 @@ import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProductoModule } from 'src/app/models/producto/producto.module'; 
 import Swal from 'sweetalert2';
+import { CategoriasModel } from 'src/app/models/categorias.model';
+import { MarcasModel } from 'src/app/models/marcas/marcas.module';
 @Component({ 
   selector: 'app-buscar-prod-directo',
   templateUrl: './buscar-prod-directo.component.html',
   styleUrls: ['./buscar-prod-directo.component.css']
 })
-export class BuscarProdDirectoComponent  {
+export class BuscarProdDirectoComponent implements OnInit  {
   show = false ;
   textFindMarcas:string = '';textFindCategoria="";
   textFindProductos:string = '';
@@ -32,10 +34,42 @@ export class BuscarProdDirectoComponent  {
   constructor(public loading : loading ,public dialogo: MatDialogRef<BuscarProdDirectoComponent>
     , private prdService : ProductoService,
     private MaestroClienteServices :MaestroClienteServices) {
-    this.buscarProductos();
-    this.getCategorias();
-    this.getMarcas();
+    this.buscarProductos(); 
    }
+  ngOnInit(): void { 
+
+    this.prdService.currentCategorias.subscribe((value:CategoriasModel[]|null)=>{
+        if(value != undefined){
+          this.categorias = []; 
+          value.forEach((value:any )=>{  
+            this.categorias.push({
+              "dato": value.id,
+              "label":value.nombre,
+              "color":value.color,
+              "display":true
+            })  
+        
+          })       
+          this.categoriasAux = this.categorias ;
+        }
+    })
+     
+    this.prdService.currentMarcas.subscribe((value:MarcasModel[]|null)=>{
+        if(value != undefined){
+          this.marcas = []; 
+          value.forEach((value:any )=>{  
+            this.marcas.push({
+              "dato": value.id,
+              "label":value.nombre,
+              "color":value.color,
+              "display":true
+            })  
+        
+          })       
+          this.marcasAux = this.marcas;
+        }
+    })
+  }
    getProductosPorFiltro(){
     console.log('busqueda productos inicial' ); 
      this.loading.show() 
@@ -55,7 +89,7 @@ export class BuscarProdDirectoComponent  {
           }else{ 
             Swal.fire(  "error", respuesta.error , "error"); 
           } 
-          console.log('getProductosPorCategoria',JSON.stringify(respuesta));
+          console.log('getProductosPorFiltro',JSON.stringify(respuesta));
          
          
           } , error:    error => { this.loading.hide();  
@@ -80,7 +114,7 @@ export class BuscarProdDirectoComponent  {
             
             Swal.fire(  "error - getProductosGeneral" , respuesta.error ,"error"  );
           } 
-          console.log('getProductosPorCategoria',JSON.stringify(respuesta));
+           
           this.loading.hide();
          
           }, error :  error => {this.loading.hide();
@@ -101,7 +135,7 @@ export class BuscarProdDirectoComponent  {
            }else{
              Swal.fire(  "error", respuesta.error);
            } 
-           console.log('getProductosPorCategoria',JSON.stringify(respuesta));
+           console.log('buscarPorCategoria',JSON.stringify(respuesta));
            this.loading.hide();
           
            },

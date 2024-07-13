@@ -25,7 +25,7 @@
       <div class="form-group col-md-3">
         <label for="idCuenta">Cuenta</label>
         <select id="idCuenta" class="form-control" [(ngModel)]="newCntTransacciones.id_cuenta" name="id_cuenta" required>
-          <option *ngFor="let cuenta of cuentas" [value]="cuenta.id_scuenta">{{ cuenta.nro_scuenta +"-" + cuenta.nombre_cuenta }}</option>
+          <option *ngFor="let cuenta of cuentas" [value]="cuenta.id_scuenta">{{ cuenta.nro_scuenta +"-" + cuenta.nombre_scuenta }}</option>
         </select>
       </div>
     </div>
@@ -45,47 +45,27 @@
         <input type="date" id="fechaTransaccion" class="form-control" [(ngModel)]="newCntTransacciones.fecha_transaccion" name="fecha_transaccion" required>
       </div>
    
-      <div class="form-group col-md-3"> <label for="fechaTransaccion">&nbsp;</label>
-        <button type="submit" class="btn btn-primary" [disabled]="!cntTransaccionesForm.form.valid">Submit</button>     </div> 
+      <div class="form-group col-md-3 pt-4"> 
+         
+      
+        <div class="btn-group " role="group" aria-label="Basic example">
+          <button type="submit" class="btn btn-success" [disabled]="!cntTransaccionesForm.form.valid">
+            <i class="bi bi-plus-circle"></i> 
+          </button>
+          <button type="button" class="btn btn-warning">
+            <i class="bi bi-eraser"></i> 
+          </button>
+          <button type="button" class="btn btn-danger">
+            <i class="bi bi-x-circle"></i> 
+          </button>
+          <button type="button" class="btn btn-primary">
+            <i class="bi bi-save"></i> 
+          </button>
+        </div>
+      </div> 
     </div>
   
-   <!---   <div class="form-row">
-      <div class="form-group col-md-3">
-        <label for="ingresoSaldos">Ingreso Saldos</label>
-        <select id="ingresoSaldos" class="form-control" [(ngModel)]="newCntTransacciones.ingreso_saldos" name="ingreso_saldos" required>
-          <option value="N">No</option>
-          <option value="S">Sí</option>
-        </select>
-      </div>
-  
-      <div class="form-group col-md-3">
-        <label for="usuario">Usuario</label>
-        <input type="text" id="usuario" class="form-control" [(ngModel)]="newCntTransacciones.usuario" name="usuario">
-      </div>
-  
-      <div class="form-group col-md-3">
-        <label for="fechaIngreso">Fecha Ingreso</label>
-        <input type="datetime-local" id="fechaIngreso" class="form-control" [(ngModel)]="newCntTransacciones.fecha_ingreso" name="fecha_ingreso">
-      </div>
-  
-      <div class="form-group col-md-3">
-        <label for="codTercero">Código Tercero</label>
-        <input type="text" id="codTercero" class="form-control" [(ngModel)]="newCntTransacciones.cod_tercero" name="cod_tercero">
-      </div>
-    </div>
-  
-    <div class="form-row">
-      <div class="form-group col-md-3">
-        <label for="codComprobante">Código Comprobante</label>
-        <input type="text" id="codComprobante" class="form-control" [(ngModel)]="newCntTransacciones.cod_comprobante" name="cod_comprobante" required>
-      </div>
-  
-      <div class="form-group col-md-3">
-        <label for="origenComprobante">Origen Comprobante</label>
-        <input type="text" id="origenComprobante" class="form-control" [(ngModel)]="newCntTransacciones.origen_comprobante" name="origen_comprobante" required>
-      </div>
-    </div>
--->
+   
    
   </form>
 

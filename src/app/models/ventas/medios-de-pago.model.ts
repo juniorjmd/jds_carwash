@@ -4,6 +4,7 @@ export class  MediosDePagoModel {
     descripcion!:string;
     estado!:number; 
     cuentaContable!:number;
+    nombreCuentaContable!:string;
     establecimiento!:number;
     nombreEsta?:string;
     nombreEstado?:string;
