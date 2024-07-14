@@ -29,6 +29,14 @@ export class PrinterManager {
     let HTML = '';
     return HTML;
   }
+  getResolucion():string{
+    let HTML =` <div style="text-align: left;">
+    <p>Resolución: ${this.doc.resolucion}</p>
+    <p>Desde: ${this.doc.consecutivoDesde} Hasta: ${this.doc.consecutivoHasta}</p>
+    <p>Fecha: ${this.doc.fechaInicioResolucion} Hasta: ${this.doc.fechaFinResolucion}</p>
+  </div>`;
+    return HTML;
+  }
   generateReceiptHTML(): string {
 
     const fecha = new Date();
@@ -41,26 +49,28 @@ export class PrinterManager {
 
     let receiptHTML = `
       <div style="font-family: Arial, sans-serif; width: 300px;"> `
-     receiptHTML = this.generateCabecera() +`
-          <p>Vende: ${this.doc.vendedorNombre}</p>
+     receiptHTML = this.generateCabecera() ;
+  
+     if(this.doc.nombreDocumento == 'venta' )   receiptHTML = this.getResolucion() ;
+  let nombreDocumento = "";
+     switch(this.doc.nombreDocumento ){
+        case 'venta' : nombreDocumento = "Factura"
+     }
+     receiptHTML +=`
+          <p>Usuario: ${this.doc.vendedorNombre}</p>
           <p>Fecha/Hora: ${fechaStr}</p>
         </div>
-        <div style="text-align: left;">
-          <p>Resolución: ${this.doc.resolucion}</p>
-          <p>Desde: ${this.doc.consecutivoDesde} Hasta: ${this.doc.consecutivoHasta}</p>
-          <p>Fecha: ${this.doc.fechaInicioResolucion} Hasta: ${this.doc.fechaFinResolucion}</p>
-        </div>
+        
         <hr>
-        <div style="text-align: center;">
-          <p>Factura ${this.doc.idDocumentoFinal}</p>
+        <div  >
+          <p>${nombreDocumento} ${this.doc.idDocumentoFinal}</p>
           <p>cliente ${this.doc.clienteobj!.nombreCompleto!}</p>
         </div>
-        <hr>
-        <div style="text-align: left;">
+       
     `;
 
    
-receiptHTML += `<table  style="font-family: Arial, sans-serif; width: 300px;">`
+receiptHTML += ` <hr> <div style="text-align: left;"><table  style="font-family: Arial, sans-serif; width: 300px;">`
 console.log('listado',this.doc.listado);
     this.doc.listado?.forEach((lista) => {
       const presioVenta = typeof lista.presioVenta === 'number' ? lista.presioVenta : parseFloat(lista.presioVenta??'0');
@@ -78,14 +88,13 @@ console.log('listado',this.doc.listado);
        <hr>
       `;
   });
-receiptHTML += `</table>`
+receiptHTML += `</table></div>`
   const valorParcial = typeof this.doc.valorParcial  === 'number' ? this.doc.valorParcial : parseFloat(this.doc.valorParcial??'0'); 
   const valorIVA = typeof this.doc.valorIVA  === 'number' ? this.doc.valorIVA : parseFloat(this.doc.valorIVA??'0'); 
   const totalFactura = typeof this.doc.totalFactura  === 'number' ? this.doc.totalFactura : parseFloat(this.doc.totalFactura??'0'); 
  
 
-    receiptHTML += `
-        </div>
+    receiptHTML += ` 
         <div style="text-align: right;">
           <p>Valor Parcial: ${valorParcial.toFixed(2)}</p>
           <p>IVA: ${valorIVA.toFixed(2)}</p>

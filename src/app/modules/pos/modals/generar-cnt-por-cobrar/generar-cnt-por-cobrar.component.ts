@@ -19,7 +19,10 @@ export class GenerarCntPorCobrarComponent implements OnInit {
   indexEfectivo:number = 0;
   MedioP:MediosDePago[]= [];
   listo:boolean = false;
-  retorno!: {result : boolean , documento :  DocumentosModel };
+  retorno : {result : boolean , documento :  DocumentosModel } = {
+    result: false,
+    documento: new DocumentosModel
+  };
   constructor(
     public loading : loading,private serviceCaja : cajasServices ,
     public dialogo: MatDialogRef<GenerarCntPorCobrarComponent>,

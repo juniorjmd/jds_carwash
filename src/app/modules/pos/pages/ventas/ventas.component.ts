@@ -485,7 +485,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       ,error: (error: any) => {
          
         try {
-          Swal.fire(error, '', 'error');
+          Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
          }},complete:()=>{console.log('facturarDocumento completo');

@@ -18,6 +18,9 @@ export class CntOperacionesModel {
     fechaCreacion?: string;
     totalDebito?: number;
     totalCredito?: number;
+    nombre: string = '';
+    descripcion: string = ''; 
+    idDocumento:number = 0 ; 
     idPersona?: number;
     nombreUsuario?: string;
     nombrePersona?: string;

@@ -83,9 +83,9 @@ export class HomeComponent implements OnInit {
       this._servProducto.asignarMarcas(datos.data ) 
    }, error : (e)=>console.error(e.error.error)})
     
-    this.cntService.getCntCuentasMayores().subscribe({next:(value:cntCuentaMayorRequest)=>{ 
+    this.cntService.getCntCuentasMayores().subscribe({next:(value:cntCuentaMayorRequest)=>{  
+      console.log("getCntCuentasMayores",value )
       this.cntService.changeCuentasM(value.data); 
-      console.log("getCntCuentasMayores",value.data )
     },error : (e)=>console.error(e.error.error)})
     
     this.cntService.getCntGrupos().subscribe({
