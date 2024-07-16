@@ -76,6 +76,7 @@ export interface DocumentoImpuestos{
     'cant_real_descontada':number,
     'idDocumentoFinal'?:string,
     'tipo_documento_nombre'?:string,
-    'estado_linea_venta' ?:string
+    'estado_linea_venta' ?:string, 
+    'id_externo_auxiliar'?:number|string,
    
  }

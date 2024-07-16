@@ -62,8 +62,8 @@ export class cajasServices {
         let datos = {"action": actions.actionCerarCaja ,
                      "_parametro" : {"idCaja" : caja.id } 
                     };
-        console.log('cerrarCaja activo ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        console.log('cerrarCaja activo ' ,url.actionVentas , datos, httpOptions());
+        return this.http.post(url.actionVentas , datos, httpOptions()) ;
     }
 
     getCuentasContablesEstablecimientoUsuario():Observable<cajaRequest>{
@@ -75,12 +75,12 @@ export class cajasServices {
 console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
 return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     }
-    cerrarCajaParcial(caja : cajaModel){
+ cerrarCajaParcial(caja : cajaModel){
         let datos = {"action": actions.actionCerarCajaParcial ,
                      "_parametro" : {"idCaja" : caja.id } 
                     };
-        console.log('cerrarCaja activo ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        console.log('cerrarCaja activo ' ,url.actionVentas , datos, httpOptions());
+        return this.http.post(url.actionVentas , datos, httpOptions()) ;
     }
     
     getTiposDocumentosConContadores(){

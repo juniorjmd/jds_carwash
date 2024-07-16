@@ -15,5 +15,12 @@ export interface cajaResumen {
     efectivo  :number  ; 
     caja:caja;
     NusuarioApertura ?:string;
-    NusuarioCierre ?:string;
+    NusuarioCierre ?:string;  
+    pagos: number,
+    creditos: number, 
+    recaudos: number,  
+    total_gastos: number, 
+    id_cierre_total: number,
+    ingresoEfectivo: number, 
+    recaudos_externos: number  
 }

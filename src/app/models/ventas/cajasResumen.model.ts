@@ -18,5 +18,13 @@ export class cajasResumenModel{
     efectivo  !:number  ; 
     caja!:caja;
     NusuarioApertura ?:string;
-    NusuarioCierre ?:string; 
+    NusuarioCierre ?:string;  
+ 
+     pagos: number  = 0 ;
+     creditos: number  = 0 ; 
+     recaudos: number  = 0 ; 
+     total_gastos: number  = 0 ;  
+     id_cierre_total: number  = 0 ;
+     ingresoEfectivo: number  = 0 ; 
+     recaudos_externos: number  = 0 ;
 }

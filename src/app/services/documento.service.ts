@@ -42,6 +42,17 @@ export class DocumentoService {
     return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
   }
 
+  getCuentasXCobrarByPersonaAbonos( idPersona :number): Observable<CarteraRequest> {
+    let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona},{"columna": 'totalActual', "tipocomp": '>', "dato": 0}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.cartera, 
+      "_where": where
+    };
+    console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
+    return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
+  }
+
   getCuentasXCobrar(): Observable<CarteraRequest> { 
     let datos = {
       "action": actions.actionSelect,
@@ -197,7 +208,7 @@ export class DocumentoService {
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
   crearDocumentoAbono(nuevoGasto:DocumentosModel): Observable<any> {
-    let datos = {"action": actions.actionCrearNewAbono ,"_arraydatos" : nuevoGasto};
+    let datos = {"action": actions.actionCrearNewAbono ,"_documentoAbono" : nuevoGasto};
     console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }

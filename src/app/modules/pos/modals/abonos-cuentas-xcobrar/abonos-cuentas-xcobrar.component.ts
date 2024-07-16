@@ -22,9 +22,9 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
   private  dialogo= inject( MatDialogRef<AbonosCuentasXCobrarComponent>);
   private  docService = inject(DocumentoService)
   constructor( @Inject(MAT_DIALOG_DATA) public personaIngreso:ClientesModel ){
-     
+    this.docAbono.cliente =  ( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id!;
     this.docService
-    .getCuentasXCobrarByPersona(( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id! )
+    .getCuentasXCobrarByPersonaAbonos(( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id! )
     .subscribe({next:(retorno:CarteraRequest)=>{
       if(retorno.numdata!> 0){
         this.lisCartera =  retorno.data;
@@ -42,7 +42,8 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
                                 descuento: 0,
                                 valorTotal: x.totalActual,
                                 orden: 0,
-                                cant_real_descontada: 1
+                                cant_real_descontada: 1,
+                                id_externo_auxiliar: x.id
                               }
           return ret
           
@@ -78,7 +79,10 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
       Swal.fire('Error en el envio' , 'debe ingresar minimo un abono' , 'error')
     }
      console.log('documento a enviar',this.docAbono);
-     this.docService.crearDocumentoAbono(this.docAbono).subscribe({next:value=>{}})
+     this.docService.crearDocumentoAbono(this.docAbono).subscribe({next:value=>{
+      console.log('crearDocumentoAbono',value);
+      this.dialogo.close(true);
+     }})
   }
   cancelar(){
     this.docAbono.listado.forEach(x=> x.presioVenta = 0)

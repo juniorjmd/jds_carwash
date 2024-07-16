@@ -5,6 +5,7 @@ import { cajasServices } from 'src/app/services/Cajas.services';
 import { loading } from 'src/app/models/app.loading';
 import { cajasResumenModel } from 'src/app/models/ventas/cajasResumen.model';
 import { select } from 'src/app/interfaces/generales.interface';
+import { PrinterManager } from 'src/app/models/printerManager';
 
 @Component({
   selector: 'app-resumen-caja',
@@ -14,6 +15,7 @@ import { select } from 'src/app/interfaces/generales.interface';
 export class ResumenCajaComponent implements OnInit {
 
   caja:cajaModel ;
+  printerManager?:PrinterManager  ;
   cajaResumen:cajasResumenModel;
    constructor( private cajaService : cajasServices,
      public dialogo: MatDialogRef<ResumenCajaComponent>,
@@ -21,6 +23,7 @@ export class ResumenCajaComponent implements OnInit {
      public loading : loading) { 
        this.cajaResumen  = this.cajaResumenImport;
        this.caja = new cajaModel(this.cajaResumen.caja)
+      this.printerManager.
      }
  
  

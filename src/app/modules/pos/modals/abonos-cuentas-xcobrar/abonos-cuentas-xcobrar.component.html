@@ -74,7 +74,7 @@
             <td>{{ item.fecha_ultimo_abono | date: 'shortDate' }}</td>
             <td>
                 <div class="btn-group" role="group" aria-label="Basic example">
-              <input type="number"  (keyup.enter)="recalcular(i)" class="form-control" [(ngModel)] = "docAbono.listado[i].presioVenta" value="0"/>
+              <input type="number"  (keyup.enter)="recalcular(i)"  (blur)="recalcular(i)" class="form-control" [(ngModel)] = "docAbono.listado[i].presioVenta" value="0"/>
               <button type="button" class="btn btn-danger" (click)="docAbono.listado[i].presioVenta = 0 ;recalcular(i); " title="limpiar abono" >Cancelar</button></div>
             </td>
           </tr>
