@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FndClienteComponent } from './fnd-cliente/fnd-cliente.component';
+import { FndClienteComponent } from '../../../shared/modals/fnd-cliente/fnd-cliente.component';
 import { tap } from 'rxjs';
 
 @Component({

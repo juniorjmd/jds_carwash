@@ -7,6 +7,9 @@ import { vistas } from '../models/app.db.view';
 import { loading } from 'src/app/models/app.loading';
 import { cajaModel } from '../models/ventas/cajas.model';
 import { ValuesFormuGasto } from '../interfaces/valuesFormularios';
+import { CarteraRequest, DocumentoCierreRequest } from '../interfaces/producto-request';
+import { CarteraModel } from '../models/cartera/cartera.model';
+import { DocumentosModel } from '../models/ventas/documento.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +31,27 @@ export class DocumentoService {
     console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());
   }
+  getCuentasXCobrarByPersona( idPersona :number): Observable<CarteraRequest> {
+    let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.cartera, 
+      "_where": where
+    };
+    console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
+    return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
+  }
+
+  getCuentasXCobrar(): Observable<CarteraRequest> { 
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.cartera  ,
+      "_limit" : 300
+    };
+    console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
+    return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
+  }
+
 
   getDocumentos(): Observable<any> {
     let where = [{"columna": 'tipoDocumentoFinal', "tipocomp": '=', "dato": 1}];
@@ -138,6 +162,11 @@ export class DocumentoService {
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
 
+  convertirDocumentoEnCotizacion(documento: number): Observable<DocumentoCierreRequest> {
+    let datos = {"action": actions.actionCambiarDocumentosACotizacion, "_documento": documento};
+    console.log('generar cotizacion activo', url.actionDocumentos, datos, httpOptions());
+    return this.http.post<DocumentoCierreRequest>(url.actionDocumentos, datos, httpOptions());
+  }
   generarDomicilioDocumento(documento: number): Observable<any> {
     let datos = {"action": actions.actionCambiarDocADomicilio, "_documento": documento};
     console.log('actionCambiarDocADomicilio', url.actionDocumentos, datos, httpOptions());
@@ -162,9 +191,13 @@ export class DocumentoService {
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
 
-  
-  crearDocumentoGasto(nuevoGasto:ValuesFormuGasto): Observable<any> {
+   crearDocumentoGasto(nuevoGasto:ValuesFormuGasto): Observable<any> {
     let datos = {"action": actions.actionCrearNewGasto ,"_arraydatos" : nuevoGasto};
+    console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+  crearDocumentoAbono(nuevoGasto:DocumentosModel): Observable<any> {
+    let datos = {"action": actions.actionCrearNewAbono ,"_arraydatos" : nuevoGasto};
     console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }

@@ -4,7 +4,7 @@ import { ClientesService, cliente } from 'src/app/services/Clientes.services';
 
 import { loading } from 'src/app/models/app.loading';  
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
-import { FndClienteComponent } from './fnd-cliente/fnd-cliente.component';
+import { FndClienteComponent } from '../../../shared/modals/fnd-cliente/fnd-cliente.component';
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
 @Component({

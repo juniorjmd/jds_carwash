@@ -55,10 +55,10 @@ export interface DocumentoImpuestos{
     'totalImpuesto' : number
 }
  export interface DocumentoListado{
-   'id':number,
+   'id'?:number,
     'orden':number,
-    'tipoDocumento':number,
-    'idDocumento':number,
+    'tipoDocumento'?:number,
+    'idDocumento'?:number,
     'idProducto':string,
     'nombreProducto':string,
     'presioVenta':number,
@@ -68,13 +68,13 @@ export interface DocumentoImpuestos{
     'cantidadVendida':number,
     'descuento':number,
     'valorTotal':number,
-    'usuario':number,
-    'fecha':Date,
-    'hora':Time,
-    'maq_activa':string,
-    'estado_venta':number,
+    'usuario'?:number,
+    'fecha'?:Date,
+    'hora'?:Time,
+    'maq_activa'?:string,
+    'estado_venta'?:number,
     'cant_real_descontada':number,
-    'idDocumentoFinal':string,
+    'idDocumentoFinal'?:string,
     'tipo_documento_nombre'?:string,
     'estado_linea_venta' ?:string
    

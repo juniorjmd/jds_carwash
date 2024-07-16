@@ -1,3 +1,4 @@
+import { CarteraModel } from "../models/cartera/cartera.model";
 import { CategoriasModel } from "../models/categorias.model";
 import { ClientesModel } from "../models/clientes/clientes.module";
 import { CntClasesModel } from "../models/cnt-clases/cnt-clases.module";
@@ -22,6 +23,12 @@ export interface ProductoRequest {
 
 export interface DocumentoCierreRequest { 
   data: { documentoFinal: DocumentosModel };
+  query?: string;
+  numdata?: number;
+  error: string;
+}
+export interface CarteraRequest { 
+  data: CarteraModel[];
   query?: string;
   numdata?: number;
   error: string;

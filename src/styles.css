@@ -17,7 +17,10 @@
     font-family: -webkit-pictograph !important;
     font-weight: bold !important;
 }
-
+.modal_container{
+    background-image: url(assets/img/home-menu-bg-overlay.svg) , linear-gradient(to right bottom, #d4cbdf, #ffe0e1) !important;
+background-size: cover;
+}
 .icono_aplicacion {
     margin: auto; 
     overflow: hidden;

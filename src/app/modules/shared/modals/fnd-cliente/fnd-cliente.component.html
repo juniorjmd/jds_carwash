@@ -43,10 +43,20 @@
                 <button *ngIf="crear" type="button" (click)="crearCliente()" title="Guardar En Odoo" class="btn btn-success">
                    <i class="bi bi-check2-circle"></i>
                </button>
-               <button type="button" title="crear como empleado" (click)="pasarComoEmpleado()" class="btn btn-primary">
+               <button type="button" title="Asignar como empleado" (click)="pasarComoEmpleado()" class="btn btn-primary">
                 <i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark-text"></i>
             </button> 
            </div> 
+
+            <div *ngIf="devolverPersona" >
+                <button *ngIf="crear" type="button" (click)="crearPersonaYDevolverla()" title="Guardar En Odoo" class="btn btn-success">
+                   <i class="bi bi-check2-circle"></i>
+               </button>
+               <button type="button" title="Retornar Cliente" (click)="pasarComoEmpleado()" class="btn btn-primary">
+                <i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark-text"></i>
+              </button> 
+           </div> 
+           
             </div>
         </div> 
         <div class="row pt-3" *ngIf="NwCliente.is_empresa"> 

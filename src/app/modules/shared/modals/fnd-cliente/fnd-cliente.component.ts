@@ -1,16 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { ClientesOdoo, dfltAnswOdoo } from 'src/app/interfaces/clientes-odoo'; 
+import { Component, Inject, OnInit } from '@angular/core'; 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import { CiudadModel, DepartamentoModel, PaisModel } from 'src/app/models/maestros.model';
 import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services'; 
 import { loading } from 'src/app/models/app.loading';  
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
-import {ClientesService} from 'src/app/services/Clientes.services' 
-import { error } from 'jquery';
+import {ClientesService} from 'src/app/services/Clientes.services'  
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { MaestroCliente, fndCliente } from 'src/app/interfaces/maestro-cliente';
 import { clienteRequest } from 'src/app/interfaces/producto-request';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'; 
+import { BusquedaPersona } from 'src/app/interfaces/busqueda-persona';
 
 @Component({
   selector: 'app-fnd-cliente',
@@ -33,8 +32,10 @@ export class FndClienteComponent implements OnInit {
   empresaShwich : boolean = true;
   crear:boolean = true ; 
   asignarADoc = true;
+  devolverPersona = false;
   documentoActivo:DocumentosModel;
   maestro?:MaestroCliente;
+  retorno:BusquedaPersona;
    asignarEmpleado = false;
   constructor( public loading : loading, private MaestroClienteServices :MaestroClienteServices , 
 
@@ -43,12 +44,20 @@ export class FndClienteComponent implements OnInit {
 
     private clientesService:ClientesService       
     ) {  
+      this.retorno ={
+        response:false,
+        persona :null,    
+        empleado :null
+      } ;
      // console.log('datos de ingreso ' ,  this.dataIngreso)
       this.documentoActivo = this.dataIngreso.docActivo! ; 
       this.NwCliente = this.dataIngreso.clienteIngreso?? new DocumentosModel() ; 
       if(this.dataIngreso.invoker == 'clienteListado'){
         this.busqueda = false;
       }
+
+
+
       if(this.dataIngreso.invoker == 'Empleados'){
         this.empresaShwich = false;
         this.asignarEmpleado = true;
@@ -59,9 +68,19 @@ export class FndClienteComponent implements OnInit {
       if(this.dataIngreso.invoker != 'ventas'){
         this.asignarADoc = false;
       }
+
+      if(this.dataIngreso.invoker == 'cuentasPorCobrarVentas'){
+        this.asignarADoc = false;
+        this.asignarEmpleado =  false;
+        this.crear =  false
+        this.devolverPersona = true;
+
+      }
   }
   pasarComoEmpleado(){
-    {this.dialogo.close({response:true , empleado: this.NwCliente})}
+    this.retorno= {response:true , empleado: this.NwCliente , persona:this.NwCliente}
+    this.dialogo.close(this.retorno)
+
   }
   asignarClienteAlDocumento(){
     if(this.NwCliente.id !== undefined)
@@ -109,11 +128,15 @@ export class FndClienteComponent implements OnInit {
                     this.busqueda =  false
                   }}); 
               }else{
-                this.NwCliente =  value.data[0]
+                this.NwCliente =  value.data[0] 
+                if(this.dataIngreso.invoker == 'cuentasPorCobrarVentas'){
+                  this.pasarComoEmpleado();
+                }else{
                 console.log('cliente encontrado' , this.NwCliente)
                 this.getDepartamento() 
                 this.getCiudad()
                 this.busqueda =  false
+              }
               }
             },error:(error)=>console.error(error)
           ,complete:()=>this.loading.hide()})
@@ -128,6 +151,9 @@ export class FndClienteComponent implements OnInit {
                 ).subscribe({next:(value:clienteRequest)=>{
                   console.log(value)
                   if(value.numdata== 0){
+
+                   if (this.crear ){
+
                     Swal.fire( {title:'Persona no encontrada',
                        text:'Desea crearla e ingresarla a la venta?',
                        icon:'question', 
@@ -140,13 +166,19 @@ export class FndClienteComponent implements OnInit {
                       if (result.isConfirmed) {  
                         this.busqueda =  false
                       }}); 
+                    }else{
+                      Swal.fire('persona no encontrada','la persona no se encuentra en la base de datos','error');
+                      this.dialogo.close({response:false , empleado: new ClientesModel()});
+                    }
+
+
                   }else{
                     this.NwCliente =  value.data[0]
                     if (this.documentoActivo != undefined){
                       this.asignarClienteAlDocumento();
                     }else{
                       this.clientesService.changeCliente( this.NwCliente);
-                      if (this.asignarEmpleado){
+                      if (this.asignarEmpleado || this.devolverPersona){
                         this.pasarComoEmpleado();
                       }else{
                           this.dialogo.close(true)
@@ -187,7 +219,36 @@ this.clientesService.setClienteOdoo(this.NwCliente ).subscribe(
      this.loading.hide();
 })
 }
-
+     
+crearPersonaYDevolverla(){
+ 
+  this.loading.show() 
+  //this.documentoActivo.orden;
+this.clientesService.setClienteOdoo(this.NwCliente ).subscribe(
+  (respuesta:any)=>{
+    let cont = 0;
+     console.log('setClienteOdoo',respuesta); 
+     if (respuesta.error === 'ok'){
+       alert('Datos creados con exito!!')
+       if(respuesta.idGenerado){
+        this.NwCliente.id =  respuesta.idGenerado[0].Id; 
+       } 
+       this.buscarClienteFinal()
+     
+     }else{
+       switch(respuesta.error){
+         case 'ok_no_insert' :
+          alert('El cliente ya existe en odoo!!');
+           break;
+           default :
+           alert(respuesta.error);
+           break; 
+       }
+      
+     }
+     this.loading.hide();
+})
+}
 asignarDefaultTipoId(){
   if(!this.NwCliente.is_empresa){
     this.NwCliente.tipoIdentificacion = this.maestro?.parametros.ID_TIPO_ID_CEDULA; 

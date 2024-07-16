@@ -37,8 +37,7 @@ export class CrearComponent implements OnInit {
     private newEstablecimientoDialog : MatDialog ,   
     private loading : loading ) {
       this.Cancelar();
-      this.getTiposEstablecimiento();
-     this.getEstablecimiento(); 
+      this.getTiposEstablecimiento(); 
      this.getLocacionPrincipales();
     
   }
@@ -145,6 +144,7 @@ this.locationStore = [this.auxBodega];
          console.log(datos);   
     if (datos.numdata > 0 ){ 
       this.establecimientos = datos.data??[];
+      this.serviceCaja.asignarEstablecimientos(datos.data);
       console.log(this.establecimientos);
       this.newEsta.tipo = 0;
       this.newEsta.estado = 0;
@@ -189,6 +189,9 @@ this.locationStore = [this.auxBodega];
  
   }
   ngOnInit(): void {
+    this.serviceCaja.currentArrEsta.subscribe({next:(esta)=>{
+      if(esta){this.establecimientos =  esta}
+    }})
   }
   guardarCaja(){
    console.log('nueva caja',this.newEsta.nombre)

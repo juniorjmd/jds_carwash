@@ -54,7 +54,10 @@ export class PrinterManager {
      if(this.doc.nombreDocumento == 'venta' )   receiptHTML = this.getResolucion() ;
   let nombreDocumento = "";
      switch(this.doc.nombreDocumento ){
-        case 'venta' : nombreDocumento = "Factura"
+        case 'venta' : nombreDocumento = "Factura No." ; break;
+        case 'cotizacion' : nombreDocumento = "Cotización No."; break;
+        case 'gasto' : nombreDocumento = "Gasto No."; break;
+        case 'cuentas_por_cobrar' : nombreDocumento = "Venta a credito No."; break;
      }
      receiptHTML +=`
           <p>Usuario: ${this.doc.vendedorNombre}</p>
@@ -99,14 +102,15 @@ receiptHTML += `</table></div>`
           <p>Valor Parcial: ${valorParcial.toFixed(2)}</p>
           <p>IVA: ${valorIVA.toFixed(2)}</p>
           <p>Total Factura: ${totalFactura.toFixed(2)}</p>
-        </div>
-        <hr>
-        <div style="text-align: center;">
-          <p>Medios de Pago</p>
-        </div>
-        <div style="text-align: right;">
+        </div> 
     `;
-
+    if(this.doc.pagos?.length! > 0 ){
+       receiptHTML += ` <hr>
+        <div style="text-align: center;">
+          <p>Pagos : </p>
+        </div><hr>
+        <div style="text-align: right;">`;
+   
     this.doc.pagos?.forEach((pago) => {
       const valorPagado = typeof pago.valorPagado  === 'number' ? pago.valorPagado : parseFloat(pago.valorPagado??'0'); 
       const valorRecibido = typeof pago.valorRecibido  === 'number' ? pago.valorRecibido : parseFloat(pago.valorRecibido??'0'); 
@@ -126,17 +130,16 @@ receiptHTML += `</table></div>`
         }
     });
 
-    receiptHTML += `
-        </div>
-        <div style="text-align: center;">
-          <p>*** Gracias por su compra ***</p>
-        </div>
-      </div>
-    `;
+    receiptHTML += `</div>`;
+  }
+    receiptHTML += this.footer() ; 
+    receiptHTML += ` </div> `;
 
     return receiptHTML;
 }
-
+private footer():string{
+  return  ` <div style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+}
 // Método para imprimir la tirilla de punto de venta
 public printReceipt( ) {
   if(this.doc.orden ==  undefined){

@@ -3,8 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocpagosModel } from 'src/app/models/ventas/pagos.model';
-import { cajasServices } from 'src/app/services/Cajas.services';
-import { PagosVentaComponent } from '../pagos-venta/pagos-venta.component';
+import { cajasServices } from 'src/app/services/Cajas.services'; 
 import { loading } from 'src/app/models/app.loading'; 
 import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 
@@ -18,7 +17,7 @@ export class GenerarCntPorCobrarComponent implements OnInit {
   pagos:DocpagosModel[] = [];
   indexEfectivo:number = 0;
   MedioP:MediosDePago[]= [];
-  listo:boolean = false;
+  listo:boolean  ;
   retorno : {result : boolean , documento :  DocumentosModel } = {
     result: false,
     documento: new DocumentosModel
@@ -29,6 +28,7 @@ export class GenerarCntPorCobrarComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public Documento:DocumentosModel
 
   ) { 
+    this.listo =  false;
        this.pagoPorCredito = new DocpagosModel();
         this.pagoPorCredito.valorPagado = this.Documento.totalFactura;
         this.pagoPorCredito.valorRecibido = this.pagoPorCredito.valorPagado;

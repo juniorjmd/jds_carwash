@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { cajaRequest, categoriaRequest, cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest, marcaRequest } from 'src/app/interfaces/producto-request';
+import { cajaRequest, categoriaRequest, cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest, establecimientosRequest, marcaRequest } from 'src/app/interfaces/producto-request';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { CntContablesService } from 'src/app/services/cntContables.service';
@@ -50,7 +50,8 @@ export class HomeComponent implements OnInit {
       alert( error.error.error)
     }}
       ); 
-   
+    
+     
       this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
         console.log('getCuentasContablesEstablecimientoUsuario' , value)
         if(value.numdata == 0 || value.data[0] == undefined
@@ -108,6 +109,25 @@ export class HomeComponent implements OnInit {
       console.log("getCntClases",value.data )
 
     },error : (e)=>console.error(e.error.error)})
+
+
+    this.cntService.getCntClases().subscribe({next:(value:cntClaseRequest)=>{ 
+      this.cntService.changeClase(value.data); 
+      console.log("getCntClases",value.data )
+
+    },error : (e)=>console.error(e.error.error)})
+
+    this.serviceCaja.getEstablecimientos()
+    .subscribe({next: (datos:establecimientosRequest)=>{
+        console.log('datos establecimientosRequest',datos); 
+       if (datos.numdata > 0 ){ 
+        this.serviceCaja.asignarEstablecimientos( datos.data??null);  
+       } 
+     } , error:   error => {  
+       alert( error.error.error);
+     }}
+     );
+
     // Aquí deberías cargar los datos de `cnt_cuenta` desde el servicio correspondiente
     
   }

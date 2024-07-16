@@ -26,11 +26,16 @@ export class cajasServices {
 
     private cajaSource = new BehaviorSubject<any>(null);
     currentCaja = this.cajaSource.asObservable();
+    private establecimientosSource = new BehaviorSubject<establecimientoModel[]|null>(null);
+    currentArrEsta = this.establecimientosSource.asObservable();
     constructor(private http: HttpClient ,
         private loading : loading ){ 
         console.log('servicios cajas inicializado');  
     }
 
+    asignarEstablecimientos(caja:establecimientoModel[]){
+        this.establecimientosSource.next(caja);
+    }
     asignarCaja(caja:cajaModel){
         this.cajaSource.next( caja) 
     }
@@ -320,19 +325,23 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     }
     setConsecutivo(contador:Contador){
         let datos ;
-        let  arraydatos ;
-        if (typeof(contador.desde ) === 'undefined' ) 
-        contador.desde = 0;
-
-        if (typeof(contador.hasta ) === 'undefined' ) 
-        contador.hasta = 0;
- 
+        let reso = (contador.resolucion != undefined)? contador.resolucion: '';
+        let fecha1  = new Date();
+        let fecha2  = new Date()
+        if (reso != ''){
+              fecha1 = contador.fechaInicioResolucion!;
+              fecha2 = contador.fechaFinResolucion!;
+        }
+        let  arraydatos ;  
             arraydatos =  {  
             "codContador" : contador.codContador  ,
             "establecimiento" : contador.establecimiento,
             "tipoContador" : contador.tipoContador ,
             "desde" : contador.desde ,
             "hasta" : contador.hasta ,
+            "resolucion":reso,
+            "fechaInicio":fecha1,
+            "fechaFin":fecha2,
             "USUARIO_LOGUEADO" : '0',
         }
             datos = {"action": actions.actionProcedure ,
