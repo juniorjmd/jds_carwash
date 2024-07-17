@@ -22,8 +22,7 @@ export class ResumenCajaComponent implements OnInit {
      @Inject(MAT_DIALOG_DATA) public cajaResumenImport:cajasResumenModel,
      public loading : loading) { 
        this.cajaResumen  = this.cajaResumenImport;
-       this.caja = new cajaModel(this.cajaResumen.caja)
-      this.printerManager.
+       this.caja = new cajaModel(this.cajaResumen.caja) 
      }
  
  

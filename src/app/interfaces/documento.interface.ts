@@ -74,9 +74,10 @@ export interface DocumentoImpuestos{
     'maq_activa'?:string,
     'estado_venta'?:number,
     'cant_real_descontada':number,
+    'cant_devuelta':number,
     'idDocumentoFinal'?:string,
     'tipo_documento_nombre'?:string,
-    'estado_linea_venta' ?:string, 
+    'estado_linea_venta' :string, 
     'id_externo_auxiliar'?:number|string,
    
  }

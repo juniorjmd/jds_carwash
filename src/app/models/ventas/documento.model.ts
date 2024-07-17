@@ -66,12 +66,12 @@ export class DocumentosModel {
         campo_info_3?:string;
         campo_info_4?:string;
         campo_info_5?:string;
-        campo_auxiliar_1?:number; 
-        campo_auxiliar_2?:number; 
-        campo_auxiliar_3?:number; 
-        campo_auxiliar_4?:number; 
-        campo_auxiliar_5?:number; 
-        campo_auxiliar_6?:number;
+        campo_auxiliar_1:number = 0;  
+        campo_auxiliar_2:number=0; 
+        campo_auxiliar_3:number = 0; 
+        campo_auxiliar_4:number = 0; 
+        campo_auxiliar_5:number = 0; 
+        campo_auxiliar_6:number = 0;
         
         cajaObj : cajaModel[];
         impuestos :DocumentoImpuestos[];

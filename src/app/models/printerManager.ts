@@ -7,27 +7,31 @@ import { currencyDollar } from "ngx-bootstrap-icons";
 export class PrinterManager {
   private doc :DocumentosModel = new DocumentosModel() ; 
   private static sucursal?: vwsucursal;
-  private cierre?:cajasResumenModel;
+  private cierre:cajasResumenModel = new cajasResumenModel();
 
   // Método estático para establecer la sucursal
   public static setSucursal(sucursal: vwsucursal) {
     PrinterManager.sucursal = sucursal;
   }
   constructor() { } 
-  
-  setDocumento( doc :DocumentosModel ){
-    this.doc =  doc ; 
-   }  
-  private generateCabecera(){
-    let cabecera = ` <div style="text-align: center;">
-    <h2>${this.doc.nombreEsta}</h2>
-    <h2>${PrinterManager.sucursal?.nombre_suc}</h2>`; 
-      if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
-        cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` 
-      cabecera += ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`;
-    return cabecera
+  // Método para imprimir la tirilla de punto de venta
+public printClose( cierre:cajasResumenModel){
+  this.cierre =  cierre
+  const printContent = this.generateCierreHTML();
+  console.log(printContent);
+  this.openPrintWindows(printContent);
   }
+    generateCierreHTML(): string {
 
+
+    let receiptHTML = `<div style="font-family: Arial, sans-serif; width: 300px;"> `
+    receiptHTML += this.generateCabeceraCierre() ;  
+    receiptHTML += this.detalleCierre();  
+    receiptHTML += this.footerCierre() ; 
+    receiptHTML += ` </div> `;
+
+    return receiptHTML;
+}
     private generateCabeceraCierre(){
     let cabecera = ` <div style="text-align: center;"> 
     <h2>${PrinterManager.sucursal?.nombre_suc}</h2>`; 
@@ -45,6 +49,45 @@ export class PrinterManager {
       
     return cabecera
   }
+  
+private pagosCierre():string{
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+  let html = '<div><hr><p>Pagos</p><table >'; 
+  this.cierre.arrPagos.forEach(pago=>{
+     html += `<tr><td>${pago.nombrepago} </td><td>:</td> <td>${currencyFormatter.format(pago.total)}</td></tr> `
+  })
+  html +='</table></div>'
+  return html;
+}
+private footerCierre():string{
+  return  ` <div name='footer' style="text-align: center;"><p>*** Gracias***</p></div>`;
+}
+  public printReceipt( ) {
+    if(this.doc.orden ==  undefined){
+      Swal.fire('error' , 'no existe un documento a imprimir' , 'error')
+  
+    }else{
+       this.doc 
+      const printContent = this.generateReceiptHTML();
+      this.openPrintWindows(printContent);
+    }
+  
+  }
+
+
+  setDocumento( doc :DocumentosModel ){
+    this.doc =  doc ; 
+   }  
+  private generateCabecera(){
+    let cabecera = ` <div style="text-align: center;">
+    <h2>${this.doc.nombreEsta}</h2>
+    <h2>${PrinterManager.sucursal?.nombre_suc}</h2>`; 
+      if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
+        cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` 
+      cabecera += ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`;
+    return cabecera
+  }
+
   getResolucion():string{
     let HTML =` <div style="text-align: left;">
     <p>Resolución: ${this.doc.resolucion}</p>
@@ -53,17 +96,7 @@ export class PrinterManager {
   </div>`;
     return HTML;
   }
-  generateCierreHTML(): string {
 
-
-    let receiptHTML = `<div style="font-family: Arial, sans-serif; width: 300px;"> `
-    receiptHTML += this.generateCabeceraCierre() ;  
-    receiptHTML += this.detalleCierre();  
-    receiptHTML += this.footerCierre() ; 
-    receiptHTML += ` </div> `;
-
-    return receiptHTML;
-}
 
 generateReceiptHTML(): string {
 
@@ -91,6 +124,7 @@ private infoGeneral():string{
         case 'gasto' : nombreDocumento = "Gasto No."; break;
         case 'cuentas_por_cobrar' : nombreDocumento = "Venta a credito No."; break;
         case 'RecaudosCuentaXCobrar' : nombreDocumento = "Abono a cartera No."; break;
+        case 'comprobante_devolucion' : nombreDocumento = "Devolucion No."; break;
      }
      receiptHTML +=`<div> <p>Usuario: ${this.doc.vendedorNombre}</p>
                           <p>Fecha/Hora: ${this.doc.fecha}</p>
@@ -103,24 +137,25 @@ private infoGeneral():string{
 }
 
 private detalleCierre():string{
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+
   return  ` <div name='detalle' style="text-align: left;">
-           <p>base : ${this.cierre?.base}|currency</p>
-           <p>total efectivo : ${this.cierre?.efectivo}</p>
-           <p>venta : ${this.cierre?.efectivo}</p>
+           <p>base           : ${currencyFormatter.format(this.cierre.base)}</p>
+           <p>total efectivo : ${currencyFormatter.format(this.cierre?.efectivo)}</p>
            <hr>
-           <p>subtotal : ${this.cierre?.sub_total_venta}</p>
-           <p>IVA : ${this.cierre?.total_iva}</p>
-           <p>descuentos : ${this.cierre?.total_descuento}</p>
-           <p>total : ${this.cierre?.total_venta}</p>
+           <p>venta    </p>
            <hr>
-           <p>ventas a credito : ${this.cierre?.creditos}</p>
-           <p>base : ${this.cierre}</p>
-           <p>base : ${this.cierre}</p>
-           <p>base : ${this.cierre}</p>
-           <p>base : ${this.cierre}</p>
-           <p>base : ${this.cierre}</p>
-           <p>base : ${this.cierre}</p>
+           <p>&nbsp;&nbsp;&nbsp;&nbsp;Subtotal   : ${currencyFormatter.format(this.cierre?.sub_total_venta)}</p>
+           <p>&nbsp;&nbsp;&nbsp;&nbsp;IVA        : ${currencyFormatter.format(this.cierre?.total_iva)}</p>
+           <p>&nbsp;&nbsp;&nbsp;&nbsp;Descuentos : ${currencyFormatter.format(this.cierre?.total_descuento)}</p>
+           <p>&nbsp;&nbsp;&nbsp;&nbsp;Total      : ${currencyFormatter.format(this.cierre?.total_venta)}</p>
+           <hr>
+           <p>ventas a credito : ${currencyFormatter.format(this.cierre?.creditos)}</p>
+           <p>Gastos           : ${currencyFormatter.format(this.cierre?.total_gastos)}</p>
+           <p>Recaudos         : ${currencyFormatter.format(this.cierre?.recaudos)}</p>
+                   ${this.pagosCierre()}
   </div>`;
+  
 }
 private detalle():string{
    
@@ -164,10 +199,21 @@ private totales():string{
 `;
 }
 private footer():string{
-  return  ` <div name='footer' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
-}
-private footerCierre():string{
-  return  ` <div name='footer' style="text-align: center;"><p>*** Gracias***</p></div>`;
+
+  switch(this.doc.nombreDocumento ){
+    case 'venta' : return  ` <div name='footer' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'cotizacion' : return  ` <div name='footer' style="text-align: center;"><p>*** Este documento es una cotizacion  ***</p><p>***  esperamos vuelva pronto  ***</p></div>`;
+    case 'gasto' : return  ` <div name='footer' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'cuentas_por_cobrar' : return  ` <div name='footer' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'RecaudosCuentaXCobrar' : return  ` <div name='footer' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'comprobante_devolucion' : return  ` <div name='footer' style="text-align: center;">
+    <p>Devolucion generada desde factura #${this.doc.campo_info_3}, este documento sirve como canje en su totalidad en cualquier otra compra o servicio</p></div>`;
+    default:
+      return  '' ; 
+  }
+
+
+  
 }
 private pagos():string{
   let html = '';
@@ -202,12 +248,6 @@ private pagos():string{
 }
   return html;
 }
-// Método para imprimir la tirilla de punto de venta
-public printClose( cierre:cajasResumenModel){
-this.cierre =  cierre
-const printContent = this.generateCierreHTML();
-this.openPrintWindows(printContent);
-}
 
 
 private openPrintWindows(printContent:string){
@@ -225,16 +265,6 @@ private openPrintWindows(printContent:string){
       };
   }
 }
-public printReceipt( ) {
-  if(this.doc.orden ==  undefined){
-    Swal.fire('error' , 'no existe un documento a imprimir' , 'error')
 
-  }else{
-     this.doc 
-    const printContent = this.generateReceiptHTML();
-    this.openPrintWindows(printContent);
-  }
-
-}
 
 }

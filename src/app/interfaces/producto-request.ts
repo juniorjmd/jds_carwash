@@ -21,6 +21,13 @@ export interface ProductoRequest {
 }
 
 
+export interface DocumentoRequest { 
+  data: {objeto: DocumentosModel}[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
 export interface DocumentoCierreRequest { 
   data: { documentoFinal: DocumentosModel };
   query?: string;

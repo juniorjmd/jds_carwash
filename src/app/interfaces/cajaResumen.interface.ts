@@ -8,7 +8,7 @@ export interface cajaResumen {
     fecha_apertura : Date   ; 
     fecha_cierre   : Date  ; 
     base:number    ; 
-    sub_total_venta  :number | DecimalPipe ; 
+    sub_total_venta  :number   ; 
     total_iva :number   ; 
     total_descuento   :number ; 
     total_venta :number   ; 

@@ -59,7 +59,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   documentoSeleccionadoActivo: DocumentosModel = new DocumentosModel(); 
   sucursal?:vwsucursal;
   @ViewChild('codProd') codProdlement!: ElementRef;
-  continuar = false;
+  continuar:boolean;
 
   constructor(
     public loading: loading, 
@@ -71,25 +71,38 @@ export class VentasComponent implements AfterViewInit, OnInit {
     private dInicialServ: DatosInicialesService
   ) {    
           this.getUsuarioLogueado();
+          this.continuar =  true;
       
   }
 
   ngOnInit(): void {  
     this.getMediosP();
     this.getAsyncDocumentos();
+    
+    this.dInicialServ.continueVenta.subscribe({next:(value)=>{
+      this.continuar = value;
+      console.log('continuar',this.continuar);
+      
+    }})
     this.dInicialServ.currentSucursal.subscribe({next:(suc)=>{ 
        this.sucursal =  suc;
        PrinterManager.setSucursal(this.sucursal!);
 
     }})
-    this.dInicialServ.continueVenta.subscribe({next:(value)=>{
-      this.continuar = value;
+  
+  }
+
+  getDatosContables(){
+    this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
+      console.log('getCuentasContablesEstablecimientoUsuario' , value)
+      this.dInicialServ.validarCuentasContablesEstablecimiento(value.data[0] ) 
     }})
   }
 
   ngAfterViewInit(): void {
     if(this.documentoActivo!=null){
       setTimeout(() => {
+        if (!this.continuar){this.getDatosContables();}
         this.irbuscarProducto();
       }, 5000);
     }

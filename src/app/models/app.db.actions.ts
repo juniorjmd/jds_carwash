@@ -87,6 +87,7 @@
    'actionCrearDocumentos' : actionCrearDocumentos,
    'actionCrearNewGasto' : actionCrearDocumentoGasto,
    'actionCrearNewAbono' : 'ASIGNAR_ABONO_DOCUMENTOS_CREDITO',
+   'actionCrearNewDevolucion' : 'GENERAR_DOCUMENTOS_DEVOLUCION',
    'actionResumenCaja': actionResumenCaja,
     'actionCerarCaja': actionCerarCaja, 
     'actionCerarDocumentos':actionCerarDocumentos,

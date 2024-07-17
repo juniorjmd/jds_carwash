@@ -43,7 +43,8 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
                                 valorTotal: x.totalActual,
                                 orden: 0,
                                 cant_real_descontada: 1,
-                                id_externo_auxiliar: x.id
+                                id_externo_auxiliar: x.id,
+                                cant_devuelta : 0,estado_linea_venta:'A'
                               }
           return ret
           

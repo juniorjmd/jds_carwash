@@ -1,10 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
+import { DocumentoRequest } from 'src/app/interfaces/producto-request';
 import { loading } from 'src/app/models/app.loading'; 
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocpagosModel, pagosModel } from 'src/app/models/ventas/pagos.model';
 import { cajasServices } from 'src/app/services/Cajas.services'; 
+import { DocumentoService } from 'src/app/services/documento.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pagos-venta',
@@ -17,13 +20,38 @@ export class PagosVentaComponent implements OnInit {
   MedioP:MediosDePago[]= [];
   listo:boolean = false;
   constructor(
-    public loading : loading,private serviceCaja : cajasServices ,
+    public loading : loading,private serviceCaja : cajasServices , private documentoService: DocumentoService ,
     public dialogo: MatDialogRef<PagosVentaComponent>,
     @Inject(MAT_DIALOG_DATA) public Documento:DocumentosModel
 
   ) { this.getMediosP()}
 
   ngOnInit(): void {
+  }
+  adicionarOtroBono(id:number){
+    this.pagos[id]
+    let pago = {...this.pagos[id]}
+    pago.valorPagado = 0;
+    pago.referencia = '';
+
+    this.pagos.push(pago)
+  }
+  buscarBono(pago:number){
+    this.documentoService. getDocumentosByNumFactura(this.pagos[pago].referencia)
+    .subscribe({next:(retorno:DocumentoRequest)=>{
+      if(retorno.numdata!> 0){
+        let docs:DocumentosModel[] = retorno.data.map(x=>x.objeto); 
+        let docAbono:DocumentosModel =  docs[0];
+        console.log('bono encontrado ==>' , retorno , docAbono); 
+        let valPago = docAbono.valorTotal - docAbono.campo_auxiliar_6;
+        this.pagos[pago].valorPagado = (valPago > this.pagos[this.indexEfectivo].valorPagado)? this.pagos[this.indexEfectivo].valorPagado : valPago ;
+
+        if(this.pagos[pago].valorPagado > 0){  this.cambioDeValor(pago)}else{
+          Swal.fire('error','El bono ingresado no es valido', 'info')
+        }       
+      }
+    } , error:error=>{Swal.fire(error,error.error.error, 'error')}
+  })
   }
   finalizarOk(){
     //documentos_pagos

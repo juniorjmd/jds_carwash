@@ -10,6 +10,8 @@ import { DefinirBaseCajaComponent } from '../../modals/definir-base-caja/definir
 import { ResumenCajaComponent } from '../../modals/resumen-caja/resumen-caja.component';
 import { cajasResumenModel } from 'src/app/models/ventas/cajasResumen.model';
 import { cajaRequest } from 'src/app/interfaces/producto-request';
+import { PrinterManager } from 'src/app/models/printerManager';
+import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 @Component({
   selector: 'app-abrir-caja',
   templateUrl: './abrir-caja.component.html',
@@ -23,11 +25,16 @@ export class AbrirCajaComponent implements OnInit {
   cajaAbierta !: cajaModel;
   cajaAbiertaFlag:boolean = false;
   flagCajasDisponibles:boolean = true;
-  constructor(private serviceCaja : cajasServices ,    
+  constructor(private serviceCaja : cajasServices ,  private inicioService : DatosInicialesService ,
     private _Router : Router,
     private loading : loading, private cajaService : cajasServices,
     private newAbrirCajaDialog : MatDialog) { 
       this.getCajas()
+      this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
+        console.log('getCuentasContablesEstablecimientoUsuario' , value)
+        this.inicioService.validarCuentasContablesEstablecimiento(value.data[0] )  
+      }})
+    
     }
 
   ngOnInit(): void {
@@ -35,6 +42,8 @@ export class AbrirCajaComponent implements OnInit {
   abrirResumen(cajaResumen : cajasResumenModel){
     
     /*["/home", "pos"]*/ 
+    let printerManager : PrinterManager =  new PrinterManager();
+    printerManager?.printClose(cajaResumen)
     this.newAbrirCajaDialog.open(ResumenCajaComponent,{ data:cajaResumen})
     .afterClosed()
     .subscribe((confirmado: Boolean)=>{
@@ -44,7 +53,7 @@ export class AbrirCajaComponent implements OnInit {
     })
   }
   cerrar_parcial(caja :cajaModel){
-    let cajaResumen:cajaResumen ;    
+    let cajaResumen:cajasResumenModel ;    
     this.loading.show()
     this.serviceCaja.cerrarCajaParcial(caja)
        .subscribe(
@@ -72,7 +81,7 @@ export class AbrirCajaComponent implements OnInit {
         }
         );}
   cerrar(caja :cajaModel ){
-    let cajaResumen:cajaResumen ;    
+    let cajaResumen:cajasResumenModel ;    
     this.loading.show()
     this.serviceCaja.cerrarCaja(caja)
        .subscribe(

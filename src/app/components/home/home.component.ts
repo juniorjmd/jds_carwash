@@ -53,22 +53,10 @@ export class HomeComponent implements OnInit {
     
      
       this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
-        console.log('getCuentasContablesEstablecimientoUsuario' , value)
-        if(value.numdata == 0 || value.data[0] == undefined
-          || value.data[0]!.idCCntCCobrar == 0
-          || value.data[0]!.idCCntCPagar == 0
-          || value.data[0]!.idCCntCompras == 0   
-          || value.data[0]!.idCCntIvaCompra == 0 
-          || value.data[0]!.idCCnttIvaVenta == 0  
-          || value.data[0]!.idCCntCostoVenta == 0 
-          || value.data[0]!.idCCntVenta == 0  
-          || value.data[0]!.cuentaContableGastos == undefined  || value.data[0]!.cuentaContableGastos! == 0  
-          || value.data[0]!.cuentaContableEfectivo == undefined  || value.data[0]!.cuentaContableEfectivo! == 0   
-        ) {
-            this.inicioService.chageContinueVenta(false) ;
-          }else{
-            this.inicioService.chageContinueVenta(true) ;
-          }
+        console.log('getCuentasContablesEstablecimientoUsuario' , value) 
+
+          this.inicioService.validarCuentasContablesEstablecimiento(value.data[0] )  
+          
       }})
     
 

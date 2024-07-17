@@ -78,6 +78,19 @@ export class DocumentoService {
     return this.http.post(url.action, datos, httpOptions());
   }
 
+  getDocumentosByNumFactura( codFactura : string): Observable<any> {
+    let where = [{"columna": 'idDocumentoFinal', "tipocomp": '=', "dato": codFactura}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.documento,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_columnaUsuario": 'usuario',
+      "_where": where
+    };
+    console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
   getDocumentosUsuario(): Observable<any> {
     let where = [{"columna": 'tipoDocumentoFinal', "tipocomp": '=', "dato": 1}];
     let datos = {
@@ -209,6 +222,11 @@ export class DocumentoService {
   }
   crearDocumentoAbono(nuevoGasto:DocumentosModel): Observable<any> {
     let datos = {"action": actions.actionCrearNewAbono ,"_documentoAbono" : nuevoGasto};
+    console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+  crearDocumentoDevolucion(nuevoGasto:DocumentosModel): Observable<any> {
+    let datos = {"action": actions.actionCrearNewDevolucion ,"_documentoAbono" : nuevoGasto};
     console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
