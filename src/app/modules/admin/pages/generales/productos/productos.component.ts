@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BuscarProdDirectoComponent } from 'src/app/modules/pos/modals/buscar-prod-directo/buscar-prod-directo.component';
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import Swal from 'sweetalert2';
+import { categoriaRequest, marcaRequest } from 'src/app/interfaces/producto-request';
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
@@ -38,10 +39,11 @@ export class ProductosComponent implements OnInit {
     tipoInventario : 0
   }
   Productos :ProductoModule[] = [];
-  categoriaAux :CategoriasModel  =  {id:0,  letra:'',     nombre:'Seleccione la categoria',     descripcion:'',     tipo:'',    contador :0   } ; 
-  categorias :CategoriasModel[] = [ this.categoriaAux ]; 
-  categorias2 :CategoriasModel[] = [ this.categoriaAux ];
-  categorias3 :CategoriasModel[] = [ this.categoriaAux ];
+  categoriaAux :CategoriasModel[]  =  [{id:0,  letra:'',     nombre:'Seleccione la categoria',     descripcion:'',     tipo:'',    contador :0   }] ; 
+  categorias :CategoriasModel[] = []; 
+  categorias1 :CategoriasModel[] = [...this.categoriaAux ];
+  categorias2 :CategoriasModel[] = [...this.categoriaAux ];
+  categorias3 :CategoriasModel[] = [...this.categoriaAux ];
   marcasAux:MarcasModel = { nombre:"Seleccione La marca",  descripcion:'',   estado: 0 ,     nombre_estado:'' ,
     id:0 };
 
@@ -92,15 +94,15 @@ export class ProductosComponent implements OnInit {
           },complete:()=>  this.loading.hide() }
      );
     }
-    setCategoria2(){ 
-      
-        this.categorias2 = [ this.categoriaAux ];
-        this.categorias3  = [ this.categoriaAux ];
+    setCategoria2(){   
+        this.categorias3  = [... this.categoriaAux ];
         this.categorias2  = this.categorias.filter( x=> x.idPadreCategoria == this.newProducto.idCategoria  )
+        
+      this.categorias2.unshift(this.categoriaAux[0]);
     }
-    setCategoria3(){ 
-      this.categorias3  = [ this.categoriaAux ];
-      this.categorias3  = this.categorias2.filter( x=> x.idPadreCategoria == this.newProducto.idCategoria  )
+    setCategoria3(){  
+      this.categorias3  = this.categorias2.filter( x=> x.idPadreCategoria == this.newProducto.idCategoria2  )
+      this.categorias3.unshift(this.categoriaAux[0]);
     }
      busquedaAuxiliarProducto( ){   
       if(this.inventario.bodega.id <= 0) {
@@ -446,29 +448,25 @@ export class ProductosComponent implements OnInit {
      }
      getCategorias_marcas(){ 
   this.marcas = [this.marcasAux];
-  this.categorias = [this.categoriaAux ];
+  this.categorias = [];
 
     this.loading.show()
     this.productoService.getCategorias_marcas().subscribe({
-      next: (datos:any)=>{
+      next: (datos:[categoriaRequest,marcaRequest])=>{
          console.log('getCategorias_marcas',datos);
      let cont:number;    
     if (datos[0].numdata > 0 ){ 
-      cont = 1 ; 
-      datos[0].data!.forEach((dato:Categoria , index:number )=>{
-        this.categorias[cont] = new CategoriasModel(dato) ;
-        cont++;
-      }) 
+      this.categorias = 
+      datos[0].data ;
       console.log(this.categorias);
+      this.categorias1 = this.categorias.filter(x=>x.idPadreCategoria == 0)
+      this.categorias1.unshift(this.categoriaAux[0]);
     }else{
-      this.categorias = [this.categoriaAux ];
+      this.categorias = [...this.categoriaAux ];
     }
     if (datos[1].numdata > 0 ){ 
       cont = 1 ; 
-      datos[1].data!.forEach((dato:MarcasModel , index:number )=>{
-        this.marcas[cont] = dato;
-        cont++;
-      }) 
+      this.marcas = datos[1].data ;
       console.log(this.marcas);
     }else{
       this.marcas = [this.marcasAux];
@@ -494,11 +492,18 @@ export class ProductosComponent implements OnInit {
 
      }
      enviarProducto(){
-      
+     
       if( this.newProducto.nombre.trim()  === ''){ 
         Swal.fire( 'Debe establecer minimo el nombre principal del  producto', '', 'error');
        return ;
        }
+       if(this.newProducto.infoTributaria == 'GRABADO' && this.newProducto.porcent_iva == 0){
+        Swal.fire( 'Debe establecer el procentaje del IVA', '', 'error');
+        return ;
+      }
+      if(this.newProducto.infoTributaria !== 'GRABADO'){
+        this.newProducto.porcent_iva == 0
+      }
        if( this.newProducto.idCategoria!   <= 0){ 
         Swal.fire( 'Debe establecer una categoria', '', 'error');
        return ;

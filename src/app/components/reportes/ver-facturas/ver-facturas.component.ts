@@ -8,6 +8,8 @@ import { ConectorPlugin } from 'src/app/models/app.printer.con';
 import { DocpagosModel } from 'src/app/models/ventas/pagos.model';
 import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { printer, url } from 'src/app/models/app.db.url';
+import { PrinterManager } from 'src/app/models/printerManager';
+import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 
 @Component({
   selector: 'app-ver-facturas',
@@ -22,7 +24,7 @@ export class VerFacturasComponent implements OnInit {
   fecha1:string;
   fecha2:string;
   constructor(public loading : loading,
-    private documentoService : DocumentoService ) {
+    private documentoService : DocumentoService, private inicioService:DatosInicialesService ) {
        this.codFactura = '';
        this.codCliente= '';
        /**const year = date.getFullYear() * 1e4; // 1e4 gives us the the other digits to be filled later, so 20210000.
@@ -36,6 +38,9 @@ const day = date.getDate(); // */
 
   ngOnInit(): void {
        this.removeGetActivo('ListadoPorNumeroLink');
+       this.inicioService.currentSucursal.subscribe({next:value=>{
+        PrinterManager.setSucursal(value);
+      }})
   }
   limpiarListado(){
     this.documentos=[];
@@ -121,95 +126,9 @@ const day = date.getDate(); // */
   }
   async imprimirFactura(factura:DocumentosModel)
   { console.log(factura); 
-    let fecha = new Date();
-    let dayOfMonth = fecha.getDate();
-    let month = fecha.getMonth() + 1;
-    let year = fecha.getFullYear();
-    let hour = fecha.getHours();
-    let minutes = fecha.getMinutes(); 
-    let auxStr:string;
-let fechaStr =  dayOfMonth + "/" + month +"/" + year +' '+ hour +':'+minutes; 
-   let nombreImpresora = printer.namePrinterGenerico;
-   if (!nombreImpresora) return console.log("Selecciona una impresora");
-   let conector = new ConectorPlugin(null);
-   conector.cortar();
-   conector.establecerTamanioFuente(1, 1);
-   conector.establecerEnfatizado(0);
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
-  // conector.imagenDesdeUrl(url.brand + "/logo_empresa.png")
-   conector.texto( factura.nombreEsta + "\n");
-   conector.texto( 'Vende : '+factura.vendedorNombre + "\n" ); 
-   conector.texto("Fecha/Hora:"+fechaStr+ "\n");
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
-   conector.texto( "     Resolucion:"+ factura.resolucion + "\n" ); 
-   conector.texto( "     Desde :"+ factura.consecutivoDesde +" Hasta :"+ factura.consecutivoHasta + "\n" ); 
-   conector.texto( "     Fecha:"+ factura.fechaInicioResolucion  +" Hasta :"+factura.fechaFinResolucion + "\n" ); 
-   conector.texto("----------------------------------------\n"); 
-   conector.texto("Factura "+factura.idDocumentoFinal + "\n");
-   conector.texto("----------------------------------------\n");
-   conector.texto("----------------COPIA-------------------\n");
-   conector.texto("----------------------------------------\n");
-   factura.listado!.forEach((lista:DocumentoListado)=>{
-    conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionIzquierda);
-    conector.texto("  "+lista.nombreProducto + "\n");
-    conector.texto("|    Precio   | cnt |    dest    |    total    |\n");
-    auxStr = lista.presioVenta.toString() ;
-    lista.presioVenta = parseInt(auxStr);
-    conector.texto(lista.presioVenta.toString().padStart(13 )  );
-    auxStr = lista.cantidadVendida.toString() ;
-    lista.cantidadVendida = parseInt(auxStr);
-    conector.texto(lista.cantidadVendida.toString().padStart(6 ));
-    auxStr = lista.descuento.toString() ;
-    lista.descuento = parseInt(auxStr);
-    conector.texto(lista.descuento.toString().padStart(14 ));
-    auxStr = lista.valorTotal.toString() ;
-    lista.valorTotal = parseInt(auxStr);
-    conector.texto(lista.valorTotal.toString().padStart(14 ) +  "\n\n");
-   })
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
-   conector.texto("------------------------------------\n");
-   auxStr =  factura.valorParcial.toString() ;  
-   conector.texto("Valor Parcial  :  "+auxStr.padStart( 16  , ' ' )+ "\n");
-   auxStr =  factura.valorIVA.toString() ;  
-   conector.texto("          IVA  :  "+auxStr.padStart( 16  , ' ' )+ "\n");
-   auxStr =  factura.valorTotal.toString() ;  
-   conector.texto("Total Factura  :  "+auxStr.padStart( 16  , ' ' )+ "\n");
-   auxStr =  factura.totalFactura.toString() ;   
-   conector.texto("------------------------------------\n\n");
-   
-   conector.texto("-----------------------------------------------\n");
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
-   conector.texto("Medios de Pago\n"); 
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionDerecha); 
-   conector.texto("-----------------------------------------------\n\n"); 
-   let tamanio = 0;
-   factura.pagos!.forEach((pago:DocpagosModel)=>{
-    tamanio = 42 - pago.nombreMedio!.trim().length; 
-
-    conector.texto( '     '+pago.nombreMedio!.trim()+ pago.valorPagado.toString().padStart(tamanio)+ "\n");
-    if (pago.valorRecibido > 0 ){
-      conector.texto(" Recibido                       vueltos\n");
-    conector.texto("      "+pago.valorRecibido + pago.vueltos.toString().padStart(30,'.') + "\n");
-    }else{
-      conector.texto( "     Referencia" +pago.referencia.padStart(30,'.') +"\n");
-    }
-    
-   })
-   conector.establecerJustificacion(ConectorPlugin.Constantes.AlineacionCentro);
-   
-   conector.texto("\n-----------------------------------------------\n\n");    
-   conector.texto("***Gracias por su compra***\n");
-   
-   conector.feed(4)
-
-   conector.abrirCajon() // Abrir cajón de dinero. Opcional
-   conector.cortar()
-   const respuestaAlImprimir = await conector.imprimirEn(nombreImpresora);
-   if (respuestaAlImprimir === true) {
-       console.log("Impreso correctamente");
-   } else {
-       console.log("Error. La respuesta es: " + respuestaAlImprimir);
-   }
+   let printerManager =  new PrinterManager()
+   printerManager.setDocumento(factura);
+   printerManager.printReceipt();
   } 
 
   getDocumentos(){

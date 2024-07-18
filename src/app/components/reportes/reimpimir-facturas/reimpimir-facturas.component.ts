@@ -88,9 +88,9 @@ export class ReimpimirFacturasComponent implements OnInit {
   
   pagosHtml += '</td></tr></table>'
 
-   Swal.fire({html:pagosHtml, width: '800px' , showCancelButton:true , cancelButtonText:'imprimir'}).then(value=>{
+   Swal.fire({html:pagosHtml, width: '800px' ,showDenyButton:true ,denyButtonText:'imprimir'}).then(value=>{
     console.log(value);
-    if(value.isDismissed){
+    if(value.isDenied){
       this.imprimirFactura(venta);
     }
     

@@ -118,12 +118,12 @@ getProductosCodBarras(codPrd:any){
 // #endregion
 
 // #region Métodos con multi-selects genericos en el codigo 
-getCategorias_marcas(){
+getCategorias_marcas():Observable<[categoriaRequest,marcaRequest]>{
   let datos = {"action": actions.actionSelects ,
                "_tablas" : [vistas.categorias , vistas.marcas]
               };
   console.log('servicios de productos activo - getCategorias_marcas' ,this.baseUrl, datos, httpOptions());
-  return this.http.post(this.baseUrl, datos, httpOptions()) ;
+  return this.http.post<[categoriaRequest,marcaRequest]>(this.baseUrl, datos, httpOptions()) ;
 } 
 // #endregion
  

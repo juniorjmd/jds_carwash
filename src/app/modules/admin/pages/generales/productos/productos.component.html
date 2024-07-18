@@ -86,7 +86,7 @@
             <div class="col-sm-10">Categoria : </div>
             <div class="col-sm-12">
                 <select class="form-control" [(ngModel)]="newProducto.idCategoria" (change)="setCategoria2()">
-                    <option *ngFor="let categoria of categorias" value="{{categoria.id}}">{{categoria.nombre}}</option>
+                    <option *ngFor="let categoria of categorias1" value="{{categoria.id}}">{{categoria.nombre}}</option>
                 </select>
             </div>
             <div class="col-sm-10">Categoria 2 : </div>
@@ -115,13 +115,29 @@
                     <option *ngFor="let tipProducto of tipProductos" value="{{tipProducto.id}}">{{tipProducto.nombre}}</option>
                 </select>
             </div>
+        <div class="col-sm-10">informacion tributaria : </div>
+            <div class="col-sm-12">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'GRABADO'">
+                        <input type="radio" name="options" (click)="newProducto.porcent_iva=0" [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="GRABADO"> Grabado
+                    </label>
+                    <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'EXENTO'">
+                        <input type="radio" name="options" (click)="newProducto.porcent_iva=0"  [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="EXENTO"> Exento
+                    </label>
+                    <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'EXCLUIDO'">
+                        <input type="radio" name="options" (click)="newProducto.porcent_iva=0"  [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="EXCLUIDO"> Excluido
+                    </label>
+                </div>
+            </div>
+        
+        
         </div>
     </div>
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-3">
             <div class="col-sm-10">IVA (%) : </div>
-            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.porcent_iva" class="form-control" placeholder="nombre principal "></div>
+            <div class="col-sm-12"> <input type="number" [readOnly]="newProducto.infoTributaria !== 'GRABADO'" [(ngModel)]="newProducto.porcent_iva" class="form-control" placeholder="nombre principal "></div>
         </div>
         <div class="col-sm-3">
             <div class="col-sm-10">precio de compra : </div>

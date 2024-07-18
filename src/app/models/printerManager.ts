@@ -217,34 +217,35 @@ private footer():string{
 }
 private pagos():string{
   let html = '';
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
 
   if(this.doc.pagos?.length! > 0 ){
     html += ` <hr>
-     <div style="text-align: center;" name='pagos' >
+     <div style="text-align: left;" name='pagos' >
        <p>Pagos : </p>
        <hr>
-       <div style="text-align: right;">`;
+       <div style="text-align: left;"><table style="with:100%">`;
 
         this.doc.pagos?.forEach((pago) => {
           const valorPagado = typeof pago.valorPagado  === 'number' ? pago.valorPagado : parseFloat(pago.valorPagado??'0'); 
           const valorRecibido = typeof pago.valorRecibido  === 'number' ? pago.valorRecibido : parseFloat(pago.valorRecibido??'0'); 
           const vueltos = typeof pago.vueltos  === 'number' ? pago.vueltos : parseFloat(pago.vueltos??'0'); 
 
-          html += `
-              <p>${pago.nombreMedio!.trim()} ${valorPagado.toFixed(2).padStart(30 - pago.nombreMedio!.trim().length)}</p>
+          html += `<tr>
+              <td style="width:95%">${pago.nombreMedio!.trim()}</td>
+              <td style="    text-align: right;"> ${currencyFormatter.format(valorPagado)}</td></tr>
             `;
             if (valorRecibido> 0) {
-              html += `
-                  <p>Recibido ${valorRecibido.toFixed(2).padStart(30)} Vueltos ${vueltos.toFixed(2).padStart(30, '.')}</p>
+              html += `<tr> <td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Recibido ${currencyFormatter.format(valorRecibido)}<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vueltos ${currencyFormatter.format(vueltos) }</p></td></tr>
                 `;
             } else {
               html += `
-                  <p>Referencia ${pago.referencia.padStart(30, '.')}</p>
+                  <tr> <td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Referencia ==> ${pago.referencia }</td></tr>
                 `;
             }
  });
 
- html += `<hr></div></div>`;
+ html += `</table><hr></div></div>`;
 }
   return html;
 }
@@ -254,15 +255,13 @@ private openPrintWindows(printContent:string){
   console.log("html a imprimir" , printContent)
     const WindowPrt = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0')!;  
     if (WindowPrt) {
+      console.log('entro a print', WindowPrt);
+      
       WindowPrt.document.write(printContent);
       WindowPrt.document.close();
-      WindowPrt.onload = () => {
-          WindowPrt.focus();
-          WindowPrt.addEventListener('afterprint', () => {
+      WindowPrt.addEventListener('afterprint', () => {
             WindowPrt.close();
-        });
-          WindowPrt.print(); 
-      };
+        });  WindowPrt.print();
   }
 }
 
