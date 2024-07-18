@@ -20,7 +20,7 @@ import { categoriaRequest, marcaRequest } from 'src/app/interfaces/producto-requ
   styleUrls: ['./productos.component.css']
 }) 
 export class ProductosComponent implements OnInit {
-  
+  buscar = true;
   auxBodega:BodegasModule = {nombre : 'SELECCIONAR LA BODEGA' ,estado:0,   id:0  , descripcion : ''}
   existenciasPrd:PrdExistenciasModule[]=[] ;
   
@@ -526,6 +526,7 @@ export class ProductosComponent implements OnInit {
        (respuesta:any)=>{console.log(respuesta)
         
        if (respuesta.error === 'ok'){
+        this.buscar = true;
         Swal.fire('datos ingresados con exito'); 
          this.limpiarFormulario();
       }else{ 
@@ -547,6 +548,7 @@ export class ProductosComponent implements OnInit {
 
      
      getProductos(){ 
+      if(!this.buscar){return}
     this.loading.show()
     this.productoService.getProductosGeneral([0,100]).subscribe({
       next: 
@@ -554,7 +556,7 @@ export class ProductosComponent implements OnInit {
          console.log(datos);
          
     if (datos.numdata > 0 ){ 
-
+      this.buscar =  false;
       this.Productos = datos.productos 
       console.log(this.Productos);
     }else{
