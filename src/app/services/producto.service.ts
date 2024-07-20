@@ -13,10 +13,11 @@ import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModule } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { categoriaRequest, marcaRequest, ProductoRequest } from '../interfaces/producto-request';
+import { categoriaRequest, DescuentoRequest, DocumentoCierreRequest, marcaRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
+import { DescuentoModule } from '../models/descuento/descuento.model';
 
 
 @Injectable({
@@ -48,9 +49,56 @@ asignarMarcas(marcas:MarcasModel[]){
 asignarCategorias(categoria:CategoriasModel[]){
     this.categoriasSource.next( categoria) 
 }
+
+setDescuento(desc:DescuentoModule){
+  let datos:any  = {"action": actions.actionInsert ,
+      "_tabla" : TABLA.inv_descuentos,
+     };
+
+     let idaux = ( typeof(desc.id) == 'string' )? parseInt(desc.id):desc.id
+     desc.usuario_creacion = 'USUARIO_LOGUEADO';
+     desc.name_usuario_creacion = undefined;
+     desc.name_usuario_edicion = undefined; 
+     if (idaux != undefined &&  idaux > 0 ){
+      datos = {
+        ...datos,
+        _where: [{ columna: "id", tipocomp: "=", dato: idaux }]
+      }; 
+      desc.id =  undefined;
+       desc.usuario_creacion =   undefined;
+       desc.usuario_edicion = 'USUARIO_LOGUEADO';
+      
+     datos.action=actions.actionUpdate                 
+     } 
+     desc.NombreTipo =  undefined;
+     desc.nombre_estado =  undefined;
+      desc.obj  =  undefined ; 
+     datos = {
+      ...datos, 
+       _arraydatos  : desc 
+    }; 
+
+     console.log(datos);
+     
+      return this.http.post(url.action , datos, httpOptions()) ;
+      
+
+       
+}
+
+getDescuentos():Observable<DescuentoRequest>{
+  let datos:any  = {"action": actions.actionSelect ,
+      "_tabla" : vistas.inv_descuentos,
+     };
+ 
+     console.log(datos);
+     
+      return this.http.post<DescuentoRequest>(url.action , datos, httpOptions()) ;
+       
+}
 setCategorias(CATEGORIA:CategoriasModel){
   let datos  = {"action": actions.actionInsert ,
-      "_tabla" : TABLA.categorias,
+      "_tabla" : TABLA.inv_descuentos,
       "_arraydatos" : CATEGORIA
      };
      

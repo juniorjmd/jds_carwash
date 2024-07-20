@@ -261,7 +261,7 @@ private openPrintWindows(printContent:string){
       WindowPrt.document.close();
       WindowPrt.addEventListener('afterprint', () => {
             WindowPrt.close();
-        });  WindowPrt.print();
+        }); // WindowPrt.print();
   }
 }
 

@@ -20,6 +20,7 @@
    categorias : "vw_inv_categorias" ,
    cajasActivas : "vw_cajas_activas" ,
    ventasCerradas : "vw_obj_ventas" ,
+   inv_descuentos : "vw_inv_descuentos" ,
 
    ciudades : "vw_mst_per_clientes_ciudades" ,
     departamento: "vw_mst_per_clientes_deptos" ,

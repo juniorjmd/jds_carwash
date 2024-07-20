@@ -21,7 +21,7 @@ export class IngresarProductoVentaComponent {
   parceros : ProductoModule[] = []; 
   show = true ;
   show_reemplazo = false;  
-  existencia?:PrdExistenciasModule;
+  existencia?:PrdExistenciasModule;  
   constructor(   private prdService : ProductoService,
     
     public dialogo: MatDialogRef<IngresarProductoVentaComponent>,
@@ -41,14 +41,17 @@ export class IngresarProductoVentaComponent {
     let idBodegaStock =   this.arrayDocPrd.documento.idStockOdooPOS??0 
     try { 
       if (Array.isArray(this.arrayDocPrd.producto?.existencias)) {
-        this.existencia = this.arrayDocPrd.producto?.existencias?.filter(x => x.id_bodega === idBodegaStock)[0] || this.existencia;
+        this.existencia = 
+        this.arrayDocPrd.producto?.existencias?.
+        filter(x => x.id_bodega == idBodegaStock)[0] || this.existencia;
       } 
   
     } catch (error) {
       console.error(error)
     }
      console.log("existencia" , this.arrayDocPrd.producto?.existencias ,  this.existencia ) 
-if(this.existencia != undefined  ){
+
+     if(this.existencia != undefined  ){
      
     console.log('menor o igual a 10' , typeof(this.existencia.cant_actual ) , this.existencia.cant_actual )
      switch (this.existencia.cant_actual){
@@ -92,6 +95,7 @@ if(this.existencia != undefined  ){
       
     }
   }
+  //this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,false];
   }
     
   addCnt(cnt:number){

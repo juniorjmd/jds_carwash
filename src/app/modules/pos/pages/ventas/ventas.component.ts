@@ -303,7 +303,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       'idproducto': this.codigoProducto,
       'documento': this.documentoActivo!
     }; 
-    if (this.codigoProducto.trim() !== '' && this.buscarClose) {
+    if (this.codigoProducto.trim() !== '' ) {
       
       this.loading.show();
       this.productoService.getProductoByIdOrCodBarra(this.codigoProducto).subscribe({

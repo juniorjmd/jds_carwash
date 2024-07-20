@@ -6,6 +6,7 @@ import { CntCuentaMModel } from "../models/cnt-cuenta-m/cnt-cuenta-m.module";
 import { CntGruposModel } from "../models/cnt-grupos/cnt-grupos.module";
 import { CntOperacionesModel } from "../models/cnt-operaciones/cnt-operaciones.module";
 import { CntSubCuentaModel, vwCntSubCuentaModel } from "../models/cnt-sub-cuenta/cnt-sub-cuenta.module";
+import { DescuentoModule } from "../models/descuento/descuento.model";
 import { MarcasModel } from "../models/marcas/marcas.module";
 import { ProductoModule } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
@@ -23,6 +24,12 @@ export interface ProductoRequest {
 
 export interface DocumentoRequest { 
   data: {objeto: DocumentosModel}[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface DescuentoRequest { 
+  data:   DescuentoModule[];
   query: string;
   numdata: number;
   error: string;

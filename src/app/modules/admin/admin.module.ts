@@ -19,7 +19,9 @@ import { ProductosComponent } from './pages/generales/productos/productos.compon
 import { TiposDeDocumentosComponent } from './pages/generales/tipos-de-documentos/tipos-de-documentos.component';
 import { TiposEstablComponent } from './pages/generales/establecimientos/tipos-establ.component'; 
 import { SharedModule } from '../shared/shared.module';
-import { AdminCategoriasComponent } from './modals/admin-categorias/admin-categorias.component'; 
+import { AdminCategoriasComponent } from './modals/admin-categorias/admin-categorias.component';
+import { DescuentosComponent } from './pages/descuentos/descuentos.component';
+import { ActividadDescuentoComponent } from './pages/actividad-descuento/actividad-descuento.component'; 
 
  
 @NgModule({
@@ -39,7 +41,9 @@ import { AdminCategoriasComponent } from './modals/admin-categorias/admin-catego
     ImpuestosComponent,
     CajasNuevaComponent,
     CajasDetalleComponent,
-    AdminCategoriasComponent 
+    AdminCategoriasComponent,
+    DescuentosComponent,
+    ActividadDescuentoComponent 
   ],
   imports: [
     CommonModule,
