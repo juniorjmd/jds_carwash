@@ -20,6 +20,7 @@
    categorias : "vw_inv_categorias" ,
    cajasActivas : "vw_cajas_activas" ,
    ventasCerradas : "vw_obj_ventas" ,
+   inv_descuentos : "vw_inv_descuentos" ,
 
    ciudades : "vw_mst_per_clientes_ciudades" ,
     departamento: "vw_mst_per_clientes_deptos" ,
@@ -31,6 +32,8 @@
     establecimiento: 'vw_establecimiento',
     tipo_establecimiento: 'vw_tipo_establecimiento',
     documento: 'vw_obj_documentos',
+    cartera: 'vw_mst_mov_cartera',
+    carteraAbonos: 'vw_mst_mov_cartera_abonos',
     contadores:'vw_contadores',
     tipos_documentos_con_cont: 'vw_t_documentos_con_cont',
     domicilios:'vw_documentos_domicilio',

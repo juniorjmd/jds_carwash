@@ -17,8 +17,7 @@ import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { LoginService } from 'src/app/services/login.services';
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd-cliente/fnd-cliente.component';
+import { of } from 'rxjs'; 
 import Swal from 'sweetalert2';
 import { IngresarProductoVentaComponent } from '../../modals/ingresar-producto-venta/ingresar-producto-venta.component';
 import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto';
@@ -27,6 +26,9 @@ import { DatosInicialesService } from 'src/app/services/DatosIniciales.services'
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
 import { NewGastoComponent } from '../../modals/new-gasto/new-gasto.component';
 import { PrinterManager } from 'src/app/models/printerManager';  
+import { BusquedaPersona } from 'src/app/interfaces/busqueda-persona';
+import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
+import { AbonosCuentasXCobrarComponent } from '../../modals/abonos-cuentas-xcobrar/abonos-cuentas-xcobrar.component';
 import { GenerarCntPorCobrarComponent } from '../../modals/generar-cnt-por-cobrar/generar-cnt-por-cobrar.component';
 
 @Component({
@@ -57,7 +59,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   documentoSeleccionadoActivo: DocumentosModel = new DocumentosModel(); 
   sucursal?:vwsucursal;
   @ViewChild('codProd') codProdlement!: ElementRef;
-  continuar = false;
+  continuar:boolean;
 
   constructor(
     public loading: loading, 
@@ -69,25 +71,38 @@ export class VentasComponent implements AfterViewInit, OnInit {
     private dInicialServ: DatosInicialesService
   ) {    
           this.getUsuarioLogueado();
+          this.continuar =  true;
       
   }
 
   ngOnInit(): void {  
     this.getMediosP();
     this.getAsyncDocumentos();
+    
+    this.dInicialServ.continueVenta.subscribe({next:(value)=>{
+      this.continuar = value;
+      console.log('continuar',this.continuar);
+      
+    }})
     this.dInicialServ.currentSucursal.subscribe({next:(suc)=>{ 
        this.sucursal =  suc;
        PrinterManager.setSucursal(this.sucursal!);
 
     }})
-    this.dInicialServ.continueVenta.subscribe({next:(value)=>{
-      this.continuar = value;
+  
+  }
+
+  getDatosContables(){
+    this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
+      console.log('getCuentasContablesEstablecimientoUsuario' , value)
+      this.dInicialServ.validarCuentasContablesEstablecimiento(value.data[0] ) 
     }})
   }
 
   ngAfterViewInit(): void {
     if(this.documentoActivo!=null){
       setTimeout(() => {
+        if (!this.continuar){this.getDatosContables();}
         this.irbuscarProducto();
       }, 5000);
     }
@@ -269,7 +284,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       catchError((error: any) => {
         this.loading.hide(); 
         try {
-          Swal.fire(error, '', 'error');
+          Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
          }
@@ -288,7 +303,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       'idproducto': this.codigoProducto,
       'documento': this.documentoActivo!
     }; 
-    if (this.codigoProducto.trim() !== '' && this.buscarClose) {
+    if (this.codigoProducto.trim() !== '' ) {
       
       this.loading.show();
       this.productoService.getProductoByIdOrCodBarra(this.codigoProducto).subscribe({
@@ -400,7 +415,44 @@ export class VentasComponent implements AfterViewInit, OnInit {
       });
   }
 
+  generarAbonosCuentasXcobrar() { 
+    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+      return;
+    } 
+      if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+        return;
+      }
+      this.newAbrirDialog.open(FndClienteComponent,{ data: {  invoker:'cuentasPorCobrarVentas' } })
+      .afterClosed()
+      .pipe(
+        tap((respuesta: BusquedaPersona)=>{
+          if (respuesta.response) {  
+            this.newAbrirDialog.open(AbonosCuentasXCobrarComponent, { data:respuesta.persona })
+            .afterClosed()
+            .pipe(
+              tap((confirmado:  boolean ) => {
+                if (confirmado) { this.getDocumentos(); }
+              })
+            ).subscribe({
+              next: () => {},
+              error: (error) => console.error('Error:', error),
+              complete: () => console.log('AbonosCuentasXCobrarComponent completo')
+            });
+        }
+      })      ).subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () => console.log('buscarCliente completo')
+      });   
+     
+  
+
+  
+  }
   asignarPagosACuentaPorCobrar() {
+    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+      return;
+    }
     if (typeof(this.documentoActivo!.listado) === 'undefined' || (
        this.documentoActivo!.listado !== undefined &&
       this.documentoActivo!.listado.length === 0) ){ 
@@ -518,7 +570,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       catchError((error: any) => {
         this.loading.hide();
         try {
-          Swal.fire(error, '', 'error');
+          Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
          }
@@ -563,8 +615,49 @@ export class VentasComponent implements AfterViewInit, OnInit {
       complete: () => console.log('cancelarDocumento completo')
     });
   }
+  crearCotizacion() {
+    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+      return;
+    }
+    this.loading.show();
+    this.documentoService.convertirDocumentoEnCotizacion(this.documentoActivo!.orden).pipe(
+      tap((respuesta: DocumentoCierreRequest) => {
+        if (respuesta.error === 'ok') {
+          this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
+          console.log('facturarCotizacion =>>>>>', this.documentoRetorno);
+          this.printer_factura_final();
+          this.crearDocumento();
+        } else {
+          this.getDocumentos();
+          try {
+            Swal.fire(respuesta.error, '', 'error');
+           } catch (error : any) {
+            Swal.fire('error en el servidor', '', 'error');
+           }
+        }
+        this.loading.hide();
+        this.irbuscarProducto();
+      }),
+      catchError((error: any) => {
+        this.loading.hide();
+        try {
+          Swal.fire(error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
+        return of(null);
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('cancelarDocumento completo')
+    });
+  }
 //generar factura domicilio
   generarEnvio() { 
+    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+      return;
+    }
     if (this.documentoActivo!.totalFactura <= 0) { 
       
       Swal.fire('El valor en la factura debe ser mayor a cero', '', 'error');
@@ -588,7 +681,11 @@ export class VentasComponent implements AfterViewInit, OnInit {
       this.generarDomicilio();
     }
   }
-
+ generarLibranza(){
+  if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+    return;
+  }
+ } 
   generarDomicilio() {
     this.loading.show();
     this.documentoService.generarDomicilioDocumento(this.documentoActivo!.orden).pipe(
@@ -609,7 +706,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       catchError((error: any) => {
         this.loading.hide();
         try {
-          Swal.fire(error, '', 'error');
+          Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
          }
@@ -652,6 +749,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
     });
   }
   generarGasto(){
+    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+      return;
+    }
     this.newAbrirDialog.open(NewGastoComponent, { data: null })
     .afterClosed()
     .pipe(
@@ -668,6 +768,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
     });
   }
   busquedaAuxiliarProducto() { 
+    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+      return;
+    }
     this.buscarClose = false;
     this.newAbrirDialog.open(BuscarProdDirectoComponent, { data: this.codigoProducto })
       .afterClosed()
@@ -705,6 +808,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 
   buscarCliente(){
+    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+      return;
+    }
     this.newAbrirDialog.open(FndClienteComponent,{ data: { docActivo : this.documentoActivo , invoker:'ventas' } })
     .afterClosed()
     .pipe(

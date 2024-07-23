@@ -24,12 +24,13 @@ export class ProductoModule extends ModelBase {
   public categoria :CategoriasModel | undefined ;
   public marca :MarcasModel | undefined ;
     
-    precioVenta?:number; 
-    PrecioSinIVA ?:number; 
-    valorIVA?:number;
+    precioVenta :number= 0; 
+    PrecioSinIVA  :number= 0;
+    valorIVA :number= 0;
     descuento :number = 0;
     cantidad :number = 0;
     cantidadVendida  : number = 0;
+    infoTributaria:string = 'GRABADO'
   constructor( 
     @Inject(String) public nombre :string, 
     @Inject(String) public tipo_prod_nombre :string,  
@@ -71,9 +72,9 @@ export class ProductoModule extends ModelBase {
       
       if (this.precios?.length > 0 )
         {
-          this.precioVenta =this.precios[0].precio_con_iva; 
-          this.PrecioSinIVA = this.precios[0].precio_antes_de_iva;   
-          this.valorIVA = this.precios[0].valor_iva; 
+          this.precioVenta =this.precios[0].precio_con_iva??0; 
+          this.PrecioSinIVA = this.precios[0].precio_antes_de_iva??0;    
+          this.valorIVA = this.precios[0].valor_iva??0; 
         }
 
         if(this.existencias?.length > 0 ){

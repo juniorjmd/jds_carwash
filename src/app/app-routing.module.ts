@@ -17,9 +17,7 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
     { path: 'login', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule) },
     { path : 'home' , 
     component : HomeComponent ,
-      children : [      
-        
-        
+      children : [             
         { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
         { path: 'vehiculos', loadChildren: () => import('./modules/vehiculos/vehiculos.module').then(m => m.VehiculosModule) },
         { path: 'pos', loadChildren: () => import('./modules/pos/pos.module').then(m => m.PosModule) }, 
@@ -28,7 +26,6 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
         { path : 'parametrosDelSistema' , component : ParametrosComponent}, 
         { path : 'inicio' ,component : InicioComponent, },
         { path : 'empleados' , loadChildren: () => import('./modules/mod-empleados/mod-empleados.module').then(m => m.ModEmpleadosModule) },
-       
         { path : 'devoluciones' , component : DevolucionesComponent},
         { path : 'envios' , component : EnviosComponent},
         { path : 'cierres' ,      component: CierresComponent},

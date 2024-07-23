@@ -1,0 +1,63 @@
+<div class="container">
+    <h2>Formulario de Registro</h2> 
+        <div class="row">
+            <div class="col-sm-4"> 
+                    <div class="form-group">
+                        <label for="tipo">Tipo</label>
+                        <select class="form-control" id="tipo"  [(ngModel)] = "newDesc.tipo" >
+                            <option value="P">Porcentaje</option>
+                            <option value="C">Cantidad</option>
+                        </select>
+                    </div>
+                  </div> 
+                  <div class="col-sm-4"> 
+                        <div class="form-group">
+                            <label for="cantidad">Cantidad</label>
+                            <input type="number"  [(ngModel)] = "newDesc.cantidad"  class="form-control" id="cantidad" placeholder="Ingrese la cantidad">
+                        </div>
+                      </div> 
+        </div>
+     
+       
+
+        <div class="row">
+            <div class="col-sm-4"> 
+                     <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text"  [(ngModel)] = "newDesc.nombre"  class="form-control" id="nombre" placeholder="Ingrese el nombre">
+        </div>
+                  </div> 
+                  <div class="col-sm-4"> 
+                        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea class="form-control"  [(ngModel)] = "newDesc.descripcion"  id="descripcion" rows="3" placeholder="Ingrese una descripción"></textarea>
+        </div> 
+                      </div></div> 
+       
+       
+        <button type="submit" (click)="editar()" class="btn btn-primary">Guardar</button> 
+    <hr>
+    <h3>Listado de Registros</h3>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr> 
+                <th scope="col">Nombre</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+             <tr *ngFor="let item of descuentos"> 
+                <th scope="col">{{item.nombre}}</th>
+                <th scope="col">{{item.cantidad}}</th>
+                <th scope="col">{{item.NombreTipo}}</th>
+                <th scope="col">{{item.descripcion}}</th>
+                <th scope="col"><button class="btn btn-primary" (click)="setEditar(item)">editar</button>    
+                </th>
+            </tr>
+           
+        </tbody>
+    </table>
+</div>

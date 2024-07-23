@@ -19,81 +19,59 @@ export class ContadoresComponent implements OnInit {
   tipContadores :TipoDocumento [] = [];
   contadores :Contador [] = [] ;
   cajas :cajaModel[]  = []; 
-  newContador :  Contador = {
+  auxnewContador :  Contador = {
     id: 0,
     codContador: '',
+    desde : 0 , 
+    hasta : 0,
     establecimiento: 0,
     contador: 0,
     tipoContador: 0,
     contador_real_establecimiento: 0,
-    estado: 0
+    estado: 0,
+    resolucion : ''
   };
+  newContador :  Contador 
   esta : establecimientoModel[] = [];
   constructor( private serviceCaja : cajasServices ,    
     private loading : loading ) { 
+      this.newContador={...this.auxnewContador  };
       this.Cancelar();
-      this.getTiposDocumentosConContadores();
-     this.getEstablecimiento();
+      this.getTiposDocumentosConContadores(); 
      this.getContadores();
       }
       ngOnInit(): void {
+        this.serviceCaja.currentArrEsta.subscribe({next:(esta:establecimientoModel[]|null)=>{
+          if(esta) this.esta = esta;
+        }})
       }
       Cancelar(){
-        this.newContador={
-          tipoContador:0,
-                id : 0,
-                codContador :'',
-                establecimiento : 0, 
-                contador:0, 
-                contador_real_establecimiento:0, 
-                estado:0,
-                nombreEstablecimiento:'',
-                nombre_estado :'',    
-                desde :1    ,
-                hasta : 1000      };
+        this.newContador={...this.auxnewContador  };
         
          
       }
       getTiposDocumentosConContadores(){
         this.tipContadores= [];
         this.serviceCaja.getTiposDocumentosConContadores()
-         .subscribe(
-          (datos:any)=>{
-             console.log(datos);
-             this.esta = [];   
-        if (datos.numdata > 0 ){ 
-          
+         .subscribe({next:     (datos:any)=>{
+             console.log(datos); 
+        if (datos.numdata > 0 ){  
           datos.data!.forEach((dato:TipoDocumento , index:number )=>{
             this.tipContadores[index] = dato;
           })  
         }
     
             this.loading.hide()
-          } ,
-          error => {this.loading.hide();
+          } ,error:       error => {this.loading.hide();
             
             this.tipContadores = [];
             alert( error.error.error);
-          }
-          );
-      }
-      getEstablecimiento(){
-        this.newContador.establecimiento = 0;
-        this.serviceCaja.getEstablecimientos()
-         .subscribe({next:        (datos:establecimientosRequest)=>{
-             console.log('datos establecimientosRequest',datos);
-             this.esta = [];   
-            if (datos.numdata > 0 ){ 
-              this.esta =  datos.data??[]; 
-              console.log('establecimientos',this.esta);
-            }
-            this.loading.hide()
-          } , error:   error => {this.loading.hide(); 
-         this.esta = [];
-            alert( error.error.error);
           }}
           );
-      }
+      } 
+
+
+
       setActualizaCaja(cajaActualizar : Contador){
         this.newContador = cajaActualizar ; 
       }
@@ -101,7 +79,7 @@ export class ContadoresComponent implements OnInit {
       this.contadores = [];
       this.loading.show()
       this.serviceCaja.getContadores()
-         .subscribe(
+         .subscribe({next :
           (datos:any)=>{
              console.log(datos);
              
@@ -115,10 +93,9 @@ export class ContadoresComponent implements OnInit {
         }
     
             this.loading.hide()
-          } ,
-          error => {this.loading.hide();
+          } , error: error => {this.loading.hide();
             alert( error.error.error);
-          }
+          }}
           );
     }
     
@@ -140,10 +117,41 @@ export class ContadoresComponent implements OnInit {
         alert('Debe escoger el tipo de contador');
         return;
        }
+       if (this.newContador.desde  === 0){
+        this.loading.hide();
+        alert('Debe escoger el tipo de contador');
+        return;
+       }
+       if (this.newContador.hasta  === 0){
+        this.loading.hide();
+        alert('Debe escoger el tipo de contador');
+        return;
+       } 
+
+       if (this.newContador.resolucion !== undefined && (typeof this.newContador.resolucion === 'string' && this.newContador.resolucion.trim() != '' )){
+        if (this.newContador.fechaInicioResolucion  === undefined || this.newContador.fechaInicioResolucion.toString() == ''){
+                  this.loading.hide();
+                  alert('Debe escoger el tipo de contador');
+                  return;
+                } 
+        if (this.newContador.fechaFinResolucion  === undefined || this.newContador.fechaFinResolucion.toString() == ''){
+          this.loading.hide();
+          alert('Debe escoger el tipo de contador');
+          return;
+         } 
+
+         if (this.newContador.fechaFinResolucion <= this.newContador.fechaInicioResolucion)
+         { this.loading.hide();
+          alert('error en el rango de fecha');
+          return;}
+
+
+
+       } 
        
        this.loading.show(); 
        this.serviceCaja.setConsecutivo(this.newContador).subscribe(
-        (respuesta:any)=>{console.log(respuesta)
+       {next: (respuesta:any)=>{console.log(respuesta)
          
         if (respuesta.error === 'ok'){
           alert('datos ingresados con exito');  
@@ -153,11 +161,10 @@ export class ContadoresComponent implements OnInit {
           alert(respuesta.error);
           this.loading.hide();
         }
-        },
-        error => {this.loading.hide();
+        }, error:   error => {this.loading.hide();
           alert( error.error.error);
           this.loading.hide();
-        }
+        }}
     
        )
       }

@@ -19,8 +19,8 @@ export class DocumentosModel {
         descuento!:number;
         valorIVA!:number;
         valorTotal!:number;
-          totalFactura!:number;
-          ajusteAlpeso!:number;
+        totalFactura!:number;
+        ajusteAlpeso!:number;
         fecha!:Date;
         hora!:Time;
         usuario!:number;
@@ -49,10 +49,6 @@ export class DocumentosModel {
         idStockOdooVtl?:number;
         nameStockOdooVtl?:string;  
         clienteobj?: Clientes ;
-        cajaObj?: cajaModel[];
-        impuestos?:DocumentoImpuestos[];
-        listado?:DocumentoListado[];
-        pagos?:DocpagosModel[]; 
         idConsecutivo?:number;
         estadoContador?:number;
         consecutivoDesde?:number;
@@ -64,15 +60,30 @@ export class DocumentosModel {
         fechaInicioResolucion?:number|Date;
         fechaFinResolucion?:number|Date;
         nombreUsuarioResolucion ?:string; 
-        sucursal?:vwsucursal;
-
-
+        sucursal?:vwsucursal;  
         campo_info_1?:string;
         campo_info_2?:string;
         campo_info_3?:string;
         campo_info_4?:string;
         campo_info_5?:string;
+        campo_auxiliar_1:number = 0;  
+        campo_auxiliar_2:number=0; 
+        campo_auxiliar_3:number = 0; 
+        campo_auxiliar_4:number = 0; 
+        campo_auxiliar_5:number = 0; 
+        campo_auxiliar_6:number = 0;
+        
+        cajaObj : cajaModel[];
+        impuestos :DocumentoImpuestos[];
+        listado :DocumentoListado[] = [];
+        pagos :DocpagosModel[]; 
 
          // Método para generar el HTML de la tirilla de punto de venta
-  
+     constructor(){
+        
+        this.cajaObj = []
+        this.impuestos = []
+        this.listado = []
+        this.pagos = []
+     }
 }

@@ -24,7 +24,7 @@
         <div class="col-sm-2" style="margin-right: 15px; text-align: end;">Establecimiento :</div>
         <div class="col-sm-2">
             <select class=" o_input " [(ngModel)]="newContador.establecimiento">
-                <option [ngValue]=0>Establecimiento</option>
+                <option [ngValue]=0 >Establecimiento</option>
                 <option *ngFor="let item of esta" [ngValue]="item.id">{{item.nombre}}</option> 
             </select>
         </div>

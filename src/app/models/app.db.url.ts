@@ -2,6 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 const action = 'https://services.carwash.sofdla.com.co/services/view/action/';
 const actionDoc = 'https://services.carwash.sofdla.com.co/services/view/action/documentos/';
+const actionVentas = 'https://services.carwash.sofdla.com.co/services/view/action/ventas/';
 const login = 'https://services.carwash.sofdla.com.co/services/view/action/login/';
 const datosIniciales = 'https://services.carwash.sofdla.com.co/services/view/action/datosiniciales/';
 const brand = 'https://services.carwash.sofdla.com.co/services/view/action/brand/';
@@ -24,6 +25,7 @@ export const url = {
     'httpOptionsSinAutorizacion':httpOptionsSinAutorizacion,
     'action': action,
     'actionDocumentos': actionDoc,
+    'actionVentas':  actionVentas ,
     'brand': brand,
     'datosIniciales':datosIniciales,
     'login': login

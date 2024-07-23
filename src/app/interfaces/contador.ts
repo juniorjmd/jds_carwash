@@ -13,11 +13,11 @@ export interface Contador {
        estado:number;
        nombreEstablecimiento?:string;
         nombre_estado?:string;
-        desde?:number;
-        hasta?:number;
+        desde :number;
+        hasta :number;
         usuario?:number;
         nombreUsuario?:string;
-        resolucion?:string;
+        resolucion:string;
         fechaInicioResolucion?:Date;
         fechaFinResolucion?:Date;
 }

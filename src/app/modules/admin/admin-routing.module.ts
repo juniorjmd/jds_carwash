@@ -13,10 +13,12 @@ import { ImpuestosComponent } from './pages/generales/impuestos/impuestos.compon
 import { MediosDePagoComponent } from './pages/generales/medios-de-pago/medios-de-pago.component';
 import { ProductosComponent } from './pages/generales/productos/productos.component';
 import { TiposDeDocumentosComponent } from './pages/generales/tipos-de-documentos/tipos-de-documentos.component';
+import { DescuentosComponent } from './pages/descuentos/descuentos.component';
 
 const routes: Routes = [{ path : '' , component: DatosPosComponent,
               children:[
                 {path : 'bodegas' , component:BodegasComponent},
+                {path : 'descuentos' , component:DescuentosComponent},
                 { path : 'generales' ,      component: GeneralesComponent},
                 { path : 'contadores' ,      component: ContadoresComponent},
                 { path : 'Medios' ,      component: MediosDePagoComponent},

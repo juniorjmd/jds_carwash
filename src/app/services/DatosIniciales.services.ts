@@ -4,6 +4,7 @@ import { actions } from 'src/app/models/app.db.actions';
 import { url } from 'src/app/models/app.db.url';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { cajaModel } from '../models/ventas/cajas.model';
 
 
 
@@ -28,6 +29,25 @@ export class DatosInicialesService {
         this.continue.next(val);
     }
 
+
+    validarCuentasContablesEstablecimiento(caja:cajaModel) {
+        if (caja == undefined
+            || caja!.idCCntCCobrar == 0
+            || caja!.idCCntCPagar == 0
+            || caja!.idCCntCompras == 0   
+            || caja!.idCCntIvaCompra == 0 
+            || caja!.idCCnttIvaVenta == 0  
+            || caja!.idCCntCostoVenta == 0 
+            || caja!.idCCntVenta == 0  
+            || caja!.cuentaContableGastos == undefined  || caja!.cuentaContableGastos! == 0  
+            || caja!.cuentaContableEfectivo == undefined  || caja!.cuentaContableEfectivo! == 0   )
+        {
+            this.chageContinueVenta(false) ;
+          }else{
+            this.chageContinueVenta(true) ;
+          }
+      
+    }
     getDatosIniSucursal(){
        
         let datos = {"action": actions.datosInicialesSucursal};

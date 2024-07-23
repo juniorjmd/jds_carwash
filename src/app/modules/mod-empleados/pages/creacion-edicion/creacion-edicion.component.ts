@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { loading } from 'src/app/models/app.loading';   
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { MatDialog } from '@angular/material/dialog';
-import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd-cliente/fnd-cliente.component';
+import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { tap } from 'rxjs';
 
 @Component({

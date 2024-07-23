@@ -23,10 +23,14 @@ import { MenuItemLiComponent } from './componentes/menu-item-li/menu-item-li.com
 import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { OnlyNumberDirective } from 'src/app/directives/OnlyNumberDirective';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
-import { DocumentosDropdownComponent } from './components/documentos-dropdown/documentos-dropdown.component';
+import { DocumentosDropdownComponent } from './components/documentos-dropdown/documentos-dropdown.component'; 
+import { FndClienteComponent } from './modals/fnd-cliente/fnd-cliente.component';
  
 @NgModule({
-  declarations: [LiNavItemComponent ,OnlyNumberDirective,
+  declarations: [
+    FndClienteComponent,
+    LiNavItemComponent ,
+    OnlyNumberDirective,
     Modal1Component   ,
     MenucardsComponent,
     DialogoConfirmacionComponent,
@@ -42,18 +46,19 @@ import { DocumentosDropdownComponent } from './components/documentos-dropdown/do
     NavbarComponent,
     MenuItemLiComponent,
     DropdownComponent,
-    DocumentosDropdownComponent],
+    DocumentosDropdownComponent  ],
   imports: [ NgbModule ,
     NgxBootstrapIconsModule.pick(allIcons)  ,
     NgxDatatableModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
 
 
   ],
-  exports:[LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,
+  exports:[FndClienteComponent,
+    LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,
     TabComponent,
     TableComponent ,
     TableTrComponent,

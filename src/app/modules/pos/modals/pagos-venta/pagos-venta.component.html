@@ -9,7 +9,10 @@
             </thead>
             <tbody>
                 <tr *ngFor="let pago of pagos; let i = index">
-                    <td style="align-content: center;">{{pago.nombreMedio}}</td>
+                    <ng-container *ngIf="pagos[i].nombreMedio !== 'BONOS'">
+                    <td style="align-content: center;">{{pago.nombreMedio}}
+                        </td>
+                        <td style="align-content: center;"> <button  *ngIf="i !== indexEfectivo" class="btn btn-warning" (click)="adicionarOtroBono(i)">+</button></td>
                     <td  style="align-content: center;" *ngIf="i === indexEfectivo">
                         <input type="number" readonly class="form-control" [(ngModel)]="pagos[i].valorPagado">
                     </td> 
@@ -45,9 +48,20 @@
                             </tbody>
                         </table>
                     </td>
+                </ng-container>
+                    <ng-container *ngIf="pagos[i].nombreMedio == 'BONOS'">
+                        <td style="align-content: center;">{{pago.nombreMedio}} </td >
+                            <td style="align-content: center;">   <button class="btn btn-warning" (click)="adicionarOtroBono(i)">+</button>                 </td>
+                        <td><input type="text" (keyup.enter)="buscarBono(i)" class="form-control form-control-sm" [(ngModel)]="pagos[i].referencia"></td>
+                        <td  style="align-content: center;"  > <input (change)="cambioDeValor(i)" readonly type="number" class="form-control" [(ngModel)]="pagos[i].valorPagado"></td>
+                            
+                            
+                    </ng-container>
+
+
                 </tr>
                 <tr>
-                    <td colspan="3" class="text-center">
+                    <td colspan="4" class="text-center">
                         <hr>
                         <button class="btn btn-success" (click)="finalizarOk()">Cerrar Factura</button>
                         <button class="btn btn-warning" style="margin-left: 5%;" (click)="cancelar()">Continuar Facturando</button>

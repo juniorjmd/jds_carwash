@@ -16,7 +16,7 @@ import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { caja } from 'src/app/interfaces/caja.interface';
 import { ParametrosModule } from 'src/app/models/parametros/parametros.module';
-import { FndClienteComponent } from 'src/app/modules/personas/pages/clientes/fnd-cliente/fnd-cliente.component';
+import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { tap } from 'rxjs';
 
@@ -198,7 +198,7 @@ export class IngresoComponent implements OnInit {
               this.ingreso.valor = 0;
               this.ingreso.cod_servicio = 0;
               this.tipo_servicio = 0;
-              //this.getServiciosVehiculos();
+              this.cancelar();
             } else {
               try {
                 Swal.fire(respuesta.error, '', 'error');
@@ -226,6 +226,7 @@ export class IngresoComponent implements OnInit {
           this.ingreso.valor = 0;
           this.ingreso.cod_servicio = 0;
           this.tipo_servicio = 0;
+          this.cancelar();
           //this.getServiciosVehiculos();
         } else {
           try {
@@ -294,15 +295,15 @@ export class IngresoComponent implements OnInit {
         };
 
         if (datos.numdata > 0) {
-          dato = datos.data[0];
-          console.log(dato);
-          this.ingreso.propietario = dato.propietario; 
-          this.ingreso.nombrePropietario = dato.nombrePropietario; 
-          this.ingreso.cod_tipo_vehiculo = dato.cod_tipo_vehiculo;
-          this.ingreso.idDocumento = (dato.nombreTipoDoc == 'EnBlanco' ) ? dato.idDocumento:undefined;
-          this.ingreso.cajaAsignada =(dato.nombreTipoDoc == 'EnBlanco' ) ? dato.cajaAsignada:undefined;
-          this.ingreso.nombreCajaAsignada = (dato.nombreTipoDoc == 'EnBlanco' ) ? dato.nombreCajaAsignada:'';
-        }
+          dato = datos.data[0]; 
+        } 
+        console.log(dato);
+        this.ingreso.propietario = dato.propietario; 
+        this.ingreso.nombrePropietario = dato.nombrePropietario; 
+        this.ingreso.cod_tipo_vehiculo = dato.cod_tipo_vehiculo;
+        this.ingreso.idDocumento = (dato.nombreTipoDoc == 'EnBlanco' ) ? dato.idDocumento:undefined;
+        this.ingreso.cajaAsignada =(dato.nombreTipoDoc == 'EnBlanco' ) ? dato.cajaAsignada:undefined;
+        this.ingreso.nombreCajaAsignada = (dato.nombreTipoDoc == 'EnBlanco' ) ? dato.nombreCajaAsignada:'';
         this.getServiciosVehiculos();
         this.loading.hide();
       },error:

@@ -71,6 +71,7 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
           MessageModalComponent 
   ],
    imports: [
+    SharedModule, 
     NgbModule ,
     RouterModule,
     FormsModule,
@@ -84,7 +85,6 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     MatDialogModule, 
     AppRoutingModule , 
     CommonModule,RouterModule,
-    SharedModule, 
     TypeaheadModule.forRoot(), 
     ModalModule.forRoot(),
     TooltipModule.forRoot(),

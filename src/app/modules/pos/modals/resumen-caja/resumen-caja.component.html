@@ -1,3 +1,4 @@
+<div class="container-fluid modal_container"  > 
 <div class="row">
     <div class="col-sm-12">
         <h2 class="centrado">Resumen de Caja </h2>
@@ -32,31 +33,24 @@
 
 <div class="row">
     <div class="col-sm-12">
+         <div name='detalle' style="text-align: left;">
+            <p>base           : {{cajaResumen.base|currency}}</p>
+            <p>total efectivo : {{cajaResumen.efectivo|currency}}</p>
+            <p>venta          : {{cajaResumen.efectivo|currency}}</p>
+            <hr>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Subtotal   : {{cajaResumen.sub_total_venta|currency }}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;IVA        : {{cajaResumen.total_iva|currency}}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Descuentos : {{cajaResumen.total_descuento|currency}}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Total      : {{cajaResumen.total_venta|currency}}</p>
+            <hr>
+            <p>ventas a credito : {{cajaResumen.creditos|currency}}</p>
+            <p>Gastos           : {{cajaResumen.total_gastos|currency}}</p>
+            <p>Recaudos         : {{cajaResumen.recaudos|currency}}</p>
 
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-sm-12">
+            <p *ngFor="let pago of cajaResumen.arrPagos">{{pago.nombrepago}} : {{pago.total|currency}}</p> 
 
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-12">
-
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-12">
-
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-12">
-
+         </div> 
     </div>
 </div>
 
@@ -65,24 +59,7 @@
         Descripcion : {{caja.descripcion}}
     </div>
 </div>
-
-<div class="row">
-    <div class="col-sm-12">
-
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-12">
-
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-12">
-
-    </div>
-</div>
+ 
 
 <hr>
 <div class="row">
@@ -91,4 +68,4 @@
     <div class="col-sm-4">
         <button type="button" class="btn btn-danger" (click)="cerrarFormulario()">Cerrar</button>
     </div>
-</div>
+</div></div>
