@@ -1,11 +1,12 @@
 import Swal from "sweetalert2";
 import { vwsucursal } from "./app.db.interfaces";
-import { DocumentosModel } from "./ventas/documento.model";
+import { DevolucionModel, DocumentosModel } from "./ventas/documento.model";
 import { cajasResumenModel } from "./ventas/cajasResumen.model";
 import { currencyDollar } from "ngx-bootstrap-icons";
 
 export class PrinterManager {
   private doc :DocumentosModel = new DocumentosModel() ; 
+  private docDev :DevolucionModel = new DevolucionModel() ; 
   private static sucursal?: vwsucursal;
   private cierre:cajasResumenModel = new cajasResumenModel();
 
@@ -14,6 +15,176 @@ export class PrinterManager {
     PrinterManager.sucursal = sucursal;
   }
   constructor() { } 
+
+
+  public printBonoDevolucion( ) {
+    if(this.docDev.orden ==  undefined){
+      Swal.fire('error' , 'no existe un documento a imprimir' , 'error')
+  
+    }else{ 
+      const printContent = this.generateBonoHTML();
+      this.openPrintWindows(printContent);
+    }
+  
+  } 
+  setDocumentoDevolucion( doc :DevolucionModel ){
+    this.docDev =  doc ; 
+   }  
+  private generateCabeceraBono(){
+    let cabecera = ` <div style="text-align: center;">
+    <h2>${this.docDev.nombreEsta}</h2>
+    <h2>${PrinterManager.sucursal?.nombre_suc}</h2>`; 
+      if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
+        cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` 
+      cabecera += ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`;
+    return cabecera
+  } 
+  getResolucion():string{
+    let HTML =` <div style="text-align: left;">
+    <p>Resolución: ${this.doc.resolucion}</p>
+    <p>Desde: ${this.doc.consecutivoDesde} Hasta: ${this.doc.consecutivoHasta}</p>
+    <p>Fecha: ${this.doc.fechaInicioResolucion} Hasta: ${this.doc.fechaFinResolucion}</p>
+  </div>`;
+    return HTML;
+  } 
+
+  getResolucionBono():string{
+    let HTML =` <div style="text-align: left;">
+    <p>Resolución: ${this.docDev.resolucion}</p>
+    <p>Desde: ${this.docDev.consecutivoDesde} Hasta: ${this.docDev.consecutivoHasta}</p>
+    <p>Fecha: ${this.docDev.fechaInicioResolucion} Hasta: ${this.docDev.fechaFinResolucion}</p>
+  </div>`;
+    return HTML;
+  } 
+generateBonoHTML(): string {
+
+
+  let receiptHTML = `<div style="font-family: Arial, sans-serif; width: 300px;"> `
+  receiptHTML += this.generateCabeceraBono() ; 
+  receiptHTML += this.infoGeneralBono(); 
+  receiptHTML += this.detalleBono();
+  receiptHTML += this.totalesBono(); 
+  receiptHTML += this.pagosBono() ; 
+  receiptHTML += this.footerBono() ; 
+  receiptHTML += ` </div> `;
+
+  return receiptHTML;
+} 
+private infoGeneralBono():string{
+  let receiptHTML = '';
+  if(this.docDev.nombreDocumento == 'venta' )   receiptHTML += this.getResolucionBono() ;
+
+  let nombreDocumento = "";
+     switch(this.docDev.nombreDocumento ){
+        case 'venta' : nombreDocumento = "Factura No." ; break;
+        case 'cotizacion' : nombreDocumento = "Cotización No."; break;
+        case 'gasto' : nombreDocumento = "Gasto No."; break;
+        case 'cuentas_por_cobrar' : nombreDocumento = "Venta a credito No."; break;
+        case 'RecaudosCuentaXCobrar' : nombreDocumento = "Abono a cartera No."; break;
+        case 'comprobante_devolucion' : nombreDocumento = "Devolucion No."; break;
+     }
+     receiptHTML +=`<div> <p>Usuario: ${this.docDev.vendedorNombre}</p>
+                          <p>Fecha/Hora: ${this.docDev.fecha}</p>
+                          </div><hr>
+        <div  >
+          <p>${nombreDocumento} ${this.docDev.idDocumentoFinal}</p>
+          <p>cliente ${this.docDev.clienteobj!.nombreCompleto!}</p>
+        </div>`;
+        return receiptHTML;
+}
+private detalleBono():string{
+   
+let receiptHTML  = ` <hr> 
+<div style="text-align: left;" name="detalleBono"><table  style="font-family: Arial, sans-serif; width: 100%;">`
+console.log('listado',this.docDev.listado);
+    this.docDev.listado?.forEach((lista) => {
+      const presioVenta = typeof lista.presioVenta === 'number' ? lista.presioVenta : parseFloat(lista.presioVenta??'0');
+      const cantidadVendida = typeof lista.cantidadVendida === 'number' ? lista.cantidadVendida : parseFloat(lista.cantidadVendida??'0');
+      const descuento = typeof lista.descuento === 'number' ? lista.descuento : parseFloat(lista.descuento??'0');
+      const valorTotal = typeof lista.valorTotal === 'number' ? lista.valorTotal : parseFloat(lista.valorTotal??'0');
+
+      receiptHTML += `
+       <tr> <th colspan = '4'  style="text-align: left;" >${lista.nombreProducto}</p> </th> </tr>
+       <tr><td>Precio </td><td>Cant</td><td>Desc</td><td>Total </td></tr>
+       <tr><td>${presioVenta.toFixed(2).padStart(13)} </td>
+       <td>${cantidadVendida.toFixed(2).padStart(6)}</td>
+       <td>${descuento.toFixed(2).padStart(14)}</td>
+       <td>${valorTotal.toFixed(2).padStart(14)} </td></tr> 
+       <hr>
+      `;
+  });
+receiptHTML += `</table></div>`
+
+  return receiptHTML; 
+} 
+private totalesBono():string{
+  
+  const valorParcial = typeof this.docDev.valorParcial  === 'number' ? this.docDev.valorParcial : parseFloat(this.docDev.valorParcial??'0'); 
+  const valorIVA = typeof this.docDev.valorIVA  === 'number' ? this.docDev.valorIVA : parseFloat(this.docDev.valorIVA??'0'); 
+  const totalFactura = typeof this.docDev.totalFactura  === 'number' ? this.docDev.totalFactura : parseFloat(this.docDev.totalFactura??'0'); 
+ 
+  return  ` 
+  <div style="text-align: right;">
+    <p>Valor Parcial: ${valorParcial.toFixed(2)}</p>
+    <p>IVA: ${valorIVA.toFixed(2)}</p>
+    <p>Total Factura: ${totalFactura.toFixed(2)}</p>
+  </div> 
+`;
+}
+private footerBono():string{
+
+  switch(this.docDev.nombreDocumento ){
+    case 'venta' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'cotizacion' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Este documento es una cotizacion  ***</p><p>***  esperamos vuelva pronto  ***</p></div>`;
+    case 'gasto' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'cuentas_por_cobrar' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'RecaudosCuentaXCobrar' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'comprobante_devolucion' : return  ` <div name='footerBono' style="text-align: center;">
+    <p>Devolucion generada desde factura #${this.docDev.campo_info_3}, este documento sirve como canje en su totalidad en cualquier otra compra o servicio</p></div>`;
+    default:
+      return  '' ; 
+  }
+
+
+  
+}
+private pagosBono():string{
+  let html = '';
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+
+  if(this.docDev.pagos?.length! > 0 ){
+    html += ` <hr>
+     <div style="text-align: left;" name='pagosBono' >
+       <p>pagosBono : </p>
+       <hr>
+       <div style="text-align: left;"><table style="with:100%">`;
+
+        this.docDev.pagos?.forEach((pago) => {
+          const valorPagado = typeof pago.valorPagado  === 'number' ? pago.valorPagado : parseFloat(pago.valorPagado??'0'); 
+          const valorRecibido = typeof pago.valorRecibido  === 'number' ? pago.valorRecibido : parseFloat(pago.valorRecibido??'0'); 
+          const vueltos = typeof pago.vueltos  === 'number' ? pago.vueltos : parseFloat(pago.vueltos??'0'); 
+
+          html += `<tr>
+              <td style="width:95%">${pago.nombreMedio!.trim()}</td>
+              <td style="    text-align: right;"> ${currencyFormatter.format(valorPagado)}</td></tr>
+            `;
+            if (valorRecibido> 0) {
+              html += `<tr> <td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Recibido ${currencyFormatter.format(valorRecibido)}<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vueltos ${currencyFormatter.format(vueltos) }</p></td></tr>
+                `;
+            } else {
+              html += `
+                  <tr> <td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Venta # ==> ${pago.refDoc }</td></tr>
+                `;
+            }
+ });
+
+ html += `</table><hr></div></div>`;
+}
+  return html;
+}
+
+
+
   // Método para imprimir la tirilla de punto de venta
 public printClose( cierre:cajasResumenModel){
   this.cierre =  cierre
@@ -48,20 +219,46 @@ public printClose( cierre:cajasResumenModel){
 
       
     return cabecera
-  }
+  } 
+
+  private detalleCierre():string{
+    const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
   
+    return  ` <div name='detalle' style="text-align: left;">
+             <p>base           : ${currencyFormatter.format(this.cierre.base)}</p>
+             <p>total efectivo : ${currencyFormatter.format(this.cierre?.efectivo)}</p>
+             <hr>
+             <p>venta    </p>
+             <hr>
+             <p>&nbsp;&nbsp;&nbsp;&nbsp;Subtotal   : ${currencyFormatter.format(this.cierre?.sub_total_venta)}</p>
+             <p>&nbsp;&nbsp;&nbsp;&nbsp;IVA        : ${currencyFormatter.format(this.cierre?.total_iva)}</p>
+             <p>&nbsp;&nbsp;&nbsp;&nbsp;Descuentos : ${currencyFormatter.format(this.cierre?.total_descuento)}</p>
+             <p>&nbsp;&nbsp;&nbsp;&nbsp;Total      : ${currencyFormatter.format(this.cierre?.total_venta)}</p>
+             <hr>
+             <p>ventas a credito : ${currencyFormatter.format(this.cierre?.creditos)}</p>
+             <p>Gastos           : ${currencyFormatter.format(this.cierre?.total_gastos)}</p>
+             <p>Recaudos         : ${currencyFormatter.format(this.cierre?.recaudos)}</p>
+                     ${this.pagosCierre()}
+    </div>`;
+    
+  }
 private pagosCierre():string{
   const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
-  let html = '<div><hr><p>Pagos</p><table >'; 
+  let html = '';
+  if(this.cierre.arrPagos != undefined && this.cierre.arrPagos.length > 0 ) {
+   html = '<div><hr><p>Pagos</p><table >'; 
   this.cierre.arrPagos.forEach(pago=>{
      html += `<tr><td>${pago.nombrepago} </td><td>:</td> <td>${currencyFormatter.format(pago.total)}</td></tr> `
   })
   html +='</table></div>'
+  }
   return html;
 }
 private footerCierre():string{
   return  ` <div name='footer' style="text-align: center;"><p>*** Gracias***</p></div>`;
 }
+
+
   public printReceipt( ) {
     if(this.doc.orden ==  undefined){
       Swal.fire('error' , 'no existe un documento a imprimir' , 'error')
@@ -72,9 +269,7 @@ private footerCierre():string{
       this.openPrintWindows(printContent);
     }
   
-  }
-
-
+  } 
   setDocumento( doc :DocumentosModel ){
     this.doc =  doc ; 
    }  
@@ -86,18 +281,8 @@ private footerCierre():string{
         cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` 
       cabecera += ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`;
     return cabecera
-  }
-
-  getResolucion():string{
-    let HTML =` <div style="text-align: left;">
-    <p>Resolución: ${this.doc.resolucion}</p>
-    <p>Desde: ${this.doc.consecutivoDesde} Hasta: ${this.doc.consecutivoHasta}</p>
-    <p>Fecha: ${this.doc.fechaInicioResolucion} Hasta: ${this.doc.fechaFinResolucion}</p>
-  </div>`;
-    return HTML;
-  }
-
-
+  } 
+ 
 generateReceiptHTML(): string {
 
 
@@ -111,8 +296,7 @@ generateReceiptHTML(): string {
   receiptHTML += ` </div> `;
 
   return receiptHTML;
-}
-
+} 
 private infoGeneral():string{
   let receiptHTML = '';
   if(this.doc.nombreDocumento == 'venta' )   receiptHTML += this.getResolucion() ;
@@ -134,28 +318,6 @@ private infoGeneral():string{
           <p>cliente ${this.doc.clienteobj!.nombreCompleto!}</p>
         </div>`;
         return receiptHTML;
-}
-
-private detalleCierre():string{
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
-
-  return  ` <div name='detalle' style="text-align: left;">
-           <p>base           : ${currencyFormatter.format(this.cierre.base)}</p>
-           <p>total efectivo : ${currencyFormatter.format(this.cierre?.efectivo)}</p>
-           <hr>
-           <p>venta    </p>
-           <hr>
-           <p>&nbsp;&nbsp;&nbsp;&nbsp;Subtotal   : ${currencyFormatter.format(this.cierre?.sub_total_venta)}</p>
-           <p>&nbsp;&nbsp;&nbsp;&nbsp;IVA        : ${currencyFormatter.format(this.cierre?.total_iva)}</p>
-           <p>&nbsp;&nbsp;&nbsp;&nbsp;Descuentos : ${currencyFormatter.format(this.cierre?.total_descuento)}</p>
-           <p>&nbsp;&nbsp;&nbsp;&nbsp;Total      : ${currencyFormatter.format(this.cierre?.total_venta)}</p>
-           <hr>
-           <p>ventas a credito : ${currencyFormatter.format(this.cierre?.creditos)}</p>
-           <p>Gastos           : ${currencyFormatter.format(this.cierre?.total_gastos)}</p>
-           <p>Recaudos         : ${currencyFormatter.format(this.cierre?.recaudos)}</p>
-                   ${this.pagosCierre()}
-  </div>`;
-  
 }
 private detalle():string{
    
@@ -181,9 +343,7 @@ console.log('listado',this.doc.listado);
 receiptHTML += `</table></div>`
 
   return receiptHTML; 
-}
-
-
+} 
 private totales():string{
   
   const valorParcial = typeof this.doc.valorParcial  === 'number' ? this.doc.valorParcial : parseFloat(this.doc.valorParcial??'0'); 

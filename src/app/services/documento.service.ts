@@ -7,8 +7,7 @@ import { vistas } from '../models/app.db.view';
 import { loading } from 'src/app/models/app.loading';
 import { cajaModel } from '../models/ventas/cajas.model';
 import { ValuesFormuGasto } from '../interfaces/valuesFormularios';
-import { CarteraRequest, DocumentoCierreRequest } from '../interfaces/producto-request';
-import { CarteraModel } from '../models/cartera/cartera.model';
+import { CarteraRequest, DocumentoCierreRequest, DocumentoRequest } from '../interfaces/producto-request'; 
 import { DocumentosModel } from '../models/ventas/documento.model';
 
 @Injectable({
@@ -20,17 +19,31 @@ export class DocumentoService {
     console.log('servicio documentos');
   }
 
-  getDocumentoActivo(): Observable<any> {
+  getDocumentoActivo(): Observable<DocumentoRequest> {
     let datos = {
       "action": actions.actionSelectPorUsuario,
       "_tabla": vistas.documento,
       "_columnas": ['objeto'],
+      "_obj": ['objeto'],
       "_columnaUsuario": 'usuario',
       "_where": [{"columna": 'estado', "tipocomp": '=', "dato": 1}]
     };
     console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
+    return this.http.post<DocumentoRequest>(url.action, datos, httpOptions());
+  }
+
+  
+  getDevoluciones(): Observable<any> {
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.documentoDev, 
+      "_obj": ['objeto'],
+      "_columnas": ['objeto'] 
+    };
+    console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());
   }
+
   getCuentasXCobrarByPersona( idPersona :number): Observable<CarteraRequest> {
     let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona}];
     let datos = {

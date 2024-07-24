@@ -20,9 +20,7 @@ import { CierresComponent } from './components/cierres/cierres.component';
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component'; 
 import { loading } from './models/app.loading';
 import { UsuarioPerfilComponent } from './components/usuario/usuario-perfil.component';  
-import { EnviosComponent } from './components/envios/envios.component';
-import { DevolucionesComponent } from './components/devoluciones/devoluciones.component';
-
+import { EnviosComponent } from './components/envios/envios.component'; 
 
 import { ParametrosComponent } from './components/parametros/parametros.component';
 import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
@@ -62,8 +60,7 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     CierresComponent,
     MiUsuarioComponent,   
     UsuarioPerfilComponent, 
-    EnviosComponent,
-    DevolucionesComponent, 
+    EnviosComponent, 
        ParametrosComponent,
         ReimpimirFacturasComponent,
          InicioReportesComponent,

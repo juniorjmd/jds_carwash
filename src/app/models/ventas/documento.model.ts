@@ -87,3 +87,17 @@ export class DocumentosModel {
         this.pagos = []
      }
 }
+
+
+export class DevolucionModel extends DocumentosModel{
+   /**
+    * 
+      (`jdpsoluc_ver_c11`.`vw_obj_documentos`.`valorTotal` - `jdpsoluc_ver_c11`.`vw_obj_documentos`.`campo_auxiliar_6`) AS `saldo_bono`,
+        (CASE (`jdpsoluc_ver_c11`.`vw_obj_documentos`.`valorTotal` - `jdpsoluc_ver_c11`.`vw_obj_documentos`.`campo_auxiliar_6`)
+            WHEN 0 THEN 'SinCupo'
+            ELSE 'CupoActivo'
+        END) AS `estado_bono`,
+    */
+        saldo_bono:number = 0;
+        estado_bono:string = '';
+}

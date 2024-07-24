@@ -1,26 +1,22 @@
- 
-
-
-<h3>Cuentas contables</h3>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent"> 
-            <ul class="nav nav-tabs">
-                <li class="nav-item "><a class="nav-link "  routerLinkActive="active" [routerLink]="[ 'operaciones'] ">Operaciones</a></li>
-                <li class="nav-item "><a class="nav-link "  routerLinkActive="active" [routerLink]="[ 'subCuentas'] ">Sub-Cuentas</a></li>
-                <li class="nav-item "><a class="nav-link "  routerLinkActive="active" [routerLink]="[ 'cuentas'] ">Cuentas</a></li>
-                <li class="nav-item "><a class="nav-link "  routerLinkActive="active" [routerLink]="[ 'grupos'] ">Grupos</a></li>
-                <li class="nav-item "><a class="nav-link "  routerLinkActive="active" [routerLink]="[ 'clases'] ">Clases</a></li> 
-            </ul>
+ <div class="container-fluid">
+    <div class="row">
+        <!-- Menú lateral -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <div class="list-group">
+                 <a class="list-group-item list-group-item-action "  routerLinkActive="active" [routerLink]="[ 'operaciones'] ">Operaciones</a> 
+                <a class="list-group-item list-group-item-action "  routerLinkActive="active" [routerLink]="[ 'subCuentas'] ">Sub-Cuentas</a> 
+                 <a class="list-group-item list-group-item-action "  routerLinkActive="active" [routerLink]="[ 'cuentas'] ">Cuentas</a> 
+               <a class="list-group-item list-group-item-action "  routerLinkActive="active" [routerLink]="[ 'grupos'] ">Grupos</a> 
+                <a class="list-group-item list-group-item-action " routerLinkActive="active" [routerLink]="[ 'clases'] ">Clases</a> 
+          
+           
+           
+            </div>
         </div>
-    </nav>
-    <div class="container-fluid contPrd" style="display: block; max-height: 500px; overflow-y: auto;" id="ListadoPrdLinkDiv">
-        <div class="row">
-            <div class="col-sm-12">
-    <router-outlet></router-outlet>
+        <!-- Contenido principal -->
+        <div class="col-md-9 col-lg-10 ml-sm-auto px-md-4">
+            <h2>Contabilidad:</h2>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
 </div>
-    <br>
-    <br>

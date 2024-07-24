@@ -21,7 +21,7 @@ import { of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { IngresarProductoVentaComponent } from '../../modals/ingresar-producto-venta/ingresar-producto-venta.component';
 import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto';
-import { cajaRequest, DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
+import { cajaRequest, DocumentoCierreRequest, DocumentoRequest } from 'src/app/interfaces/producto-request';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
 import { NewGastoComponent } from '../../modals/new-gasto/new-gasto.component';
@@ -243,12 +243,13 @@ export class VentasComponent implements AfterViewInit, OnInit {
                   valorTotalAPagar: valorPago,
                   valorRecibido: valorPago,
                   vueltos: 0,
-                  referencia: ''
+                  referencia: '' , refDoc : '',
+                  soloLectura : false,
                 } ; 
               return auxpago;
             })
           } 
-           let docPagos:DocpagosModel[]  = (this.documentoActivo!.pagos === undefined )?[...this.documentoActivo!.pagos] : [] ; 
+           let docPagos:DocpagosModel[]  = (this.documentoActivo!.pagos !== undefined )?[...this.documentoActivo!.pagos] : [] ; 
                       console.log("asignar pagos" , docPagos)
            this.MedioP.forEach(medio => {
            console.log(medio.id);
@@ -261,6 +262,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
             this.pagos = this.documentoActivo!.pagos!;
             console.log('pagos factura', this.pagos,'medios de pagos ', this.MedioP);
+
+
+
 
   }
 
@@ -403,9 +407,24 @@ export class VentasComponent implements AfterViewInit, OnInit {
     this.newAbrirDialog.open(PagosVentaComponent, { data: this.documentoActivo })
       .afterClosed()
       .pipe(
-        tap((confirmado: Boolean) => {
-          if (confirmado) { 
-            this.facturarDocumento();
+        tap((confirmado: {rep:boolean,credito:boolean}) => {
+          if (confirmado.rep  ) { 
+            if ( !confirmado.credito) { 
+              this.facturarDocumento();
+            }else{
+             // this.documentoActivo
+
+            
+
+             this.documentoService.getDocumentoActivo().subscribe({next:(value:DocumentoRequest)=>{
+              console.log('docuemento activo actual',value.data[0].objeto)
+              this.documentoActivo = value.data[0].objeto
+              this.asignarPagosACuentaPorCobrar();
+             }})
+
+
+
+            }
           }
         })
       ).subscribe({

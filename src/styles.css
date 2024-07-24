@@ -20,6 +20,7 @@
 .modal_container{
     background-image: url(assets/img/home-menu-bg-overlay.svg) , linear-gradient(to right bottom, #d4cbdf, #ffe0e1) !important;
 background-size: cover;
+overflow-y: auto;max-height: 80%;
 }
 .icono_aplicacion {
     margin: auto; 
@@ -198,8 +199,16 @@ img.nav-avatar {
     padding: 2px !important;
 }
 
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1380px !important;
+    }
+}
+
+
 body {
-    background-image: url(assets/img/home-menu-bg-overlay.svg), linear-gradient(to right bottom, #77717e, #c9a8a9) !important;
+    background-image: url(assets/img/home-menu-bg-overlay.svg),
+     linear-gradient(to right bottom, #77717e, #c9a8a9) !important;
     background-size: cover;
     direction: ltr;
     position: relative;

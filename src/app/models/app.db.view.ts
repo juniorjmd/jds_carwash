@@ -32,6 +32,7 @@
     establecimiento: 'vw_establecimiento',
     tipo_establecimiento: 'vw_tipo_establecimiento',
     documento: 'vw_obj_documentos',
+    documentoDev: 'vw_obj_documentos_devolucion',
     cartera: 'vw_mst_mov_cartera',
     carteraAbonos: 'vw_mst_mov_cartera_abonos',
     contadores:'vw_contadores',

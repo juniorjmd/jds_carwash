@@ -14,4 +14,7 @@ export class pagosModel{
     valorTotalAPagar :number = 0 ; 
     valorRecibido :number = 0 ; 
     vueltos :number  = 0; 
-    referencia!:string }
+    referencia!:string ;
+    refDoc!:string ;
+    soloLectura:boolean = false ;
+   }

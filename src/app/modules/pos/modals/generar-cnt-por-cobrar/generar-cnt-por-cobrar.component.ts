@@ -13,10 +13,9 @@ import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
   styleUrls: ['./generar-cnt-por-cobrar.component.css']
 })
 export class GenerarCntPorCobrarComponent implements OnInit {
-  pagoPorCredito?:DocpagosModel;
+  pagoPorCredito:DocpagosModel= new DocpagosModel();
   pagos:DocpagosModel[] = [];
-  indexEfectivo:number = 0;
-  MedioP:MediosDePago[]= [];
+  indexEfectivo:number = 0; 
   listo:boolean  ;
   retorno : {result : boolean , documento :  DocumentosModel } = {
     result: false,
@@ -87,31 +86,56 @@ setVueltos(index:number){
  
 }
 getMediosP(){ 
+  console.clear();
   console.log('DocumentoActivo',this.Documento)
   this.listo = false;
   this.loading.show()
   this.serviceCaja.getMediosCajaActiva()
      .subscribe( {next:(datos:any)=>{
          console.log(datos);
-         
+        
     if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:MediosDePago , index : number )=>{
-        this.pagos[index] = new DocpagosModel();
-        this.pagos[index].idMedioDePago = dato.id;
-        this.pagos[index].nombreMedio =dato.nombre;
-        this.pagos[index].valorPagado = 0;
-        this.pagos[index].valorRecibido = 0;
-        this.pagos[index].vueltos = 0; 
-        this.pagos[index].valorTotalAPagar = 0;  
-      }) 
-     // console.log(this.MedioP);
+      let  index : number = this.Documento.pagos.length; 
+      if (index <= 0 ) index = -1;
+      if (index > 0 )
+        { 
+          this.pagos = this.Documento.pagos.map(x => {
+          if (x.nombreMedio?.toUpperCase() !== 'EFECTIVO') {
+            let pago = new DocpagosModel();
+            pago.idMedioDePago = x.idMedioDePago || 0;
+            pago.nombreMedio = x.nombreMedio || '';
+            pago.valorPagado = x.valorPagado || 0;
+            pago.valorRecibido = x.valorRecibido || 0;
+            pago.vueltos = x.vueltos || 0;
+            pago.valorTotalAPagar = x.valorTotalAPagar || 0;
+            pago.soloLectura = true
+            return pago;
+          } else {
+            this.pagoPorCredito.valorPagado = x.valorPagado || 0;
+            return;}// O puedes devolver un valor específico que indique que no debe incluirse en la lista de pagos
+          
+      }).filter((pago): pago is DocpagosModel => pago !== undefined);
+    console.log('pagos recibidos' , this.pagos);
+    
+      datos.data!.forEach((dato:MediosDePago )=>{  
+       let pago = new DocpagosModel();  
+       pago.idMedioDePago = dato.id;
+        pago.nombreMedio =dato.nombre;
+        pago.valorPagado = 0;
+        pago.valorRecibido = 0;
+        pago.vueltos = 0; 
+        pago.valorTotalAPagar = 0; 
+         this.pagos.push(pago)
+      })  
+    this.indexEfectivo =  this.pagos.findIndex(pago => pago.nombreMedio!.toUpperCase() === 'EFECTIVO');
+
     }else{
-      this.MedioP = [];
+      this.pagos = [];
     } 
     console.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
-      } ,
+      }} ,
       error: (error:any) => {this.loading.hide();
         alert( error.error.error);
       }}

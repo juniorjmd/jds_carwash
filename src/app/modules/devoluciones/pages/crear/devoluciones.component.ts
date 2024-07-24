@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
   templateUrl: './devoluciones.component.html',
   styleUrls: ['./devoluciones.component.css']
 })
-export class DevolucionesComponent implements OnInit {
+export class DevolucionesCreateComponent implements OnInit {
 
 
   public lisCartera:CarteraModel[] = [];
