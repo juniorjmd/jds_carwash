@@ -9,10 +9,13 @@
             </thead>
             <tbody>
                 <tr *ngFor="let pago of pagos; let i = index">
-                    <ng-container *ngIf="pagos[i].nombreMedio !== 'BONOS'">
+                 <ng-container *ngIf="pagos[i].nombreMedio !== 'BONOS'">
                     <td style="align-content: center;">{{pago.nombreMedio}}
                         </td>
-                        <td style="align-content: center;"> <button  *ngIf="i !== indexEfectivo" class="btn btn-warning" (click)="adicionarOtroBono(i)">+</button></td>
+                        <td style="align-content: center;"> 
+                            <button  *ngIf="i !== indexEfectivo" class="btn btn-warning"  
+                            [disabled] ="pagos[i].soloLectura"
+                            (click)="adicionarOtroBono(i)">+</button></td>
                     <td  style="align-content: center;" *ngIf="i === indexEfectivo">
                         <input type="number" readonly class="form-control" [(ngModel)]="pagos[i].valorPagado">
                     </td> 
@@ -33,8 +36,12 @@
                         </table>
                     </td>
                     <td  style="align-content: center;" *ngIf="i !== indexEfectivo">
-                        <input (change)="cambioDeValor(i)" type="number" class="form-control" [(ngModel)]="pagos[i].valorPagado"></td>
+                        <input (change)="cambioDeValor(i)"
+                        [readOnly] ="pagos[i].soloLectura"
+                         type="number" class="form-control" 
+                         [(ngModel)]="pagos[i].valorPagado"></td>
                         <td *ngIf="i !== indexEfectivo"  style="align-content: center;">
+                            
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -48,15 +55,22 @@
                             </tbody>
                         </table>
                     </td>
-                </ng-container>
-                    <ng-container *ngIf="pagos[i].nombreMedio == 'BONOS'">
+                 </ng-container>
+                 <ng-container *ngIf="pagos[i].nombreMedio == 'BONOS'">
                         <td style="align-content: center;">{{pago.nombreMedio}} </td >
-                            <td style="align-content: center;">   <button class="btn btn-warning" (click)="adicionarOtroBono(i)">+</button>                 </td>
-                        <td><input type="text" (keyup.enter)="buscarBono(i)" class="form-control form-control-sm" [(ngModel)]="pagos[i].referencia"></td>
-                        <td  style="align-content: center;"  > <input (change)="cambioDeValor(i)" readonly type="number" class="form-control" [(ngModel)]="pagos[i].valorPagado"></td>
+                            <td style="align-content: center;">   <button class="btn btn-warning"
+                                [disabled] ="pagos[i].soloLectura"
+                                (click)="adicionarOtroBono(i)">+</button>                 </td>
+                        <td><input type="text"
+                            [readOnly] ="pagos[i].soloLectura"
+                            (keyup.enter)="buscarBono(i)" class="form-control form-control-sm" [(ngModel)]="pagos[i].referencia"></td>
+                        <td  style="align-content: center;"  > 
+                            <input (change)="cambioDeValor(i)" 
+                            readonly type="number"
+                             class="form-control" [(ngModel)]="pagos[i].valorPagado"></td>
                             
                             
-                    </ng-container>
+                 </ng-container>
 
 
                 </tr>

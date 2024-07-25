@@ -30,6 +30,7 @@ import { BusquedaPersona } from 'src/app/interfaces/busqueda-persona';
 import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { AbonosCuentasXCobrarComponent } from '../../modals/abonos-cuentas-xcobrar/abonos-cuentas-xcobrar.component';
 import { GenerarCntPorCobrarComponent } from '../../modals/generar-cnt-por-cobrar/generar-cnt-por-cobrar.component';
+import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 
 @Component({
   selector: 'app-ventas',
@@ -54,7 +55,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
   vueltas: boolean = false;
   menusUsuario: RecursoDetalle[] = [];
   documentos: DocumentosModel[] = [];
+  empleados: EmpleadoModel[] = [];
   documentoActivo:DocumentosModel | null = null;
+  empleadoActivo:EmpleadoModel  = new EmpleadoModel();
   documentoRetorno: DocumentosModel = new DocumentosModel();
   documentoSeleccionadoActivo: DocumentosModel = new DocumentosModel(); 
   sucursal?:vwsucursal;
@@ -78,6 +81,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {  
     this.getMediosP();
     this.getAsyncDocumentos();
+    this.dInicialServ.currentVendedores.subscribe({next:value=>{
+      this.empleados = value??[];
+    }})
     
     this.dInicialServ.continueVenta.subscribe({next:(value)=>{
       this.continuar = value;
@@ -169,7 +175,13 @@ export class VentasComponent implements AfterViewInit, OnInit {
             documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ; 
           console.log('documentoSeleccionado' , documentoSeleccionado);
             this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
-          } 
+          }  
+          this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0])??[] 
+
+          if(this.empleadoActivo.id == undefined){
+            this.empleadoActivo.nombreCompleto =  this.documentoActivo?.vendedorNombre!;
+            this.empleadoActivo.idPersona = this.documentoActivo?.cod_vendedor!;
+        }
           this.asignarMediosDePagoValoresIniciales();  
         } else {
           this.crearDocumento();
@@ -207,6 +219,11 @@ export class VentasComponent implements AfterViewInit, OnInit {
           console.log('documentoSeleccionado' , documentoSeleccionado);
             this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
           }
+          this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
+          if(this.empleadoActivo.id == undefined){
+            this.empleadoActivo.nombreCompleto =  this.documentoActivo?.vendedorNombre!;
+            this.empleadoActivo.idPersona = this.documentoActivo?.cod_vendedor!;
+        }
           this.asignarMediosDePagoValoresIniciales(); 
           
           this.irbuscarProducto();
@@ -253,11 +270,12 @@ export class VentasComponent implements AfterViewInit, OnInit {
                       console.log("asignar pagos" , docPagos)
            this.MedioP.forEach(medio => {
            console.log(medio.id);
-            const pago:DocpagosModel = docPagos.find((p: DocpagosModel) => p.idMedioDePago == medio.id)!;
+            const pago:DocpagosModel[] = docPagos.filter((p: DocpagosModel) => p.idMedioDePago == medio.id)!;
+            let sum = pago ? pago.reduce((total, p) => total + p.valorPagado, 0) : 0;
             console.log('get pagos iteracion ' , pago )
-            if (pago != undefined) {
-              medio.valor_aux = pago?.valorPagado ;
-            }
+           
+              medio.valor_aux = sum ;
+            
           }); 
 
             this.pagos = this.documentoActivo!.pagos!;
@@ -412,13 +430,16 @@ export class VentasComponent implements AfterViewInit, OnInit {
             if ( !confirmado.credito) { 
               this.facturarDocumento();
             }else{
-             // this.documentoActivo
-
-            
+             // this.documentoActivo 
 
              this.documentoService.getDocumentoActivo().subscribe({next:(value:DocumentoRequest)=>{
               console.log('docuemento activo actual',value.data[0].objeto)
               this.documentoActivo = value.data[0].objeto
+              this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
+              if(this.empleadoActivo.id == undefined){
+                this.empleadoActivo.nombreCompleto =  this.documentoActivo?.vendedorNombre!;
+                this.empleadoActivo.idPersona = this.documentoActivo?.cod_vendedor!;
+            }
               this.asignarPagosACuentaPorCobrar();
              }})
 
@@ -565,6 +586,15 @@ export class VentasComponent implements AfterViewInit, OnInit {
     })
   }
 
+  cambiarVendedor(ven:EmpleadoModel){
+    if(ven.idPersona != undefined && ven.idPersona > 0 ){
+    this.documentoActivo!.cod_vendedor = (typeof(ven.id)== 'string' ) ? parseInt(ven.id): ven.id??0 ;
+    this.documentoActivo!.vendedorNombre = ven.nombreCompleto??0 ;
+    this.documentoService.cambiarVendedorDocumento(this.documentoActivo!.orden , ven).subscribe({next:value=>{
+      console.log('cambio empleado',value)
+    }})
+  }
+  }
   cambiarDocumentoActivo(doc:DocumentosModel) {
     this.documentoActivo = doc;
     this.loading.show();
@@ -576,7 +606,16 @@ export class VentasComponent implements AfterViewInit, OnInit {
            } catch (error : any) {
             Swal.fire('error en el servidor', '', 'error');
            }
-        } else { 
+        } else {  
+          this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0])??[] 
+
+          if(this.empleadoActivo.id == undefined){
+            this.empleadoActivo.nombreCompleto =  this.documentoActivo?.vendedorNombre!;
+            this.empleadoActivo.idPersona = this.documentoActivo?.cod_vendedor!;
+        }
+
+
+
           try {
             this.asignarMediosDePagoValoresIniciales();
           } catch (error: any) {

@@ -9,6 +9,8 @@ import { cajaModel } from '../models/ventas/cajas.model';
 import { ValuesFormuGasto } from '../interfaces/valuesFormularios';
 import { CarteraRequest, DocumentoCierreRequest, DocumentoRequest } from '../interfaces/producto-request'; 
 import { DocumentosModel } from '../models/ventas/documento.model';
+import { TABLA } from '../models/app.db.tables';
+import { EmpleadoModel } from '../models/empleados/empleados.module';
 
 @Injectable({
   providedIn: 'root'
@@ -191,6 +193,20 @@ export class DocumentoService {
     let datos = {"action": actions.actionChangeDocumentos, "_docActual": documento};
     console.log('cambiarDocumento activo', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+
+  cambiarVendedorDocumento(documento: number , vendedor : EmpleadoModel): Observable<any> {
+    let where =   [{"columna" : "orden" , "tipocomp" : "=" , "dato" : documento }]
+    let arraydatos =  {  "cod_vendedor" : vendedor.id ,
+
+      "vendedor" :  vendedor.id 
+    }
+    let    datos = {"action": actions.actionUpdate ,
+      "_tabla" : TABLA.documentos, "_where" : where ,
+      "_arraydatos" : arraydatos
+     };
+    console.log('cambiarDocumento activo', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
   }
 
   cancelarDocumento(documento: number): Observable<any> {

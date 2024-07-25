@@ -26,6 +26,10 @@ public TotalAcumuladoPendientes  ?:number= 0;
 public fechaMinimaAcumulados ?: Date;
 public fechaMaximaAcumulados?: Date;
 
+nombreCompleto:string = '' ; 
+nombreTipo:string = '' ; 
+descripcionTipo:string = '' ;
+
 constructor(){
     super();
     this.estado = this.estado? this.estado : 0 ;

@@ -7,6 +7,7 @@ import { CntGruposModel } from "../models/cnt-grupos/cnt-grupos.module";
 import { CntOperacionesModel } from "../models/cnt-operaciones/cnt-operaciones.module";
 import { CntSubCuentaModel, vwCntSubCuentaModel } from "../models/cnt-sub-cuenta/cnt-sub-cuenta.module";
 import { DescuentoModule } from "../models/descuento/descuento.model";
+import { EmpleadoModel } from "../models/empleados/empleados.module";
 import { MarcasModel } from "../models/marcas/marcas.module";
 import { ProductoModule } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
@@ -68,9 +69,14 @@ export interface cntClaseRequest {
   numdata: number;
   error: string;
 }
-
 export interface cntGrupoRequest { 
   data: CntGruposModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface empleadoRequest { 
+  data: EmpleadoModel[];
   query: string;
   numdata: number;
   error: string;

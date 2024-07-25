@@ -25,6 +25,7 @@ import { OnlyNumberDirective } from 'src/app/directives/OnlyNumberDirective';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { DocumentosDropdownComponent } from './components/documentos-dropdown/documentos-dropdown.component'; 
 import { FndClienteComponent } from './modals/fnd-cliente/fnd-cliente.component';
+import { EmpleadosDropdownComponent } from './components/empleados-dropdown/empleados-dropdown.component';
  
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { FndClienteComponent } from './modals/fnd-cliente/fnd-cliente.component'
     NavbarComponent,
     MenuItemLiComponent,
     DropdownComponent,
-    DocumentosDropdownComponent  ],
+    DocumentosDropdownComponent,
+    EmpleadosDropdownComponent  ],
   imports: [ NgbModule ,
     NgxBootstrapIconsModule.pick(allIcons)  ,
     NgxDatatableModule,
@@ -71,7 +73,7 @@ import { FndClienteComponent } from './modals/fnd-cliente/fnd-cliente.component'
     DialogoConfirmacionComponent,
     NavbarComponent,
     LoadingComponent, OnlyNumberDirective,
-    ReactiveFormsModule 
+    ReactiveFormsModule ,EmpleadosDropdownComponent
   ]
 })
 export class SharedModule { }

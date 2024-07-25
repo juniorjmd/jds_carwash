@@ -17,16 +17,32 @@
                     <td> documentos</td>
                     <td colspan="2"> Cod producto</td>
                 </tr>
-                <tr>
-                    <td>{{documentoActivo!.clienteNombre!}}</td>
-                    <td>{{documentoActivo!.vendedorNombre!}}</td>
-                    <td>
+                <tr><td style="width: 25%;">
+                    <div class="input-group mb-3">
+                        <div class="d-flex input-group">  
+                            <div class="btn-group dropend">
+                                <button type="button"class="btn btn-outline-success "> 
+                                        <span>{{documentoActivo!.clienteNombre!}}</span>
+                                </button>
+                                <button type="button" class="btn btn-info" 
+                                title="Añadir cliente al Documento" 
+                                (click)='buscarCliente()'><i class="bi bi-person"></i>&nbsp;
+                           </button>
+              
+                    </div>   </div> </div></td>
+                    <td  style="width: 28%;" > 
+                        <div class="input-group mb-3">
+                            <elemt-empDropdown   (selectionChange)="cambiarVendedor($event);"
+                           [selectedValue]="empleadoActivo" 
+                            ></elemt-empDropdown> </div>
+                    </td> 
+                    <td   style="width: 28%;" >
                         <div class="input-group mb-3">  
                            <elemt-docDropdown [options] ="documentos" (clickBtnRefress)="getDocumentos()" (selectionChange)="cambiarDocumentoActivo($event);"
                            [selectedValue]="documentoActivo" ></elemt-docDropdown> 
                         </div>
                     </td>
-                    <td>
+                    <td  style="width: 20%;">
                         
                         <div class="input-group mb-3">
                             <input class="o_input form-control" (keyup.enter)='buscarProducto()' #codProd type="text" [(ngModel)]="codigoProducto"  placeholder="Buscar" aria-label="Buscar"/>
@@ -72,7 +88,6 @@
             <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-success" title="Facturar" (click)='asignarPagosAVenta()'><i class="bi bi-check2-all"></i></button>
                 <button type="button" class="btn btn-primary" title="Crear Documento" (click)='crearDocumento()'><i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
-                <button type="button" class="btn btn-info" title="Añadir cliente al Documento" (click)='buscarCliente()'><i class="bi bi-person"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
                 <button type="button" class="btn btn-danger" title="Eliminar Documento" (click)='cancelarDocumento()'><i class="bi bi-trash"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
                 <button type="button" class="btn btn-warning" title="Busqueda Producto" (click)='busquedaAuxiliarProducto()'><i class="bi bi-search"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
                 <button *ngIf="planSepare" type="button" class="btn btn-success" style="background-color: #67b4e0;" title="plan separe"><i class="bi bi-hand-index-thumb"></i>&nbsp;<i class="bi bi-shop"></i></button>

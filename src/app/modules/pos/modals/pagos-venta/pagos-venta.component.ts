@@ -120,25 +120,51 @@ getMediosP(){
   this.serviceCaja.getMediosCajaActiva()
      .subscribe( {next:(datos:any)=>{
          console.log(datos);
-         
-    if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:MediosDePago , index : number )=>{
-        this.pagos[index] = new DocpagosModel();
-        this.pagos[index].idMedioDePago = dato.id;
-        this.pagos[index].nombreMedio =dato.nombre;
-        this.pagos[index].valorRecibido = 0;
-        this.pagos[index].vueltos = 0; 
-        this.pagos[index].valorTotalAPagar = 0; 
-        if (dato.nombre === 'Efectivo')
-       { this.indexEfectivo = index;
-          this.pagos[index].valorPagado = this.Documento.totalFactura;
-          this.pagos[index].valorRecibido = this.pagos[index].valorPagado;
-          this.pagos[index].vueltos = 0; 
-       
-        }
-        else
-        {this.pagos[index].valorPagado = 0;}
-      }) 
+          
+
+
+
+      if (datos.numdata > 0 ){ 
+        this.pagos = [];
+        let  index : number = this.Documento.pagos.length; 
+        if (index <= 0 ) index = -1;
+        if (index > 0 )
+          { 
+            this.pagos = this.Documento.pagos.map(x => {
+            if (x.nombreMedio?.toUpperCase() !== 'EFECTIVO') {
+              let pago = new DocpagosModel();
+              pago.idMedioDePago = x.idMedioDePago || 0;
+              pago.nombreMedio = x.nombreMedio || '';
+              pago.valorPagado = x.valorPagado || 0;
+              pago.valorRecibido = x.valorRecibido || 0;
+              pago.vueltos = x.vueltos || 0;
+              pago.valorTotalAPagar = x.valorTotalAPagar || 0;
+              pago.soloLectura = true
+              return pago;
+            } else {
+             // this.pagoPorCredito.valorPagado = x.valorPagado || 0;
+              return;}// O puedes devolver un valor específico que indique que no debe incluirse en la lista de pagos
+            
+        }).filter((pago): pago is DocpagosModel => pago !== undefined);
+      console.log('pagos recibidos' , this.pagos);
+      
+        datos.data!.forEach((dato:MediosDePago )=>{  
+         let pago = new DocpagosModel();  
+         pago.idMedioDePago = dato.id;
+          pago.nombreMedio =dato.nombre;
+          pago.valorPagado = 0;
+          pago.valorRecibido = 0;
+          pago.vueltos = 0; 
+          pago.valorTotalAPagar = 0; 
+          const exists = this.pagos.some(p => p.nombreMedio === pago.nombreMedio);
+          if(!exists || (exists && pago.nombreMedio.toUpperCase() !== 'EFECTIVO' ))
+                  this.pagos.push(pago)
+        })  
+        let sum = this.pagos.reduce((total, pago) => total + pago.valorPagado, 0);
+      this.indexEfectivo =  this.pagos.findIndex(pago => pago.nombreMedio!.toUpperCase() === 'EFECTIVO');
+        this.pagos[this.indexEfectivo].valorPagado = this.Documento.totalFactura -  sum ;
+ 
+    }
      // console.log(this.MedioP);
     }else{
       this.MedioP = [];

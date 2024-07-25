@@ -51,7 +51,8 @@ vw_cnt_scuentas: 'vw_cnt_scuentas',
 vw_cnt_operaciones:'vw_cnt_operaciones',
 vw_cnt_cuenta_mayores: 'vw_cnt_cuenta',
 vw_transacciones: 'vw_transacciones',
-vw_transacciones_tmp: 'vw_transacciones_tmp'
+vw_transacciones_tmp: 'vw_transacciones_tmp',
+vendedores: 'vw_mst_per_empleados_vendedores'
 
 
 

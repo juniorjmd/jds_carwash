@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
 import { actions } from 'src/app/models/app.db.actions';
-import { url } from 'src/app/models/app.db.url';
+import { httpOptions, url } from 'src/app/models/app.db.url';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { cajaModel } from '../models/ventas/cajas.model';
+import { vistas } from '../models/app.db.view';
+import { cntGrupoRequest, empleadoRequest } from '../interfaces/producto-request';
+import { EmpleadoModel } from '../models/empleados/empleados.module';
 
 
 
@@ -20,8 +23,15 @@ export class DatosInicialesService {
     private continue = new BehaviorSubject<boolean>(false);
     continueVenta = this.continue.asObservable();
 
+    
+    private vendedores = new BehaviorSubject<EmpleadoModel[]|null>(null);
+    currentVendedores = this.vendedores.asObservable();
+
     constructor(private http: HttpClient){}
 
+    setArrayVendedores(sucursal:EmpleadoModel[]|null){ 
+        this.vendedores.next(sucursal);
+    }
     chageSucursal(sucursal:vwsucursal){
         this.sucursalSource.next(sucursal);
     }
@@ -29,7 +39,13 @@ export class DatosInicialesService {
         this.continue.next(val);
     }
 
-
+  getVendedores():Observable<empleadoRequest>{
+    let datos = {"action": actions.actionSelect , 
+        "_tabla" : vistas.vendedores,
+        "_where" : []
+       }; 
+       return this.http.post<empleadoRequest>(url.action , datos, httpOptions()) ;
+  }
     validarCuentasContablesEstablecimiento(caja:cajaModel) {
         if (caja == undefined
             || caja!.idCCntCCobrar == 0

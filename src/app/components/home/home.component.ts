@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { cajaRequest, categoriaRequest, cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest, establecimientosRequest, marcaRequest } from 'src/app/interfaces/producto-request';
+import { cajaRequest, categoriaRequest, cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntSubCuentaRequest, empleadoRequest, establecimientosRequest, marcaRequest } from 'src/app/interfaces/producto-request';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { CntContablesService } from 'src/app/services/cntContables.service';
@@ -39,7 +39,10 @@ export class HomeComponent implements OnInit {
     WindowPrt.print();
   }
   ngOnInit(): void {
-    
+    this.inicioService.getVendedores().subscribe({next: (datos:empleadoRequest) =>{
+      this.inicioService.setArrayVendedores(datos.data)
+    },error:error=>console.error(error.error.error)
+    })
     this.inicioService.getDatosIniSucursal().subscribe({next :  (data:any)=>{
        data;
       this.inicioService.chageSucursal(data[0])

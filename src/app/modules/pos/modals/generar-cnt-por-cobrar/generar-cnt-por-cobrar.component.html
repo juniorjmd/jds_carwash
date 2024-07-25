@@ -60,7 +60,10 @@
                         </table>
                     </td>
                     <td  style="align-content: center;" *ngIf="i !== indexEfectivo">
-                        <input (change)="cambioDeValor(i)" type="number" [readonly]="pagos[i].soloLectura" class="form-control" [(ngModel)]="pagos[i].valorPagado"/></td>
+                        <input (change)="cambioDeValor(i)" type="number"
+                         [readOnly] ="pagos[i].soloLectura"
+                          class="form-control" 
+                          [(ngModel)]="pagos[i].valorPagado"/></td>
                         <td *ngIf="i !== indexEfectivo"  style="align-content: center;">
                         <table class="table table-sm">
                             <thead>
