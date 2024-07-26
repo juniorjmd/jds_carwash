@@ -29,6 +29,9 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
       if(retorno.numdata!> 0){
         this.lisCartera =  retorno.data;
         this.docAbono.campo_auxiliar_1 =   this.lisCartera.reduce((acc:number, item) => acc + parseFloat(item.totalActual.toString()), 0);
+       
+        this.docAbono.campo_auxiliar_4 =   this.lisCartera.reduce((acc:number, item) => acc + parseFloat(item.suma_plazos_vencidos.toString()), 0);
+       
         this.docAbono.valorParcial =   this.lisCartera.reduce((acc, item) => acc + parseFloat(item.totalAbonos.toString()), 0);
         this.docAbono.listado = this.lisCartera.map((x:CarteraModel)=> {
                               let ret:DocumentoListado =  {

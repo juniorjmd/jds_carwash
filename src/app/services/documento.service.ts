@@ -58,7 +58,8 @@ export class DocumentoService {
   }
 
   getCuentasXCobrarByPersonaAbonos( idPersona :number): Observable<CarteraRequest> {
-    let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona},{"columna": 'totalActual', "tipocomp": '>', "dato": 0}];
+    let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona},
+      {"columna": 'totalActual', "tipocomp": '>', "dato": 0}];
     let datos = {
       "action": actions.actionSelect,
       "_tabla": vistas.cartera, 

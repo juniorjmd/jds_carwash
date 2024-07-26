@@ -39,7 +39,8 @@ export class GenerarCntPorCobrarComponent implements OnInit {
   }
   finalizarOk(){
     //documentos_pagos
-    this.serviceCaja.setPagoDocumentoCredito(this.Documento.orden ,this.pagos )
+    this.serviceCaja.setPagoDocumentoCredito(this.Documento.orden ,this.pagos , 
+      this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2)
      .subscribe({next: (datos:DocumentoCierreRequest)=>{
         console.log(datos); 
         console.log('pagos realizados' , this.pagos ); 

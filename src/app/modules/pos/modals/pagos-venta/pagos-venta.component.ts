@@ -61,7 +61,7 @@ export class PagosVentaComponent implements OnInit {
     console.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
-        this.dialogo.close({rep:true,credito:true});
+        this.dialogo.close({rep:true,credito:false});
       } ,
       error: error  => {this.loading.hide();
         console.error('finalizarOk', error.error.error);

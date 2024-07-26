@@ -26,6 +26,15 @@
           </div>
         </div>
       </div>
+      
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Total Vencido</h5>
+            <p class="card-text">{{ docAbono.campo_auxiliar_4 | currency }}</p>
+          </div>
+        </div>
+      </div>
       <div class="col-sm-4">
         <div class="card">
           <div class="card-body text-center">
@@ -58,6 +67,8 @@
             <th>Descripción</th>
             <th>Valor Inicial</th>
             <th>Abono Inicial</th>
+            <th>Cuotas vencidas</th>
+            <th>Vencido</th>
             <th>Deuda Actual</th>
             <th>Total Abonos</th>
             <th>Fecha Último Abono</th>
@@ -69,6 +80,9 @@
             <td>{{ item.descripcion }}</td>
             <td>{{ item.valorInicial | currency }}</td>
             <td>{{ item.abonoInicial | currency }}</td>
+            
+            <td>{{ item.numero_plazos_vencidos }}</td>
+            <td>{{ item.suma_plazos_vencidos | currency }}</td>
             <td>{{ item.totalActual | currency }}</td>
             <td>{{ item.totalAbonos | currency }}</td>
             <td>{{ item.fecha_ultimo_abono | date: 'shortDate' }}</td>

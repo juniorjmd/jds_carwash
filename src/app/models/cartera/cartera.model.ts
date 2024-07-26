@@ -19,6 +19,8 @@ export class CarteraModel extends ModelBase {
   idFacturaVenta = 0;
   comprobante = 0;
   fecha_ultimo_abono?:Date;
-  descripcion='';
+  descripcion='';cuotas:number= 0;plazos:number= 0;
+  numero_plazos_vencidos:number= 0;
+  suma_plazos_vencidos:number= 0;
   
 }

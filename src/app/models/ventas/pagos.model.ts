@@ -16,5 +16,7 @@ export class pagosModel{
     vueltos :number  = 0; 
     referencia!:string ;
     refDoc!:string ;
-    soloLectura:boolean = false ;
+    soloLectura:boolean = false ; 
+    aux1 ?:number = 1 ;  
+    aux2 ?:number = 15 ; 
    }
