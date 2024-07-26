@@ -119,15 +119,16 @@ getMediosP(){
   this.loading.show()
   this.serviceCaja.getMediosCajaActiva()
      .subscribe( {next:(datos:any)=>{
-         console.log(datos);
-          
-
-
-
+      console.clear();
+         console.log('getMediosCajaActiva',datos);
       if (datos.numdata > 0 ){ 
         this.pagos = [];
         let  index : number = this.Documento.pagos.length; 
+        console.log('total pagos documento',index);
+        
         if (index <= 0 ) index = -1;
+        
+        console.log('total pagos documento',index);
         if (index > 0 )
           { 
             this.pagos = this.Documento.pagos.map(x => {
@@ -141,11 +142,13 @@ getMediosP(){
               pago.valorTotalAPagar = x.valorTotalAPagar || 0;
               pago.soloLectura = true
               return pago;
-            } else {
+            } 
+            else {
              // this.pagoPorCredito.valorPagado = x.valorPagado || 0;
               return;}// O puedes devolver un valor específico que indique que no debe incluirse en la lista de pagos
             
         }).filter((pago): pago is DocpagosModel => pago !== undefined);
+      }
       console.log('pagos recibidos' , this.pagos);
       
         datos.data!.forEach((dato:MediosDePago )=>{  
@@ -164,10 +167,10 @@ getMediosP(){
       this.indexEfectivo =  this.pagos.findIndex(pago => pago.nombreMedio!.toUpperCase() === 'EFECTIVO');
         this.pagos[this.indexEfectivo].valorPagado = this.Documento.totalFactura -  sum ;
  
-    }
+   
      // console.log(this.MedioP);
     }else{
-      this.MedioP = [];
+      this.pagos = [];
     } 
     console.log('pagos realizados' , this.pagos ); 
         this.loading.hide()

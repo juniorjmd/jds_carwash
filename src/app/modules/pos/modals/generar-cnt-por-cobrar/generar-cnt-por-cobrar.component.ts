@@ -116,7 +116,7 @@ getMediosP(){
           
       }).filter((pago): pago is DocpagosModel => pago !== undefined);
     console.log('pagos recibidos' , this.pagos);
-    
+        }
       datos.data!.forEach((dato:MediosDePago )=>{  
        let pago = new DocpagosModel();  
        pago.idMedioDePago = dato.id;
@@ -135,7 +135,7 @@ getMediosP(){
     console.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
-      }} ,
+      } ,
       error: (error:any) => {this.loading.hide();
         alert( error.error.error);
       }}
