@@ -18,7 +18,7 @@
   
     <!-- Totales -->
     <div class="row mb-4">
-      <div class="col-sm-4">
+      <div class="col-sm-2">
         <div class="card">
           <div class="card-body text-center">
             <h5 class="card-title">Total Deuda</h5>
@@ -27,7 +27,7 @@
         </div>
       </div>
       
-      <div class="col-sm-4">
+      <div class="col-sm-2">
         <div class="card">
           <div class="card-body text-center">
             <h5 class="card-title">Total Vencido</h5>
@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-2">
         <div class="card">
           <div class="card-body text-center">
             <h5 class="card-title">Total Abonos</h5>
@@ -60,7 +60,7 @@
     </div>
   
     <!-- Tabla de Cartera -->
-    <div *ngIf="lisCartera != undefined" class="table-responsive">
+    <div *ngIf="lisCartera != undefined" class="table-responsive" style="height: 350px; overflow-y: auto;">
       <table class="table table-striped table-bordered">
         <thead class="thead-dark">
           <tr>

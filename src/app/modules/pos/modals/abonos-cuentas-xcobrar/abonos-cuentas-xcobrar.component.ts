@@ -32,7 +32,7 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
        
         this.docAbono.campo_auxiliar_4 =   this.lisCartera.reduce((acc:number, item) => acc + parseFloat(item.suma_plazos_vencidos.toString()), 0);
        
-        this.docAbono.valorParcial =   this.lisCartera.reduce((acc, item) => acc + parseFloat(item.totalAbonos.toString()), 0);
+        this.docAbono.valorParcial =  0;
         this.docAbono.listado = this.lisCartera.map((x:CarteraModel)=> {
                               let ret:DocumentoListado =  {
                                 idProducto: `Cred_${x.id}`,

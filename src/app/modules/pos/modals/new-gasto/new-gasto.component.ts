@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { catchError, of, tap } from 'rxjs';
 import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 import { ValuesFormuGasto } from 'src/app/interfaces/valuesFormularios';
 import { loading } from 'src/app/models/app.loading';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
+import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { DocumentoService } from 'src/app/services/documento.service';
 import Swal from 'sweetalert2';
 
@@ -16,7 +17,7 @@ import Swal from 'sweetalert2';
 })
 export class NewGastoComponent {
 
-
+  private newAbrirDialog = inject(MatDialog)
   gastoForm?: FormGroup;
   private fb = inject(FormBuilder);
   private documentoService = inject(DocumentoService);
@@ -28,8 +29,27 @@ export class NewGastoComponent {
     this.gastoForm = this.fb.group({
       nombre: ['', Validators.required],
       valor: ['', [Validators.required, Validators.pattern(/^\d*\.?\d+$/)]],
-      descripcion: ['', Validators.required]
+      descripcion: ['', Validators.required],
+      tercero: ['', Validators.required]
     });
+  }
+
+
+  buscarTerceroGasto (){
+
+    this.newAbrirDialog.open(FndClienteComponent,{ data: {  invoker:'gasto' } })
+    .afterClosed()
+    .pipe(
+      tap((confirmado: Boolean)=>{
+        if (confirmado) { 
+
+        }
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCliente completo')
+    });   
   }
   crearDocumento() {
     if(this.newGasto != undefined){

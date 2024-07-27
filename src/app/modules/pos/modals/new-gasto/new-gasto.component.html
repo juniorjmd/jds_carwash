@@ -8,6 +8,21 @@
           El nombre es requerido.
         </div>
       </div>
+
+      <div class="form-group">
+        <label for="tercero">Tercero</label>
+        <div class="input-group mb-3">
+          <input type="text" id="nombre" readonly class="form-control" formControlName="tercero">
+          <button (click)="buscarTerceroGasto()" class="btn btn-info">?</button>
+        </div>
+
+        
+        <div *ngIf="gastoForm?.get('tercero')?.invalid && (gastoForm?.get('tercero')?.dirty || gastoForm?.get('tercero')?.touched)" class="text-danger">
+          El tercero es requerido.
+        </div>
+      </div>
+
+
       <div class="form-group">
         <label for="valor">Valor del Gasto</label>
         <input type="text" id="valor" class="form-control" formControlName="valor">

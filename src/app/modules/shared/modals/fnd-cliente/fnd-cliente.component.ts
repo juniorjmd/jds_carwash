@@ -32,6 +32,7 @@ export class FndClienteComponent implements OnInit {
   empresaShwich : boolean = true;
   crear:boolean = true ; 
   asignarADoc = true;
+  buscarPorNombre = false;
   devolverPersona = false;
   documentoActivo:DocumentosModel;
   maestro?:MaestroCliente;
@@ -69,13 +70,21 @@ export class FndClienteComponent implements OnInit {
         this.asignarADoc = false;
       }
 
-      if(this.dataIngreso.invoker == 'cuentasPorCobrarVentas'){
-        this.asignarADoc = false;
+      if(this.dataIngreso.invoker == 'cuentasPorCobrarVentas' 
+        || this.dataIngreso.invoker == 'gasto'){
+          this.asignarADoc = false; 
         this.asignarEmpleado =  false;
         this.crear =  false
         this.devolverPersona = true;
 
       }
+
+ if( this.dataIngreso.invoker == 'gasto'){
+          this.buscarPorNombre = true;
+          this.crear =  true;
+
+      }
+      
   }
   pasarComoEmpleado(){
     this.retorno= {response:true , empleado: this.NwCliente , persona:this.NwCliente}
@@ -142,6 +151,44 @@ export class FndClienteComponent implements OnInit {
           ,complete:()=>this.loading.hide()})
           }
       }
+
+
+      buscarClientePorNombre(){
+        if (this.NwCliente.nombreCompleto !== undefined && this.NwCliente.nombreCompleto!== undefined ){
+          this.loading.show();
+                this.clientesService.getClientesByNombre(
+                  this.NwCliente.nombreCompleto  
+                ).subscribe({next:(value:clienteRequest)=>{
+                  console.log(value)
+                  if(value.numdata== 0){
+                    Swal.fire( {title:'Persona no encontrada',
+                       text:'Desea crearla e ingresarla a la venta?',
+                       icon:'question', 
+                      showCancelButton: true,
+                      confirmButtonText: 'Si', 
+                      cancelButtonText:'No'}
+    
+                    )
+                    .then((result) => {
+                      if (result.isConfirmed) {  
+                        this.busqueda =  false
+                      }}); 
+                  }else{
+                    this.NwCliente =  value.data[0] 
+                    if(this.dataIngreso.invoker == 'cuentasPorCobrarVentas'){
+                      this.pasarComoEmpleado();
+                    }else{
+                    console.log('cliente encontrado' , this.NwCliente)
+                    this.getDepartamento() 
+                    this.getCiudad()
+                    this.busqueda =  false
+                  }
+                  }
+                },error:(error)=>console.error(error)
+              ,complete:()=>this.loading.hide()})
+              }
+          }    
+  
 
   buscarClienteFinal(){
         if (this.NwCliente.numIdentificacion !== undefined && this.NwCliente.tipoIdentificacion!== undefined ){

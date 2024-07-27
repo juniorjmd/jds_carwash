@@ -1,5 +1,8 @@
 <div class="container-fluid " style="background-color: darkseagreen; padding-top: 10px;padding-bottom: 10px; min-width: 600px;" >
     <div *ngIf="busqueda" class="row">
+
+
+    <ng-container *ngIf="!buscarPorNombre">
         <div class="col-sm-5">
             <div class="form-group">
                 <select class="form-control" [(ngModel)]="NwCliente.tipoIdentificacion"   placeholder=" ">
@@ -12,6 +15,24 @@
                 <input type="text" autocomplete="off" (keyup.enter)='buscarCliente()' placeholder="Identificación" [(ngModel)]="NwCliente.numIdentificacion" class="form-control" aria-describedby="helpId">
             </div>
         </div>
+    </ng-container>
+
+    <ng-container *ngIf="buscarPorNombre">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <span>Nombre : </span>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <div class="form-group">
+                <input type="text" autocomplete="off" (keyup.enter)='buscarClientePorNombre()' 
+                placeholder="Identificación" [(ngModel)]="NwCliente.nombreCompleto" class="form-control" aria-describedby="helpId">
+            </div>
+        </div>
+    </ng-container>
+
+
+
     </div>
  <div *ngIf="!busqueda">
         <hr> 
