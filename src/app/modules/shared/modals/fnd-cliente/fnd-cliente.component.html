@@ -26,7 +26,7 @@
         <div class="col-sm-7">
             <div class="form-group">
                 <input type="text" autocomplete="off" (keyup.enter)='buscarClientePorNombre()' 
-                placeholder="Identificación" [(ngModel)]="NwCliente.nombreCompleto" class="form-control" aria-describedby="helpId">
+                placeholder="Nombre del cliente" [(ngModel)]="NwCliente.nombreCompleto" class="form-control" aria-describedby="helpId">
             </div>
         </div>
     </ng-container>
@@ -34,8 +34,10 @@
 
 
     </div>
- <div *ngIf="!busqueda">
+ <div *ngIf="!busqueda " class="container-fluid modal_container">
         <hr> 
+
+        <ng-container *ngIf="!mostrarListado" > 
         <div class="row ">
             <div class="col-sm-2" *ngIf="empresaShwich"> 
                     <div class="form-check form-switch">
@@ -47,7 +49,7 @@
             <div class="col-sm-7"></div>
             <div class="col-sm-3">
                 
-                <div *ngIf="asignarADoc" class="btn-group" role="group" aria-label="Basic example">
+                <div *ngIf="asignarADoc " class="btn-group" role="group" aria-label="Basic example">
                     <button *ngIf="crear" type="button" (click)="crearCliente()" title="Guardar En Odoo" class="btn btn-success">
                         <i class="bi bi-check2-circle"></i>
                     </button>
@@ -55,12 +57,12 @@
                         <i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark-text"></i>
                     </button> 
                 </div>
-                <div *ngIf="!asignarADoc && !asignarEmpleado" >
-                 <button *ngIf="crear" type="button" (click)="crearCliente()" title="Guardar En Odoo" class="btn btn-success">
+                <div *ngIf="!asignarADoc && !asignarEmpleado && !devolverPersona" >
+                 <button *ngIf="crear" type="button" (click)="crearCliente()" title="Crear cliente" class="btn btn-success">
                     <i class="bi bi-check2-circle"></i>
                 </button>
             </div> 
-            <div *ngIf="asignarEmpleado" >
+            <div *ngIf="asignarEmpleado && !devolverPersona" >
                 <button *ngIf="crear" type="button" (click)="crearCliente()" title="Guardar En Odoo" class="btn btn-success">
                    <i class="bi bi-check2-circle"></i>
                </button>
@@ -73,7 +75,7 @@
                 <button *ngIf="crear" type="button" (click)="crearPersonaYDevolverla()" title="Guardar En Odoo" class="btn btn-success">
                    <i class="bi bi-check2-circle"></i>
                </button>
-               <button type="button" title="Retornar Cliente" (click)="pasarComoEmpleado()" class="btn btn-primary">
+               <button type="button"  *ngIf="asignarEmpleado"   title="Retornar Cliente" (click)="pasarComoEmpleado()" class="btn btn-primary">
                 <i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark-text"></i>
               </button> 
            </div> 
@@ -99,7 +101,7 @@
                 </div>
             </div>
         </div>
-             <div class="row pt-3" *ngIf="!NwCliente.is_empresa"> 
+        <div class="row pt-3" *ngIf="!NwCliente.is_empresa"> 
             <div class="col-sm-6">
                 <div class="form-group">
                     <input type="text" autocomplete="off" placeholder="Apellido" [(ngModel)]="NwCliente.apellido" class="form-control" aria-describedby="helpId">
@@ -163,15 +165,16 @@
         </div>
 
         <div class="row  pt-3">
-            <div class="col-sm-5">
-                
+            <div class="col-sm-5"> 
                 <div class="form-group">
                     <label for="direccion">Tipo de dirección</label>
                     <select class="form-control" >
                         <option *ngFor='let tipdireccion of tipo_direccion' [value]="tipdireccion.dato">{{tipdireccion.label}}</option>
                     </select>
-                </div></div> </div>
-                <div class="row  pt-3">
+                </div>
+            </div> 
+            </div>
+        <div class="row  pt-3">
                     <div class="col-sm-4"> 
                             <label for="direccion">Dirección</label>
                         </div></div>
@@ -187,7 +190,8 @@
                 <div class="form-group">
                     <input type="text" autocomplete="off" [(ngModel)]="NwCliente.calle2" class="form-control" placeholder="Calle 2...">
                 </div>
-            </div></div>
+            </div>
+        </div>
   
             <div class="row">
                 <div class="col-sm-4"> <label for="direccion">País</label>
@@ -205,4 +209,50 @@
                         <option *ngFor='let Ciudad of Ciudades  ' [ngValue]="Ciudad.id">{{Ciudad.nombre}}<option>
                     </select>
                 </div> 
-            </div></div>
+            </div>
+
+        </ng-container>
+        <ng-container *ngIf="mostrarListado" >
+            <button type="button" class="btn btn-secondary">
+               Nuevo
+              </button>
+
+            <table class="table table-striped ">
+                <tr style="text-align: center;">
+                    
+                    <th>
+                        Identificacion
+                    </th>
+                    <th>
+                        cliente
+                    </th>
+                    <th>
+                        opciones
+                    </th>
+                </tr>
+                <tr *ngFor="let cliente of ClientesResult" >
+                    <th>
+                        {{cliente.nombreCompleto}}
+                    </th>
+                    <th>
+                        {{cliente.numIdentificacion}}
+                    </th>
+                    
+                    <th>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-secondary">
+                              <i class="bi bi-pencil-fill"></i> 
+                            </button>
+                            <button type="button" class="btn btn-secondary">
+                              <i class="bi bi-send-fill"></i> 
+                            </button>
+                            <button type="button" class="btn btn-secondary">
+                              <i class="bi bi-trash-fill"></i> 
+                            </button>
+                          </div>
+                    </th>
+                </tr>
+            </table>
+        </ng-container>
+
+        </div>

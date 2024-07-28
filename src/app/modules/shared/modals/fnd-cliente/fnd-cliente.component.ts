@@ -26,6 +26,7 @@ export class FndClienteComponent implements OnInit {
   titulos:any[] = [] ;
   categorias:any[] = [] ; 
   NwCliente:ClientesModel = new ClientesModel();  
+  ClientesResult:ClientesModel[] = [];
   Ciudades:CiudadModel[] = [];
   departamentos:DepartamentoModel[] = [];
   busqueda:boolean = true;
@@ -33,7 +34,8 @@ export class FndClienteComponent implements OnInit {
   crear:boolean = true ; 
   asignarADoc = true;
   buscarPorNombre = false;
-  devolverPersona = false;
+  devolverPersona = false;  
+  mostrarListado = false;
   documentoActivo:DocumentosModel;
   maestro?:MaestroCliente;
   retorno:BusquedaPersona;
@@ -81,8 +83,12 @@ export class FndClienteComponent implements OnInit {
 
  if( this.dataIngreso.invoker == 'gasto'){
           this.buscarPorNombre = true;
-          this.crear =  true;
-
+          this.asignarADoc = false; 
+          this.asignarEmpleado =  false;
+          this.crear =  true
+          this.devolverPersona = true; 
+          this.mostrarListado = true
+          
       }
       
   }
@@ -171,10 +177,12 @@ export class FndClienteComponent implements OnInit {
                     )
                     .then((result) => {
                       if (result.isConfirmed) {  
-                        this.busqueda =  false
+                        this.busqueda =  false;
+                        this.mostrarListado = false;
                       }}); 
                   }else{
                     this.NwCliente =  value.data[0] 
+                    this.ClientesResult = value.data;
                     if(this.dataIngreso.invoker == 'cuentasPorCobrarVentas'){
                       this.pasarComoEmpleado();
                     }else{
