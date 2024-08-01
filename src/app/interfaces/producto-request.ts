@@ -1,3 +1,4 @@
+import { ActividadesDescuentoModel } from "../models/actividadesDescuentoModel";
 import { CarteraModel } from "../models/cartera/cartera.model";
 import { CategoriasModel } from "../models/categorias.model";
 import { ClientesModel } from "../models/clientes/clientes.module";
@@ -9,14 +10,14 @@ import { CntSubCuentaModel, vwCntSubCuentaModel } from "../models/cnt-sub-cuenta
 import { DescuentoModule } from "../models/descuento/descuento.model";
 import { EmpleadoModel } from "../models/empleados/empleados.module";
 import { MarcasModel } from "../models/marcas/marcas.module";
-import { ProductoModule } from "../models/producto/producto.module";
+import { ProductoModel } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
 import { cajaModel } from "../models/ventas/cajas.model";
 import { DocumentosModel } from "../models/ventas/documento.model";
 import { establecimientoModel } from "../models/ventas/establecimientos.model";
 
 export interface ProductoRequest { 
-  data: ProductoModule[];
+  data: ProductoModel[];
   query: string;
   numdata: number;
   error: string;
@@ -36,6 +37,14 @@ export interface DescuentoRequest {
   error: string;
 }
 
+
+export interface actividadesRequest { 
+  data:   ActividadesDescuentoModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
 export interface DocumentoCierreRequest { 
   data: { documentoFinal: DocumentosModel };
   query?: string;
@@ -47,7 +56,7 @@ export interface CarteraRequest {
   query?: string;
   numdata?: number;
   error: string;
-}
+} 
 
 
 export interface clienteRequest { 

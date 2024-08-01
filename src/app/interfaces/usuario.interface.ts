@@ -46,6 +46,6 @@ export interface RecursoDetalle{
     idtipo:number,
     tipo:string,
     estado?:number ,
-    direccion?:any , 
+    direccion?:string[] , 
     recursosHijos ?: RecursoDetalle[]
 }

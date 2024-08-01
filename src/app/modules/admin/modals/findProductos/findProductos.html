@@ -1,0 +1,17 @@
+
+<div class="container-fluid pt-4 pb-4 modal_container ">
+<div class="row"   >
+    <div class="col-sm-12" style="height: 400px; overflow-y: auto; min-width: 400px;">
+        <table class="table">
+            <tr>
+                <th colspan="3"><input type="text" [(ngModel)] ='filtroName' (keyup.enter)="filtrarPorNombre()" class="form-control"> <th>
+            </tr>
+            <tr>
+                <th colspan="3">Productos Disponibles<th>
+            </tr>
+            <tr  (click)="enviarProducto(item)" [ngClass]="{'itemSelected': item.selected}" *ngFor="let item of productosFiltrados">
+                <td>{{item.nombre}}</td><td>{{item.nombre2}}</td><td>{{item.nombre3}}</td>
+            </tr>
+        </table>
+    </div>
+</div> </div>

@@ -1,0 +1,35 @@
+<div class="container-fluid">
+    
+    <div class="row" *ngIf="actividades && actividades.length > 0">
+        <div class="col-sm-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>actividad</th>
+                        <th>tipo</th>
+                        <th>inicia</th>
+                        <th>finaliza</th> 
+                        <th>estado</th> 
+                        <th >Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let venta of actividades" title="">
+                        <td>{{venta.nombre}}</td>
+                        <td>{{venta.tipo}}</td>
+                        <td>{{venta.fechaInicial}}</td>
+                        <td>{{venta.fechaFinal  }}</td> 
+                        <td>{{venta.nombre_estado  }}</td> 
+                        <td><i class="bi bi-list boton_activo" (click)="verDetalle(venta)"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" *ngIf="actividades && actividades.length === 0">
+        <div class="col-sm-12 text-center">
+            <p>No se encontraron actividades.</p>
+        </div>
+    </div>
+</div>
+

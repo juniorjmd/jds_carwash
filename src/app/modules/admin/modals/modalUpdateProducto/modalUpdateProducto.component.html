@@ -1,0 +1,108 @@
+<div class="container-fluid modal_container"   >
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class='centrado'>Edicion de productos</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">Nombre : </div>
+            <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.nombre" class="form-control" placeholder="nombre principal "></div>
+            <div class="col-sm-10">Nombre 2 : </div>
+            <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.nombre2" class="form-control" placeholder="nombre secundario "></div>
+            <div class="col-sm-10">Nombre 3 : </div>
+            <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.nombre3" class="form-control" placeholder="nombre secundario "></div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">Categoria : </div>
+            <div class="col-sm-12"> 
+                {{newProducto.nombreCategoria}}
+            </div>
+            <div class="col-sm-10">Categoria 2 : </div>
+            <div class="col-sm-12"> 
+            </div>
+            <div class="col-sm-10">Categoria 3 : </div>
+            <div class="col-sm-12"> 
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">Marca : </div>
+            <div class="col-sm-12">
+                <select class="form-control" [(ngModel)]="newProducto.idMarca">
+                    <option *ngFor="let marca of marcas" value="{{marca.id}}">{{marca.nombre}}</option>
+                </select>
+            </div>
+            <div class="col-sm-10">Tipo de Producto : </div>
+            <div class="col-sm-12">
+                <select class="form-control" [(ngModel)]="newProducto.tipo_producto">
+                    <option *ngFor="let tipProducto of tipProductos" value="{{tipProducto.id}}">{{tipProducto.nombre}}</option>
+                </select>
+            </div>
+        <div class="col-sm-10">informacion tributaria : </div>
+            <div class="col-sm-12">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'GRABADO'">
+                        <input type="radio" name="options" (click)="newProducto.porcent_iva=0" [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="GRABADO"> Grabado
+                    </label>
+                    <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'EXENTO'">
+                        <input type="radio" name="options" (click)="newProducto.porcent_iva=0"  [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="EXENTO"> Exento
+                    </label>
+                    <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'EXCLUIDO'">
+                        <input type="radio" name="options" (click)="newProducto.porcent_iva=0"  [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="EXCLUIDO"> Excluido
+                    </label>
+                </div>
+            </div>
+        
+        
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">IVA (%) : </div>
+            <div class="col-sm-12"> <input type="number" [readOnly]="newProducto.infoTributaria !== 'GRABADO'" [(ngModel)]="newProducto.porcent_iva" class="form-control" placeholder="nombre principal "></div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">precio de compra : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precioCompra" class="form-control" placeholder="nombre principal "></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">precio1 : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[0].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">precio2 : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[1].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-10">precio3 : </div>
+            <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precios[2].precio_con_iva" class="form-control" placeholder="nombre principal "></div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-7">
+            <div class="col-sm-6">Codigo de Barras</div>
+            <div class="col-sm-12">
+                <input type="text" [(ngModel)]="newProducto.barcode" class="form-control" placeholder="CODIGO DE BARRAS">
+            </div>
+            <div class="col-sm-6">Descripcion</div>
+            <div class="col-sm-12">
+                <input type="text" [(ngModel)]="newProducto.descripcion" class="form-control" placeholder="Descripcion adicional">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="col-sm-12">
+                <input class="btn btn-success col-sm-12" type="button" (click)="enviarProducto()" value="Crear Producto">
+            </div><br>
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-danger col-sm-12" (click)="limpiarFormulario()"> Cancelar </button>
+            </div>
+        </div>
+    </div>
+</div>

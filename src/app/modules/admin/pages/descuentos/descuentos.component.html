@@ -1,5 +1,5 @@
 <div class="container">
-    <h2>Formulario de Registro</h2> 
+    <h2>Mantenimientos de Descuentos</h2> 
         <div class="row">
             <div class="col-sm-4"> 
                     <div class="form-group">
@@ -37,7 +37,7 @@
        
         <button type="submit" (click)="editar()" class="btn btn-primary">Guardar</button> 
     <hr>
-    <h3>Listado de Registros</h3>
+     
     <table class="table">
         <thead class="thead-dark">
             <tr> 
@@ -54,7 +54,11 @@
                 <th scope="col">{{item.cantidad}}</th>
                 <th scope="col">{{item.NombreTipo}}</th>
                 <th scope="col">{{item.descripcion}}</th>
-                <th scope="col"><button class="btn btn-primary" (click)="setEditar(item)">editar</button>    
+                <th scope="col"><div class="btn-group" role="group" aria-label="Basic example">
+                    <button class="btn btn-primary" (click)="setEditar(item)" title="editar"><i class="bi bi-pencil-fill"></i> </button>    
+                    <button type="button" class="btn btn-danger">
+                        <i class="bi bi-trash-fill"></i> 
+                      </button></div>
                 </th>
             </tr>
            

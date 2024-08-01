@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto';
 import { ProductoService } from 'src/app/services/producto.service';
 import { loading } from 'src/app/models/app.loading';
-import { ProductoModule } from 'src/app/models/producto/producto.module';
+import { ProductoModel } from 'src/app/models/producto/producto.module';
 import { errorOdoo } from 'src/app/interfaces/odoo-prd';
 import { PrdExistenciasModule } from 'src/app/models/prd-existencias/prd-existencias.module';
 import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module';
@@ -18,7 +18,7 @@ export class IngresarProductoVentaComponent {
   cantidadPrd = 0 ; 
   disabled = [true,true,true,true,true,true,true,true,true,true]; 
   codPrd:string = '';  
-  parceros : ProductoModule[] = []; 
+  parceros : ProductoModel[] = []; 
   show = true ;
   show_reemplazo = false;  
   existencia?:PrdExistenciasModule;  

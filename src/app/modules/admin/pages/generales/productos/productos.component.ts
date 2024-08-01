@@ -4,7 +4,7 @@ import { CategoriasModel } from 'src/app/models/categorias.model';
 import { Categoria } from 'src/app/interfaces/categoria.interface'; 
 import { loading } from 'src/app/models/app.loading';
 import { ProductoService } from 'src/app/services/producto.service'; 
-import { ProductoModule } from 'src/app/models/producto/producto.module';
+import { ProductoModel } from 'src/app/models/producto/producto.module';
 import { MarcasModel } from 'src/app/models/marcas/marcas.module'; 
 import { PrdExistenciasModule } from 'src/app/models/prd-existencias/prd-existencias.module';
 import { BodegasModule } from 'src/app/models/bodegas/bodegas.module';
@@ -14,6 +14,7 @@ import { BuscarProdDirectoComponent } from 'src/app/modules/pos/modals/buscar-pr
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import Swal from 'sweetalert2';
 import { categoriaRequest, marcaRequest } from 'src/app/interfaces/producto-request';
+import { ModalUpdateProductoComponent } from '../../../modals/modalUpdateProducto/modalUpdateProducto.component';
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
@@ -24,7 +25,7 @@ export class ProductosComponent implements OnInit {
   auxBodega:BodegasModule = {nombre : 'SELECCIONAR LA BODEGA' ,estado:0,   id:0  , descripcion : ''}
   existenciasPrd:PrdExistenciasModule[]=[] ;
   
-  productoRetornoBusqueda!:ProductoModule ;
+  productoRetornoBusqueda!:ProductoModel ;
   AuxIngresoInventarioModule : AuxIngresoInventarioModule[] = [];
 
 
@@ -38,7 +39,7 @@ export class ProductosComponent implements OnInit {
     descripcion : '',
     tipoInventario : 0
   }
-  Productos :ProductoModule[] = [];
+  Productos :ProductoModel[] = [];
   categoriaAux :CategoriasModel[]  =  [{id:0,  letra:'',     nombre:'Seleccione la categoria',     descripcion:'',     tipo:'',    contador :0   }] ; 
   categorias :CategoriasModel[] = []; 
   categorias1 :CategoriasModel[] = [...this.categoriaAux ];
@@ -56,7 +57,7 @@ export class ProductosComponent implements OnInit {
                {id:1 , nombre:'General' } 
              ];
   marcas:MarcasModel[] = [this.marcasAux];
-  newProducto:ProductoModule = new ProductoModule( '' , '' ,0 ,0,'0','0', 0,0,0,0,0,'','','',0, ''  ) ; 
+  newProducto:ProductoModel = new ProductoModel( '' , '' ,0 ,0,'0','0', 0,0,0,0,0,'','','',0, ''  ) ; 
   textFindProductos:string = '';
   constructor(private loading : loading,
     private productoService:ProductoService,
@@ -314,16 +315,23 @@ export class ProductosComponent implements OnInit {
           this.loading.hide() }
         );
      }
-     editarPrd(prd:ProductoModule){
-      this.removeGetActivo('CrearPrdLink'); 
-      this.limpiarFormulario()
-      this.categorias2 = [...this.categorias ];
-        this.categorias3  = [...this.categorias ];
-      this.newProducto = prd;
+     editarPrd(prd:ProductoModel){ 
+      this.limpiarFormulario() 
+      this.newAbrirDialog.open(ModalUpdateProductoComponent , { data:  prd }  )
+      .afterClosed()
+      .subscribe(( response:responsePrd  )=>{
+        console.log(response);
+        
+        if (response.confirmado){ 
+          console.log('dato retornado busqueda directa',response.datoDevolucion);
+       
+        } 
+      })  
+
      }
 
 
-     existencias(prd:ProductoModule){
+     existencias(prd:ProductoModel){
       if (prd.existencias.length > 0 ){ 
         this.existenciasPrd = prd.existencias; 
         console.log(this.existenciasPrd);
@@ -375,7 +383,7 @@ export class ProductosComponent implements OnInit {
         Swal.fire( 'el producto ' + prd.nombre+ ' no posee existencias en ninguna bodega!!', '', 'error');
       }
      }
-     existencias_old(prd:ProductoModule){
+     existencias_old(prd:ProductoModel){
       this.loading.show()
       this.productoService.getProductosExistencia(prd).subscribe(
         {
@@ -485,10 +493,10 @@ export class ProductosComponent implements OnInit {
    
     }
 
-
+    
 
      limpiarFormulario(){
-      this.newProducto  =new ProductoModule( '' , '' ,0 ,0,'','0', 0,0,0,0,0,'','','',0,''  ) ; 
+      this.newProducto  =new ProductoModel( '' , '' ,0 ,0,'','0', 0,0,0,0,0,'','','',0,''  ) ; 
 
      }
      enviarProducto(){

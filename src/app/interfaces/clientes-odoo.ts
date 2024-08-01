@@ -1,6 +1,6 @@
 import { answDfltOdoo } from "../models/app.db.answDfltOdoo.model";
 import { DocumentosModel } from "../models/ventas/documento.model";
-import { ProductoModule } from "../models/producto/producto.module";
+import { ProductoModel } from "../models/producto/producto.module";
 
 export interface ClientesOdoo {
     "id"?: number,
@@ -47,7 +47,7 @@ export interface dfltAnswOdoo {
   export interface productoDocumento {
 
     'idproducto':string,
-    'producto'?:ProductoModule  ,
+    'producto'?:ProductoModel  ,
      'idDocumento'?:string,
     'documento'?:DocumentosModel,
   }

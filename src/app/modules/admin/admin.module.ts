@@ -21,7 +21,14 @@ import { TiposEstablComponent } from './pages/generales/establecimientos/tipos-e
 import { SharedModule } from '../shared/shared.module';
 import { AdminCategoriasComponent } from './modals/admin-categorias/admin-categorias.component';
 import { DescuentosComponent } from './pages/descuentos/descuentos.component';
-import { ActividadDescuentoComponent } from './pages/actividad-descuento/actividad-descuento.component'; 
+import { ActividadDescuentoComponent } from './pages/actividad-descuento/actividad-descuento.component';
+import { ListarActividadComponent } from './pages/actividad-descuento/listar-actividad/listar-actividad.component';
+import { CrearActividadComponent } from './pages/actividad-descuento/crear-actividad/crear-actividad.component'; 
+import { FindCategoriasComponent } from './modals/findCategorias/findCategorias.component';
+import { FindMarcasComponent } from './modals/findMarcas/findMarcas.component';
+import { FindProductosComponent } from './modals/findProductos/findProductos.component';
+import { ModalFndClienteComponent } from './modals/modalFndCliente/modalFndCliente.component';
+import { ModalUpdateProductoComponent } from './modals/modalUpdateProducto/modalUpdateProducto.component';
 
  
 @NgModule({
@@ -43,7 +50,9 @@ import { ActividadDescuentoComponent } from './pages/actividad-descuento/activid
     CajasDetalleComponent,
     AdminCategoriasComponent,
     DescuentosComponent,
-    ActividadDescuentoComponent 
+    ActividadDescuentoComponent,
+    ListarActividadComponent,ModalUpdateProductoComponent,
+    CrearActividadComponent ,FindCategoriasComponent,FindMarcasComponent, FindProductosComponent,ModalFndClienteComponent
   ],
   imports: [
     CommonModule,

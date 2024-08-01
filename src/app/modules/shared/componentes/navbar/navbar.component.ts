@@ -44,11 +44,21 @@ export class NavbarComponent {
   }
   ngOnInit() {
     this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ; 
+      console.log('usuarioLogueado' , this.usuario);
+      
     });
   }
-  toggleDropdown() {
-    this.isDropdownActive = !this.isDropdownActive;
-  } 
+ 
+
+ 
+
+  showDropdown() {
+    this.isDropdownActive = false;
+  }
+
+  hideDropdown() {
+    this.isDropdownActive = true;
+  }
  
   confirmLogout() {
     const message = '¿Estás seguro de que deseas cerrar sesión?';

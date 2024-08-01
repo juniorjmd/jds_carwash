@@ -1,0 +1,8 @@
+:host {
+  display: block;
+}
+
+.itemSelected{
+  background-color: rgb(144, 207, 199);
+  color: red;
+}

@@ -33,19 +33,18 @@
     </div>
 
     <ul class="navbar-nav mr-auto" style="margin-right: 0px !important">
-      <li class="nav-item dropdown">
-        <a
-          (click)="toggleDropdown()"
+      <li class="nav-item dropdown" 
+      (mouseenter)="showDropdown()" 
+      (mouseleave)="hideDropdown()"
+      [ngClass]="{ 'show': isDropdownActive }">
+        <a 
           class="nav-link dropdown-toggle"
           id="navbarDropdown"
           role="button"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
-        >
-          <!-- [ngStyle]="{
-            transform: !isDropdownActive ? 'rotate(180deg)' : 'rotate(0deg)'
-          }" -->
+        > 
           <i class="fas fa-users-cog"></i>
           {{ usuario?.nombre }}
         </a>

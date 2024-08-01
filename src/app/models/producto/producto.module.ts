@@ -16,7 +16,7 @@ import { MarcasModel } from '../marcas/marcas.module';
     CommonModule
   ]
 })
-export class ProductoModule extends ModelBase { 
+export class ProductoModel extends ModelBase { 
   
   public precios  :PrdPreciosModule[]  = [] ;
   public existencias :PrdExistenciasModule[] = [] ;
@@ -30,7 +30,8 @@ export class ProductoModule extends ModelBase {
     descuento :number = 0;
     cantidad :number = 0;
     cantidadVendida  : number = 0;
-    infoTributaria:string = 'GRABADO'
+    infoTributaria:string = 'GRABADO';
+    selected:boolean = false;
   constructor( 
     @Inject(String) public nombre :string, 
     @Inject(String) public tipo_prod_nombre :string,  

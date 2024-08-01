@@ -7,7 +7,7 @@
             <a class="navbar-brand" [routerLink]="[ 'Ingresos'] ">Vehiculos</a>
             <ul class="navbar-nav mr-auto ">
                 <li class="nav-item " *ngFor="let item of  permisos?.recursosHijos">
-                    <a class="nav-link "  *ngIf="item.direccion.length > 0 "  
+                    <a class="nav-link "  *ngIf="item.direccion != undefined  && item.direccion.length > 0 "  
                         routerLinkActive="active"  [routerLink]="item.direccion">{{item.display_nombre}}</a>
                 </li> 
             </ul>

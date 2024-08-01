@@ -7,6 +7,19 @@ import { RecursoDetalle } from 'src/app/interfaces/usuario.interface';
   styleUrls: ['./menu-item-li.component.css']
 })
 export class MenuItemLiComponent {
-
+  isDropdownActive:boolean = false;
   @Input() recurso!: RecursoDetalle;
+
+   constructor(){
+    console.log('recursos :::::  ',this.recurso);
+    
+   }
+
+  showDropdown() {
+    this.isDropdownActive = true;
+  }
+
+  hideDropdown() {
+    this.isDropdownActive = false;
+  }
 }

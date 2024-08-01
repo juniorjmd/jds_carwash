@@ -10,7 +10,7 @@ import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { AuxIngresoInventarioModule } from '../models/aux-ingreso-inventario/aux-ingreso-inventario.module';
 import { DocumentosModel } from '../models/ventas/documento.model';
-import { ProductoModule } from '../models/producto/producto.module';
+import { ProductoModel } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { categoriaRequest, DescuentoRequest, DocumentoCierreRequest, marcaRequest, ProductoRequest } from '../interfaces/producto-request';
@@ -49,7 +49,14 @@ asignarMarcas(marcas:MarcasModel[]){
 asignarCategorias(categoria:CategoriasModel[]){
     this.categoriasSource.next( categoria) 
 }
-
+deleteDescuento(desc:DescuentoModule){ 
+    let where =   [{"columna" : "id" , "tipocomp" : "=" , "dato" : desc.id }];
+    let datos = {"action": actions.actionDelete ,
+    "_tabla" : TABLA.inv_descuentos,
+    "_where" : where  
+   };
+    return this.http.post(url.action , datos, httpOptions()) ;
+} 
 setDescuento(desc:DescuentoModule){
   let datos:any  = {"action": actions.actionInsert ,
       "_tabla" : TABLA.inv_descuentos,
@@ -97,8 +104,9 @@ getDescuentos():Observable<DescuentoRequest>{
        
 }
 setCategorias(CATEGORIA:CategoriasModel){
+  CATEGORIA.nombre_estado = undefined;
   let datos  = {"action": actions.actionInsert ,
-      "_tabla" : TABLA.inv_descuentos,
+      "_tabla" : TABLA.categorias,
       "_arraydatos" : CATEGORIA
      };
      
@@ -110,7 +118,7 @@ setCategorias(CATEGORIA:CategoriasModel){
 
 // #region Métodos con selects genericos en el codigo
 
-getProductosExistencia(codPrd:ProductoModule){
+getProductosExistencia(codPrd:ProductoModel){
   let where = [{"columna" : "idProducto" , "tipocomp" : '=' , "dato" : codPrd.id    } ]
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.prd_inventario,  "_where" : where  
               };
@@ -251,7 +259,7 @@ borrarPrecarguePorBodega(bodega:number){
 
 //actionStockMoveDevolucion
 
-guardarPrdVentas(producto :ProductoModule , documentoActivo:DocumentosModel , precioVenta : PrdPreciosModule ){
+guardarPrdVentas(producto :ProductoModel , documentoActivo:DocumentosModel , precioVenta : PrdPreciosModule ){
 
   let datos = {"action": actions.action_insertar_producto_venta , 
   "_producto_enviado" : producto.id , 
@@ -262,7 +270,7 @@ guardarPrdVentas(producto :ProductoModule , documentoActivo:DocumentosModel , pr
   console.log('servicios guardarPrdCompra' ,this.urlVentas, datos, httpOptions());
   return this.http.post(this.urlVentas, datos, httpOptions()) ;
 }
-guardarNuevoProducto(producto :ProductoModule  ){
+guardarNuevoProducto(producto :ProductoModel  ){
 
   let datos = {"action": actions.action_insertar_new_producto , 
   "_producto_enviado" : producto  

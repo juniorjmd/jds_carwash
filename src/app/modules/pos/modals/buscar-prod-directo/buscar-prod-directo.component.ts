@@ -5,7 +5,7 @@ import { dfltAnswOdoo2 } from 'src/app/interfaces/clientes-odoo';
 import { ProductoService } from 'src/app/services/producto.service';
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ProductoModule } from 'src/app/models/producto/producto.module'; 
+import { ProductoModel } from 'src/app/models/producto/producto.module'; 
 import Swal from 'sweetalert2';
 import { CategoriasModel } from 'src/app/models/categorias.model';
 import { MarcasModel } from 'src/app/models/marcas/marcas.module';
@@ -18,9 +18,9 @@ export class BuscarProdDirectoComponent implements OnInit  {
   show = false ;
   textFindMarcas:string = '';textFindCategoria="";
   textFindProductos:string = '';
-  parceros : ProductoModule[] = [];
-  prdBusqueda !:ProductoModule   ;
-  listPrdBusqueda :ProductoModule[] = [];
+  parceros : ProductoModel[] = [];
+  prdBusqueda !:ProductoModel   ;
+  listPrdBusqueda :ProductoModel[] = [];
   respuestaDialog:responsePrd = {  "confirmado": false, 
   "datoDevolucion":this.listPrdBusqueda[0]};
   codPrd!:string ;   
@@ -144,7 +144,7 @@ export class BuscarProdDirectoComponent implements OnInit  {
            } 
       );
      }
-     enviarProducto(prd:ProductoModule){
+     enviarProducto(prd:ProductoModel){
       this.respuestaDialog.confirmado = true;
       this.respuestaDialog.datoDevolucion = prd;
 

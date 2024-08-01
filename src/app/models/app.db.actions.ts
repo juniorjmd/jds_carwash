@@ -64,6 +64,7 @@
 
  export const actions = {
   'get_categorias' : 'GET_CATEGORIAS',
+  'set_actividad_descuento' : 'SET_ACTIVIDAD_DESCUENTO',
   'get_all_products_by_name' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_NOMBRE',
   'get_all_products_by_brand' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_MARCA',
   'get_all_products_by_category' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_CATEGORIA',
