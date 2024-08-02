@@ -12,6 +12,8 @@ export class CategoriasModel extends ModelBase {
   idPadreCategoria ?:number;
   idCuentaContable?:number;
   NombreCuentaContable?:string;
+  
+  id_actividad?:number;
     
 
     constructor( cat: Categoria|null){

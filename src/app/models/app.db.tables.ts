@@ -7,6 +7,7 @@
    subCuentasContables : 'cnt_cuentas',
   empleados_pagos_anticipos : 'mov_empleado_pagos_anticipos',
   empleados_acumulados : 'mov_empleado_acumulados',
+  presentacionProducto : 'inv_mst_producto_presentacion',
    PARAMETROS:'parametros',
    empleados:'mst_per_empleados',
    personas:'mst_per_clientes',

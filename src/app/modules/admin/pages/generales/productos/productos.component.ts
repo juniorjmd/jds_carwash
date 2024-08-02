@@ -13,8 +13,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { BuscarProdDirectoComponent } from 'src/app/modules/pos/modals/buscar-prod-directo/buscar-prod-directo.component';
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import Swal from 'sweetalert2';
-import { categoriaRequest, marcaRequest } from 'src/app/interfaces/producto-request';
+import { categoriaRequest, marcaRequest, presentacionPrdRequest } from 'src/app/interfaces/producto-request';
 import { ModalUpdateProductoComponent } from '../../../modals/modalUpdateProducto/modalUpdateProducto.component';
+import { PresentacionPrdModel } from 'src/app/models/presentacionPrdModel';
+import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module';
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
@@ -25,6 +27,7 @@ export class ProductosComponent implements OnInit {
   auxBodega:BodegasModule = {nombre : 'SELECCIONAR LA BODEGA' ,estado:0,   id:0  , descripcion : ''}
   existenciasPrd:PrdExistenciasModule[]=[] ;
   
+  presentacion:PresentacionPrdModel[] = []
   productoRetornoBusqueda!:ProductoModel ;
   AuxIngresoInventarioModule : AuxIngresoInventarioModule[] = [];
 
@@ -59,16 +62,24 @@ export class ProductosComponent implements OnInit {
   marcas:MarcasModel[] = [this.marcasAux];
   newProducto:ProductoModel = new ProductoModel( '' , '' ,0 ,0,'0','0', 0,0,0,0,0,'','','',0, ''  ) ; 
   textFindProductos:string = '';
+  
+  ivaIncluido :boolean = true;
   constructor(private loading : loading,
     private productoService:ProductoService,
     
     private newAbrirDialog : MatDialog 
     ) {
+      this.getPresentacion();
      this.getProductos();
      this.getBodegas();
      this.getCategorias_marcas(); 
      }
      
+  getPresentacion(){
+    this.productoService.getPresentacioProducto().subscribe({next:(value:presentacionPrdRequest)=>{
+      this.presentacion = value.data;  
+    }});
+  }
    getProductosPorFiltro(){
     console.log('busqueda productos inicial' ); 
      this.loading.show()  
@@ -497,6 +508,16 @@ export class ProductosComponent implements OnInit {
 
      limpiarFormulario(){
       this.newProducto  =new ProductoModel( '' , '' ,0 ,0,'','0', 0,0,0,0,0,'','','',0,''  ) ; 
+      
+        let precio:PrdPreciosModule = new PrdPreciosModule();
+        precio.id_producto = this.newProducto.id
+        precio.precio_con_iva = 0;
+        precio.precio_antes_de_iva = 0;
+        precio.valor_iva = 0;
+    
+        if(this.newProducto.precios[0] == undefined)this.newProducto.precios.push({...precio})  ;
+        if(this.newProducto.precios[1] == undefined)this.newProducto.precios.push({...precio})  ;
+        if(this.newProducto.precios[2] == undefined)this.newProducto.precios.push({...precio})  ;
 
      }
      enviarProducto(){
@@ -524,10 +545,30 @@ export class ProductosComponent implements OnInit {
         Swal.fire( 'Debe establecer un tipo de producto', '', 'error');
        return ;
        } 
-      /* if( this.newProducto.precioVenta   <= 0){ 
-        Swal.fire( 'Debe establecer el precio de venta', '', 'error');
-       return ;
-       } */
+       if (this.newProducto.porcent_iva??0 > 0){
+        let ivaPorcentaje = this.newProducto.porcent_iva??0;
+        if (this.ivaIncluido){
+        for (let i=0; i<3 ;i++){
+         let precioConIVA =  this.newProducto.precios[i].precio_con_iva??0;
+         this.newProducto.precios[i].precio_antes_de_iva = precioConIVA / (1 + ivaPorcentaje / 100);
+         this.newProducto.precios[i].valor_iva = precioConIVA - this.newProducto.precios[i].precio_antes_de_iva!;
+         this.newProducto.precios[i].precio_con_iva = precioConIVA;
+        }
+        }else{
+          for (let i=0; i<3 ;i++){
+            let precioAntesDeIVA =  this.newProducto.precios[i].precio_con_iva??0;
+            this.newProducto.precios[i].precio_antes_de_iva = precioAntesDeIVA;
+            this.newProducto.precios[i].valor_iva = precioAntesDeIVA * (ivaPorcentaje / 100);
+            this.newProducto.precios[i].precio_con_iva = precioAntesDeIVA +  this.newProducto.precios[i].valor_iva!;
+           }
+        }
+      }else{
+        for (let i=0; i<3 ;i++){ 
+          this.newProducto.precios[i].precio_antes_de_iva =   this.newProducto.precios[i].precio_con_iva??0;;
+          this.newProducto.precios[i].valor_iva = 0; 
+         }
+      } 
+
       this.loading.show(); 
       this.productoService.guardarNuevoProducto(this.newProducto).subscribe(
         {next:

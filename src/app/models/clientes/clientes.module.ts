@@ -11,6 +11,7 @@ import { ModelBase } from '../ModelBase';
 export class ClientesModel extends ModelBase {
 
 
+  id_actividad?:number;
 
   constructor(
     @Inject(Number) public tipoIdentificacion?: number, // Valor por defecto definido en el esquema

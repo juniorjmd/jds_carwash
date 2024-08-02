@@ -36,24 +36,26 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <table class="table" *ngIf="Productos.length > 0">
-                <tr>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; referencia&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; nombre&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; Tipo&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; porcent_iva&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; categoria&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                    <th noWrap class="centrado">&nbsp;&nbsp;&nbsp;&nbsp; marca&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                <tr style="text-align: center;">
+                    <th noWrap >referencia </th>
+                    <th  noWrap > nombre </th>
+                    <th   noWrap > presentacion </th>
+                    <th noWrap > Tipo </th>
+                    <th noWrap > porcent_iva </th>
+                    <th noWrap > categoria </th>
+                    <th noWrap > marca </th>
                     <th colspan="2">
                         opcion
                     </th>
                 </tr>
                 <tr *ngFor="let Producto of Productos">
                     <td>{{Producto.id }}</td>
-                    <td>{{Producto.nombre }}</td>
+                    <td>{{Producto.nombre }}| {{Producto.nombre2 }} | {{Producto.nombre3 }}</td>
+                    <td>{{Producto.nombrePresentacion }}</td>
                     <td>{{Producto.tipo_prod_nombre }}</td>
-                    <td class="centrado">{{Producto.porcent_iva }} %</td>
-                    <td noWrap>{{Producto.nombreMarca }}</td>
+                    <td >{{Producto.porcent_iva }} %</td>
                     <td>{{Producto.categoria?.nombre }}</td>
+                    <td noWrap>{{Producto.nombreMarca }}</td>
                     <td title="editar producto">
                         <i class="bi bi-pencil-fill boton_activo" (click)="editarPrd(Producto)"></i>
                     </td>
@@ -109,40 +111,62 @@
                     <option *ngFor="let marca of marcas" value="{{marca.id}}">{{marca.nombre}}</option>
                 </select>
             </div>
+
+
+
             <div class="col-sm-10">Tipo de Producto : </div>
             <div class="col-sm-12">
                 <select class="form-control" [(ngModel)]="newProducto.tipo_producto">
                     <option *ngFor="let tipProducto of tipProductos" value="{{tipProducto.id}}">{{tipProducto.nombre}}</option>
                 </select>
             </div>
-        <div class="col-sm-10">informacion tributaria : </div>
+            <div class="col-sm-10" >presentacion : </div>
             <div class="col-sm-12">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'GRABADO'">
-                        <input type="radio" name="options" (click)="newProducto.porcent_iva=0" [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="GRABADO"> Grabado
-                    </label>
-                    <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'EXENTO'">
-                        <input type="radio" name="options" (click)="newProducto.porcent_iva=0"  [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="EXENTO"> Exento
-                    </label>
-                    <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'EXCLUIDO'">
-                        <input type="radio" name="options" (click)="newProducto.porcent_iva=0"  [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="EXCLUIDO"> Excluido
-                    </label>
-                </div>
-            </div>
-        
+                <select class="form-control" [(ngModel)]="newProducto.presentacion">
+                    <option *ngFor="let tipProducto of presentacion" value="{{tipProducto.id}}">{{tipProducto.nombre}}</option>
+                </select>
+            </div> 
         
         </div>
     </div>
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-3">
-            <div class="col-sm-10">IVA (%) : </div>
-            <div class="col-sm-12"> <input type="number" [readOnly]="newProducto.infoTributaria !== 'GRABADO'" [(ngModel)]="newProducto.porcent_iva" class="form-control" placeholder="nombre principal "></div>
-        </div>
-        <div class="col-sm-3">
             <div class="col-sm-10">precio de compra : </div>
             <div class="col-sm-12"> <input type="number" [(ngModel)]="newProducto.precioCompra" class="form-control" placeholder="nombre principal "></div>
         </div>
+        <div class="col-sm-3 row"> 
+            <div class="col-sm-6" > 
+                <div class="col-sm-12"> 
+            <div class="form-check form-switch">
+            <input   class="form-check-input" 
+            type="checkbox" id="flexSwitchCheckDefault" [(ngModel)]="ivaIncluido">
+            <label class="form-check-label" for="flexSwitchCheckDefault">IVA incluido</label>
+        </div> </div> </div>
+            <div class="col-sm-6" > 
+            <div class="col-sm-10">IVA (%) : </div>
+            <div class="col-sm-12"> 
+                <input type="number" [readOnly]="newProducto.infoTributaria !== 'GRABADO'" [(ngModel)]="newProducto.porcent_iva" 
+                class="form-control" placeholder="nombre principal "></div>
+                </div>
+           
+      
+        </div>
+        <div class="col-sm-3">
+        <div class="col-sm-10">informacion tributaria : </div>
+        <div class="col-sm-12">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'GRABADO'">
+                    <input type="radio" name="options" (click)="newProducto.porcent_iva=0" [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="GRABADO"> Grabado
+                </label>
+                <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'EXENTO'">
+                    <input type="radio" name="options" (click)="newProducto.porcent_iva=0"  [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="EXENTO"> Exento
+                </label>
+                <label class="btn btn-secondary" [class.active]="newProducto.infoTributaria === 'EXCLUIDO'">
+                    <input type="radio" name="options" (click)="newProducto.porcent_iva=0"  [(ngModel)]="newProducto.infoTributaria" autocomplete="off" value="EXCLUIDO"> Excluido
+                </label>
+            </div>
+        </div></div>
     </div>
     <div class="row">
         <div class="col-sm-1"></div>

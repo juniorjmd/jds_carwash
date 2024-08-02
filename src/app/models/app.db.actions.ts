@@ -57,12 +57,14 @@
  const actionInsertCostoServicio = 'INGRESAR_COSTO_SERVICIO';
  const devolver_producto_venta = 'devolver_producto_venta';
  const INSERTAR_PAGO_EMPLEADO = 'INSERTAR_PAGO_EMPLEADO';
+ const action_update_producto = 'ACTULIZAR_PRODUCTO';
  const action_insertar_new_producto = 'INSERTAR_NUEVO_PRODUCTO';
  const action_cancelar_inventario = 'BORRAR_DATOS_INGRESO_AUX_INVENTARIO';
  const action_ingreso_precargue = 'INGRESO_DATOS_DATOS_AUX_INVENTARIO';
 
 
  export const actions = {
+  'action_update_producto':action_update_producto,
   'get_categorias' : 'GET_CATEGORIAS',
   'set_actividad_descuento' : 'SET_ACTIVIDAD_DESCUENTO',
   'get_all_products_by_name' : 'BUSCAR_TODOS_LOS_PRODUCTOS_POR_NOMBRE',

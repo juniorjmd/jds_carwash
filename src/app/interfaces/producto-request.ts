@@ -10,6 +10,7 @@ import { CntSubCuentaModel, vwCntSubCuentaModel } from "../models/cnt-sub-cuenta
 import { DescuentoModule } from "../models/descuento/descuento.model";
 import { EmpleadoModel } from "../models/empleados/empleados.module";
 import { MarcasModel } from "../models/marcas/marcas.module";
+import { PresentacionPrdModel } from "../models/presentacionPrdModel";
 import { ProductoModel } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
 import { cajaModel } from "../models/ventas/cajas.model";
@@ -40,6 +41,14 @@ export interface DescuentoRequest {
 
 export interface actividadesRequest { 
   data:   ActividadesDescuentoModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+
+export interface actividadesDetalleRequest { 
+  data:  any[] ;
   query: string;
   numdata: number;
   error: string;
@@ -131,6 +140,12 @@ export interface marcaRequest {
 }
 export interface establecimientosRequest { 
   data: establecimientoModel[] ;
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface presentacionPrdRequest { 
+  data: PresentacionPrdModel[] ;
   query: string;
   numdata: number;
   error: string;

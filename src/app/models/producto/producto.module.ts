@@ -32,6 +32,11 @@ export class ProductoModel extends ModelBase {
     cantidadVendida  : number = 0;
     infoTributaria:string = 'GRABADO';
     selected:boolean = false;
+    presentacion?:number
+    nombrePresentacion:string = '';
+    descPresentacion:string = '';
+    siglaPresentacion:string = '';
+    id_actividad?:number;
   constructor( 
     @Inject(String) public nombre :string, 
     @Inject(String) public tipo_prod_nombre :string,  

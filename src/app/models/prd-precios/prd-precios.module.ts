@@ -12,7 +12,7 @@ import { ModelBase } from '../ModelBase';
 })
 export class PrdPreciosModule extends ModelBase {  
 
-   id_producto ?:string;
+   id_producto ?:string|number;
    estado_nombre ?:string;
   constructor(    
     @Inject(Number) public valor_iva?:number, 

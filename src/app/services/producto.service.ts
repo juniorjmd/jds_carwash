@@ -13,7 +13,7 @@ import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModel } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { categoriaRequest, DescuentoRequest, DocumentoCierreRequest, marcaRequest, ProductoRequest } from '../interfaces/producto-request';
+import { categoriaRequest, DescuentoRequest, DocumentoCierreRequest, marcaRequest, presentacionPrdRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
@@ -171,6 +171,12 @@ getProductosCodBarras(codPrd:any){
   console.log('servicios getProductosCodBarrasVCnt' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
+
+getPresentacioProducto():Observable<presentacionPrdRequest>{
+  let datos = {"action": actions.actionSelect , "_tabla" : TABLA.presentacionProducto  }
+  console.log('getPresentacioProducto  ' ,url.action , datos, httpOptions());
+  return this.http.post<presentacionPrdRequest>(url.action , datos, httpOptions()) ;
+}
 // #endregion
 
 // #region Métodos con multi-selects genericos en el codigo 
@@ -278,7 +284,14 @@ guardarNuevoProducto(producto :ProductoModel  ){
   console.log('servicios guardarPrdCompra' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 }
+updateProducto(producto :ProductoModel  ){
 
+  let datos = {"action": actions.action_update_producto , 
+  "_producto_enviado" : producto  
+};
+  console.log('servicios guardarPrdCompra' ,this.urlInventario, datos, httpOptions());
+  return this.http.post(this.urlInventario, datos, httpOptions()) ;
+}
 guardarNuevoProductoPrecargue( precargue :AuxIngresoInventarioModule ){
 
   let datos = {"action": actions.action_ingreso_precargue , 

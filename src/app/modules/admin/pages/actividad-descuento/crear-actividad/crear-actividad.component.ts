@@ -185,8 +185,15 @@ onSubmitActividad() {
       Swal.fire('error' , 'Debe escoger minimo un cliente al cual aplicarle el descuento' , 'info')
           return;} 
 
-          this.actividadService.createDescuentoActividad(this.actividadForm.value).subscribe(response => {
+          this.actividadService.createDescuentoActividad(this.actividadForm.value).subscribe((response:any) => {
       console.log('Descuento actividad creado:', response);
+      if(response.error == 'ok'){
+       if(this.showprd ) this.getTmpProductos()
+        if( this.showcat ) this.getTmpCategorias()
+          if( this.showmar  ) this.getTmpMarcas()
+            if( this.showcli ) this.getTmpClientes()
+        
+      }
     });
   }
 }

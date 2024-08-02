@@ -8,6 +8,7 @@ export class ActividadesDescuentoModel extends ModelBase {
   public fechaFinal?: Date;
   public tipo: string = 'PRD';  
 
+  nombreTipo?: string;
    nombreDescuento?: string;  cantidad?:number ;
     tipoDescuento?: string;
   constructor() {  

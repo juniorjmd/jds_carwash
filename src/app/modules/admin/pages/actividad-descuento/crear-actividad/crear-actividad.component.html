@@ -34,7 +34,7 @@
         <label for="idDescuento" class="form-label">ID Descuento</label> 
         <select id="idDescuento" class="form-select" formControlName="idDescuento">
             <option value="">seleccione descuento</option>
-            <option *ngFor="let item of descuentos" value="item.id">{{item.nombre}}</option> 
+            <option *ngFor="let item of descuentos" [value]="item.id">{{item.nombre}}</option> 
         </select>
     </div>
 </div>

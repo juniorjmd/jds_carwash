@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
-import { actividadesRequest, categoriaRequest, clienteRequest, DescuentoRequest, DocumentoRequest, marcaRequest, ProductoRequest } from '../interfaces/producto-request';
+import { actividadesDetalleRequest, actividadesRequest, categoriaRequest, clienteRequest, DescuentoRequest, DocumentoRequest, marcaRequest, ProductoRequest } from '../interfaces/producto-request';
 import { BehaviorSubject } from 'rxjs';
 import { ClientesModel } from '../models/clientes/clientes.module';
 import { MarcasModel } from '../models/marcas/marcas.module';
@@ -72,6 +72,8 @@ createDescuentoActividad(_datosInsert:ActividadesDescuentoModel){
   let datos = {"action": actions.set_actividad_descuento , 
               _datosInsert
    };  
+   console.log('createDescuentoActividad', datos);
+   
 return this.http.post(url.inventario , datos, httpOptions()) ;
 }
 /**obtener productos, marcar, categorias y clientes disponibles para ingresar a la lista tmp de actividad */
@@ -164,6 +166,31 @@ console.log('abrirCaja activo ' ,url.action , datos, httpOptions());
 return this.http.post<actividadesRequest>(url.action , datos, httpOptions()) ;
 }
 
+getDetalleActividad(detalle:ActividadesDescuentoModel){ 
+  let tabla = '';
 
+  switch(detalle.tipo){
+    case 'PRD' : 
+       tabla =  vistas.act_det_producto;
+    break;
+    case 'CAT' : 
+        tabla =  vistas.act_det_categoria;
+    break;
+    case 'CLI' : 
+        tabla =  vistas.act_det_cliente;
+    break;
+    case 'BRD' : 
+        tabla =  vistas.act_det_marca;
+    break;
+  }
+  let datos = {"action": actions.actionSelect , 
+    "_tabla" : tabla,
+    "_where" : [
+      {columna : 'id_actividad' , tipocomp : '=' , dato : detalle.id  }]
+
+   };
+console.log('getDetalleActividad ' ,url.action , datos, httpOptions());
+return this.http.post<actividadesDetalleRequest>(url.action , datos, httpOptions()) ;
+}
 
 }

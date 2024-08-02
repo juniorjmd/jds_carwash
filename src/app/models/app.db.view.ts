@@ -1,16 +1,20 @@
  export const vistas = {
-  vw_inv_descuentos_actividad:'vw_inv_descuentos_actividad',
-
+  vw_inv_descuentos_actividad:'vw_inv_descuentos_actividad', 
   act_det_tmp_producto : 'vw_act_det_tmp_producto',
   act_det_tmp_cliente : 'vw_act_det_tmp_cliente',
   act_det_tmp_categoria : 'vw_act_det_tmp_categoria',
-  act_det_tmp_marca : 'vw_act_det_tmp_marca',
+  act_det_tmp_marca : 'vw_act_det_tmp_marca', 
+  act_det_producto : 'vw_act_det_producto',
+  act_det_cliente : 'vw_act_det_cliente',
+  act_det_categoria : 'vw_act_det_categoria',
+  act_det_marca : 'vw_act_det_marca',
 
 
   vw_actividad_disponible_categoria:'vw_actividad_disponible_categoria',
   vw_actividad_disponible_cliente:'vw_actividad_disponible_cliente',
   vw_actividad_disponible_producto:'vw_actividad_disponible_producto',
   vw_actividad_disponible_marca:'vw_actividad_disponible_marca',
+  
    documentos_listado_productos_por_cierre : 'vw_documentos_listado_productos_por_cierre',
     acumulados_por_empleado : 'vw_empleados_acumulados_por_empleado',
    corte_de_caja : 'vw_corte_de_caja',
