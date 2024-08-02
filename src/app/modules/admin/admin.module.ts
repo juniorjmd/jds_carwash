@@ -29,6 +29,7 @@ import { FindMarcasComponent } from './modals/findMarcas/findMarcas.component';
 import { FindProductosComponent } from './modals/findProductos/findProductos.component';
 import { ModalFndClienteComponent } from './modals/modalFndCliente/modalFndCliente.component';
 import { ModalUpdateProductoComponent } from './modals/modalUpdateProducto/modalUpdateProducto.component';
+import { ModalInOutDetalleActividad } from './modals/modalExcluirIncluirDetalleActividad/modalExcluirIncluirDetalleActividad.component';
 
  
 @NgModule({
@@ -50,7 +51,7 @@ import { ModalUpdateProductoComponent } from './modals/modalUpdateProducto/modal
     CajasDetalleComponent,
     AdminCategoriasComponent,
     DescuentosComponent,
-    ActividadDescuentoComponent,
+    ActividadDescuentoComponent,ModalInOutDetalleActividad,
     ListarActividadComponent,ModalUpdateProductoComponent,
     CrearActividadComponent ,FindCategoriasComponent,FindMarcasComponent, FindProductosComponent,ModalFndClienteComponent
   ],

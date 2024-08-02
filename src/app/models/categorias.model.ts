@@ -14,7 +14,8 @@ export class CategoriasModel extends ModelBase {
   NombreCuentaContable?:string;
   
   id_actividad?:number;
-    
+  selected:boolean = false;
+  numHijos:number=0;
 
     constructor( cat: Categoria|null){
 

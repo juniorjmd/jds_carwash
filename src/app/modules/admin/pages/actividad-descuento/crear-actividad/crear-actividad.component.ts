@@ -14,6 +14,7 @@ import { FindProductosComponent } from '../../../modals/findProductos/findProduc
 import { FindCategoriasComponent } from '../../../modals/findCategorias/findCategorias.component';
 import { FindMarcasComponent } from '../../../modals/findMarcas/findMarcas.component';
 import { ModalFndClienteComponent } from '../../../modals/modalFndCliente/modalFndCliente.component';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-crear-actividad',
@@ -94,7 +95,7 @@ this.actividadForm = this.fb.group({
       ).subscribe({
         next: () => {},
         error: (error) => console.error('Error:', error),
-        complete: () =>{ console.log('moverDocumentoCaja completo'); 
+        complete: () =>{ console.log('FindProductosComponent completo'); 
           this.iniciaDescuentos();
           this.getTmpProductos();
         }
@@ -104,15 +105,15 @@ this.actividadForm = this.fb.group({
       this.newAbrirDialog.open(FindCategoriasComponent, { data:  null })
       .afterClosed()
       .pipe(
-        tap((confirmado: Boolean) => {
-          if (confirmado) {   
-  this.iniciaDescuentos();
-          }
+        tap((confirmado: Boolean) => { 
         })
       ).subscribe({
         next: () => {},
         error: (error) => console.error('Error:', error),
-        complete: () => console.log('moverDocumentoCaja completo')
+        complete: () =>{ console.log('FindCategoriasComponent completo'); 
+          this.iniciaDescuentos();
+          this.getTmpCategorias();
+        }
       });  
     }
     if (this.showmar) {
@@ -149,9 +150,25 @@ this.actividadForm = this.fb.group({
     } 
   }
   eliminarPrdTemp(id:any){
-    this.actividadService.deleteProducto(id).subscribe({next:(value)=>{
+    const tipo = this.actividadForm.get('tipo')?.value;
+    this.actividadService.deleteItemDescuentoTmp(id ,tipo ).subscribe({next:(value)=>{
+     if( this.showprd  ) {
       this.iniciaPrd();
       this.getTmpProductos();
+     }
+     if( this.showcat   ) {
+      this.iniciaCat();
+      this.getTmpCategorias();
+     }
+     if( this.showmar  ) {
+      this.iniciaMar();
+      this.getTmpMarcas();
+     }
+     if( this.showcli  ) {
+      this.iniciaCli();
+      this.getTmpClientes();
+     }
+    
     }})
   }
   cambiarListado(){
@@ -185,16 +202,14 @@ onSubmitActividad() {
       Swal.fire('error' , 'Debe escoger minimo un cliente al cual aplicarle el descuento' , 'info')
           return;} 
 
-          this.actividadService.createDescuentoActividad(this.actividadForm.value).subscribe((response:any) => {
+          this.actividadService.createDescuentoActividad(this.actividadForm.value).subscribe({next:(response:any) => {
       console.log('Descuento actividad creado:', response);
       if(response.error == 'ok'){
-       if(this.showprd ) this.getTmpProductos()
+        if(this.showprd ) this.getTmpProductos()
         if( this.showcat ) this.getTmpCategorias()
-          if( this.showmar  ) this.getTmpMarcas()
-            if( this.showcli ) this.getTmpClientes()
-        
-      }
-    });
+        if( this.showmar  ) this.getTmpMarcas()
+        if( this.showcli ) this.getTmpClientes() 
+      } },error:error=>console.error(error.error.error) }   );
   }
 }
 

@@ -9,8 +9,9 @@
                         <th>tipo</th>
                         <th>inicia</th>
                         <th>finaliza</th> 
+                        <th>descuento</th> 
                         <th>estado</th> 
-                        <th >Opciones</th>
+                        <th colspan="4">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -19,8 +20,12 @@
                         <td>{{venta.nombreTipo}}</td>
                         <td>{{venta.fechaInicial}}</td>
                         <td>{{venta.fechaFinal  }}</td> 
+                        <td>{{venta.nombreDescuento  }}</td> 
                         <td>{{venta.nombre_estado  }}</td> 
                         <td><i class="bi bi-list boton_activo" (click)="verDetalle(venta)"></i></td>
+                        <td><i class="bi bi-calendar"></i></td>
+                        <td><i class="bi bi-x-circle"></i></td>
+                        <td><i class="bi bi-x-circle" (click)="excluirProductos(venta)"></i></td>
                     </tr>
                 </tbody>
             </table>

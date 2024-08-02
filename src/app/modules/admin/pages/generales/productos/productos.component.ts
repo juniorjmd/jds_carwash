@@ -43,7 +43,9 @@ export class ProductosComponent implements OnInit {
     tipoInventario : 0
   }
   Productos :ProductoModel[] = [];
-  categoriaAux :CategoriasModel[]  =  [{id:0,  letra:'',     nombre:'Seleccione la categoria',     descripcion:'',     tipo:'',    contador :0   }] ; 
+  categoriaAux :CategoriasModel[]  =  [{id:0,  letra:'',  
+       nombre:'Seleccione la categoria',  
+          descripcion:'',  numHijos:0,   tipo:'',    contador :0  ,selected:false }] ; 
   categorias :CategoriasModel[] = []; 
   categorias1 :CategoriasModel[] = [...this.categoriaAux ];
   categorias2 :CategoriasModel[] = [...this.categoriaAux ];

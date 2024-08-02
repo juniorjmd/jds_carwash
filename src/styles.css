@@ -6,6 +6,10 @@
 .menuPrincipalLink {
     color: #4e085a !important;
 }
+.ModalItemSelected{
+    background-color: rgb(144, 207, 199);
+    color: red;
+  }
 
 .link_sin {
     text-decoration: none;

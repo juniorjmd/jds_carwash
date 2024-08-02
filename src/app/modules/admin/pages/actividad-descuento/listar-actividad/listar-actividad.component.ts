@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { actividadesDetalleRequest, actividadesRequest } from 'src/app/interfaces/producto-request';
 import { ActividadesDescuentoModel } from 'src/app/models/actividadesDescuentoModel';
@@ -8,6 +9,7 @@ import { MarcasModel } from 'src/app/models/marcas/marcas.module';
 import { ProductoModel } from 'src/app/models/producto/producto.module';
 import { ActiDescuentoService } from 'src/app/services/actiDescuento.service';
 import Swal from 'sweetalert2';
+import { ModalInOutDetalleActividad } from '../../../modals/modalExcluirIncluirDetalleActividad/modalExcluirIncluirDetalleActividad.component';
 
 @Component({
   selector: 'app-listar-actividad',
@@ -24,12 +26,21 @@ export class ListarActividadComponent {
     clientes: ClientesModel[] = [] ;
 
     private serviceAct = inject(ActiDescuentoService)
-    constructor(){
+    constructor(    private newAbrirDialog: MatDialog,){
       console.log('entro primero aqui en ListarActividadComponent');
       
       this.serviceAct.getActividades().subscribe({next:(value:actividadesRequest)=>{
         this.actividades = value.data;
       }})
+    }
+    excluirProductos(detalle:ActividadesDescuentoModel){
+      
+      this.newAbrirDialog.open(ModalInOutDetalleActividad , { data:  detalle })
+      .afterClosed().subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () => console.log('ModalInOutDetalleActividad completo')
+      });  
     }
     verDetalle(detalle:ActividadesDescuentoModel){
       console.log(detalle);

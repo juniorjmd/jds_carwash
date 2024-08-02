@@ -33,7 +33,29 @@ export class ActiDescuentoService {
 
   constructor(private http: HttpClient){}
 
-  setProducto(idProducto:string){
+  excluirProducto(idProducto:string , actividad:any){
+    let arraydatos =  { 'idActividad' : actividad , 
+			"idProducto" : idProducto    }
+          let  datos = {"action": actions.actionInsert ,
+            "_tabla" : TABLA.actividad_det_producto_excluido,
+            "_arraydatos" : arraydatos
+           };  
+       console.log(datos); 
+        return this.http.post(url.action , datos, httpOptions()) ;
+        
+  }
+  
+  quitarDeExcluidoProducto(idProducto:string, actividad:any ){ 
+    let where =   [{"columna" : "idProducto" , "tipocomp" : "=" , "dato" : idProducto},
+                   {"columna" : "idActividad" , "tipocomp" : "=" , "dato" : actividad}   ];
+    let datos = {"action": actions.actionDelete ,
+    "_tabla" : TABLA.actividad_det_producto_excluido,
+    "_where" : where  
+   };
+   console.log(datos); 
+    return this.http.post(url.action , datos, httpOptions()) ;
+}
+    setProducto(idProducto:string){
     let arraydatos =  { 
 			"id_producto" : idProducto    }
           let  datos = {"action": actions.actionInsert ,
@@ -44,8 +66,7 @@ export class ActiDescuentoService {
         return this.http.post(url.action , datos, httpOptions()) ;
         
   }
-  
-  deleteProducto(idProducto:string){ 
+  deleteProducto(idProducto:string ){ 
     let where =   [{"columna" : "id_producto" , "tipocomp" : "=" , "dato" : idProducto}];
     let datos = {"action": actions.actionDelete ,
     "_tabla" : TABLA.actividad_det_tmp,
@@ -53,7 +74,57 @@ export class ActiDescuentoService {
    };
     return this.http.post(url.action , datos, httpOptions()) ;
 }
-  setArrayClientes(sucursal:ClientesModel[]|null){ 
+
+
+deleteItemDescuentoTmp(idProducto:any , tipo:string){ 
+  let columna :string = ''
+  // id, id_categoria, id_producto, id_cliente, id_marca
+  switch(tipo){
+    case 'PRD' : 
+    columna =  'id_producto';
+    break;
+    case 'CAT' : 
+    columna =  'id_categoria';
+    break;
+    case 'CLI' : 
+    columna =  'id_cliente';
+    break;
+    case 'BRD' : 
+    columna =  'id_marca';
+    break;
+  }
+  let where =   [{columna , "tipocomp" : "=" , "dato" : idProducto}];
+  let datos = {"action": actions.actionDelete ,
+  "_tabla" : TABLA.actividad_det_tmp,
+  "_where" : where  
+ };
+  return this.http.post(url.action , datos, httpOptions()) ;
+}
+
+
+setCategoria(idProducto:number){
+  let arraydatos =  { 
+    "id_categoria" : idProducto    }
+        let  datos = {"action": actions.actionInsert ,
+          "_tabla" : TABLA.actividad_det_tmp,
+          "_arraydatos" : arraydatos
+         };  
+     console.log(datos); 
+      return this.http.post(url.action , datos, httpOptions()) ;
+      
+}
+
+deleteCategoria(idProducto:number){ 
+  let where =   [{"columna" : "id_categoria" , "tipocomp" : "=" , "dato" : idProducto}];
+  let datos = {"action": actions.actionDelete ,
+  "_tabla" : TABLA.actividad_det_tmp,
+  "_where" : where  
+ };
+ console.log(datos); 
+  return this.http.post(url.action , datos, httpOptions()) ;
+}
+
+setArrayClientes(sucursal:ClientesModel[]|null){ 
     this.clientes.next(sucursal);
 }
 setArrayMarcas(marca:MarcasModel[]|null){ 
@@ -108,6 +179,14 @@ return this.http.post<clienteRequest>(url.action , datos, httpOptions()) ;
 
 /**obtener productos, marcar, categorias y clientes  en la lista tmp de actividad */
  
+getProductosActividad( idActividad:any ){ 
+  let datos = {"action": actions.actionSelect ,  
+    "_tabla" : vistas.act_det_producto, 
+    "_where" : [ {columna : 'id_actividad' , tipocomp : '=' , dato : idActividad  }]
+   }; 
+return this.http.post<ProductoRequest>(url.action , datos, httpOptions()) ;
+}
+
 getProductosActividadTmp(){ 
   let datos = {"action": actions.actionSelect ,  
     "_tabla" : vistas.act_det_tmp_producto, 
@@ -148,6 +227,16 @@ getProductosDisponiblesByName(name:string){
       {columna : 'nombre3' , tipocomp : 'like' , dato : name}]
    }; 
 return this.http.post<ProductoRequest>(url.action , datos, httpOptions()) ;
+}
+
+getCategoriasDisponiblesByName(name:string){ 
+  
+  let datos = {"action": actions.actionSelect , 
+    _limit: 1000,  
+    "_tabla" : vistas.vw_actividad_disponible_categoria, 
+    "_where" : [{columna : 'nombre' , tipocomp : 'like' , dato : name  } ]
+   }; 
+return this.http.post<categoriaRequest>(url.action , datos, httpOptions()) ;
 }
 
 
