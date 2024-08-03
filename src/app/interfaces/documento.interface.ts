@@ -79,5 +79,7 @@ export interface DocumentoImpuestos{
     'tipo_documento_nombre'?:string,
     'estado_linea_venta' :string, 
     'id_externo_auxiliar'?:number|string,
+    'nombreActividadDescuento'?:string,
+    'descuentoAplicado'?:string,
    
  }

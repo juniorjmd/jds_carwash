@@ -10,6 +10,8 @@ import { ProductoModel } from 'src/app/models/producto/producto.module';
 import { ActiDescuentoService } from 'src/app/services/actiDescuento.service';
 import Swal from 'sweetalert2';
 import { ModalInOutDetalleActividad } from '../../../modals/modalExcluirIncluirDetalleActividad/modalExcluirIncluirDetalleActividad.component';
+import { ModalChangeFechaActividadComponent } from '../../../modals/modalChangeFechaActividad/modalChangeFechaActividad.component';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-listar-actividad',
@@ -33,6 +35,36 @@ export class ListarActividadComponent {
         this.actividades = value.data;
       }})
     }
+    activarDesactivarActividad(actividad:ActividadesDescuentoModel){
+      let act = {...actividad } 
+console.log((act.estado! == 1 ) );
+      act.estado = (act.estado! == 1 )?  2 : 1 ;
+
+      this.serviceAct.updateActividad(act).subscribe({next:(value:any)=>{
+        if(value.error == 'ok'){
+          this.serviceAct.getActividades().subscribe({next:(value:actividadesRequest)=>{
+            this.actividades = value.data;
+          }})
+        }
+      }, error:error=>console.error(error.error.error)       })
+    }
+    editarFecha(actividad:ActividadesDescuentoModel){
+      this.newAbrirDialog.open(ModalChangeFechaActividadComponent, { data:  {...actividad} })
+      .afterClosed()
+      .pipe(
+        tap((confirmado: Boolean) => {      
+          if(confirmado){     
+          this.serviceAct.getActividades().subscribe({next:(value:actividadesRequest)=>{
+            this.actividades = value.data;  }})
+        }})
+      ).subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () =>{ console.log('FindProductosComponent completo');}
+      });  
+    }
+
+
     excluirProductos(detalle:ActividadesDescuentoModel){
       
       this.newAbrirDialog.open(ModalInOutDetalleActividad , { data:  detalle })
@@ -52,19 +84,31 @@ export class ListarActividadComponent {
         switch(detalle.tipo){
           case 'PRD' : 
               this.productos = value.data ;
-
+              html += `<tr><td> Productos en descuento </td></tr>      `;
             this.productos.forEach(x=>{
-              html += `<tr><td>cod : ${x.id}  Nombre : ${x.nombre} | ${x.nombre2} | ${x.nombre3} </td></tr>      `;
+              html += `<tr style=" text-align: left; "><td>cod : ${x.id}</td> <td> Nombre : ${x.nombre} | ${x.nombre2} | ${x.nombre3} </td></tr>      `;
             })
           break;
           case 'CAT' : 
           this.categorias = value.data ;
+          
+          html += `<tr><td colspan='2'>  Categorias en descuento </td></tr>      `;
+          this.categorias.forEach(x=>{
+            html += `<tr style=" text-align: left; "><td>cod : ${x.id} </td> <td> Nombre : ${x.nombre}  </td></tr>      `;
+          })
           break;
           case 'CLI' : 
           this.clientes = value.data ;
+          html += `<tr><td colspan='2'>  Clientes con descuento </td></tr>      `;
+          this.clientes.forEach(x=>{
+            html += `<tr style=" text-align: left; "><td>Identificacion : ${x.numIdentificacion} </td> <td style='text-align=center'> Nombre : ${x.nombreCompleto}  </td></tr>      `;
+          })
           break;
           case 'BRD' : 
           this.marcas = value.data ;
+          this.marcas.forEach(x=>{
+            html += `<tr style=" text-align: left; "><td>cod : ${x.id} </td><td>  Nombre : ${x.nombre}  </td></tr>      `;
+          })
           break;
         }
         html += '</table>'
@@ -75,4 +119,6 @@ export class ListarActividadComponent {
       },error:error=>Swal.fire('error', error.error.error,'error')})
       
     }
+
+    
 }

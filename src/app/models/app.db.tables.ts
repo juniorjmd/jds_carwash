@@ -4,6 +4,7 @@
  export const TABLA = {
   actividad_det_tmp :'inv_descuentos_actividad_detalle_tmp',
   actividad_det_producto_excluido:'inv_descuentos_actividad_detalle_excluidos',
+  actividad_descuento:'inv_descuentos_actividad',
   categorias : 'inv_categorias',
    subCuentasContables : 'cnt_cuentas',
   empleados_pagos_anticipos : 'mov_empleado_pagos_anticipos',

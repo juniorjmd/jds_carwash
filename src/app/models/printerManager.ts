@@ -199,7 +199,11 @@ public printClose( cierre:cajasResumenModel){
     receiptHTML += this.generateCabeceraCierre() ;  
     receiptHTML += this.detalleCierre();  
     receiptHTML += this.footerCierre() ; 
-    receiptHTML += ` </div> `;
+    receiptHTML += ` </div> <style>
+    body table td {
+        font-size:small !important
+    }
+</style>`;
 
     return receiptHTML;
 }
@@ -286,14 +290,15 @@ private footerCierre():string{
 generateReceiptHTML(): string {
 
 
-  let receiptHTML = `<div style="font-family: Arial, sans-serif; width: 300px;"> `
+  let receiptHTML = `<div style="font-family: Arial, sans-serif; width: 300px; "> `
   receiptHTML += this.generateCabecera() ; 
   receiptHTML += this.infoGeneral(); 
   receiptHTML += this.detalle();
   receiptHTML += this.totales(); 
   receiptHTML += this.pagos() ; 
   receiptHTML += this.footer() ; 
-  receiptHTML += ` </div> `;
+  receiptHTML += ` </div> 
+  <style>  body table td {         font-size:small !important     } </style>`;
 
   return receiptHTML;
 } 
@@ -320,25 +325,29 @@ private infoGeneral():string{
         return receiptHTML;
 }
 private detalle():string{
-   
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
 let receiptHTML  = ` <hr> 
 <div style="text-align: left;" name="detalle"><table  style="font-family: Arial, sans-serif; width: 100%;">`
 console.log('listado',this.doc.listado);
     this.doc.listado?.forEach((lista) => {
-      const presioVenta = typeof lista.presioVenta === 'number' ? lista.presioVenta : parseFloat(lista.presioVenta??'0');
+      const presioVenta = typeof lista.presioSinIVa === 'number' ? lista.presioSinIVa : parseFloat(lista.presioSinIVa??'0');
       const cantidadVendida = typeof lista.cantidadVendida === 'number' ? lista.cantidadVendida : parseFloat(lista.cantidadVendida??'0');
       const descuento = typeof lista.descuento === 'number' ? lista.descuento : parseFloat(lista.descuento??'0');
       const valorTotal = typeof lista.valorTotal === 'number' ? lista.valorTotal : parseFloat(lista.valorTotal??'0');
-
+      
       receiptHTML += `
        <tr> <th colspan = '4'  style="text-align: left;" >${lista.nombreProducto}</p> </th> </tr>
-       <tr><td>Precio </td><td>Cant</td><td>Desc</td><td>Total </td></tr>
-       <tr><td>${presioVenta.toFixed(2).padStart(13)} </td>
-       <td>${cantidadVendida.toFixed(2).padStart(6)}</td>
-       <td>${descuento.toFixed(2).padStart(14)}</td>
-       <td>${valorTotal.toFixed(2).padStart(14)} </td></tr> 
-       <hr>
+       <tr><td>Precio </td><td>Desc</td><td>Cant</td><td>Total </td></tr>
+       <tr><td>${currencyFormatter.format(presioVenta)} </td>
+       <td>${currencyFormatter.format(descuento)}</td>
+       <td> ${cantidadVendida}</td>
+       <td>${currencyFormatter.format(valorTotal)} </td></tr>  
       `;
+
+      if(lista.nombreActividadDescuento != 'na'){  receiptHTML += ` <tr style='font-size: 10px;' ><th colspan = '4' >Act: ${lista.nombreActividadDescuento}</th> </tr>   `;}
+        if(lista.descuentoAplicado != 'na'){  receiptHTML += ` <tr  style='font-size: 10px;' ><th colspan = '4' >Des: ${lista.descuentoAplicado}</th> </tr>   `;}
+
+      receiptHTML += ` <hr>  `;
   });
 receiptHTML += `</table></div>`
 
@@ -347,14 +356,31 @@ receiptHTML += `</table></div>`
 private totales():string{
   
   const valorParcial = typeof this.doc.valorParcial  === 'number' ? this.doc.valorParcial : parseFloat(this.doc.valorParcial??'0'); 
-  const valorIVA = typeof this.doc.valorIVA  === 'number' ? this.doc.valorIVA : parseFloat(this.doc.valorIVA??'0'); 
+  const valorDescuento = typeof this.doc.descuento  === 'number' ? this.doc.descuento : parseFloat(this.doc.descuento??'0'); 
+  const valorIVA = typeof this.doc.valorIVA  === 'number' ? this.doc.valorIVA : parseFloat(this.doc.valorIVA??'0');  
+  const valorAjuste = typeof this.doc.ajusteAlpeso  === 'number' ? this.doc.ajusteAlpeso : parseFloat(this.doc.ajusteAlpeso??'0'); 
   const totalFactura = typeof this.doc.totalFactura  === 'number' ? this.doc.totalFactura : parseFloat(this.doc.totalFactura??'0'); 
- 
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
   return  ` 
   <div style="text-align: right;">
-    <p>Valor Parcial: ${valorParcial.toFixed(2)}</p>
-    <p>IVA: ${valorIVA.toFixed(2)}</p>
-    <p>Total Factura: ${totalFactura.toFixed(2)}</p>
+  <hr>
+  <table style=" margin-left: auto; width: 80%;   text-align: right; "> 
+  <tr> <td>Valor Parcial:</td>
+       <td> ${currencyFormatter.format(valorParcial )}</td>
+  </tr>
+  <tr> <td>Descuento:</td>
+       <td>${currencyFormatter.format(valorDescuento )}</td>
+  </tr>
+  <tr> <td>IVA:</td>
+       <td>${currencyFormatter.format(valorIVA )}</td>
+  </tr>
+  <tr> <td>Ajuste:</td>
+       <td>${currencyFormatter.format(valorAjuste )}</td>
+  </tr>
+  <tr> <td>Total Factura:</td>
+       <td> ${currencyFormatter.format(totalFactura )}</td>
+  </tr> 
+  </table> 
   </div> 
 `;
 }
@@ -381,7 +407,7 @@ private pagos():string{
 
   if(this.doc.pagos?.length! > 0 ){
     html += ` <hr>
-     <div style="text-align: left;" name='pagos' >
+     <div style="text-align: left; " name='pagos' >
        <p>Pagos : </p>
        <hr>
        <div style="text-align: left;"><table style="with:100%">`;
@@ -395,7 +421,7 @@ private pagos():string{
               <td style="width:95%">${pago.nombreMedio!.trim()}</td>
               <td style="    text-align: right;"> ${currencyFormatter.format(valorPagado)}</td></tr>
             `;
-            if (valorRecibido> 0) {
+            if (valorRecibido > 0) {
               html += `<tr> <td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Recibido ${currencyFormatter.format(valorRecibido)}<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vueltos ${currencyFormatter.format(vueltos) }</p></td></tr>
                 `;
             } else {

@@ -50,7 +50,7 @@ export class ProductosComponent implements OnInit {
   categorias1 :CategoriasModel[] = [...this.categoriaAux ];
   categorias2 :CategoriasModel[] = [...this.categoriaAux ];
   categorias3 :CategoriasModel[] = [...this.categoriaAux ];
-  marcasAux:MarcasModel = { nombre:"Seleccione La marca",  descripcion:'',   estado: 0 ,     nombre_estado:'' ,
+  marcasAux:MarcasModel = { nombre:"Seleccione La marca",  descripcion:'',   estado: 0 ,     nombre_estado:'' , selected:false,
     id:0 };
 
     tipProductos:any = [{id:0 , nombre:'Seleccione el tipo de producto'},

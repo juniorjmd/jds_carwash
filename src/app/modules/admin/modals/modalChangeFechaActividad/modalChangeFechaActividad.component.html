@@ -1,0 +1,45 @@
+<div class="container-fluid pt-4 pb-4 modal_container ">
+
+    <div class="row"   >
+
+        <div class="col-sm-12"   >
+            <h1>Modificacion de fecha de aplicacion de la actividad</h1>
+        </div>
+    </div>
+        <div class="row mt-4"   >
+            <div class="col-sm-2"   >Actividad
+            </div>
+            <div class="col-sm-4"   > 
+                <input id="nombre"   [(ngModel)]="actividad.nombre" type="text" class="form-control"  > </div>
+        <div class="col-sm-2"   >descuento  </div>
+            <div class="col-sm-4"   >{{actividad.nombreDescuento}}</div>
+                </div>
+
+        
+                <div class="row mt-4"   >    
+            
+                    <div class="col-sm-2"   >Descripcion 
+                    </div>
+                    <div class="col-sm-5"   > 
+                        <textarea id="nombre"  [(ngModel)]="actividad.descripcion"   class="form-control"  > </textarea> </div>
+        </div>
+
+
+    <div class="row mt-4"   >
+
+        <div class="col-sm-2"   >fecha inicial  </div>
+        <div class="col-sm-3"   >  <input id="fechaInicial" (change)="validarFechaFinal()" [(ngModel)]="actividad.fechaInicial" type="date" class="form-control"  > </div>
+        
+        <div class="col-sm-2"   >fecha final  </div>
+        <div class="col-sm-3"   >  <input id="fechaFinal"  (change)="validarFechaFinal()" [min] = "actividad.fechaInicial"  [(ngModel)]="actividad.fechaFinal"  type="date" class="form-control"  > </div>
+    </div> 
+    <div class="row mt-4"   >
+
+        <div class="col-sm-2"   >
+            <button class="btn btn-success" (click)="enviar()" >Guardar</button>
+        </div>
+        <div class="col-sm-2"   >
+            <button class="btn btn-danger" (click)="cancelar()">Cancelar</button>
+        </div>
+      </div>
+</div>

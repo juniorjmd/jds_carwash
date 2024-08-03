@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
 import { categoriaRequest, clienteRequest, DescuentoRequest, marcaRequest, ProductoRequest } from 'src/app/interfaces/producto-request';
@@ -21,43 +21,62 @@ import { error } from 'jquery';
   templateUrl: './crear-actividad.component.html',
   styleUrls: ['./crear-actividad.component.css']
 })
-export class CrearActividadComponent {
-  descuentos:DescuentoModule[] = []
-  productos:ProductoModel[] = []
-  categorias:CategoriasModel[] = []
-  marcas:MarcasModel[] = []
-  clientes:ClientesModel[] = []
-  showprd = false
-  showcat = false
-  showmar = false
-  showcli = false
-  private actividadService =  inject(ActiDescuentoService)
-  private newAbrirDialog = inject(MatDialog)
+export class CrearActividadComponent  implements OnInit{
+  descuentos:DescuentoModule[] = [];
+  productos:ProductoModel[] = [];
+  categorias:CategoriasModel[] = [];
+  marcas:MarcasModel[] = [];
+  clientes:ClientesModel[] = [];
+  fechaInicial: string = '';
+  showprd = false;
+  showcat = false;
+  showmar = false;
+  showcli = false;
+  private actividadService =  inject(ActiDescuentoService);
+  private newAbrirDialog = inject(MatDialog);
   private fb=  inject(FormBuilder );
   actividadForm: FormGroup;
-  constructor() {
+  constructor() {  
+      this.iniciaCat();
+      this.iniciaCli();
+      this.iniciaMar();
+      this.iniciaPrd(); 
+      this.iniciaDescuentos();
+      this.getTmpCategorias();
+      this.getTmpClientes();
+      this.getTmpMarcas();
+      this.getTmpProductos();
 
-  console.log('entro primero aqui en CrearActividadComponent');
-  this.iniciaCat();
-  this.iniciaCli();
-  this.iniciaMar();
-  this.iniciaPrd(); 
-  this.iniciaDescuentos();
-  this.getTmpCategorias();
-  this.getTmpClientes();
-  this.getTmpMarcas();
-  this.getTmpProductos();
+    this.actividadForm = this.fb.group({
+      nombre: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      fechaInicial: ['', Validators.required],
+      fechaFinal: ['', Validators.required],
+      tipo: ['', Validators.required],
+      estado: [1, Validators.required],
+      idDescuento: [null, Validators.required]
+    });
+  }
+  
 
-this.actividadForm = this.fb.group({
-  nombre: ['', Validators.required],
-  descripcion: ['', Validators.required],
-  fechaInicial: ['', Validators.required],
-  fechaFinal: ['', Validators.required],
-  tipo: ['', Validators.required],
-  estado: [1, Validators.required],
-  idDescuento: [null, Validators.required]
-});
-  } 
+  ngOnInit() {
+    // Escuchar cambios en la fecha inicial
+    this.actividadForm.get('fechaInicial')?.valueChanges.subscribe(value => {
+      this.fechaInicial = value;
+      // Establecer el valor mínimo de fechaFinal basado en fechaInicial
+      this.actividadForm.get('fechaFinal')?.setValidators([Validators.required, this.minDateValidator(this.fechaInicial)]);
+      this.actividadForm.get('fechaFinal')?.updateValueAndValidity();
+    });
+  }
+
+  minDateValidator(minDate: string): ValidatorFn  {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (!control.value) {
+        return null;
+      }
+      return new Date(control.value) >= new Date(minDate) ? null : { minDate: { value: control.value } };
+    };
+  }
 
   iniciaPrd(){ 
   this.actividadService.getProductosDisponibles().subscribe({next : (value:ProductoRequest)=>{
@@ -69,11 +88,12 @@ this.actividadForm = this.fb.group({
     this.actividadService.getCategoriasDisponibles().subscribe({next : (value:categoriaRequest)=>{
     this.actividadService.setArrayCategorias(value.data)
   }})}
-  iniciaMar(){
+  iniciaCli(){
     this.actividadService.getClientesDisponibles().subscribe({next : (value:clienteRequest)=>{
       this.actividadService.setArrayClientes(value.data)
     }})}
-  iniciaCli(){
+  
+  iniciaMar(){
     this.actividadService.getMarcasDisponibles().subscribe({next : (value:marcaRequest)=>{
       this.actividadService.setArrayMarcas(value.data)
     }})}
@@ -121,14 +141,15 @@ this.actividadForm = this.fb.group({
       .afterClosed()
       .pipe(
         tap((confirmado: Boolean) => {
-          if (confirmado) {  
-  this.iniciaDescuentos();
-          }
+          
         })
       ).subscribe({
         next: () => {},
         error: (error) => console.error('Error:', error),
-        complete: () => console.log('moverDocumentoCaja completo')
+        complete: () => { console.log('FindCategoriasComponent completo'); 
+          this.iniciaDescuentos();
+          this.getTmpMarcas();
+        }
       });  
       
     } 
@@ -136,15 +157,15 @@ this.actividadForm = this.fb.group({
       this.newAbrirDialog.open(ModalFndClienteComponent, { data:  null })
       .afterClosed()
       .pipe(
-        tap((confirmado: Boolean) => {
-          if (confirmado) {   
-            this.iniciaDescuentos();
-          }
+        tap((confirmado: Boolean) => { 
         })
       ).subscribe({
         next: () => {},
         error: (error) => console.error('Error:', error),
-        complete: () => console.log('moverDocumentoCaja completo')
+        complete: () => { console.log('FindCategoriasComponent completo'); 
+          this.iniciaDescuentos();
+          this.getTmpClientes();
+        }
       });  
       
     } 

@@ -129,7 +129,7 @@ getMediosP(){
          this.pagos.push(pago)
       })  
     this.indexEfectivo =  this.pagos.findIndex(pago => pago.nombreMedio!.toUpperCase() === 'EFECTIVO');
-
+    this.pagos[this.indexEfectivo].referencia = 'efectivo';
     }else{
       this.pagos = [];
     } 

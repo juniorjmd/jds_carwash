@@ -33,6 +33,19 @@ export class ActiDescuentoService {
 
   constructor(private http: HttpClient){}
 
+  updateActividad(actividad:ActividadesDescuentoModel){
+    let _where =   [{"columna" : "id" , "tipocomp" : "=" , "dato" : actividad.id }]
+    let _arraydatos =  { nombre :actividad.nombre,
+      descripcion:actividad.descripcion,
+      fechaInicial : actividad.fechaInicial,
+      fechaFinal:    actividad.fechaFinal , 
+      estado:    actividad.estado , 
+      usuario_edicion   : 'USUARIO_LOGUEADO'  }; 
+     let datos = {"action": actions.actionUpdate , "_tabla" : TABLA.actividad_descuento, _where ,  _arraydatos };
+     console.log('updateActividad',datos); 
+   return this.http.post(url.action , datos, httpOptions()) ;
+  }
+
   excluirProducto(idProducto:string , actividad:any){
     let arraydatos =  { 'idActividad' : actividad , 
 			"idProducto" : idProducto    }
@@ -102,6 +115,33 @@ deleteItemDescuentoTmp(idProducto:any , tipo:string){
 }
 
 
+ingresarItemDescuentoTmp(idProducto:any , tipo:string){ 
+  let columna :string = ''
+  let arraydatos :any;
+  // id, id_categoria, id_producto, id_cliente, id_marca
+  switch(tipo){
+    case 'PRD' :  
+     arraydatos =  { "id_producto" : idProducto    }
+    break;
+    case 'CAT' :  
+    arraydatos =  { "id_categoria" : idProducto    }
+    break;
+    case 'CLI' :  
+    arraydatos =  { "id_cliente" : idProducto    }
+    break;
+    case 'BRD' :  
+    arraydatos =  { "id_marca" : idProducto    }
+    break;
+  }
+  let  datos = {"action": actions.actionInsert ,
+        "_tabla" : TABLA.actividad_det_tmp,
+        "_arraydatos" : arraydatos
+       };  
+   console.log(datos); 
+  return this.http.post(url.action , datos, httpOptions()) ;
+}
+
+
 setCategoria(idProducto:number){
   let arraydatos =  { 
     "id_categoria" : idProducto    }
@@ -123,6 +163,34 @@ deleteCategoria(idProducto:number){
  console.log(datos); 
   return this.http.post(url.action , datos, httpOptions()) ;
 }
+
+
+
+setMarca(idProducto:number){
+  let arraydatos =  { 
+    "id_marca" : idProducto    }
+        let  datos = {"action": actions.actionInsert ,
+          "_tabla" : TABLA.actividad_det_tmp,
+          "_arraydatos" : arraydatos
+         };  
+     console.log(datos); 
+      return this.http.post(url.action , datos, httpOptions()) ;
+      
+}
+
+deleteMarca(idProducto:number){ 
+  let where =   [{"columna" : "id_marca" , "tipocomp" : "=" , "dato" : idProducto}];
+  let datos = {"action": actions.actionDelete ,
+  "_tabla" : TABLA.actividad_det_tmp,
+  "_where" : where  
+ };
+ console.log(datos); 
+  return this.http.post(url.action , datos, httpOptions()) ;
+}
+
+
+
+
 
 setArrayClientes(sucursal:ClientesModel[]|null){ 
     this.clientes.next(sucursal);

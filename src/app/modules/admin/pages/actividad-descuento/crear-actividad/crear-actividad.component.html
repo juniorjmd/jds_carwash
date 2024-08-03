@@ -7,11 +7,15 @@
     
       <div class="col">
         <label for="fechaInicial" class="form-label">Fecha Inicial</label>
-        <input id="fechaInicial" type="date" class="form-control" formControlName="fechaInicial">
+        <input id="fechaInicial" type="date" class="form-control" formControlName="fechaInicial"> 
+
       </div>
       <div class="col">
         <label for="fechaFinal" class="form-label">Fecha Final</label>
-        <input id="fechaFinal" type="date" class="form-control" formControlName="fechaFinal">
+        <input id="fechaFinal" type="date" class="form-control" [min]="actividadForm.get('fechaInicial')?.value" formControlName="fechaFinal">
+        <div *ngIf="actividadForm.get('fechaFinal')?.hasError('minDate') && actividadForm.get('fechaFinal')?.touched" class="text-danger">
+        La fecha final debe ser igual o posterior a la fecha inicial.
+        </div>
       </div>
       <div class="col">
         <label for="tipo" class="form-label">Tipo</label>

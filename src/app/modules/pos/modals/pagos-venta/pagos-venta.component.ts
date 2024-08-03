@@ -165,8 +165,9 @@ getMediosP(){
         })  
         let sum = this.pagos.reduce((total, pago) => total + pago.valorPagado, 0);
       this.indexEfectivo =  this.pagos.findIndex(pago => pago.nombreMedio!.toUpperCase() === 'EFECTIVO');
+
         this.pagos[this.indexEfectivo].valorPagado = this.Documento.totalFactura -  sum ;
- 
+        this.pagos[this.indexEfectivo].referencia = 'efectivo';
    
      // console.log(this.MedioP);
     }else{

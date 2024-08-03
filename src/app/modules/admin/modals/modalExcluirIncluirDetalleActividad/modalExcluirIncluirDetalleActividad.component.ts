@@ -12,7 +12,7 @@ import { ActiDescuentoService } from 'src/app/services/actiDescuento.service';
   templateUrl: './modalExcluirIncluirDetalleActividad.component.html',
   styleUrls: ['./modalExcluirIncluirDetalleActividad.component.css'] 
 })
-export class ModalInOutDetalleActividad implements OnInit  {
+export class ModalInOutDetalleActividad  {
   
   private actividadService =  inject(ActiDescuentoService)
   public productos:ProductoModel[] = [];
@@ -31,13 +31,7 @@ export class ModalInOutDetalleActividad implements OnInit  {
     }
 
     
-  ngOnInit(): void { 
-    this.actividadService.arrayProductos.subscribe({next:(prd)=>{
-      this.productos = [...prd??[]]; 
-      console.log('oninit filtroname',this.filtroName); 
-      if(this.filtroName == '') {this.productosFiltrados = [...this.productos];}  
-          }})
-  } 
+  
   enviarProducto(item:ProductoModel){
     let id:string = (typeof( item.id ) == 'string')? item.id! :item.id!.toString() ;
     if(item.selected){ 

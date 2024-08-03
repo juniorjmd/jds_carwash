@@ -23,8 +23,14 @@
                         <td>{{venta.nombreDescuento  }}</td> 
                         <td>{{venta.nombre_estado  }}</td> 
                         <td><i class="bi bi-list boton_activo" (click)="verDetalle(venta)"></i></td>
-                        <td><i class="bi bi-calendar"></i></td>
-                        <td><i class="bi bi-x-circle"></i></td>
+                        <td><i class="bi bi-calendar" (click)="editarFecha(venta)"></i></td>
+                        <td>
+                            
+                            <i *ngIf="venta.estado == 1 " class="bi bi-toggle-on" (click)="activarDesactivarActividad(venta)"></i>
+
+                            <i *ngIf="venta.estado == 2"  class="bi bi-toggle-off" (click)="activarDesactivarActividad(venta)"></i>
+                        
+                        </td>
                         <td><i class="bi bi-x-circle" (click)="excluirProductos(venta)"></i></td>
                     </tr>
                 </tbody>
