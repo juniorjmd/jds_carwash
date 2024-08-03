@@ -29,6 +29,9 @@ export class establecimientoModel{
     idCCntCompras:number = 0;
     idCCntCCobrar:number = 0;
     idCCntCPagar:number = 0; 
+    
+    idCCntIngDifBonoRegalo:number = 0; 
+    nombreCCntIngDifBonoRegalo:string = ''; 
 
     nombreCCnttIvaVenta:string  = '';  
     nombreCCntIvaCompra:string  = '';

@@ -93,6 +93,7 @@ margin-right: auto;
 
 .contenedor {
     overflow: auto;
+    background-color : aliceblue !important
 }
 
 .container::-webkit-scrollbar-thumb {

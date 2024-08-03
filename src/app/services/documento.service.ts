@@ -233,6 +233,11 @@ export class DocumentoService {
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
 
+  cerrarDocumentoRemision(documento: number): Observable<any> {
+    let datos = {"action": actions.actionCerarDocumentosRemision, "_documento": documento};
+    console.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
   cambiarDocumentoDeCaja(caja: cajaModel): Observable<any> {
     let datos = {"action": actions.actionCambioCajaDocumento, "datos": caja};
     console.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());

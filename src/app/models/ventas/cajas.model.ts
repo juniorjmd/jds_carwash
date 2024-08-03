@@ -44,6 +44,7 @@ export class cajaModel {
   idCCnttIvaVenta: number = 0;
   idCCntCostoVenta: number = 0;
   idCCntVenta: number = 0;
+  idCCntIngDifBonoRegalo: number = 0;
   
   constructor(cargaCaja: caja | undefined) {
     this.estadoCaja = 0;

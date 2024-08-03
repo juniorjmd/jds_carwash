@@ -455,6 +455,44 @@ export class VentasComponent implements AfterViewInit, OnInit {
       });
   }
 
+  asignarPagosARemision() {
+    if (typeof(this.documentoActivo!.listado) === 'undefined' || this.documentoActivo!.listado.length === 0) { 
+      Swal.fire('No posee elementos a facturar', 'Debe incluir minimo un producto o servicio en la factura', 'error');
+      return;
+    } 
+    this.newAbrirDialog.open(PagosVentaComponent, { data: this.documentoActivo })
+      .afterClosed()
+      .pipe(
+        tap((confirmado: {rep:boolean,credito:boolean}) => {
+          if (confirmado.rep  ) { 
+            if ( !confirmado.credito) { 
+              this.facturarDocumentoRemision();
+            }else{
+             // this.documentoActivo 
+
+             this.documentoService.getDocumentoActivo().subscribe({next:(value:DocumentoRequest)=>{
+              console.log('docuemento activo actual',value.data[0].objeto)
+              this.documentoActivo = value.data[0].objeto
+              this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
+              if(this.empleadoActivo.id == undefined){
+                this.empleadoActivo.nombreCompleto =  this.documentoActivo?.vendedorNombre!;
+                this.empleadoActivo.idPersona = this.documentoActivo?.cod_vendedor!;
+            }
+              this.asignarPagosACuentaPorCobrarRemision();
+             }})
+
+
+
+            }
+          }
+        })
+      ).subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () => console.log('asignarPagosAVenta completo')
+      });
+  }
+
   generarAbonosCuentasXcobrar() { 
     if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
       return;
@@ -503,7 +541,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       Swal.fire('error en cliente', 'Debe incluir incluir al cliente', 'error');
       return;
     } 
-    this.newAbrirDialog.open(GenerarCntPorCobrarComponent, { data: this.documentoActivo })
+    this.newAbrirDialog.open(GenerarCntPorCobrarComponent, {   data:{ Documento:this.documentoActivo , origen:'venta'} })
       .afterClosed()
       .pipe(
         tap((confirmado:  {result : boolean , documento :  DocumentosModel }) => {
@@ -520,6 +558,41 @@ export class VentasComponent implements AfterViewInit, OnInit {
         complete: () => console.log('asignarPagosAVenta completo')
       });
   }
+ asignarPagosACuentaPorCobrarRemision() {
+    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+      return;
+    }
+    if (typeof(this.documentoActivo!.listado) === 'undefined' || (
+       this.documentoActivo!.listado !== undefined &&
+      this.documentoActivo!.listado.length === 0) ){ 
+      Swal.fire('No posee elementos a facturar', 'Debe incluir minimo un producto o servicio en la factura', 'error');
+      return;
+    } 
+    if (typeof(this.documentoActivo!.cliente) === 'undefined' || this.documentoActivo!.clienteNombre == "CLIENTE GENERICO") { 
+      Swal.fire('error en cliente', 'Debe incluir incluir al cliente', 'error');
+      return;
+    } 
+    this.newAbrirDialog.open(GenerarCntPorCobrarComponent, { data:{ Documento:this.documentoActivo , origen:'remision'}
+      
+       })
+      .afterClosed()
+      .pipe(
+        tap((confirmado:  {result : boolean , documento :  DocumentosModel }) => {
+          if (confirmado.result) { 
+          this.documentoRetorno = Object.assign(new DocumentosModel(), confirmado.documento); 
+          console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+          this.printer_factura_final();
+          this.crearDocumento();
+          }
+        })
+      ).subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () => console.log('asignarPagosAVenta completo')
+      });
+  }
+
+
   facturarDocumento() {
     this.documentoActivo!.pagos = [];
     if (typeof(this.documentoActivo!.pagos) === 'undefined' || this.documentoActivo!.pagos.length === 0) {
@@ -586,6 +659,71 @@ export class VentasComponent implements AfterViewInit, OnInit {
     })
   }
 
+  facturarDocumentoRemision() {
+    this.documentoActivo!.pagos = [];
+    if (typeof(this.documentoActivo!.pagos) === 'undefined' || this.documentoActivo!.pagos.length === 0) {
+      this.documentoActivo!.pagos[0] = new DocpagosModel();
+      this.documentoActivo!.pagos[0].idDocumento = this.documentoActivo!.orden;
+      try {
+        this.documentoActivo!.pagos[0].idMedioDePago = this.pagos[this.indexEfectivo].idMedioDePago;
+        this.documentoActivo!.pagos[0].referencia = 'Efectivo';
+        this.documentoActivo!.pagos[0].valorPagado = this.pagos[this.indexEfectivo].valorPagado;
+      } catch (error: any) {
+        this.documentoActivo!.pagos[0].idMedioDePago = 1;
+        this.documentoActivo!.pagos[0].referencia = 'Efectivo';
+        this.documentoActivo!.pagos[0].valorPagado = this.documentoActivo!.valorTotal;
+      }
+    } else {
+      console.log(this.documentoActivo!.pagos);
+    }
+    if (this.documentoActivo!.listado!.length === 0) {
+      let error = 'Debe ingresar los productos a facturar' ; 
+      try {
+        Swal.fire(error, '', 'error');
+       } catch (error : any) {
+        Swal.fire('error en el servidor', '', 'error');
+       }
+      return;
+    }
+    if (parseInt(this.documentoActivo!.totalFactura.toString()) === 0) { 
+      try {
+        Swal.fire('el total de la factura debe ser mayor a cero', '', 'error');
+       } catch (error : any) {
+        Swal.fire('error en el servidor', '', 'error');
+       }
+      return;
+    }
+
+    this.loading.show();
+    this.documentoService.cerrarDocumentoRemision(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
+      //console.clear();
+      console.log("respuesta cierre documento =>" , respuesta)
+      if (respuesta.error === 'ok') {  
+        this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
+        console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+        this.printer_factura_final();
+        this.crearDocumento();
+      } else {
+        try {
+          Swal.fire(respuesta.error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }
+      }
+      this.loading.hide();
+      this.irbuscarProducto();
+    }
+      ,error: (error: any) => {
+         
+        try {
+          Swal.fire(error.error.error, '', 'error');
+         } catch (error : any) {
+          Swal.fire('error en el servidor', '', 'error');
+         }},complete:()=>{console.log('facturarDocumento completo');
+            this.loading.hide()
+         }
+    })
+  }
   cambiarVendedor(ven:EmpleadoModel){
     if(ven.idPersona != undefined && ven.idPersona > 0 ){
     this.documentoActivo!.cod_vendedor = (typeof(ven.id)== 'string' ) ? parseInt(ven.id): ven.id??0 ;

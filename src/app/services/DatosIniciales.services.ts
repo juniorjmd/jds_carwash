@@ -54,7 +54,8 @@ export class DatosInicialesService {
             || caja!.idCCntIvaCompra == 0 
             || caja!.idCCnttIvaVenta == 0  
             || caja!.idCCntCostoVenta == 0 
-            || caja!.idCCntVenta == 0  
+            || caja!.idCCntVenta == 0 
+            || caja!.idCCntIngDifBonoRegalo == 0  
             || caja!.cuentaContableGastos == undefined  || caja!.cuentaContableGastos! == 0  
             || caja!.cuentaContableEfectivo == undefined  || caja!.cuentaContableEfectivo! == 0   )
         {

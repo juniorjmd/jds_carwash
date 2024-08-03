@@ -80,6 +80,7 @@ private infoGeneralBono():string{
         case 'cotizacion' : nombreDocumento = "Cotización No."; break;
         case 'gasto' : nombreDocumento = "Gasto No."; break;
         case 'cuentas_por_cobrar' : nombreDocumento = "Venta a credito No."; break;
+        case 'remision_cuentas_por_cobrar' : nombreDocumento = "Remision a credito No."; break;
         case 'RecaudosCuentaXCobrar' : nombreDocumento = "Abono a cartera No."; break;
         case 'comprobante_devolucion' : nombreDocumento = "Devolucion No."; break;
      }
@@ -138,6 +139,7 @@ private footerBono():string{
     case 'cotizacion' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Este documento es una cotizacion  ***</p><p>***  esperamos vuelva pronto  ***</p></div>`;
     case 'gasto' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
     case 'cuentas_por_cobrar' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'remision_cuentas_por_cobrar' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
     case 'RecaudosCuentaXCobrar' : return  ` <div name='footerBono' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
     case 'comprobante_devolucion' : return  ` <div name='footerBono' style="text-align: center;">
     <p>Devolucion generada desde factura #${this.docDev.campo_info_3}, este documento sirve como canje en su totalidad en cualquier otra compra o servicio</p></div>`;
@@ -312,6 +314,7 @@ private infoGeneral():string{
         case 'cotizacion' : nombreDocumento = "Cotización No."; break;
         case 'gasto' : nombreDocumento = "Gasto No."; break;
         case 'cuentas_por_cobrar' : nombreDocumento = "Venta a credito No."; break;
+        case 'remision_cuentas_por_cobrar' : nombreDocumento = "Remision a credito No."; break;
         case 'RecaudosCuentaXCobrar' : nombreDocumento = "Abono a cartera No."; break;
         case 'comprobante_devolucion' : nombreDocumento = "Devolucion No."; break;
      }
@@ -391,6 +394,7 @@ private footer():string{
     case 'cotizacion' : return  ` <div name='footer' style="text-align: center;"><p>*** Este documento es una cotizacion  ***</p><p>***  esperamos vuelva pronto  ***</p></div>`;
     case 'gasto' : return  ` <div name='footer' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
     case 'cuentas_por_cobrar' : return  ` <div name='footer' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
+    case 'remision_cuentas_por_cobrar' : return  ` <div name='footer' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
     case 'RecaudosCuentaXCobrar' : return  ` <div name='footer' style="text-align: center;"><p>*** Gracias por su compra ***</p></div>`;
     case 'comprobante_devolucion' : return  ` <div name='footer' style="text-align: center;">
     <p>Devolucion generada desde factura #${this.doc.campo_info_3}, este documento sirve como canje en su totalidad en cualquier otra compra o servicio</p></div>`;

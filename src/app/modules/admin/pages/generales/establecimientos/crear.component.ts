@@ -49,6 +49,10 @@ export class CrearComponent implements OnInit {
         console.log('buscarCuentasContablesGastos',response);
         if (response.confirmado && response.datoDevolucion !== undefined ) {  
           switch(nombreBusqueda){
+            case 'IDifBonoRegalo':  
+            this.newEsta.nombreCCntIngDifBonoRegalo = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idCCntIngDifBonoRegalo = response.datoDevolucion.id_scuenta!; 
+            break
             case 'compras' : 
             this.newEsta.nombreCCntCompras = response.datoDevolucion.nombre_scuenta!;
             this.newEsta.idCCntCompras = response.datoDevolucion.id_scuenta!; 

@@ -260,10 +260,11 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
        console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())
         return this.http.post(this.urlVentas  , datos, httpOptions()) ;
     }
-    setPagoDocumentoCredito(idDocumento:number  , pagos:DocpagosModel[], _numCuotas = 1 ,  _numDiasCuotas = 30 ):Observable<DocumentoCierreRequest>{
+    setPagoDocumentoCredito(origen:string, idDocumento:number  , pagos:DocpagosModel[], _numCuotas = 1 ,  _numDiasCuotas = 30 ):Observable<DocumentoCierreRequest>{
+        
         let datos = {"action": actions.actionAsignarNewCredito ,
         "_ordenDocumento" : idDocumento, 
-         "_pagos" : pagos , _numCuotas , _numDiasCuotas
+         "_pagos" : pagos , _numCuotas , _numDiasCuotas , _remision : (origen == 'remision')?true:undefined 
        };
        console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())
         return this.http.post<DocumentoCierreRequest>(this.urlVentas  , datos, httpOptions()) ;
@@ -418,6 +419,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "idCCnttIvaVenta" :newEsta.idCCnttIvaVenta,
             "idCCntCostoVenta" :newEsta.idCCntCostoVenta,
             'idCCntVenta':newEsta.idCCntVenta,
+            'idCCntIngDifBonoRegalo':newEsta.idCCntIngDifBonoRegalo,
             "usuario_creacion" : 'USUARIO_LOGUEADO' };
         
             
@@ -439,6 +441,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "idCCntIvaCompra" :newEsta.idCCntIvaCompra,
             "idCCnttIvaVenta" :newEsta.idCCnttIvaVenta,
             "idCCntCostoVenta" :newEsta.idCCntCostoVenta,
+            'idCCntIngDifBonoRegalo':newEsta.idCCntIngDifBonoRegalo,
             'idCCntVenta':newEsta.idCCntVenta,
             "tipo" : newEsta.tipo,
             "estado" : newEsta.estado ,

@@ -45,6 +45,14 @@
         <div class="col-sm-3">
             <textarea [(ngModel)]="newEsta.descripcion" class="o_input" placeholder="Descripcion..."></textarea>
         </div>
+        <div class="col-sm-3 justify-content-center">
+            <button class="btn btn-outline-primary" role="button" (click)='guardarCaja()'>
+                <i class="bi bi-save"></i> Guardar
+            </button>
+            <button class="btn btn-outline-danger" role="button" (click)='Cancelar()'>
+                <i class="bi bi-trash"></i> Cancelar
+            </button>
+        </div>
     </div>
     <hr> 
  <div class="row">
@@ -80,13 +88,17 @@
             </button>
         </div>
     </div>
-    <div class="col-sm-3 justify-content-center">
-        <button class="btn btn-outline-primary" role="button" (click)='guardarCaja()'>
-            <i class="bi bi-save"></i> Guardar
-        </button>
-        <button class="btn btn-outline-danger" role="button" (click)='Cancelar()'>
-            <i class="bi bi-trash"></i> Cancelar
-        </button>
+   
+    
+    <div class="col-sm-3" >
+        <label for="establecimientoCaja">Cuenta Para Ingresos Diferidos por Bonos de Regalo</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta cartera" [(ngModel)]="newEsta.nombreCCntIngDifBonoRegalo" name="nombreCCntCCobrar"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("IDifBonoRegalo")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
     </div>
 
  </div>

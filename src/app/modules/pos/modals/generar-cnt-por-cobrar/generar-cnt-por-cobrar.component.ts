@@ -24,12 +24,12 @@ export class GenerarCntPorCobrarComponent implements OnInit {
   constructor(
     public loading : loading,private serviceCaja : cajasServices ,
     public dialogo: MatDialogRef<GenerarCntPorCobrarComponent>,
-    @Inject(MAT_DIALOG_DATA) public Documento:DocumentosModel
+    @Inject(MAT_DIALOG_DATA) public inData : { Documento:DocumentosModel , origen:string}
 
   ) { 
     this.listo =  false;
        this.pagoPorCredito = new DocpagosModel();
-        this.pagoPorCredito.valorPagado = this.Documento.totalFactura;
+        this.pagoPorCredito.valorPagado = this.inData.Documento.totalFactura;
         this.pagoPorCredito.valorRecibido = this.pagoPorCredito.valorPagado;
         this.pagoPorCredito.vueltos = 0; 
         this.getMediosP()
@@ -39,7 +39,7 @@ export class GenerarCntPorCobrarComponent implements OnInit {
   }
   finalizarOk(){
     //documentos_pagos
-    this.serviceCaja.setPagoDocumentoCredito(this.Documento.orden ,this.pagos , 
+    this.serviceCaja.setPagoDocumentoCredito(this.inData.origen ,this.inData.Documento.orden ,this.pagos , 
       this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2)
      .subscribe({next: (datos:DocumentoCierreRequest)=>{
         console.log(datos); 
@@ -63,7 +63,7 @@ export class GenerarCntPorCobrarComponent implements OnInit {
     let pagoActual:number = this.pagoPorCredito!.valorPagado ; 
     let recibido =  parseFloat(this.pagos[index].valorPagado.toString())
     this.pagos[index].valorPagado = recibido;
-    let totalFactura :number= this.Documento.totalFactura;
+    let totalFactura :number= this.inData.Documento.totalFactura;
 
     if (this.pagos[index].valorPagado > pagoActual)
       {
@@ -88,7 +88,7 @@ setVueltos(index:number){
 }
 getMediosP(){ 
   console.clear();
-  console.log('DocumentoActivo',this.Documento)
+  console.log('DocumentoActivo',this.inData.Documento)
   this.listo = false;
   this.loading.show()
   this.serviceCaja.getMediosCajaActiva()
@@ -96,11 +96,11 @@ getMediosP(){
          console.log(datos);
         
     if (datos.numdata > 0 ){ 
-      let  index : number = this.Documento.pagos.length; 
+      let  index : number = this.inData.Documento.pagos.length; 
       if (index <= 0 ) index = -1;
       if (index > 0 )
         { 
-          this.pagos = this.Documento.pagos.map(x => {
+          this.pagos = this.inData.Documento.pagos.map(x => {
           if (x.nombreMedio?.toUpperCase() !== 'EFECTIVO') {
             let pago = new DocpagosModel();
             pago.idMedioDePago = x.idMedioDePago || 0;

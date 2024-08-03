@@ -36,6 +36,7 @@
  const actionCrearDocumentos = 'CREAR_DOCUMENTO_POR_USUARIO' ; 
  const actionCrearDocumentoGasto = 'CREAR_DOCUMENTO_GASTO_POR_USUARIO' ; 
  const actionCerarDocumentos = 'CERRAR_DOCUMENTO_FACTURA' ; 
+ const actionCerarDocumentosRemision = 'CERRAR_DOCUMENTO_REMISION' ; 
  const actionChangeDocumentos = 'CAMBIAR_DOCUMENTO_ACTIVO_POR_USUARIO' ; 
  const actionCancelarDocumentos = 'CANCELAR_DOCUMENTO_POR_USUARIO' ; 
  const actionCambioCajaDocumento = 'CAMBIAR_DOCUMENTO_POR_CAJA';
@@ -93,6 +94,7 @@
    'actionCrearNewDevolucion' : 'GENERAR_DOCUMENTOS_DEVOLUCION',
    'actionResumenCaja': actionResumenCaja,
     'actionCerarCaja': actionCerarCaja, 
+    'actionCerarDocumentosRemision':actionCerarDocumentosRemision,
     'actionCerarDocumentos':actionCerarDocumentos,
     'datosInicialesSucursal' : datosInicialesSucursal,
     'actionAsignarDocumentosPagos':actionAsignarPagosDoc , 
