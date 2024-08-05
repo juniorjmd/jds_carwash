@@ -28,7 +28,7 @@ export class ListarOperacionesComponent implements OnInit {
   }
   ngOnInit(): void {
       
-    this.cntService.getCntOperaciones().subscribe({next:(value:cntOperacionesRequest )=>{
+    this.cntService.getCntOperacionesManuales().subscribe({next:(value:cntOperacionesRequest )=>{
       this.operaciones =  value.data; 
     },error : (e:any)=>console.error(e.error.error)}) 
     

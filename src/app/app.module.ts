@@ -30,11 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog'; 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';   
-import { AppRoutingModule } from './app-routing.module';   
-
- 
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';    
+import { CommonModule } from '@angular/common'; 
 import { ModalModule } from 'ngx-bootstrap/modal'; 
 import { SharedModule } from './modules/shared/shared.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip'; 
@@ -68,11 +65,8 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
           MessageModalComponent 
   ],
    imports: [
-    SharedModule, 
-    NgbModule ,
-    RouterModule,
-    FormsModule,
-    CommonModule,
+    NgbModule , 
+    FormsModule, 
     ReactiveFormsModule,
     MatButtonModule,
     MatCheckboxModule, 
@@ -80,8 +74,9 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     BrowserModule,
     HttpClientModule, 
     MatDialogModule, 
-    AppRoutingModule , 
-    CommonModule,RouterModule,
+    AppRoutingModule ,  
+    SharedModule, 
+    CommonModule, 
     TypeaheadModule.forRoot(), 
     ModalModule.forRoot(),
     TooltipModule.forRoot(),

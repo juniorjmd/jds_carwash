@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { httpOptions, url } from '../models/app.db.url';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {  cntClaseRequest, cntCuentaMayorRequest, cntGrupoRequest, cntOperacionesRequest, cntSubCuentaRequest, cntTransaccionesRequest } from '../interfaces/producto-request';
+import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest } from '../interfaces/producto-request';
 import { actions } from '../models/app.db.actions';
 import { vistas } from '../models/app.db.view';
 import { CntGruposModel } from '../models/cnt-grupos/cnt-grupos.module';
@@ -222,7 +222,37 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
      }; 
      return this.http.post<cntOperacionesRequest>(url.action , datos, httpOptions()) ;
   }
-
+  getCntOperacionesManuales():Observable<cntOperacionesRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_oper_manuales 
+     }; 
+     return this.http.post<cntOperacionesRequest>(url.action , datos, httpOptions()) ;
+  }
+  getCntOperacionesAuto():Observable<cntOperacionesRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_oper_auto 
+     }; 
+     return this.http.post<cntOperacionesRequest>(url.action , datos, httpOptions()) ;
+  } 
+  getTipDocOperacionesAuto():Observable<cntTipDocOperacionesRequest>{
+    let datos = {"action": actions.actionSelect ,  
+      "_tabla": "vw_documento_operaciones",
+      "_columnas": ["tipoDocumentoFinal" , "nombreTipoDocumentoFinal"]  ,
+      "_groupby": ["tipoDocumentoFinal" , "nombreTipoDocumentoFinal"]  ,
+      "_orderby": [["tipoDocumentoFinal" , "DESC"]] 
+     }; 
+     return this.http.post<cntTipDocOperacionesRequest>(url.action , datos, httpOptions()) ;
+  }
+ getDocumentosOperacionesAuto():Observable<cntDocOperacionesRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla": "vw_documento_operaciones",
+ 
+      "_columnas": ["idDocumento" , "idDocumentoFinal"]  ,
+      "_groupby": ["idDocumento" , "idDocumentoFinal"]  ,
+      "_orderby": [["idDocumento" , "DESC"]] 
+     }; 
+     return this.http.post<cntDocOperacionesRequest>(url.action , datos, httpOptions()) ;
+  }
   getCntTransacciones( idOperacion:number):Observable<cntTransaccionesRequest>{
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_transacciones ,

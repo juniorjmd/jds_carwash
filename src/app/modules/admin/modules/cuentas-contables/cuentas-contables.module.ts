@@ -17,12 +17,13 @@ import { ModalCntGruposComponent } from '../../modals/cuentasContables/cntGrupos
 import { CrearOperacionesComponent } from './pages/operaciones/pages/crtOperaciones.component';
 import { ListarOperacionesComponent } from './pages/operaciones/pages/listarOperaciones.component';
 import { DetalleOperacionesComponent } from './pages/operaciones/pages/detalleOperaciones.component';
+import { ListarOperacionesAutomaticasComponent } from './pages/operaciones/pages/listarOperacionesAutomaticas.component';
 
 
 
 @NgModule({
   declarations: [
-    CntClaseComponent,
+    CntClaseComponent,ListarOperacionesAutomaticasComponent,
     CntGruposComponent,
     CntCuentasMComponent,
     CntSubCuentasComponent,

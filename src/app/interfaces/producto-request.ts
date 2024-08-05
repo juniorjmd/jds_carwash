@@ -118,6 +118,19 @@ export interface cntOperacionesRequest {
   error: string;
 }
 
+
+export interface cntTipDocOperacionesRequest { 
+  data: {"tipoDocumentoFinal":number , "nombreTipoDocumentoFinal":string}[] ;
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface cntDocOperacionesRequest { 
+  data: {"idDocumento":number , "idDocumentoFinal":string}[] ;
+  query: string;
+  numdata: number;
+  error: string;
+}
 export interface cntTransaccionesRequest { 
   data: TransaccionesModel[] |vwTransaccionesModel[];
   query: string;

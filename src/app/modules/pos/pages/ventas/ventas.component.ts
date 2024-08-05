@@ -456,6 +456,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 
   asignarPagosARemision() {
+    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
+      return;
+    }
     if (typeof(this.documentoActivo!.listado) === 'undefined' || this.documentoActivo!.listado.length === 0) { 
       Swal.fire('No posee elementos a facturar', 'Debe incluir minimo un producto o servicio en la factura', 'error');
       return;

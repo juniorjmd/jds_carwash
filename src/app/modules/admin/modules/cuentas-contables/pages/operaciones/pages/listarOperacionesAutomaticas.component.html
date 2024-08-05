@@ -1,0 +1,45 @@
+<div class="container-fluid" > 
+  <h3>Operaciones</h3>
+  
+  <div class="row">
+    <div class="col-3">
+      <select class="form-control" [(ngModel)] = 'selTipoDocuemto' (change)="buscarPorTipoDocumento()"  >
+        <option [value]="0"><---filtre por un tipo de documento---> </option>
+        <option *ngFor="let item of tipDocOperaciones" [value]="item.tipoDocumentoFinal">{{item.nombreTipoDocumentoFinal}}
+        </option>
+      </select>
+          </div>
+
+          <div class="col-3">
+            <select class="form-control"  [(ngModel)] = 'selIdDocumento'   (change)="buscarPorDocumento()" >
+              <option [value]="0"><---filtre por un documento---> </option>
+              <option *ngFor="let item of docOperaciones" [value]="item.idDocumento">{{item.idDocumentoFinal}}
+              </option>
+            </select>
+                </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-12">
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr> 
+        <th>Operación</th>
+        <th>Fecha Operación</th> 
+        <th>Total Débito</th>
+        <th>Total Crédito</th> 
+        <th>Tercero</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let operacion of operaciones" style="cursor: pointer;" [title]="operacion.descripcion" (click) = "enviarOperacionCurrent(operacion)">
+        <td>{{ operacion.nombre }}</td>
+        <td>{{ operacion.fechaOperacion | date: 'short' }}</td> 
+        <td>{{ operacion.totalDebito | number: '1.2-2' }}</td>
+        <td>{{ operacion.totalCredito | number: '1.2-2' }}</td> 
+        <td>{{ operacion.nombrePersona }}</td>
+      </tr>
+    </tbody>
+  </table></div>
+</div>
+</div>

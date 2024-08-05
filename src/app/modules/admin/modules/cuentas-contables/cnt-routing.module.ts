@@ -9,6 +9,7 @@ import { OperacionesComponent } from './pages/operaciones/operaciones.component'
 import { DetalleOperacionesComponent } from './pages/operaciones/pages/detalleOperaciones.component';
 import { ListarOperacionesComponent } from './pages/operaciones/pages/listarOperaciones.component';
 import { CrearOperacionesComponent } from './pages/operaciones/pages/crtOperaciones.component';
+import { ListarOperacionesAutomaticasComponent } from './pages/operaciones/pages/listarOperacionesAutomaticas.component';
 
 const routes: Routes = [{ path: '', component: CuentasCntComponent , 
                        children:[  
@@ -18,6 +19,7 @@ const routes: Routes = [{ path: '', component: CuentasCntComponent ,
                         { path: 'subCuentas', component: CntSubCuentasComponent } ,
                         { path: 'operaciones', component: OperacionesComponent ,children:[
                           { path: 'listar', component: ListarOperacionesComponent } ,
+                          { path: 'listarAuto', component: ListarOperacionesAutomaticasComponent } ,
                           { path: 'crear', component: CrearOperacionesComponent },
                           { path: 'detalle', component: DetalleOperacionesComponent },
                            { path: '**',   pathMatch:'full' , redirectTo : 'listar' }  ] } ,
