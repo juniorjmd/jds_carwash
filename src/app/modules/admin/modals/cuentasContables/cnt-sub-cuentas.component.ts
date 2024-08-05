@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { cntClaseRequest, cntCuentaMayorRequest, cntSubCuentaRequest } from 'src/app/interfaces/producto-request';
 import { CntClasesModel } from 'src/app/models/cnt-clases/cnt-clases.module';
 import { CntCuentaMModel } from 'src/app/models/cnt-cuenta-m/cnt-cuenta-m.module';
 import { CntGruposModel } from 'src/app/models/cnt-grupos/cnt-grupos.module';
-import { CntSubCuentaModel, vwCntSubCuentaModel } from 'src/app/models/cnt-sub-cuenta/cnt-sub-cuenta.module';
+import { CntSubCuentaModel, subCuenta, vwCntSubCuentaModel } from 'src/app/models/cnt-sub-cuenta/cnt-sub-cuenta.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 
 @Component({
@@ -15,20 +15,25 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
 })
 export class ModalCntSubCuentasComponent implements OnInit { 
   Subcuentas:vwCntSubCuentaModel[] = [];
+
+
   clases:CntClasesModel[]=[];
   grupos:CntGruposModel[]=[]; 
-  cuentas?: CntCuentaMModel[] ;
-  AuxCuentas?: CntCuentaMModel[]  ; // Esta lista debería ser llenada con los datos de la tabla `cnt_cuenta`
+  cuentas : CntCuentaMModel[] = [];
+  AuxCuentas: CntCuentaMModel[] = [] ; // Esta lista debería ser llenada con los datos de la tabla `cnt_cuenta`
   AuxGrupos:CntGruposModel[]=[];
   codClase:number = 0;
   codGrupo:number = 0;
   auxSubCuentas:vwCntSubCuentaModel[] = [];
   newSubcuenta: vwCntSubCuentaModel = new vwCntSubCuentaModel();
   SubcuentaDevolucion: vwCntSubCuentaModel = new vwCntSubCuentaModel();
-constructor(private cntService:CntContablesService, 
+constructor(private cntService:CntContablesService,  
+  @Inject(MAT_DIALOG_DATA) public dataIngreso:subCuenta,
   public dialogo: MatDialogRef<ModalCntSubCuentasComponent>, 
 ){
     this.getAllSubcuentas();
+    console.log('datos ingresos busqueda cuenta' , this.dataIngreso);
+    
 }
 filtrarPorNombre( ) {
   this.Subcuentas =  [...this.auxSubCuentas]
@@ -67,7 +72,7 @@ filtrarSubCuentas(){
 
 filtrarSubCuentasPorGrupo(){
   if(this.codGrupo != undefined && this.codGrupo > 0 ){ 
-    this.cuentas = this.AuxCuentas?.filter(x=>x.cod_grupo == this.codGrupo);
+    this.cuentas = this.AuxCuentas?.filter(x=>x.cod_grupo == this.codGrupo)??[];
   this.cntService.getCntCuentasByIdGrupo(this.codGrupo).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
     console.log('getCntCuentasByIdCM',value)
     this.Subcuentas = value.data; 
@@ -94,33 +99,81 @@ filtrarSubCuentasPorClase(){
 }
 }
 
+revisarIngreso(){
+  console.log('revisar ingreso ==> ' , this.dataIngreso);
+  
+  if(this.dataIngreso != undefined){
+    if(this.clases.length > 0 && this.dataIngreso.clase>0 ){
+        this.codClase = this.dataIngreso.clase ;
+        this.dataIngreso.clase = 0;
+    }
+    
+    if(this.grupos.length > 0 && this.dataIngreso.grupo >0 ){
+      this.codGrupo = this.dataIngreso.grupo ;
+      this.dataIngreso.grupo = 0;
+  }
+    
+  if(this.AuxCuentas.length > 0 && this.dataIngreso.cuenta >0 ){
+    this.newSubcuenta.cod_cuenta = this.dataIngreso.cuenta ;
+    this.dataIngreso.cuenta = 0; 
+  }
+    if(this.clases.length > 0  && this.grupos.length > 0 && this.cuentas.length> 0 ){
+      this.grupos = this.AuxGrupos.filter(x=>x.cod_clase == this.codClase)??[] ;
+      this.cuentas = this.AuxCuentas?.filter(x=>x.cod_grupo == this.codGrupo)??[];
+      if(this.newSubcuenta.cod_cuenta > 0 ){
+         
+            this.cntService.getCntCuentasByIdCM(this.newSubcuenta.cod_cuenta).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
+              console.log('getCntCuentasByIdCM',value)
+              this.Subcuentas = value.data; 
+              this.auxSubCuentas=value.data;
+              console.log('Subcuentas' , this.Subcuentas) 
+            },
+            error: (e:any)=>console.error(e.error.error)})
+
+      } else { if(this.codGrupo > 0 ){
+	
+        this.cntService.getCntCuentasByIdGrupo(this.codGrupo).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
+          console.log('getCntCuentasByIdCM',value)
+          this.Subcuentas = value.data; 
+          this.auxSubCuentas=value.data;
+          console.log('Subcuentas' , this.Subcuentas) 
+         },
+        error: (e:any)=>console.error(e.error.error)})
+
+      } }
+    }
+ 
+  }}
 
 
 ngOnInit() {
-
+console.clear();
 
   this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
-    
-    console.log('currentCntClase - value',value) 
+     
     this.clases = value??[] ;
+    this.revisarIngreso();
     console.log('currentCntClase',this.clases) 
   },error : (e:any)=>console.error(e.error.error)})
 
 
   
-  this.cntService.currentCntGrupo.subscribe({next:(value:CntGruposModel[] | null)=>{ 
-    console.log('currentCntGrupo - value',value) 
+  this.cntService.currentCntGrupo.subscribe({next:(value:CntGruposModel[] | null)=>{  
     this.grupos = value??[] ;
-    this.AuxGrupos = this.grupos;
+    this.AuxGrupos = this.grupos; 
+    this.revisarIngreso();
     console.log('currentCntGrupo',this.grupos) 
   },error : (e:any)=>console.error(e.error.error)})
 
 
-  this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[] | null)=>{
+  this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[]| null)=>{
     
-    console.log('currentCntcuentaM - value',value) 
+    console.log('currentCntcuentaM  - - value',value) 
     this.cuentas = value??[] ;
-    this.AuxCuentas = this.cuentas;
+    
+    console.log('currentCntcuentaM ---- >>',this.cuentas) 
+    this.AuxCuentas = this.cuentas; 
+    this.revisarIngreso();
     console.log('currentCntcuentaM',this.cuentas) 
   },error : (e:any)=>console.error(e.error.error)})
   // Aquí deberías cargar los datos de `cnt_cuenta` desde el servicio correspondiente

@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { cntTransaccionesRequest } from 'src/app/interfaces/producto-request';
+import { MatDialog } from '@angular/material/dialog';
+import { tap } from 'rxjs';
+import { responseSubC } from 'src/app/interfaces/odoo-prd';
+import { cntSubCuentaRequest, cntSubCuentaVwRequest, cntTransaccionesRequest } from 'src/app/interfaces/producto-request';
 import { CntClasesModel } from 'src/app/models/cnt-clases/cnt-clases.module';
 import { CntCuentaMModel } from 'src/app/models/cnt-cuenta-m/cnt-cuenta-m.module';
 import { CntGruposModel } from 'src/app/models/cnt-grupos/cnt-grupos.module';
 import { CntOperacionesModel } from 'src/app/models/cnt-operaciones/cnt-operaciones.module';
-import { CntSubCuentaModel, vwCntSubCuentaModel } from 'src/app/models/cnt-sub-cuenta/cnt-sub-cuenta.module';
+import { CntSubCuentaModel, subCuenta, vwCntSubCuentaModel } from 'src/app/models/cnt-sub-cuenta/cnt-sub-cuenta.module';
 import { TransaccionesModel, vwTransaccionesModel } from 'src/app/models/transacciones/transacciones.module';
+import { ModalCntSubCuentasComponent } from 'src/app/modules/admin/modals/cuentasContables/cnt-sub-cuentas.component';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 
 @Component({
@@ -33,11 +37,66 @@ export class CrearOperacionesComponent implements OnInit {
   slgrupos?: CntGruposModel ; // Lista de grupos filtrada por clase
   slcuentasMayores?: CntCuentaMModel ; // Lista de cuentas mayores filtrada por grupo
   slcuentas?: vwCntSubCuentaModel;
+  subCuentaCreacion:number = 0; 
 
-  constructor(private cntService:CntContablesService){
+  constructor(private cntService:CntContablesService , 
+    private newAbrirDialog: MatDialog, ){
 
   }
 
+  cancelarOperacion(){ 
+    this.cntService.deleteListadoOprTmp().subscribe({next:(value:any)=>{ 
+      console.log('cancelarOperacion' , value); 
+      this.operCntTransacciones = [];
+      this.limpiarMovimiento();
+    }})
+  }
+
+  buscarCuentasContables( ){
+    let data :subCuenta = {
+      clase: this.selectedClase,
+      grupo: this.selectedGrupo,
+      cuenta: this.selectedCuentaMayor,
+      subcuenta:0,
+    }
+    this.newAbrirDialog.open(ModalCntSubCuentasComponent, { data : data })
+    .afterClosed() 
+    .pipe(
+      tap((response: responseSubC) => { 
+        console.log('buscarCuentasContablesGastos',response);
+        if (response.confirmado && response.datoDevolucion !== undefined ) {  
+          this.subCuentaCreacion = response.datoDevolucion.id_scuenta!; 
+          this.cntService.getCntCuentasById(this.subCuentaCreacion).subscribe({next:(value:cntSubCuentaVwRequest)=>{
+            if(value.numdata > 0 ){
+              this.Mcuentas = [...this.Mcuentas , ...value.data  ];
+              this.cntService.changeSubCuenta(this.Mcuentas);
+              this.cuentas  = this.Mcuentas.filter(x=>x.cod_cuenta == this.selectedCuentaMayor);
+            }
+    
+          }, error:error=>console.error(error.error.error)
+          })
+
+        }  
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCuentasContables completo')
+    }); 
+  }
+
+
+  eliminarDato(dato:TransaccionesModel){}
+  editar(dato:TransaccionesModel){}
+
+  limpiarMovimiento(){
+    this.newCntTransacciones = new vwTransaccionesModel(); // Crear una nueva instancia del modelo
+    this.selectedClase = 0;
+    this.selectedGrupo = 0;
+    this.selectedCuentaMayor = 0;
+    this.slcuentas = undefined;
+  }
+  guardarOperacion(){}
   ngOnInit(): void {
 
     this.getTransaccionesTemporales();
@@ -54,10 +113,15 @@ export class CrearOperacionesComponent implements OnInit {
     this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[] | null)=>{
       this.McuentasMayores = value??[] ;
       console.log(this.clases) 
+      
     },error : (e:any)=>console.error(e.error.error)})
     this.cntService.currentsubcuenta.subscribe({next:(value:vwCntSubCuentaModel[] | null)=>{
       this.Mcuentas = value??[] ;
       console.log(this.clases) 
+      if (this.subCuentaCreacion > 0 ){
+        this.onCuentaMayorChange() 
+       this.newCntTransacciones.id_cuenta= this.subCuentaCreacion;
+      }
     },error : (e:any)=>console.error(e.error.error)})
     
 
@@ -77,11 +141,26 @@ export class CrearOperacionesComponent implements OnInit {
     this.cuentasMayores  = []; // Lista de cuentas mayores filtrada por grupo
     this.cuentas  = [];    // Lista de cuentas mayores filtrada por grupo
     this.slcuentas= undefined;
-    this.cuentasMayores = this.McuentasMayores.filter(x=>x.id_grupo == this.selectedGrupo)
+  
+    
+    this.cuentasMayores = this.McuentasMayores.filter(x=>x.cod_grupo == this.selectedGrupo)
   }
   onCuentaMayorChange(){  
      this.slcuentas= undefined;
+     console.log('onCuentaMayorChange', this.Mcuentas , this.selectedCuentaMayor);
     this.cuentas  = this.Mcuentas.filter(x=>x.cod_cuenta == this.selectedCuentaMayor)
+
+    if(this.cuentas.length == 0){
+      this.cntService.getCntCuentasByIdCM(this.selectedCuentaMayor).subscribe({next:(value:cntSubCuentaVwRequest)=>{
+        if(value.numdata > 0 ){
+          this.Mcuentas = [...this.Mcuentas , ...value.data  ];
+          this.cntService.changeSubCuenta(this.Mcuentas);
+          this.cuentas  = this.Mcuentas.filter(x=>x.cod_cuenta == this.selectedCuentaMayor);
+        }
+
+      }, error:error=>console.error(error.error.error)
+      })
+    }
   }
 
   getTransaccionesTemporales(){

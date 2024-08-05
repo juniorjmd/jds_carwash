@@ -111,6 +111,17 @@ export interface cntSubCuentaRequest {
   numdata: number;
   error: string;
 }
+
+
+
+export interface cntSubCuentaVwRequest { 
+  data: vwCntSubCuentaModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+
 export interface cntOperacionesRequest { 
   data: CntOperacionesModel[] ;
   query: string;

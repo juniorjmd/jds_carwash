@@ -46,3 +46,11 @@ export class CntSubCuentaModel {
       this.modificar = 'S';
       this.nombre_cuenta = '';
     }}
+
+
+    export interface subCuenta{
+      clase:number,
+      grupo:number,
+      cuenta:number ,
+      subcuenta:number
+    } 

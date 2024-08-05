@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { httpOptions, url } from '../models/app.db.url';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest } from '../interfaces/producto-request';
+import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntSubCuentaVwRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest } from '../interfaces/producto-request';
 import { actions } from '../models/app.db.actions';
 import { vistas } from '../models/app.db.view';
 import { CntGruposModel } from '../models/cnt-grupos/cnt-grupos.module';
@@ -38,7 +38,25 @@ export class CntContablesService {
   }
 
 
+  deleteListadoOprTmp(){ 
+    let where =   [{"columna" : "usuario" , "tipocomp" : "=" , "dato" : 'USUARIO_LOGUEADO'}   ];
+    let datos = {"action": actions.actionDelete ,
+    "_tabla" : TABLA.transacciones_tmp,
+    "_where" : where  
+   };
+   console.log('borrar tablas temporales por usuario ' ,url.action , datos, httpOptions());
+   return this.http.post(url.action , datos, httpOptions()) ;
+  }
 
+  deleteItemListadoOprTmp(id:number){ 
+    let where =   [{"columna" : "usuario" , "tipocomp" : "=" , "dato" : 'USUARIO_LOGUEADO'}   ];
+    let datos = {"action": actions.actionDelete ,
+    "_tabla" : TABLA.transacciones_tmp,
+    "_where" : where  
+   };
+   console.log('borrar tablas temporales por usuario ' ,url.action , datos, httpOptions());
+   return this.http.post(url.action , datos, httpOptions()) ;
+  }
   changeOperacion(operacion: CntOperacionesModel) {
     this.operacionSource.next(operacion);
   }
@@ -197,16 +215,24 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
   }
 
 
-  getCntCuentasByIdCM(id:number):Observable<cntSubCuentaRequest>{
+  getCntCuentasByIdCM(id:number):Observable<cntSubCuentaVwRequest>{
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_cnt_scuentas, 
       "_where" : [{columna : 'cod_cuenta' , tipocomp : '=' , dato : id }
                 ,{columna : 'digito' , tipocomp : '>' , dato : 0 }]
      }; 
 
-     return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
+     return this.http.post<cntSubCuentaVwRequest>(url.action , datos, httpOptions()) ;
   }
+  getCntCuentasById(id:number):Observable<cntSubCuentaVwRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_scuentas, 
+      "_where" : [{columna : 'id_scuenta' , tipocomp : '=' , dato : id }
+                ,{columna : 'digito' , tipocomp : '>' , dato : 0 }]
+     }; 
 
+     return this.http.post<cntSubCuentaVwRequest>(url.action , datos, httpOptions()) ;
+  }
   getCntCuentasByName(id:string):Observable<cntSubCuentaRequest>{
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_cnt_scuentas, 
