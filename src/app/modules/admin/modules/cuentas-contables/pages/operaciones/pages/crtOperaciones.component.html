@@ -1,4 +1,29 @@
 <!-- cnt-transacciones.component.html -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12"><h3>Creacion de operaciones</h3></div>
+  </div>
+  <div class="row" style="background: rgba(0, 0, 0, 0.5); color: azure;  padding: 20px;  border-radius: 10px;">
+    <div class="col-md-3">
+      <label for="clase">Tercero</label> 
+      <div class="input-group mb-3">
+        <input  readonly  class="form-control"  [(ngModel)] = 'operacion.nombrePersona'> 
+        <button type="button"class="btn btn-outline-primary" (click)='buscarTerceroGasto( )'>
+            <i class="bi bi-search"></i>  
+        </button>
+    </div>
+    </div>
+    <div class="col-md-3">
+      <label for="clase">nombre</label> 
+      <div class="input-group mb-3">
+        <input class="form-control" [(ngModel)] = 'operacion.nombre'  /></div>
+    </div>
+    <div class="col-md-6">
+      <label for="clase">descripcion</label>   <div class="input-group mb-3">
+        <textarea  class="form-control"  [(ngModel)] = 'operacion.descripcion' ></textarea></div>
+    </div>
+  </div>
+</div>
 <form #cntTransaccionesForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="form-group col-md-3">
@@ -77,9 +102,9 @@
    
   </form>
   <div class="row"> 
-    <div class="col-md-3" style=" color: #42ce42;">Total Debito : <b> {{totalDebito|currency}}</b></div>
-  <div class="col-md-3" style=" color: red;">Total Credito : <b>{{totalCredito|currency}}</b></div>
-  <div class="col-md-3" style="  color: blue;">Resultado : <b>{{(totalDebito - totalCredito)|currency}}</b></div>
+    <div class="col-md-3" style=" color: #42ce42;">Total Debito : <b> {{operacion.totalDebito|currency}}</b></div>
+  <div class="col-md-3" style=" color: red;">Total Credito : <b>{{operacion.totalCredito|currency}}</b></div>
+  <div class="col-md-3" style="  color: blue;">Resultado : <b>{{((operacion.totalDebito||0) - (operacion.totalCredito||0))|currency}}</b></div>
     </div>
 
   <div  >

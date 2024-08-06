@@ -1,0 +1,24 @@
+<table class="table"><tbody>
+    <tr>
+        <td>Nombre</td>
+        <td>Cantidad</td>
+        <td>Precio sin iva</td>
+        <td>Descuento</td>
+        <td>IVA</td>
+        <td>Total</td>
+        <td>
+             
+        </td>
+    </tr>
+  <tr>
+        <td><input type="text" [(ngModel)] = 'item.nombreProducto' class="form-control" > </td>
+        <td> <input readonly type="text" [(ngModel)] = 'item.cantidadVendida' class="form-control" ></td>
+        <td> <input type="number" [(ngModel)] = 'item.presioSinIVa' class="form-control" > </td>
+        <td> <input type="number" [(ngModel)] = 'item.descuento' class="form-control" > </td>
+        <td>  <input readonly type="text" [(ngModel)] = 'item.IVA' class="form-control" > </td>
+        <td> <input readonly type="text" [(ngModel)] = 'item.valorTotal' class="form-control" >  </td>
+        <td>
+            <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-pencil" style="cursor:pointer" ></i>
+        </td>
+    </tr>
+</tbody></table>

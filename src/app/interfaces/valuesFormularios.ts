@@ -3,5 +3,7 @@ export interface ValuesFormuGasto {
 id?:number
 descripcion:string 
 nombre: string
-valor:number 
+valor:number ,
+tercero:string , 
+idTercero:number 
 } 

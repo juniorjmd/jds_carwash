@@ -4,6 +4,7 @@ const action = 'https://services.carwash.sofdla.com.co/services/view/action/';
 const inventario = 'https://services.carwash.sofdla.com.co/services/view/action/inventario/';
 const actionDoc = 'https://services.carwash.sofdla.com.co/services/view/action/documentos/';
 const actionVentas = 'https://services.carwash.sofdla.com.co/services/view/action/ventas/';
+const admin  = 'https://services.carwash.sofdla.com.co/services/view/action/admin/';
 const login = 'https://services.carwash.sofdla.com.co/services/view/action/login/';
 const datosIniciales = 'https://services.carwash.sofdla.com.co/services/view/action/datosiniciales/';
 const brand = 'https://services.carwash.sofdla.com.co/services/view/action/brand/';
@@ -26,6 +27,7 @@ export const url = {
     'httpOptionsSinAutorizacion':httpOptionsSinAutorizacion,
     'action': action,
     'actionDocumentos': actionDoc,
+    'actionAdmin':admin,
     'actionVentas':  actionVentas ,
     'brand': brand,
     'datosIniciales':datosIniciales,

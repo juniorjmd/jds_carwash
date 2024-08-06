@@ -17,7 +17,8 @@ import { SharedModule } from '../shared/shared.module';
 import { IngresarProductoVentaComponent } from './modals/ingresar-producto-venta/ingresar-producto-venta.component'; 
 import { NewGastoComponent } from './modals/new-gasto/new-gasto.component'; 
 import { AbonosCuentasXCobrarComponent } from './modals/abonos-cuentas-xcobrar/abonos-cuentas-xcobrar.component';
-import { GenerarCntPorCobrarComponent } from './modals/generar-cnt-por-cobrar/generar-cnt-por-cobrar.component';
+import { GenerarCntPorCobrarComponent } from './modals/generar-cnt-por-cobrar/generar-cnt-por-cobrar.component'; 
+import { ModalUpdateProductoVentaComponent } from './modals/ModalUpdateProductoVenta/ModalUpdateProductoVenta.component';
  
 @NgModule({
   declarations: [  
@@ -34,7 +35,8 @@ import { GenerarCntPorCobrarComponent } from './modals/generar-cnt-por-cobrar/ge
     IngresarProductoVentaComponent , 
     NewGastoComponent,
     AbonosCuentasXCobrarComponent,
-    GenerarCntPorCobrarComponent
+    GenerarCntPorCobrarComponent,
+    ModalUpdateProductoVentaComponent
 
   ],
   imports: [

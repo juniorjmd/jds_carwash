@@ -5,6 +5,7 @@ import { catchError, of, tap } from 'rxjs';
 import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 import { ValuesFormuGasto } from 'src/app/interfaces/valuesFormularios';
 import { loading } from 'src/app/models/app.loading';
+import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { DocumentoService } from 'src/app/services/documento.service';
@@ -30,7 +31,8 @@ export class NewGastoComponent {
       nombre: ['', Validators.required],
       valor: ['', [Validators.required, Validators.pattern(/^\d*\.?\d+$/)]],
       descripcion: ['', Validators.required],
-      tercero: ['', Validators.required]
+      tercero: ['', Validators.required],
+      idTercero: [0, Validators.required]
     });
   }
 
@@ -40,9 +42,12 @@ export class NewGastoComponent {
     this.newAbrirDialog.open(FndClienteComponent,{ data: {  invoker:'gasto' } })
     .afterClosed()
     .pipe(
-      tap((confirmado: Boolean)=>{
-        if (confirmado) { 
-
+      tap((resp:{response: Boolean , persona:ClientesModel})=>{
+        if (resp.response) { 
+            this.gastoForm?.get('tercero')?.setValue(   resp.persona.nombreCompleto );
+          this.gastoForm?.get('idTercero')?.setValue(
+            typeof resp.persona.id === 'string' ? parseInt(resp.persona.id, 10) : resp.persona.id
+          );
         }
       })
     ).subscribe({
@@ -53,6 +58,10 @@ export class NewGastoComponent {
   }
   crearDocumento() {
     if(this.newGasto != undefined){
+    if(this.newGasto.idTercero <= 0 ){
+      Swal.fire('info' , 'debe escoger el tercero para el gasto' , 'warning')
+      return ;
+    }  
     this.loading.show();
     this.documentoService.crearDocumentoGasto  
     (this.newGasto).pipe(

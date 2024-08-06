@@ -50,7 +50,7 @@
             <div class="col-sm-3">
                 
                 <div *ngIf="asignarADoc " class="btn-group" role="group" aria-label="Basic example">
-                    <button *ngIf="crear" type="button" (click)="crearCliente()" title="Guardar En Odoo" class="btn btn-success">
+                    <button *ngIf="crear" type="button" (click)="crearCliente()" title="Guardar cliente (btnDefault)" class="btn btn-success">
                         <i class="bi bi-check2-circle"></i>
                     </button>
                     <button type="button" title="Agregar al Documento" (click)="asignarClienteAlDocumento()" class="btn btn-primary">
@@ -58,12 +58,12 @@
                     </button> 
                 </div>
                 <div *ngIf="!asignarADoc && !asignarEmpleado && !devolverPersona" >
-                 <button *ngIf="crear" type="button" (click)="crearCliente()" title="Crear cliente" class="btn btn-success">
+                 <button *ngIf="crear" type="button" (click)="crearCliente()" title="Crear cliente (whitout retunr)" class="btn btn-success">
                     <i class="bi bi-check2-circle"></i>
                 </button>
             </div> 
             <div *ngIf="asignarEmpleado && !devolverPersona" >
-                <button *ngIf="crear" type="button" (click)="crearCliente()" title="Guardar En Odoo" class="btn btn-success">
+                <button *ngIf="crear" type="button" (click)="crearCliente()" title="Guardar empleado" class="btn btn-success">
                    <i class="bi bi-check2-circle"></i>
                </button>
                <button type="button" title="Asignar como empleado" (click)="pasarComoEmpleado()" class="btn btn-primary">
@@ -72,7 +72,7 @@
            </div> 
 
             <div *ngIf="devolverPersona" >
-                <button *ngIf="crear" type="button" (click)="crearPersonaYDevolverla()" title="Guardar En Odoo" class="btn btn-success">
+                <button *ngIf="crear" type="button" (click)="crearPersonaYDevolverla()" title="Guardar persona" class="btn btn-success">
                    <i class="bi bi-check2-circle"></i>
                </button>
                <button type="button"  *ngIf="asignarEmpleado"   title="Retornar Cliente" (click)="pasarComoEmpleado()" class="btn btn-primary">
@@ -240,15 +240,15 @@
                     
                     <th>
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-secondary">
+                            <button type="button" (click)="editarCliente(cliente)" class="btn btn-secondary">
                               <i class="bi bi-pencil-fill"></i> 
                             </button>
-                            <button type="button" class="btn btn-secondary">
+                            <button type="button" (click)="seleccionar(cliente)" class="btn btn-secondary">
                               <i class="bi bi-send-fill"></i> 
                             </button>
-                            <button type="button" class="btn btn-secondary">
+                        <!--    <button type="button" (click)="eliminar(cliente)"  class="btn btn-secondary">
                               <i class="bi bi-trash-fill"></i> 
-                            </button>
+                            </button>-->
                           </div>
                     </th>
                 </tr>

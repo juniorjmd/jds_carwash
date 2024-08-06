@@ -21,8 +21,8 @@ export class CntOperacionesModel {
     nombre: string = '';
     descripcion: string = ''; 
     idDocumento:number = 0 ; 
-    idPersona?: number;
-    nombreUsuario?: string;
+    idPersona : number = 0 ;
+    nombreUsuario : string = '';
     nombrePersona?: string;
     transacciones: TransaccionesModel[]| vwTransaccionesModel[] = []
   

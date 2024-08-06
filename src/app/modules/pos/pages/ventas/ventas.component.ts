@@ -31,6 +31,7 @@ import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/f
 import { AbonosCuentasXCobrarComponent } from '../../modals/abonos-cuentas-xcobrar/abonos-cuentas-xcobrar.component';
 import { GenerarCntPorCobrarComponent } from '../../modals/generar-cnt-por-cobrar/generar-cnt-por-cobrar.component';
 import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
+import { ModalUpdateProductoVentaComponent } from '../../modals/ModalUpdateProductoVenta/ModalUpdateProductoVenta.component';
 
 @Component({
   selector: 'app-ventas',
@@ -370,7 +371,22 @@ export class VentasComponent implements AfterViewInit, OnInit {
         complete: () => console.log('moverDocumentoCaja completo')
       });
   }
-
+  editar(linea: DocumentoListado){
+    
+    this.newAbrirDialog.open(ModalUpdateProductoVentaComponent, { data: {...linea} })
+      .afterClosed()
+      .pipe(
+        tap((confirmado: Boolean) => {
+          if (confirmado) { 
+            this.getDocumentos();
+          }
+        })
+      ).subscribe({
+        next: () => {},
+        error: (error) => console.error('Error:', error),
+        complete: () => console.log('editar linea completo')
+      });
+  }
   eliminarLinea(linea: DocumentoListado) {
     console.log(linea);
     this.loading.show();

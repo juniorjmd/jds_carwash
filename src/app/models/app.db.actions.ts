@@ -65,6 +65,7 @@
 
 
  export const actions = {
+  'action_generar_nueva_operacion':'CREAR_OPERACION_MANUAL',
   'action_update_producto':action_update_producto,
   'get_categorias' : 'GET_CATEGORIAS',
   'set_actividad_descuento' : 'SET_ACTIVIDAD_DESCUENTO',

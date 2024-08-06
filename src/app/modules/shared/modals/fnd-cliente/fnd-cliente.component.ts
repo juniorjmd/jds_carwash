@@ -92,6 +92,23 @@ export class FndClienteComponent implements OnInit {
       }
       
   }
+  seleccionar(cliente:ClientesModel){
+    this.NwCliente = {...cliente};
+    
+    this.clientesService.changeCliente( this.NwCliente);
+    if (this.asignarEmpleado || this.devolverPersona){
+      this.pasarComoEmpleado();
+    }else{
+        this.dialogo.close(true)
+    }
+  }
+  eliminar(cliente:ClientesModel){
+    this.NwCliente = {...cliente};
+  }
+  editarCliente(cliente:ClientesModel){
+      this.NwCliente = {...cliente};
+      this.mostrarListado = false
+  }
   pasarComoEmpleado(){
     this.retorno= {response:true , empleado: this.NwCliente , persona:this.NwCliente}
     this.dialogo.close(this.retorno)

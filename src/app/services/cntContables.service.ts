@@ -37,7 +37,14 @@ export class CntContablesService {
     console.log('servicios cuentas contables inicializado');  
   }
 
-
+  setNewOperacion(_operacion:CntOperacionesModel){ 
+    let datos = {"action": actions.action_generar_nueva_operacion ,
+      _operacion
+   };
+   console.log('setNewOperacion' ,url.actionAdmin , datos, httpOptions());
+   return this.http.post(url.actionAdmin , datos, httpOptions()) ;
+  }
+  
   deleteListadoOprTmp(){ 
     let where =   [{"columna" : "usuario" , "tipocomp" : "=" , "dato" : 'USUARIO_LOGUEADO'}   ];
     let datos = {"action": actions.actionDelete ,

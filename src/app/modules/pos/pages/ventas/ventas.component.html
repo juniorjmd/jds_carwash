@@ -68,18 +68,23 @@
                         <th>Precio</th>
                         <th>Descuento</th>
                         <th>IVA</th>
-                        <th>Total</th>
+                        <th>Total</th> <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of documentoActivo!.listado">
-                        <td><i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-x-circle" style="cursor:pointer" (click)="eliminarLinea(item)"></i></td>
+                        <td>
+                            <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-x-circle" style="cursor:pointer" (click)="eliminarLinea(item)"></i>
+                        </td>
                         <td>{{item.nombreProducto}}</td>
                         <td>{{item.cantidadVendida}}</td>
                         <td>{{item.presioSinIVa}}</td>
                         <td>{{item.descuento}}</td>
                         <td>{{item.IVA}}</td>
                         <td>{{item.valorTotal}}</td>
+                        <td>
+                            <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-pencil" style="cursor:pointer" (click)="editar(item)"></i>
+                        </td>
                     </tr>
                 </tbody>
             </table>
