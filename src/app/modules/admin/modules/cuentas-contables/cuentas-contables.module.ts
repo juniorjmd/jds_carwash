@@ -18,6 +18,7 @@ import { CrearOperacionesComponent } from './pages/operaciones/pages/crtOperacio
 import { ListarOperacionesComponent } from './pages/operaciones/pages/listarOperaciones.component';
 import { DetalleOperacionesComponent } from './pages/operaciones/pages/detalleOperaciones.component';
 import { ListarOperacionesAutomaticasComponent } from './pages/operaciones/pages/listarOperacionesAutomaticas.component';
+import { ModalUpdateTransactionTmpComponent } from './modals/modalUpdateTransactionTmp/modalUpdateTransactionTmp.component';
 
 
 
@@ -34,7 +35,7 @@ import { ListarOperacionesAutomaticasComponent } from './pages/operaciones/pages
     ModalCntSubCuentasComponent,
     CrearOperacionesComponent ,
     ListarOperacionesComponent ,
-    DetalleOperacionesComponent
+    DetalleOperacionesComponent, ModalUpdateTransactionTmpComponent
   ],
   imports: [  
     CommonModule, 

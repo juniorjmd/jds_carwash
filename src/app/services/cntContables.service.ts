@@ -96,9 +96,7 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
   
   let datos ;
   let  arraydatos ; 
-  if (data.cod_transaccion !== undefined &&  data.cod_transaccion > 0 ){
-    
-
+  if (data.cod_transaccion !== undefined &&  data.cod_transaccion > 0 ){ 
 
     let where =   [{"columna" : "cod_transaccion" , "tipocomp" : "=" , "dato" : data.cod_transaccion }]
     arraydatos =  { 
@@ -122,6 +120,8 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
       "_arraydatos" : arraydatos
      };
   } 
+  console.log('setCntTransaccionesTmp',url.action , datos);
+  
    return this.http.post<any>(url.action , datos, httpOptions()) ;
 }
 

@@ -1,0 +1,39 @@
+<div class="container-fluid modal_container"> 
+    <div class="row">
+      
+  
+      <div class="form-group col-md-12">
+        <label for="idCuenta">Cuenta</label>
+       
+
+        <div class="input-group mb-3">
+         
+            <input class="form-control" type="text" readonly [(ngModel)]="newCntTransacciones.nro_subcuenta">
+            <input class="form-control" type="text" readonly [(ngModel)]="newCntTransacciones.nombre_subcuenta"> 
+          <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables( )'>
+              <i class="bi bi-search"></i>  
+          </button>
+      </div>
+      </div>
+    </div> 
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="valorCredito">Valor Crédito</label>
+        <input type="number" id="valorCredito" class="form-control" [(ngModel)]="newCntTransacciones.valor_credito" name="valor_credito" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="valorDebito">Valor Débito</label>
+        <input type="number" id="valorDebito" class="form-control" [(ngModel)]="newCntTransacciones.valor_debito" name="valor_debito" required>
+      </div> 
+   </div>
+      <div class="form-group col-md-3 pt-4">   
+        <div class="btn-group " role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-success"  (click)="onSubmit()">
+            <i class="bi bi-plus-circle" title="agregar movimiento"></i> 
+          </button> 
+        </div>
+      </div>  
+  
+   
+   
+   </div>

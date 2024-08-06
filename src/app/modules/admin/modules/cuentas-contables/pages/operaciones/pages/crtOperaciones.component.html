@@ -76,6 +76,11 @@
    
    
   </form>
+  <div class="row"> 
+    <div class="col-md-3" style=" color: #42ce42;">Total Debito : <b> {{totalDebito|currency}}</b></div>
+  <div class="col-md-3" style=" color: red;">Total Credito : <b>{{totalCredito|currency}}</b></div>
+  <div class="col-md-3" style="  color: blue;">Resultado : <b>{{(totalDebito - totalCredito)|currency}}</b></div>
+    </div>
 
   <div  >
     <h3>Transacciones</h3>
@@ -93,6 +98,7 @@
           <th>Clase</th>
           <th>Grupo</th>
           <th>Digito</th>
+          <th>--0--</th>
         </tr>
       </thead>
       <tbody>
