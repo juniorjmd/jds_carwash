@@ -108,6 +108,14 @@
           <td>{{ transaccion.nombre_clase }}</td>
           <td>{{ transaccion.nombre_grupo }}</td>
           <td>{{ transaccion.digito }}</td>
+          <td>  <div class="btn-group " role="group" aria-label="Basic example">
+            <button type="submit" class="btn btn-success" (click)="eliminarDato(transaccion)">
+              -
+            </button> 
+            <button type="button"  (click)="editar(transaccion)" class="btn btn-primary">
+             Ed
+            </button>
+          </div></td>
         </tr>
       </tbody>
     </table>

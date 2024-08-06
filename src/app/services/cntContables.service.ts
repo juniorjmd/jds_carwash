@@ -48,15 +48,16 @@ export class CntContablesService {
    return this.http.post(url.action , datos, httpOptions()) ;
   }
 
-  deleteItemListadoOprTmp(id:number){ 
-    let where =   [{"columna" : "usuario" , "tipocomp" : "=" , "dato" : 'USUARIO_LOGUEADO'}   ];
+  deleteItemListadoOprTmp(dato:any){ 
+    let where =   [{"columna" : "cod_transaccion" , "tipocomp" : "=" , dato}   ];
     let datos = {"action": actions.actionDelete ,
     "_tabla" : TABLA.transacciones_tmp,
     "_where" : where  
    };
-   console.log('borrar tablas temporales por usuario ' ,url.action , datos, httpOptions());
+   console.log('borrar tablas temporales por id ' ,url.action , datos, httpOptions());
    return this.http.post(url.action , datos, httpOptions()) ;
   }
+
   changeOperacion(operacion: CntOperacionesModel) {
     this.operacionSource.next(operacion);
   }

@@ -11,6 +11,7 @@ import { CntSubCuentaModel, subCuenta, vwCntSubCuentaModel } from 'src/app/model
 import { TransaccionesModel, vwTransaccionesModel } from 'src/app/models/transacciones/transacciones.module';
 import { ModalCntSubCuentasComponent } from 'src/app/modules/admin/modals/cuentasContables/cnt-sub-cuentas.component';
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'crear-operaciones',
@@ -86,7 +87,10 @@ export class CrearOperacionesComponent implements OnInit {
   }
 
 
-  eliminarDato(dato:TransaccionesModel){}
+  eliminarDato(dato:TransaccionesModel){
+    this.cntService.deleteItemListadoOprTmp(dato.cod_transaccion).subscribe({next:(value:any)=>{ if(value.error == 'ok'){this.getTransaccionesTemporales();}else{Swal.fire('error',value.error,'error')} },error:error=>console.error(error.error.error)
+    })
+  }
   editar(dato:TransaccionesModel){}
 
   limpiarMovimiento(){
