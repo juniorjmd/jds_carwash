@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    
+    <div class="row" *ngIf="documentos && documentos.length > 0">
+        <div class="col-sm-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>cod. Devolucion</th>
+                        <th>Cliente</th>
+                        <th>Cantidad</th>
+                        <th>Valor Parcial</th>
+                        <th>Descuento</th>
+                        <th>IVA</th>
+                        <th>Total</th>
+                        <th colspan="2">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let venta of documentos">
+                        <td>{{venta.idDocumentoFinal}}</td>
+                        <td>{{venta.clienteNombre}}</td>
+                        <td>{{venta.cantidadVendida}}</td>
+                        <td>{{venta.valorParcial | currency:'USD'}}</td>
+                        <td>{{venta.descuento | currency:'USD'}}</td>
+                        <td>{{venta.valorIVA | currency:'USD'}}</td>
+                        <td>{{venta.valorTotal | currency:'USD'}}</td>
+                        <td><i class="bi bi-printer boton_activo" (click)="imprimirFactura(venta)"></i></td>
+                        <td><i class="bi bi-list boton_activo" (click)="VerFactura(venta)"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" *ngIf="documentos && documentos.length === 0">
+        <div class="col-sm-12 text-center">
+            <p>No se encontraron compras.</p>
+        </div>
+    </div>
+</div>
+

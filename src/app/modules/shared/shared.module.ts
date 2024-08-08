@@ -55,9 +55,7 @@ import { EmpleadosDropdownComponent } from './components/empleados-dropdown/empl
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule,
-
-
+    CommonModule, 
   ],
   exports:[FndClienteComponent,
     LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,
@@ -73,7 +71,10 @@ import { EmpleadosDropdownComponent } from './components/empleados-dropdown/empl
     DialogoConfirmacionComponent,
     NavbarComponent,
     LoadingComponent, OnlyNumberDirective,
-    ReactiveFormsModule ,EmpleadosDropdownComponent
+    ReactiveFormsModule ,EmpleadosDropdownComponent, 
+    RouterModule,
+    FormsModule,
+    CommonModule,
   ]
 })
 export class SharedModule { }

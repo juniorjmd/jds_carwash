@@ -170,7 +170,7 @@ const day = date.getDate(); // */
       Swal.fire('Es necesario escoger la fecha final del rango de factura','error','error');
       return;
     }
-    this.documentoService.getVentasFinalizadasPorFecha(this.fecha1.trim(),this.fecha2.trim() ).subscribe(
+    this.documentoService.getVentasFinalizadasPorFecha(this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
@@ -185,11 +185,11 @@ const day = date.getDate(); // */
    } else{
     Swal.fire('No existen datos relacionados con la busqueda')
    } 
-  } ,
+  } ,error:
   (error: any) =>{
     alert(JSON.stringify(error ));
   
-  });
+  }});
   }
   getDocumentosPorCliente(){
     //this.printer_factura_final(); 

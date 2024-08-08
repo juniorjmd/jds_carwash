@@ -34,6 +34,7 @@
   mediosPorCajaActiva : "vw_medios_de_cajas_activas" ,
    categorias : "vw_inv_categorias" ,
    cajasActivas : "vw_cajas_activas" ,
+   documentos_por_tip_documento : "vw_obj_documentos_por_tipo_documento_final" ,
    ventasCerradas : "vw_obj_ventas" ,
    inv_descuentos : "vw_inv_descuentos" ,
 
@@ -48,6 +49,7 @@
     tipo_establecimiento: 'vw_tipo_establecimiento',
     documento: 'vw_obj_documentos',
     documentoDev: 'vw_obj_documentos_devolucion',
+    documentosCompra: 'vw_obj_documentos_compra',
     cartera: 'vw_mst_mov_cartera',
     carteraAbonos: 'vw_mst_mov_cartera_abonos',
     contadores:'vw_contadores',

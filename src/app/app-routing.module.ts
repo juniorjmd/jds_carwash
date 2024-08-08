@@ -26,8 +26,8 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
         { path : 'parametrosDelSistema' , component : ParametrosComponent}, 
         { path : 'inicio' ,component : InicioComponent, },
         { path : 'empleados' , loadChildren: () => import('./modules/mod-empleados/mod-empleados.module').then(m => m.ModEmpleadosModule) },
-        { path: 'devoluciones', loadChildren: () => import('./modules/devoluciones/devoluciones.module').then(m => m.DevolucionesModule) },
-    
+        { path: 'devoluciones', loadChildren: () => import('./modules/devoluciones/devoluciones.module').then(m => m.DevolucionesModule) }        ,
+        { path: 'compras', loadChildren: () => import('./modules/compras/compras.module').then(m => m.ComprasModule) },
         { path : 'envios' , component : EnviosComponent},
         { path : 'cierres' ,      component: CierresComponent},
         { path : 'reportes' ,      component: InicioReportesComponent , children:[

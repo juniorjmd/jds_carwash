@@ -8,15 +8,17 @@ import { DocumentoService } from 'src/app/services/documento.service';
 
 @Component({
   selector: 'app-modal-update-producto-venta', 
-  templateUrl: './ModalUpdateProductoVenta.component.html',
-  styleUrls: ['./ModalUpdateProductoVenta.component.css'], 
+  templateUrl: './ModalUpdateProductoCompra.component.html',
+  styleUrls: ['./ModalUpdateProductoCompra.component.css'], 
 })
-export class ModalUpdateProductoVentaComponent { 
-
+export class ModalUpdateProductoCompraComponent { 
+  auxItem:DocumentoListado;
   descuento:number = 0 ;  
   constructor(public loading : loading, private service:DocumentoService , 
-     public dialogo: MatDialogRef<ModalUpdateProductoVentaComponent>,
+     public dialogo: MatDialogRef<ModalUpdateProductoCompraComponent>,
     @Inject(MAT_DIALOG_DATA) public item:DocumentoListado ){  
+
+       this.auxItem = {...this.item} ;
       this.item.val_aux_1 =   this.item.val_aux_1||this.item.presioSinIVa ; 
       this.item.val_aux_2 =  this.item.val_aux_2||this.item.presioVenta ; 
     }
@@ -32,7 +34,12 @@ export class ModalUpdateProductoVentaComponent {
     
   }  
 
-  cambioValor(){
+  cambioValor(origen=''){
+    if(origen=='precioCompra' &&  this.item.presioVenta > 0 ){
+      this.item.val_aux_2 =  this.item.presioVenta ,
+      this.item.val_aux_1 = parseFloat(( this.item.presioVenta / (1 + ( this.item.porcent_iva / 100 ) ) ).toFixed(2));
+     };
+    this.item.cantidadVendida = this.item.cant_real_descontada;
     this.item.descuento = 0;
     this.descuento= this.descuento||0 ;
      if(this.descuento  > 0 ){
@@ -43,19 +50,23 @@ export class ModalUpdateProductoVentaComponent {
       }else{
         des =   this.descuento  ;
       }
-      this.item.presioVenta  = this.item.val_aux_2! - des ; 
+      if(origen!='precioCompra' ){
+      this.item.presioVenta  = this.item.val_aux_2! - des ; }else{
+        this.item.val_aux_1! += des ;
+      }
+
       this.item.presioSinIVa = parseFloat(( this.item.presioVenta / (1 + ( this.item.porcent_iva / 100 ) ) ).toFixed(2));
-      this.item.descuento = parseFloat((( this.item.val_aux_1! - this.item.presioSinIVa    ) ).toFixed(2));
-      this.item.presioSinIVa +=this.item.descuento;
+      this.item.descuento = parseFloat((( this.item.val_aux_1! - this.item.presioSinIVa ) ).toFixed(2));
+      this.item.presioSinIVa =    parseFloat(( this.item.presioSinIVa  + this.item.descuento ).toFixed(2));
       this.item.descuentoAplicado = 'Descuento en venta',
       this.item.nombreActividadDescuento = ''
     } else{
-      this.item.presioSinIVa  = this.item.val_aux_1||this.item.presioSinIVa  ;  
+      this.item.presioSinIVa  =  parseFloat(( this.item.val_aux_2!  / (1 + ( this.item.porcent_iva / 100 ) ) ).toFixed(2));;  
       this.item.descuentoAplicado = '',
       this.item.nombreActividadDescuento = ''
     }
     this.item.IVA = parseFloat(((this.item.presioSinIVa - this.item.descuento) * (this.item.porcent_iva / 100)).toFixed(2));
-    this.item.valorTotal = parseFloat(((this.item.presioSinIVa - this.item.descuento + this.item.IVA) * this.item.cant_real_descontada).toFixed(2));
-    this.item.presioVenta =  parseFloat(((this.item.presioSinIVa - this.item.descuento + this.item.IVA)  ).toFixed(2));
+    this.item.valorTotal = parseFloat(( this.item.presioVenta * this.item.cant_real_descontada).toFixed(2));
+   // this.item.presioVenta =  parseFloat(((this.item.presioSinIVa - this.item.descuento + this.item.IVA)  ).toFixed(2));
   }
 }

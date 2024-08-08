@@ -67,19 +67,32 @@ export interface DocumentoImpuestos{
     'IVA':number,
     'cantidadVendida':number,
     'descuento':number,
+    'tipoDescuento':string,
     'valorTotal':number,
-    'usuario'?:number,
+    'usuario'?:number|string,
     'fecha'?:Date,
     'hora'?:Time,
     'maq_activa'?:string,
     'estado_venta'?:number,
     'cant_real_descontada':number,
-    'cant_devuelta':number,
+    'cant_devuelta'?:number,
     'idDocumentoFinal'?:string,
     'tipo_documento_nombre'?:string,
     'estado_linea_venta' :string, 
     'id_externo_auxiliar'?:number|string,
     'nombreActividadDescuento'?:string,
     'descuentoAplicado'?:string,
+    val_aux_1	?:number ; 
+    val_aux_2	?:number ; 
+    val_aux_3	?:number ; 
+    val_aux_4	?:number ; 
+    val_aux_5	?:number ; 
+    val_aux_6	?:number ; 
+    val_aux_7	?:number ; 
+    val_aux_8	?:number ; 
+    val_aux_9	?:number ; 
+    val_aux_10	?:number ; 
+
+
    
  }

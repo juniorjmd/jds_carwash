@@ -24,7 +24,8 @@
 .modal_container{
     background-image: url(assets/img/home-menu-bg-overlay.svg) , linear-gradient(to right bottom, #d4cbdf, #ffe0e1) !important;
 background-size: cover;
-overflow-y: auto;max-height: 80%;
+overflow-y: auto;max-height: 80%; padding-top: 10px; padding-bottom: 10px; 
+    min-width: 700px !important; 
 }
 .icono_aplicacion {
     margin: auto; 
@@ -79,6 +80,16 @@ margin-right: auto;
     background-color: #337ab752;
 }
 
+.container-sub{
+    background-color: aliceblue !important;
+    height: 100% !important;
+    min-height: 520px !important;
+    border: transparent !important;
+    width: 100% !important;
+    background-image: url('assets/img/home-menu-bg-overlay.svg')!important;
+    background-size: cover;
+    overflow-y: auto;
+}
 .body::-webkit-scrollbar-thumb {
     background: #79727e;
     border-radius: 4px;

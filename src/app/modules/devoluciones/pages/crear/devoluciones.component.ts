@@ -58,20 +58,20 @@ printDocumento(doc:DocumentosModel){
   }
   recalcular(indice:number){
     console.log('validar cantidad' ,   this.docAbono.listado[indice].cant_real_descontada,this.docAbono.listado[indice].cant_devuelta ,
-      ( this.docAbono.listado[indice].cant_real_descontada < this.docAbono.listado[indice].cant_devuelta )
+      ( this.docAbono.listado[indice].cant_real_descontada < this.docAbono.listado[indice].cant_devuelta! )
 
     );
     
-   if( this.docAbono.listado[indice].cant_real_descontada < this.docAbono.listado[indice].cant_devuelta )
+   if( this.docAbono.listado[indice].cant_real_descontada < this.docAbono.listado[indice].cant_devuelta! )
     {this.docAbono.listado[indice].cant_devuelta = 0 ; }
    else{
-    this.docAbono.campo_auxiliar_2 =  this.docAbono.listado.reduce((acc, item) => acc + ( parseFloat(item.presioVenta.toString()) *  item.cant_devuelta ), 0);
+    this.docAbono.campo_auxiliar_2 =  this.docAbono.listado.reduce((acc, item) => acc + ( parseFloat(item.presioVenta.toString()) *  item.cant_devuelta! ), 0);
     console.log('documento a enviar',this.docAbono);}
   
   }
   pagarTodo(){
     this.docAbono.listado.forEach(x=> x.cant_devuelta = (x.estado_linea_venta =='A')? x.cant_real_descontada:0 )
-    this.docAbono.campo_auxiliar_2 =  this.docAbono.listado.reduce((acc, item) => acc + ( parseFloat(item.presioVenta.toString()) *  item.cant_devuelta ), 0);
+    this.docAbono.campo_auxiliar_2 =  this.docAbono.listado.reduce((acc, item) => acc + ( parseFloat(item.presioVenta.toString()) *  item.cant_devuelta! ), 0);
      console.log('documento a enviar',this.docAbono);
   
   }

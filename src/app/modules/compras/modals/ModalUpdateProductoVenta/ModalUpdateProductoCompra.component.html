@@ -1,0 +1,55 @@
+<div class="container-fluid modal_container">
+    <br>
+    <div class="row"> 
+        <div class="col-sm-10 ">
+<span>Nombre </span><input type="text" [(ngModel)] = 'item.nombreProducto' class="form-control" > 
+        </div> 
+         
+        <div class="col-sm-2 ">
+   <button class="btn btn-success" (click)="editar()">
+    <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-pencil" style="cursor:pointer" ></i>
+   </button> 
+        </div>
+    </div>
+            <div class="row"> 
+                <div class="col-sm-12  "><span>Cantidad</span><input (keyup.enter)="cambioValor()"  (blur)="cambioValor()"  type="number" 
+                    [(ngModel)] = 'item.cant_real_descontada' class="form-control" >
+                </div></div>
+                <div class="row"> 
+                    <div class="col-sm-12  ">
+                        <span>Precio sin iva</span><input readonly type="number" [(ngModel)] = 'item.presioSinIVa' class="form-control" >
+                    </div>
+                </div>
+                <div class="row"> 
+                    <div class="col-sm-12  ">
+                        <span>Descuento</span> 
+                        <div class="input-group mb-3">  
+                             <input type="number" [(ngModel)] = 'item.descuento' readonly class="form-control" >
+                            <input type="number" [(ngModel)] = 'descuento' (keyup.enter)="cambioValor()"  (blur)="cambioValor()" class="form-control" >
+                        <select class="form-control"  (change)="cambioValor()" [(ngModel)] = 'item.tipoDescuento' >
+                            <option value="porcentaje" >%</option>
+                            <option value="valor"      >valor</option>
+                        </select>
+                         </div>
+                    </div>
+                </div>
+
+                <div class="row"> 
+                    <div class="col-sm-12  ">
+                        <span>IVA(%)</span>  <input   (keyup.enter)="cambioValor()"  (blur)="cambioValor( )"   type="text" [(ngModel)] = 'item.porcent_iva' class="form-control" > </div>
+                    </div> 
+                        <div class="row"> 
+                            <div class="col-sm-12  ">
+                                <span>IVA valor</span>  <input readonly type="text" [(ngModel)] = 'item.IVA' class="form-control" ></div>
+                            </div> 
+                            
+                            <div class="row"> 
+                                <div class="col-sm-12  ">
+                                    <span>Precio de Compra</span> <input  (keyup.enter)="cambioValor('precioCompra')"  (blur)="cambioValor('precioCompra')"   type="text" [(ngModel)] = 'item.presioVenta' class="form-control" >  </div>
+                                </div> 
+                                <div class="row"> 
+                                    <div class="col-sm-12  ">
+                                        <span>Total</span> <input readonly type="text" [(ngModel)] = 'item.valorTotal' class="form-control" >  </div>
+                                    </div> 
+        
+        </div> 

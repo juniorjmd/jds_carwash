@@ -34,6 +34,7 @@
 
 
  const actionCrearDocumentos = 'CREAR_DOCUMENTO_POR_USUARIO' ; 
+ const actionCrearDocumentosCompraBlank = 'CREAR_DOCUMENTO_COMPRA_POR_USUARIO' ; 
  const actionCrearDocumentoGasto = 'CREAR_DOCUMENTO_GASTO_POR_USUARIO' ; 
  const actionCerarDocumentos = 'CERRAR_DOCUMENTO_FACTURA' ; 
  const actionCerarDocumentosRemision = 'CERRAR_DOCUMENTO_REMISION' ; 
@@ -90,6 +91,7 @@
   'actionCambiarDocumentosACotizacion' : 'CREAR_DOCUMENTO_COTIZACION_POR_USUARIO',
    'actionAbrirCaja': actionAbrirCaja,
    'actionCrearDocumentos' : actionCrearDocumentos,
+   'actionCrearDocumentosCompraBlank' : actionCrearDocumentosCompraBlank,
    'actionCrearNewGasto' : actionCrearDocumentoGasto,
    'actionCrearNewAbono' : 'ASIGNAR_ABONO_DOCUMENTOS_CREDITO',
    'actionCrearNewDevolucion' : 'GENERAR_DOCUMENTOS_DEVOLUCION',

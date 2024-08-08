@@ -11,6 +11,7 @@ import { CarteraRequest, DocumentoCierreRequest, DocumentoRequest } from '../int
 import { DocumentosModel } from '../models/ventas/documento.model';
 import { TABLA } from '../models/app.db.tables';
 import { EmpleadoModel } from '../models/empleados/empleados.module';
+import { DocumentoListado } from '../interfaces/documento.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,16 @@ export class DocumentoService {
     return this.http.post<DocumentoRequest>(url.action, datos, httpOptions());
   }
 
-  
+   getCompras(): Observable<any> {
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.documentosCompra, 
+      "_obj": ['objeto'],
+      "_columnas": ['objeto'] 
+    };
+    console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
   getDevoluciones(): Observable<any> {
     let datos = {
       "action": actions.actionSelect,
@@ -142,6 +152,18 @@ export class DocumentoService {
       return this.http.post<any>(url.actionDocumentos, datos, httpOptions());
   }
 
+  getDocumentosCompraBlanco():Observable<any>{
+    let _where = [{"columna": 'tipoDocumentoFinal', "tipocomp": '=f', "dato": "getIdTipoDocumentoPorNombre('compra_activa') "}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.documentos_por_tip_documento , _where
+    };
+    console.log('servicios de documentos - getCajasActivas', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
   getVentasFinalizadas(codVenta: string = ''): Observable<any> {
     let where = [{"columna": 'idDocumentoFinal', "tipocomp": 'like', "dato": codVenta}];
     if (codVenta.trim() === '') {
@@ -196,6 +218,41 @@ export class DocumentoService {
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
 
+  
+  editarLineaDocumento(item:DocumentoListado): Observable<any> {
+   
+    let where =   [{"columna" : "id" , "tipocomp" : "=" , "dato" : item.id }]
+    
+     let arraydatos:any =  {  
+      "tipoDescuento" :item.tipoDescuento , 
+      "descuento"  :item.descuento ,  
+      "descuentoAplicado"  :item.descuentoAplicado , 
+      "nombreActividadDescuento"  :item.nombreActividadDescuento , 
+      "IVA"  :item.IVA , 
+      "valorTotal"  :item.valorTotal , 
+      "presioVenta"  :item.presioVenta , 
+      "presioSinIVa"  :item.presioSinIVa , 
+      "nombreProducto"  :item.nombreProducto , 
+      val_aux_1 : item.val_aux_1,
+      val_aux_2 : item.val_aux_2 
+    }
+    let    datos = {"action": actions.actionUpdate ,
+      "_tabla" : TABLA.documentosListado, 
+      "_where" : where ,
+      "_arraydatos" : arraydatos
+     };
+     if((item.id||0) == 0 ){
+      item.cant_devuelta = undefined;
+      item.idDocumento = item.orden;
+      item.usuario = 'USUARIO_LOGUEADO';
+      datos.action = actions.actionInsert ;
+      datos._where = [] ; 
+      datos._arraydatos = item ;
+
+    }
+    console.log('editarLineaDocumento activo', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
   cambiarVendedorDocumento(documento: number , vendedor : EmpleadoModel): Observable<any> {
     let where =   [{"columna" : "orden" , "tipocomp" : "=" , "dato" : documento }]
     let arraydatos =  {  "cod_vendedor" : vendedor.id ,
@@ -249,7 +306,11 @@ export class DocumentoService {
     console.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
-
+  crearDocumentoCompraEnBlanco(_establecimiento:number): Observable<any> {
+    let datos = {"action": actions.actionCrearDocumentosCompraBlank , _establecimiento};
+    console.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
    crearDocumentoGasto(nuevoGasto:ValuesFormuGasto): Observable<any> {
     let datos = {"action": actions.actionCrearNewGasto ,"_arraydatos" : nuevoGasto};
     console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());

@@ -26,6 +26,7 @@
     establecimiento:"establecimiento",
     medios:"documentos_medios_de_pago",
     documentos:"documentos",
+    documentosListado:"documentos_listado_productos",
     tipoEstablecimiento:"tipo_establecimiento",
     contador:"contadores" , 
     tiposVehiculos:"inv_mst_tipos_vehiculos",
