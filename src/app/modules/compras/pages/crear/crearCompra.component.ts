@@ -33,6 +33,7 @@ import { LoginService } from 'src/app/services/login.services';
 import { ProductoService } from 'src/app/services/producto.service';
 import Swal from 'sweetalert2';
 import { ModalUpdateProductoCompraComponent } from '../../modals/ModalUpdateProductoVenta/ModalUpdateProductoCompra.component';
+import { GenerarCntPorPagarComponent } from '../../modals/generar-cnt-por-pagar/generar-cnt-por-pagar.component';
 
 @Component({
   selector: 'app-crearCompra',
@@ -74,6 +75,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
     private _ServLogin: LoginService, 
     private dInicialServ: DatosInicialesService , private loading : loading
   ) {    
+    console.clear();
           this.getUsuarioLogueado();
           this.serviceCaja.getEstablecimientos().subscribe({next:value=>{
             if(value.numdata > 0 ){this.establecimientos = value.data}else{Swal.fire('error','No existen establecimientos disponibles','error')}
@@ -166,7 +168,6 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
   }
  
   async getAsyncDocumentos() { 
-    console.clear();
     this.vueltas = true; 
     await this.documentoService.getDocumentosCompraBlanco().pipe(
       tap((datos: any) => {
@@ -208,27 +209,20 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
  
   
    getDocumentos() { 
-    
-    console.clear();
-    console.log('getDocumentosCompraBlanco ingreso....');
+      
     this.vueltas = true; 
      this.documentoService.getDocumentosCompraBlanco().pipe(
       tap((datos: any) => {
-        console.log('getDocumentosCompraBlanco', datos);
-        
+        console.log('getDocumentosCompraBlanco', datos); 
         this.documentos = [];
-        let documentoSeleccionado: DocumentosModel[] ;
-        console.log('getDocumentos', datos.numdata);
-        console.log('getDocumentos_recuest', datos);
+        let documentoSeleccionado: DocumentosModel[] ; 
 
         if (datos.numdata > 0) {
-          this.documentos = datos.data.map((x:any)=>x.objeto)[0];    
-          console.log('getDocumentos_recuest', this.documentos);
-          if (datos.numdata === 1) {
+          this.documentos = datos.data.map((x:any)=>x.objeto)[0];     
+          if (this.documentos.length === 1) {
             this.documentoActivo = this.documentos[0];
           } else {
-            documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ; 
-          console.log('documentoSeleccionado' , documentoSeleccionado);
+            documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ;  
             this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
           }
           this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
@@ -509,10 +503,11 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       return;
     } 
     if (typeof(this.documentoActivo!.cliente) === 'undefined' || this.documentoActivo!.clienteNombre == "CLIENTE GENERICO") { 
-      Swal.fire('error en cliente', 'Debe incluir incluir al cliente', 'error');
+      this.buscarCliente()
+
       return;
     } 
-    this.newAbrirDialog.open(GenerarCntPorCobrarComponent, {   data:{ Documento:this.documentoActivo , origen:'venta'} })
+    this.newAbrirDialog.open(GenerarCntPorPagarComponent, {   data:{ Documento:this.documentoActivo , origen:'venta'} })
       .afterClosed()
       .pipe(
         tap((confirmado:  {result : boolean , documento :  DocumentosModel }) => {
@@ -600,8 +595,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
     }
 
     this.loading.show();
-    this.documentoService.cerrarDocumento(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
-      //console.clear();
+    this.documentoService.cerrarDocumento(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => { 
       console.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
         this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
@@ -666,8 +660,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
     }
 
     this.loading.show();
-    this.documentoService.cerrarDocumentoRemision(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
-      //console.clear();
+    this.documentoService.cerrarDocumentoRemision(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => { 
       console.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
         this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
@@ -707,7 +700,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
   cambiarDocumentoActivo(doc:DocumentosModel) {
     this.documentoActivo = doc;
     this.loading.show();
-    this.documentoService.cambiarDocumento(this.documentoActivo!.orden).pipe(
+    this.documentoService.cambiarDocumentoCompra(this.documentoActivo!.orden).pipe(
       tap((respuesta: any) => {
         if (respuesta.error !== 'ok') {  
           try {
@@ -950,7 +943,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
     if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
       return;
     }
-    this.newAbrirDialog.open(FndClienteComponent,{ data: { docActivo : this.documentoActivo , invoker:'ventas' } })
+    this.newAbrirDialog.open(FndClienteComponent,{ data: { docActivo : this.documentoActivo , invoker:'compra' } })
     .afterClosed()
     .pipe(
       tap((confirmado: Boolean)=>{

@@ -204,6 +204,19 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
         console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     } 
+
+    getMediosByEstablecimiento( idEsta : number){
+        let datos = {"action": actions.actionSelect ,
+                     "_tabla" : vistas.medios ,
+                     "_where" : [{columna : 'establecimiento' , tipocomp : '=' , dato : idEsta},
+                        {columna : 'nombre' , tipocomp : '<>' , dato : 'BONOS'} , 
+                        {columna : 'estado' , tipocomp : '=f' , dato : `getEstado('a')`} , 
+
+                      ]
+                    };
+        console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
+        return this.http.post(url.action , datos, httpOptions()) ;
+    } 
     getContadores(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.contadores
@@ -263,6 +276,15 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     setPagoDocumentoCredito(origen:string, idDocumento:number  , pagos:DocpagosModel[], _numCuotas = 1 ,  _numDiasCuotas = 30 ):Observable<DocumentoCierreRequest>{
         
         let datos = {"action": actions.actionAsignarNewCredito ,
+        "_ordenDocumento" : idDocumento, 
+         "_pagos" : pagos , _numCuotas , _numDiasCuotas , _remision : (origen == 'remision')?true:undefined 
+       };
+       console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())
+        return this.http.post<DocumentoCierreRequest>(this.urlVentas  , datos, httpOptions()) ;
+    }
+      setPagoDocumentoCompraCredito(origen:string, idDocumento:number  , pagos:DocpagosModel[], _numCuotas = 1 ,  _numDiasCuotas = 30 ):Observable<DocumentoCierreRequest>{
+        
+        let datos = {"action": actions.actionAsignarNewCompraCredito ,
         "_ordenDocumento" : idDocumento, 
          "_pagos" : pagos , _numCuotas , _numDiasCuotas , _remision : (origen == 'remision')?true:undefined 
        };
@@ -420,6 +442,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "idCCntCostoVenta" :newEsta.idCCntCostoVenta,
             'idCCntVenta':newEsta.idCCntVenta,
             'idCCntIngDifBonoRegalo':newEsta.idCCntIngDifBonoRegalo,
+            'idCCntCajaGeneral':newEsta.idCCntCajaGeneral,
             "usuario_creacion" : 'USUARIO_LOGUEADO' };
         
             
@@ -442,6 +465,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "idCCnttIvaVenta" :newEsta.idCCnttIvaVenta,
             "idCCntCostoVenta" :newEsta.idCCntCostoVenta,
             'idCCntIngDifBonoRegalo':newEsta.idCCntIngDifBonoRegalo,
+            'idCCntCajaGeneral':newEsta.idCCntCajaGeneral,
             'idCCntVenta':newEsta.idCCntVenta,
             "tipo" : newEsta.tipo,
             "estado" : newEsta.estado ,

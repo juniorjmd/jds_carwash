@@ -39,6 +39,7 @@
  const actionCerarDocumentos = 'CERRAR_DOCUMENTO_FACTURA' ; 
  const actionCerarDocumentosRemision = 'CERRAR_DOCUMENTO_REMISION' ; 
  const actionChangeDocumentos = 'CAMBIAR_DOCUMENTO_ACTIVO_POR_USUARIO' ; 
+ const actionChangeCompraDocumentos = 'CAMBIAR_DOCUMENTO_COMPRA_ACTIVO_POR_USUARIO' ; 
  const actionCancelarDocumentos = 'CANCELAR_DOCUMENTO_POR_USUARIO' ; 
  const actionCambioCajaDocumento = 'CAMBIAR_DOCUMENTO_POR_CAJA';
  const actionBuscarProducto = 'BUSCAR_PRODUCTO';
@@ -46,6 +47,7 @@
  const actionCategoriasPrddoo = 'BUSCAR_ODOO_CATEGORIAS_PRD'
  const actionAsignarPagosDoc = 'ASIGNAR_PAGOS_DOCUMENTOS';
  const actionAsignarPagosDocCredito = 'ASIGNAR_PAGOS_DOCUMENTOS_CREDITO';
+ const actionAsignarPagosDocCompraCredito = 'ASIGNAR_PAGOS_DOCUMENTOS_COMPRA_CREDITO';
 
 
 
@@ -102,6 +104,7 @@
     'datosInicialesSucursal' : datosInicialesSucursal,
     'actionAsignarDocumentosPagos':actionAsignarPagosDoc , 
     'actionAsignarNewCredito':actionAsignarPagosDocCredito , 
+    'actionAsignarNewCompraCredito':actionAsignarPagosDocCompraCredito , 
     'actionBuscarMarcas' : actionBuscarMarcas,
     'actionAsignarCajas':actionAsignarCajas,
     'actionDelete' :actionDelete ,
@@ -135,6 +138,7 @@
     'cambioContrasena' :cambioContrasena     ,
     'buscarProducto' :actionBuscarProducto    ,
     'actionChangeDocumentos' : actionChangeDocumentos , 
+    'actionChangeCompraDocumentos' : actionChangeCompraDocumentos , 
     'actionStockMove' : STOCK_MOVE ,
     'actionStockMoveDevolucion' : STOCK_MOVE_DEVOLUCION ,
 

@@ -40,7 +40,9 @@ export class establecimientoModel{
     idCCntCostoVenta:number = 0; 
     idCCntVenta:number = 0; 
     nombreCCntCostoVenta:string  = '';  
-    nombreCCntVentas:string  = '';  
+    nombreCCntVentas:string  = ''; 
+    nombreCCntCajaGeneral : string  = ''; 
+    idCCntCajaGeneral:number = 0 ;
     constructor(cargaEsta : Establecimientos|undefined){
         this.estado = 0;
         this.tipo = 0;

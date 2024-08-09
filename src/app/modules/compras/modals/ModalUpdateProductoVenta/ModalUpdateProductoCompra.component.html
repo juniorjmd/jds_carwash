@@ -6,7 +6,7 @@
         </div> 
          
         <div class="col-sm-2 ">
-   <button class="btn btn-success" (click)="editar()">
+   <button class="btn btn-success"  [disabled]="disable"  (click)="editar()">
     <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-pencil" style="cursor:pointer" ></i>
    </button> 
         </div>

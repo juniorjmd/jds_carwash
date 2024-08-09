@@ -12,6 +12,7 @@ import { DocumentoService } from 'src/app/services/documento.service';
   styleUrls: ['./ModalUpdateProductoCompra.component.css'], 
 })
 export class ModalUpdateProductoCompraComponent { 
+  disable=false;
   auxItem:DocumentoListado;
   descuento:number = 0 ;  
   constructor(public loading : loading, private service:DocumentoService , 
@@ -24,17 +25,20 @@ export class ModalUpdateProductoCompraComponent {
     }
 
   editar(){
+    this.disable = true
     console.log('ModalUpdateProductoVentaComponent' ,this.item );
     this.service.editarLineaDocumento(this.item).subscribe({next:value=>{
       if (value.error == 'ok'){
         this.dialogo.close(true)   
-         }
-    }, error:e=>console.error(e.error.error)})
+         }else{console.error(value.error);this.disable = true}
+    }, error:e=>{console.error(e.error.error);
+                this.disable = true}})
 
     
   }  
 
   cambioValor(origen=''){
+    this.disable = true
     if(origen=='precioCompra' &&  this.item.presioVenta > 0 ){
       this.item.val_aux_2 =  this.item.presioVenta ,
       this.item.val_aux_1 = parseFloat(( this.item.presioVenta / (1 + ( this.item.porcent_iva / 100 ) ) ).toFixed(2));
@@ -67,6 +71,7 @@ export class ModalUpdateProductoCompraComponent {
     }
     this.item.IVA = parseFloat(((this.item.presioSinIVa - this.item.descuento) * (this.item.porcent_iva / 100)).toFixed(2));
     this.item.valorTotal = parseFloat(( this.item.presioVenta * this.item.cant_real_descontada).toFixed(2));
+    this.disable = false
    // this.item.presioVenta =  parseFloat(((this.item.presioSinIVa - this.item.descuento + this.item.IVA)  ).toFixed(2));
   }
 }

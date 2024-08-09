@@ -8,10 +8,11 @@ import { AnularComprasComponent } from './pages/anular/anular.component';
 import { ListarComprasComponent } from './pages/listar/listar.component';
 import { SharedModule } from '../shared/shared.module';
 import { ModalUpdateProductoCompraComponent } from './modals/ModalUpdateProductoVenta/ModalUpdateProductoCompra.component';
+import { GenerarCntPorPagarComponent } from './modals/generar-cnt-por-pagar/generar-cnt-por-pagar.component';
 
 
 @NgModule({
-  declarations: [
+  declarations: [GenerarCntPorPagarComponent,
     ComprasComponent,CreateComprasComponent , AnularComprasComponent , ListarComprasComponent , ModalUpdateProductoCompraComponent
   ],
   imports: [ 

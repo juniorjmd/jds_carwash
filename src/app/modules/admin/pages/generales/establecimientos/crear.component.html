@@ -148,6 +148,17 @@
         </div>
     </div> 
 
+    <div class="col-sm-3" >
+        <label for="establecimientoCaja">Cuenta Caja General</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta de ventas" [(ngModel)]="newEsta.nombreCCntCajaGeneral" 
+            name="nombreCCntCajaGeneral"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("cajaGeneral")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div> 
  </div>
     
   

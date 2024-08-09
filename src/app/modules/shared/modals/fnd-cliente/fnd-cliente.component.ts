@@ -71,7 +71,6 @@ export class FndClienteComponent implements OnInit {
       if(this.dataIngreso.invoker != 'ventas'){
         this.asignarADoc = false;
       }
-
       if(this.dataIngreso.invoker == 'cuentasPorCobrarVentas' 
         || this.dataIngreso.invoker == 'gasto'){
           this.asignarADoc = false; 
@@ -91,15 +90,41 @@ export class FndClienteComponent implements OnInit {
           
       }
       
+      if(this.dataIngreso.invoker == 'compra'){
+        this.asignarADoc = true;         
+        this.mostrarListado = true 
+        this.buscarPorNombre = true;
+      }
+      
   }
   seleccionar(cliente:ClientesModel){
     this.NwCliente = {...cliente};
     
     this.clientesService.changeCliente( this.NwCliente);
+    if(!this.asignarADoc){
     if (this.asignarEmpleado || this.devolverPersona){
       this.pasarComoEmpleado();
-    }else{
-        this.dialogo.close(true)
+      return
+    }}else{
+      if(this.NwCliente.id !== undefined)
+     { this.loading.show();
+          this.clientesService.asignarClienteAlDocumento(this.documentoActivo.orden , parseInt(this.NwCliente.id.toString()) ).subscribe(
+            {next:(value)=>{
+              console.log(value)
+              if(value.error == 'ok'){
+                if (this.asignarEmpleado || this.devolverPersona){
+                  this.pasarComoEmpleado();
+                   
+                }else{
+                    this.dialogo.close(true)
+                }
+
+
+              }else{Swal.fire("error" , value.error , "error")}
+              
+            },error:(error)=>Swal.fire("error" , JSON.stringify(error) , "error")
+            ,complete:()=>this.loading.hide()})
+        }
     }
   }
   eliminar(cliente:ClientesModel){
@@ -114,6 +139,7 @@ export class FndClienteComponent implements OnInit {
     this.dialogo.close(this.retorno)
 
   }
+  
   asignarClienteAlDocumento(){
     if(this.NwCliente.id !== undefined)
      { this.loading.show();

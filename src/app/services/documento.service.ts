@@ -218,6 +218,12 @@ export class DocumentoService {
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
 
+  cambiarDocumentoCompra(documento: number): Observable<any> {
+    let datos = {"action": actions.actionChangeCompraDocumentos, "_docActual": documento};
+    console.log('cambiarDocumento activo', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+
   
   editarLineaDocumento(item:DocumentoListado): Observable<any> {
    

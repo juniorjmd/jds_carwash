@@ -347,8 +347,8 @@ console.log('listado',this.doc.listado);
        <td>${currencyFormatter.format(valorTotal)} </td></tr>  
       `;
 
-      if(lista.nombreActividadDescuento != 'na'){  receiptHTML += ` <tr style='font-size: 10px;' ><th colspan = '4' >Act: ${lista.nombreActividadDescuento}</th> </tr>   `;}
-        if(lista.descuentoAplicado != 'na'){  receiptHTML += ` <tr  style='font-size: 10px;' ><th colspan = '4' >Des: ${lista.descuentoAplicado}</th> </tr>   `;}
+      if( lista.nombreActividadDescuento != '' && lista.nombreActividadDescuento != 'na'  ){  receiptHTML += ` <tr style='font-size: 10px;' ><th colspan = '4' >Act: ${lista.nombreActividadDescuento}</th> </tr>   `;}
+        if(lista.descuentoAplicado != '' && lista.descuentoAplicado != 'na'){  receiptHTML += ` <tr  style='font-size: 10px;' ><th colspan = '4' >Des: ${lista.descuentoAplicado}</th> </tr>   `;}
 
       receiptHTML += ` <hr>  `;
   });
