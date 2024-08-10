@@ -10,18 +10,21 @@ import { DocumentoService } from 'src/app/services/documento.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'modals-abonos-cuentas-xcobrar',
-  templateUrl: './abonos-cuentas-xcobrar.component.html',
-  styleUrls: ['./abonos-cuentas-xcobrar.component.css']
+  selector: 'modals-abonos-cuentas-por-pagar',
+  templateUrl: './abonos-cuentas-por-pagar.component.html',
+  styleUrls: ['./abonos-cuentas-por-pagar.component.css']
 })
-export class AbonosCuentasXCobrarComponent implements OnInit {
+export class AbonosCuentasPorPagarComponent implements OnInit {
 
 
   public lisCartera:CarteraModel[] = [];
-  public docAbono:DocumentosModel = new DocumentosModel();
-  private  dialogo= inject( MatDialogRef<AbonosCuentasXCobrarComponent>);
+  public docAbono:DocumentosModel = new DocumentosModel(); 
   private  docService = inject(DocumentoService)
-  constructor( @Inject(MAT_DIALOG_DATA) public personaIngreso:ClientesModel ){
+  public personaIngreso:ClientesModel = new ClientesModel(); 
+  constructor(){
+
+  }
+  buscarCreditoCliente(  ){
     this.docAbono.cliente =  ( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id!;
     this.docService
     .getCuentasXCobrarByPersonaAbonos(( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id! )
@@ -58,7 +61,7 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
       }
     } , error:error=>{Swal.fire(error,error.error.error, 'error')}
   })
-  }
+  } 
   ngOnInit(): void {
 
     
@@ -85,8 +88,7 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
     }
      console.log('documento a enviar',this.docAbono);
      this.docService.crearDocumentoAbono(this.docAbono).subscribe({next:value=>{
-      console.log('crearDocumentoAbono',value);
-      this.dialogo.close(true);
+      console.log('crearDocumentoAbono',value); 
      }})
   }
   cancelar(){

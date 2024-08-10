@@ -11,10 +11,11 @@ import { ModalUpdateProductoCompraComponent } from './modals/ModalUpdateProducto
 import { GenerarCntPorPagarComponent } from './modals/generar-cnt-por-pagar/generar-cnt-por-pagar.component';
 import { listarNotasDebitoComponent } from './pages/listar_notas_debito/listarNotasDebito.component';
 import { pagosSaldoNotasDebitoComponent } from './modals/pagos-saldo-notas-debito/pagos-saldo-notas-debito.component';
+import { AbonosCuentasPorPagarComponent } from './pages/abonos-cuentas-por-pagar/abonos-cuentas-por-pagar.component';
 
 
 @NgModule({
-  declarations: [GenerarCntPorPagarComponent,listarNotasDebitoComponent,pagosSaldoNotasDebitoComponent,
+  declarations: [GenerarCntPorPagarComponent,listarNotasDebitoComponent,pagosSaldoNotasDebitoComponent,AbonosCuentasPorPagarComponent,
     ComprasComponent,CreateComprasComponent , AnularComprasComponent , ListarComprasComponent , ModalUpdateProductoCompraComponent
   ],
   imports: [ 
