@@ -1,5 +1,5 @@
 
-<div *ngIf="continuar; else ErrorEstablecimiento">
+<div *ngIf="establecimientos.length> 0; else ErrorEstablecimiento">
   <div *ngIf="documentoActivo != undefined" class="container-fluid container-sub" (click)='irbuscarProducto()' (keyup)='irbuscarProducto()'>
     
       <div class="row">
@@ -38,7 +38,7 @@
         <div class="col-sm-3"> 
             <span>Establecimiento : </span>  
             <div class="input-group mb-3">
-                <select class="o_input form-control" [(ngModel)] = 'documentoActivo.establecimiento'>
+                <select class="o_input form-control" (change)="cambiarEstablecimientoDocumento()" [(ngModel)] = 'documentoActivo.establecimiento'>
                     <option *ngFor="let item of establecimientos" [value]="item.id"  >{{item.nombre}}</option>
                 </select>
             </div></div>

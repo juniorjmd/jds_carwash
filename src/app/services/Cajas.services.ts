@@ -100,6 +100,24 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
         console.log('servicios cajas - get establecimiento ' ,url.action , datos, httpOptions());
         return this.http.post<establecimientosRequest>(url.action , datos, httpOptions()) ;
     }
+
+     getEstablecimientosCompras():Observable<establecimientosRequest>{
+        let datos = {"action": actions.actionSelect ,
+                     "_tabla" : vistas.establecimiento,
+                     "_where" : [{columna : 'estado' , tipocomp : '=' , dato : 1},
+                        {columna : 'idCCntCPagar' , tipocomp : '>' , dato : 0},
+{columna : 'idCCntIvaCompra' , tipocomp : '>' , dato : 0} ,
+{columna : 'idCCntCajaGeneral' , tipocomp : '>' , dato : 0}, 
+{columna : 'idCCntCompras ' , tipocomp : '>' , dato : 0} ,
+{columna : 'idBodegaStock' , tipocomp : '>' , dato : 0}
+
+
+                     ]
+                    };
+        console.log('servicios cajas - get establecimiento ' ,url.action , datos, httpOptions());
+        return this.http.post<establecimientosRequest>(url.action , datos, httpOptions()) ;
+    }
+
     getAllEstablecimientos():Observable<establecimientosRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.establecimiento

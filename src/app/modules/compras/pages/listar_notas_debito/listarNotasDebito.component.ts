@@ -6,11 +6,11 @@ import { DocumentoService } from 'src/app/services/documento.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-listar',
-  templateUrl: './listar.component.html',
-  styleUrls: ['./listar.component.css']
+  selector: 'app-listarNotasDebito',
+  templateUrl: './listarNotasDebito.component.html',
+  styleUrls: ['./listarNotasDebito.component.css']
 })
-export class ListarComprasComponent implements OnInit {
+export class  listarNotasDebitoComponent implements OnInit {
   codFactura:string; 
   documentos : DevolucionModel[] = [];
   constructor(  private inicioService:DatosInicialesService,

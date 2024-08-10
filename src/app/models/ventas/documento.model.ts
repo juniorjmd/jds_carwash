@@ -88,7 +88,30 @@ export class DocumentosModel {
      }
 }
 
-
+export interface arrRetorno {
+    id:number,
+    cnt:number
+}
+export interface documentoDev{
+    idDocF:string,
+    idEsta:number,
+    exedente:number,
+    payReturn:arrRetorno[],
+    pdrReturn:arrRetorno[]
+}
+export interface cntPorPagar {  "cuotas": number,
+    "plazos": number,
+    "comprobante": number,
+    "totalAbonos": number,
+    "totalActual": number,
+    "abonoInicial": number,
+    "totalPagado": number,
+    "valorInicial": number,
+    "idCuentaPorPagar": number,
+    "fecha_ultimo_abono": Date}
+export class DocumentosComprasModel  extends DocumentosModel{
+    cuentaPorPagar ?:cntPorPagar 
+}
 export class DevolucionModel extends DocumentosModel{
    /**
     * 

@@ -13,7 +13,7 @@ import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModel } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { categoriaRequest, DescuentoRequest, DocumentoCierreRequest, marcaRequest, presentacionPrdRequest, ProductoRequest } from '../interfaces/producto-request';
+import { categoriaRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, marcaRequest, presentacionPrdRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
@@ -284,6 +284,7 @@ guardarNuevoProducto(producto :ProductoModel  ){
   console.log('servicios guardarPrdCompra' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 }
+
 updateProducto(producto :ProductoModel  ){
 
   let datos = {"action": actions.action_update_producto , 
@@ -291,6 +292,26 @@ updateProducto(producto :ProductoModel  ){
 };
   console.log('servicios guardarPrdCompra' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
+}
+
+updateDocumento(documento :DocumentosModel  ){
+  let _where =   [{"columna" : "orden" , "tipocomp" : "=" , "dato" : documento.orden }]
+       let  _arraydatos =  {
+         "establecimiento" : documento.establecimiento,
+         "id_cliente" :  documento.cliente,
+         "cliente" :  documento.cliente,
+         vendedor :   documento.cod_vendedor,
+         cod_vendedor :   documento.cod_vendedor,
+         cod_orden_compra :   documento.cod_orden_compra,
+        };
+            
+           let datos = {"action": actions.actionUpdate ,
+            "_tabla" : TABLA.documentos,
+            _where ,
+           _arraydatos
+           };
+  console.log('servicios updateDocumento' ,url.action, datos, httpOptions());
+  return this.http.post<DocumentoRequest>(url.action, datos, httpOptions()) ;
 }
 guardarNuevoProductoPrecargue( precargue :AuxIngresoInventarioModule ){
 

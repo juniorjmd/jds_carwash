@@ -14,7 +14,7 @@ import { PresentacionPrdModel } from "../models/presentacionPrdModel";
 import { ProductoModel } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
 import { cajaModel } from "../models/ventas/cajas.model";
-import { DocumentosModel } from "../models/ventas/documento.model";
+import { DocumentosComprasModel, DocumentosModel } from "../models/ventas/documento.model";
 import { establecimientoModel } from "../models/ventas/establecimientos.model";
 
 export interface ProductoRequest { 
@@ -24,7 +24,12 @@ export interface ProductoRequest {
   error: string;
 }
 
-
+export interface DocumentoCompraRequest { 
+  data: {objeto: DocumentosComprasModel}[];
+  query: string;
+  numdata: number;
+  error: string;
+}
 export interface DocumentoRequest { 
   data: {objeto: DocumentosModel}[];
   query: string;

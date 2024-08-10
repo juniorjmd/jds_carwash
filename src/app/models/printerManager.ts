@@ -9,7 +9,7 @@ export class PrinterManager {
   private docDev :DevolucionModel = new DevolucionModel() ; 
   private static sucursal?: vwsucursal;
   private cierre:cajasResumenModel = new cajasResumenModel();
-
+  private tipoImpresora : String = '';
   // Método estático para establecer la sucursal
   public static setSucursal(sucursal: vwsucursal) {
     PrinterManager.sucursal = sucursal;
@@ -17,7 +17,8 @@ export class PrinterManager {
   constructor() { } 
 
 
-  public printBonoDevolucion( ) {
+  public printBonoDevolucion(impresoraPos = true) {
+      this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ; 
     if(this.docDev.orden ==  undefined){
       Swal.fire('error' , 'no existe un documento a imprimir' , 'error')
   
@@ -57,9 +58,9 @@ export class PrinterManager {
     return HTML;
   } 
 generateBonoHTML(): string {
-
-
-  let receiptHTML = `<div style="font-family: Arial, sans-serif; width: 300px;"> `
+  let receiptHTML = ''; 
+  receiptHTML = (this.tipoImpresora == 'POS')?`<div style="font-family: Arial, sans-serif; width: 300px;"> ` : 
+  `<div style="font-family: Arial, sans-serif; width: 100%;"> `;
   receiptHTML += this.generateCabeceraBono() ; 
   receiptHTML += this.infoGeneralBono(); 
   receiptHTML += this.detalleBono();
@@ -265,7 +266,8 @@ private footerCierre():string{
 }
 
 
-  public printReceipt( ) {
+  public printReceipt(impresoraPos = true) {
+    this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ; 
     if(this.doc.orden ==  undefined){
       Swal.fire('error' , 'no existe un documento a imprimir' , 'error')
   
@@ -280,19 +282,31 @@ private footerCierre():string{
     this.doc =  doc ; 
    }  
   private generateCabecera(){
-    let cabecera = ` <div style="text-align: center;">
+  console.log('documento a imprimir' ,this.doc);
+  
+    let cabecera = '';
+    if (this.tipoImpresora == 'POS'){
+    cabecera = ` <div style="text-align: center;">
     <h2>${this.doc.nombreEsta}</h2>
     <h2>${PrinterManager.sucursal?.nombre_suc}</h2>`; 
       if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
         cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` 
-      cabecera += ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`;
+      cabecera += ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>` ;
+    }else{
+      cabecera = `<div>
+      <table><tr><td>
+      <h2>${this.doc.nombreEsta} - ${PrinterManager.sucursal?.nombre_suc}</h2></td> <td></td></tr>
+      <tr><td><h4>Nit: ${PrinterManager.sucursal?.nit_sucursal}</h4></td> <td></td></tr> 
+      </div>`;
+    }
     return cabecera
   } 
  
 generateReceiptHTML(): string {
 
-
-  let receiptHTML = `<div style="font-family: Arial, sans-serif; width: 300px; "> `
+  let receiptHTML = ''; 
+  receiptHTML = (this.tipoImpresora == 'POS')?`<div style="font-family: Arial, sans-serif; width: 300px;"> ` : 
+  `<div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">`;
   receiptHTML += this.generateCabecera() ; 
   receiptHTML += this.infoGeneral(); 
   receiptHTML += this.detalle();
@@ -307,48 +321,92 @@ generateReceiptHTML(): string {
 private infoGeneral():string{
   let receiptHTML = '';
   if(this.doc.nombreDocumento == 'venta' )   receiptHTML += this.getResolucion() ;
-
+  let labelCliente = 'Cliente : '
   let nombreDocumento = "";
      switch(this.doc.nombreDocumento ){
         case 'venta' : nombreDocumento = "Factura No." ; break;
         case 'cotizacion' : nombreDocumento = "Cotización No."; break;
-        case 'gasto' : nombreDocumento = "Gasto No."; break;
+        case 'gasto' : nombreDocumento = "Gasto No."; labelCliente = 'Pagado a : ' ; break;
         case 'cuentas_por_cobrar' : nombreDocumento = "Venta a credito No."; break;
+        case 'cuentas_por_pagar' : nombreDocumento = "Compra a credito No."; labelCliente = 'Proveedor : ' ;break; 
         case 'remision_cuentas_por_cobrar' : nombreDocumento = "Remision a credito No."; break;
         case 'RecaudosCuentaXCobrar' : nombreDocumento = "Abono a cartera No."; break;
         case 'comprobante_devolucion' : nombreDocumento = "Devolucion No."; break;
+        case 'comprobante_compras' : nombreDocumento = "Compra No.";labelCliente = 'Proveedor : ' ;  break;
      }
-     receiptHTML +=`<div> <p>Usuario: ${this.doc.vendedorNombre}</p>
+     receiptHTML += (this.tipoImpresora != 'POS')?
+         `<div> 
+         <table>
+         <tr> <th>${nombreDocumento}</th><td> ${this.doc.idDocumentoFinal}</td>
+         <th> Usuario Ingreso</th><td> ${this.doc.vendedorNombre}</td> 
+                  
+         </tr> <tr>
+         <th> Fecha/Hora</th><td> ${this.doc.fecha}</td> <th>
+         
+         ${labelCliente}</th><td>  ${this.doc.clienteobj!.nombreCompleto!}</td>
+           
+         </tr>
+         </table></div> `:
+
+
+
+        `<div> <p>Usuario: ${this.doc.vendedorNombre}</p>
                           <p>Fecha/Hora: ${this.doc.fecha}</p>
                           </div><hr>
-        <div  >
+        <div>
           <p>${nombreDocumento} ${this.doc.idDocumentoFinal}</p>
-          <p>cliente ${this.doc.clienteobj!.nombreCompleto!}</p>
-        </div>`;
+          <p>${labelCliente} ${this.doc.clienteobj!.nombreCompleto!}</p>
+        </div>`
+        
+        ;
         return receiptHTML;
 }
 private detalle():string{
   const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
-let receiptHTML  = ` <hr> 
-<div style="text-align: left;" name="detalle"><table  style="font-family: Arial, sans-serif; width: 100%;">`
+let receiptHTML  = ` <hr> <div style="text-align: left;" name="detalle"><table  style="font-family: Arial, sans-serif; width: 100%;">`;
+ 
+receiptHTML += (this.tipoImpresora != 'POS')?`<tr><th>Producto </th><th>Precio uni. </th><th>Descuento</th> <th>IVA</th> <th>Precio Venta</th> <th>Cantidad</th><th>Total </th></tr>` : 
+'';
 console.log('listado',this.doc.listado);
+
     this.doc.listado?.forEach((lista) => {
-      const presioVenta = typeof lista.presioSinIVa === 'number' ? lista.presioSinIVa : parseFloat(lista.presioSinIVa??'0');
+      const precioSinIVA = typeof lista.presioSinIVa === 'number' ? lista.presioSinIVa : parseFloat(lista.presioSinIVa??'0');
+      const precioVenta = lista.presioSinIVa ;
       const cantidadVendida = typeof lista.cantidadVendida === 'number' ? lista.cantidadVendida : parseFloat(lista.cantidadVendida??'0');
       const descuento = typeof lista.descuento === 'number' ? lista.descuento : parseFloat(lista.descuento??'0');
+      const iva = typeof lista.IVA === 'number' ? lista.IVA : parseFloat(lista.IVA??'0');
       const valorTotal = typeof lista.valorTotal === 'number' ? lista.valorTotal : parseFloat(lista.valorTotal??'0');
       
-      receiptHTML += `
+
+      receiptHTML += (this.tipoImpresora == 'POS')?`
        <tr> <th colspan = '4'  style="text-align: left;" >${lista.nombreProducto}</p> </th> </tr>
        <tr><td>Precio </td><td>Desc</td><td>Cant</td><td>Total </td></tr>
-       <tr><td>${currencyFormatter.format(presioVenta)} </td>
+       <tr><td>${currencyFormatter.format(precioSinIVA)} </td>
        <td>${currencyFormatter.format(descuento)}</td>
        <td> ${cantidadVendida}</td>
        <td>${currencyFormatter.format(valorTotal)} </td></tr>  
-      `;
+      `:`
+      <tr> <td   style="text-align: left;" >${lista.nombreProducto}</p> </td>   
+      <td style="text-align: right;" >${currencyFormatter.format(precioSinIVA)} </td>
+      <td style="text-align: right;" >${currencyFormatter.format(descuento)}</td>
+      <td style="text-align: right;" >${currencyFormatter.format(iva)}</td>
+      <td style="text-align: right;" >${currencyFormatter.format(precioVenta)}</td>
+      <td style="text-align: right;" > ${cantidadVendida}</td>
+      <td style="text-align: right;" >${currencyFormatter.format(valorTotal)} </td></tr>  
+     `
+      ;
 
-      if( lista.nombreActividadDescuento != '' && lista.nombreActividadDescuento != 'na'  ){  receiptHTML += ` <tr style='font-size: 10px;' ><th colspan = '4' >Act: ${lista.nombreActividadDescuento}</th> </tr>   `;}
-        if(lista.descuentoAplicado != '' && lista.descuentoAplicado != 'na'){  receiptHTML += ` <tr  style='font-size: 10px;' ><th colspan = '4' >Des: ${lista.descuentoAplicado}</th> </tr>   `;}
+      if( lista.nombreActividadDescuento != '' && lista.nombreActividadDescuento != 'na'  ){  receiptHTML +=
+        (this.tipoImpresora == 'POS')?
+        ` <tr style='font-size: 10px;' ><th colspan = '4' >Act: ${lista.nombreActividadDescuento}</th> </tr>   `:
+        ` <tr style='font-size: 10px;' ><th   >Act: ${lista.nombreActividadDescuento}</th> </tr>   `
+        
+        
+        ;}
+        if(lista.descuentoAplicado != '' && lista.descuentoAplicado != 'na'){  
+          receiptHTML +=   (this.tipoImpresora == 'POS')?` <tr  style='font-size: 10px;' ><th colspan = '4' >Des: ${lista.descuentoAplicado}</th> </tr>`:
+          ` <tr  style='font-size: 10px;' ><th>Des: ${lista.descuentoAplicado}</th> </tr>`
+          ;}
 
       receiptHTML += ` <hr>  `;
   });

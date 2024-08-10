@@ -77,7 +77,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
   ) {    
     console.clear();
           this.getUsuarioLogueado();
-          this.serviceCaja.getEstablecimientos().subscribe({next:value=>{
+          this.serviceCaja.getEstablecimientosCompras().subscribe({next:value=>{
             if(value.numdata > 0 ){this.establecimientos = value.data}else{Swal.fire('error','No existen establecimientos disponibles','error')}
             
           },error:e=>Swal.fire('error',e.error.error,'error')})
@@ -279,7 +279,12 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       complete: () => console.log('crearDocumento completo')
     });
   }
-
+  cambiarEstablecimientoDocumento(){
+    this.productoService.updateDocumento(this.documentoActivo).subscribe({next:(value:DocumentoRequest)=>{
+      if(value.error!= 'ok') {Swal.fire('error',value.error,'error')}
+    },error:error=>console.error(error.error.error)
+    })
+  }
   buscarProducto() { 
     console.log('buscarProducto', this.codigoProducto);
     let dataAuxEnvio: productoDocumento = {
@@ -969,6 +974,6 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
     console.log('documento retorno',doc,'sucursal ', this.sucursal); 
     let printM =  new PrinterManager();
     printM.setDocumento(this.documentoRetorno);
-    printM.printReceipt();
+    printM.printReceipt(false);
   }
 }

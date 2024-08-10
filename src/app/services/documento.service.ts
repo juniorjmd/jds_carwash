@@ -8,7 +8,7 @@ import { loading } from 'src/app/models/app.loading';
 import { cajaModel } from '../models/ventas/cajas.model';
 import { ValuesFormuGasto } from '../interfaces/valuesFormularios';
 import { CarteraRequest, DocumentoCierreRequest, DocumentoRequest } from '../interfaces/producto-request'; 
-import { DocumentosModel } from '../models/ventas/documento.model';
+import { documentoDev, DocumentosModel } from '../models/ventas/documento.model';
 import { TABLA } from '../models/app.db.tables';
 import { EmpleadoModel } from '../models/empleados/empleados.module';
 import { DocumentoListado } from '../interfaces/documento.interface';
@@ -109,6 +109,19 @@ export class DocumentoService {
     let datos = {
       "action": actions.actionSelect,
       "_tabla": vistas.documento,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_columnaUsuario": 'usuario',
+      "_where": where
+    };
+    console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  } 
+   getDocComprasByNumFactura( codFactura : string): Observable<any> {
+    let where = [{"columna": 'idDocumentoFinal', "tipocomp": '=', "dato": codFactura}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.documentosCompra,
       "_columnas": ['objeto'],
       "_obj": ['objeto'],
       "_columnaUsuario": 'usuario',
@@ -331,5 +344,11 @@ export class DocumentoService {
     let datos = {"action": actions.actionCrearNewDevolucion ,"_documentoAbono" : nuevoGasto};
     console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+  
+  crearNotaDebito(nuevoGasto:documentoDev): Observable<any> {
+    let datos = {"action": actions.actionCrearNewNotaDebito ,"_documentoAbono" : nuevoGasto};
+    console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
   }
 }

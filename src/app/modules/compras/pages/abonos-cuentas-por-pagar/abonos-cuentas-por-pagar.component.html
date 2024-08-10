@@ -1,0 +1,99 @@
+<div class="container-fluid pt-4 pb-4 modal_container" >
+    <!-- Título principal -->
+    <div class="row mb-4">
+      <div class="col text-center">
+        <h1 class="display-4">Cuentas por Cobrar</h1>
+      </div>
+    </div>
+  
+    <!-- Información del Cliente -->
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <h4>Cliente:</h4>
+      </div>
+      <div class="col">
+        <h4>{{ personaIngreso.nombreCompleto }}</h4>
+      </div>
+    </div>
+  
+    <!-- Totales -->
+    <div class="row mb-4">
+      <div class="col-sm-2">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Total Deuda</h5>
+            <p class="card-text">{{ docAbono.campo_auxiliar_1 | currency }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-sm-2">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Total Vencido</h5>
+            <p class="card-text">{{ docAbono.campo_auxiliar_4 | currency }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Total Abonos</h5>
+            <p class="card-text">{{ docAbono.valorParcial | currency }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Opciones</h5>
+            
+                <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary" (click)="pagarTodo()" title="Facturar"  >Pagar Todo</button>
+                <button type="button" class="btn btn-success" (click)="enviarAbono()"  title="Crear Documento"  >Enviar Abono</button>
+                <button type="button" class="btn btn-danger" (click)="cancelar()" title="Añadir cliente al Documento" >Cancelar</button>
+               </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Tabla de Cartera -->
+    <div *ngIf="lisCartera != undefined" class="table-responsive" style="height: 350px; overflow-y: auto;">
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>Descripción</th>
+            <th>Valor Inicial</th>
+            <th>Abono Inicial</th>
+            <th>Cuotas vencidas</th>
+            <th>Vencido</th>
+            <th>Deuda Actual</th>
+            <th>Total Abonos</th>
+            <th>Fecha Último Abono</th>
+            <th>Abonar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of lisCartera; let i= index ">
+            <td>{{ item.descripcion }}</td>
+            <td>{{ item.valorInicial | currency }}</td>
+            <td>{{ item.abonoInicial | currency }}</td>
+            
+            <td>{{ item.numero_plazos_vencidos }}</td>
+            <td>{{ item.suma_plazos_vencidos | currency }}</td>
+            <td>{{ item.totalActual | currency }}</td>
+            <td>{{ item.totalAbonos | currency }}</td>
+            <td>{{ item.fecha_ultimo_abono | date: 'shortDate' }}</td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+              <input type="number"  (keyup.enter)="recalcular(i)"  (blur)="recalcular(i)" class="form-control" [(ngModel)] = "docAbono.listado[i].presioVenta" value="0"/>
+              <button type="button" class="btn btn-danger" (click)="docAbono.listado[i].presioVenta = 0 ;recalcular(i); " title="limpiar abono" >Cancelar</button></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
