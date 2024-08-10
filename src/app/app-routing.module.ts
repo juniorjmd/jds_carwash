@@ -5,8 +5,7 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { UsuarioComponent } from './components/usuario/usuario.component'; 
 import { CierresComponent } from './components/cierres/cierres.component';
 import { ReportesComponent } from './components/reportes/reportes.component'; 
-import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component'; 
-import { DevolucionesCreateComponent } from './modules/devoluciones/pages/crear/devoluciones.component';
+import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component';  
 import { EnviosComponent } from './components/envios/envios.component'; 
 import { ParametrosComponent } from './components/parametros/parametros.component';
 import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
@@ -26,7 +25,7 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
         { path : 'parametrosDelSistema' , component : ParametrosComponent}, 
         { path : 'inicio' ,component : InicioComponent, },
         { path : 'empleados' , loadChildren: () => import('./modules/mod-empleados/mod-empleados.module').then(m => m.ModEmpleadosModule) },
-        { path: 'devoluciones', loadChildren: () => import('./modules/devoluciones/devoluciones.module').then(m => m.DevolucionesModule) }        ,
+        { path: 'devoluciones', loadChildren: () => import('./modules/notasCredito/devoluciones.module').then(m => m.DevolucionesModule) }        ,
         { path: 'compras', loadChildren: () => import('./modules/compras/compras.module').then(m => m.ComprasModule) },
         { path : 'envios' , component : EnviosComponent},
         { path : 'cierres' ,      component: CierresComponent},
