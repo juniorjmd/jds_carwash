@@ -50,7 +50,9 @@
     documento: 'vw_obj_documentos',
     documentoDev: 'vw_obj_documentos_devolucion',
     documentosCompra: 'vw_obj_documentos_compra',
+    documentosPagosCPP: 'vw_obj_documentos_pagos_CPP',
     cartera: 'vw_mst_mov_cartera',
+    credito: 'vw_mst_mov_credito',
     carteraAbonos: 'vw_mst_mov_cartera_abonos',
     contadores:'vw_contadores',
     tipos_documentos_con_cont: 'vw_t_documentos_con_cont',
@@ -61,6 +63,7 @@
     prd_inventario:'vw_prd_inventario',
     aux_ingreso_inventario : 'vw_inv_inventario_ingreso_auxiliar',
     vw_mst_per_clientes : 'vw_mst_per_clientes' ,
+    vw_proveedor : 'vw_mst_per_proveedores' ,
 
     vw_cnt_clase: 'vw_cnt_clase',
 vw_cnt_grupos: 'vw_cnt_grupos',

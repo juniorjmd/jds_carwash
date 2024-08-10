@@ -333,6 +333,8 @@ private infoGeneral():string{
         case 'RecaudosCuentaXCobrar' : nombreDocumento = "Abono a cartera No."; break;
         case 'comprobante_devolucion' : nombreDocumento = "Devolucion No."; break;
         case 'comprobante_compras' : nombreDocumento = "Compra No.";labelCliente = 'Proveedor : ' ;  break;
+        case 'Pagos_cuenta_por_pagar' : nombreDocumento = "Abono a credito No.";labelCliente = 'Proveedor : ' ;  break;
+        case 'comprobante_nota_debito' : nombreDocumento = "Nota debito No.";labelCliente = 'Proveedor : ' ;  break;
      }
      receiptHTML += (this.tipoImpresora != 'POS')?
          `<div> 

@@ -96,6 +96,7 @@
    'actionCrearDocumentosCompraBlank' : actionCrearDocumentosCompraBlank,
    'actionCrearNewGasto' : actionCrearDocumentoGasto,
    'actionCrearNewAbono' : 'ASIGNAR_ABONO_DOCUMENTOS_CREDITO',
+   'actionCrearNewAbonoCredito' : 'ASIGNAR_ABONO_DOCUMENTOS_CREDITO_POR_PAGAR',
    'actionCrearNewDevolucion' : 'GENERAR_DOCUMENTOS_DEVOLUCION',
    'actionCrearNewNotaDebito' : 'GENERAR_DOCUMENTOS_NOTA_DEBITO',
    'actionResumenCaja': actionResumenCaja,

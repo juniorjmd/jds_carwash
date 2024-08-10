@@ -45,6 +45,16 @@ export class DocumentoService {
     console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());
   }
+  getPagosCPP(): Observable<any> {
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.documentosPagosCPP, 
+      "_obj": ['objeto'],
+      "_columnas": ['objeto'] 
+    };
+    console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
   getDevoluciones(): Observable<any> {
     let datos = {
       "action": actions.actionSelect,
@@ -73,6 +83,17 @@ export class DocumentoService {
     let datos = {
       "action": actions.actionSelect,
       "_tabla": vistas.cartera, 
+      "_where": where
+    };
+    console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
+    return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
+  }
+  getCuentasXPagarByPersonaAbonos( idPersona :number): Observable<CarteraRequest> {
+    let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona},
+      {"columna": 'totalActual', "tipocomp": '>', "dato": 0}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.credito, 
       "_where": where
     };
     console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
@@ -340,6 +361,11 @@ export class DocumentoService {
     console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
+  crearDocumentoAbonoCredito(nuevoGasto:DocumentosModel): Observable<DocumentoCierreRequest> {
+    let datos = {"action": actions.actionCrearNewAbonoCredito ,"_documentoAbono" : nuevoGasto};
+    console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
+    return this.http.post<DocumentoCierreRequest>(url.actionDocumentos, datos, httpOptions());
+  }
   crearDocumentoDevolucion(nuevoGasto:DocumentosModel): Observable<any> {
     let datos = {"action": actions.actionCrearNewDevolucion ,"_documentoAbono" : nuevoGasto};
     console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
@@ -349,6 +375,6 @@ export class DocumentoService {
   crearNotaDebito(nuevoGasto:documentoDev): Observable<any> {
     let datos = {"action": actions.actionCrearNewNotaDebito ,"_documentoAbono" : nuevoGasto};
     console.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
 }

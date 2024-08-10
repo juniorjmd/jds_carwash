@@ -89,10 +89,15 @@ export class FndClienteComponent implements OnInit {
           this.mostrarListado = true
           
       }
-      
       if(this.dataIngreso.invoker == 'compra'){
         this.asignarADoc = true;         
         this.mostrarListado = true 
+        this.buscarPorNombre = true;
+      }
+      if(this.dataIngreso.invoker == 'cuentasXpagar'){
+        this.asignarADoc = false;         
+        this.mostrarListado = true 
+        this.buscarPorNombre = true;
         this.buscarPorNombre = true;
       }
       
@@ -101,6 +106,10 @@ export class FndClienteComponent implements OnInit {
     this.NwCliente = {...cliente};
     
     this.clientesService.changeCliente( this.NwCliente);
+    if(this.dataIngreso.invoker == 'cuentasXpagar'){
+      this.pasarComoEmpleado();
+      return
+    }
     if(!this.asignarADoc){
     if (this.asignarEmpleado || this.devolverPersona){
       this.pasarComoEmpleado();
@@ -205,6 +214,25 @@ export class FndClienteComponent implements OnInit {
       buscarClientePorNombre(){
         if (this.NwCliente.nombreCompleto !== undefined && this.NwCliente.nombreCompleto!== undefined ){
           this.loading.show();
+          if(this.dataIngreso.invoker=='cuentasXpagar' ){
+            
+            this.clientesService.getProveedorByNombre(
+              this.NwCliente.nombreCompleto  
+            ).subscribe({next:(value:clienteRequest)=>{
+              console.log(value)
+              if(value.numdata== 0){
+                Swal.fire('no se encuentra el proveedor','','info')
+              }else{
+                this.NwCliente =  value.data[0] 
+                this.ClientesResult = value.data; 
+                console.log('cliente encontrado' , this.NwCliente)
+                this.getDepartamento() 
+                this.getCiudad()
+                this.busqueda =  false 
+            }},error:(error)=>console.error(error.error.error)
+          ,complete:()=>this.loading.hide()})
+
+          }else{
                 this.clientesService.getClientesByNombre(
                   this.NwCliente.nombreCompleto  
                 ).subscribe({next:(value:clienteRequest)=>{
@@ -237,6 +265,11 @@ export class FndClienteComponent implements OnInit {
                   }
                 },error:(error)=>console.error(error)
               ,complete:()=>this.loading.hide()})
+          }
+
+
+
+
               }
           }    
   
@@ -268,10 +301,12 @@ export class FndClienteComponent implements OnInit {
                       Swal.fire('persona no encontrada','la persona no se encuentra en la base de datos','error');
                       this.dialogo.close({response:false , empleado: new ClientesModel()});
                     }
-
-
                   }else{
-                    this.NwCliente =  value.data[0]
+                    this.NwCliente =  value.data[0]  
+                    if(this.dataIngreso.invoker == 'cuentasXpagar'){
+                      this.pasarComoEmpleado();
+                      return
+                    }
                     if (this.documentoActivo != undefined){
                       this.asignarClienteAlDocumento();
                     }else{

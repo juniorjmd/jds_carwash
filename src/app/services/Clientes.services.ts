@@ -82,6 +82,15 @@ export class ClientesService {
         console.log('getClientes  ' ,url.action , datos, httpOptions());
         return this.http.post<clienteRequest>(url.action , datos, httpOptions()) ;
     }
+
+    getProveedorByNombre(nombreCliente:string  ):Observable<clienteRequest>{
+        let datos = {
+            "_where" : [{columna : 'nombreCompleto' , tipocomp : 'like' , dato : nombreCliente} 
+        ]   , 
+        "action": actions.actionSelect , "_tabla" : vistas.vw_proveedor, _limit: 300 }
+        console.log('getClientes  ' ,url.action , datos, httpOptions());
+        return this.http.post<clienteRequest>(url.action , datos, httpOptions()) ;
+    }
     getMaestroClientes():Observable<any>{
         let datos = {"action": actions.MAESTROS_CLIENTES  }
         console.log('getMaestroClientes  ' ,this.urlpersona , datos, httpOptions());

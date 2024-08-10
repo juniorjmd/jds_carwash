@@ -99,7 +99,7 @@ export class  listarNotasDebitoComponent implements OnInit {
 
   getDocumentos(){
   
-    this.documentoService.getCompras( ).subscribe({next:
+    this.documentoService.getPagosCPP( ).subscribe({next:
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 

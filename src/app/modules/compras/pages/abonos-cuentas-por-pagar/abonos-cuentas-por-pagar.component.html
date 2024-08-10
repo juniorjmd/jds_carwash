@@ -1,23 +1,28 @@
-<div class="container-fluid pt-4 pb-4 modal_container" >
+<div class="container-fluid pt-4 pb-4 container " >
     <!-- Título principal -->
     <div class="row mb-4">
       <div class="col text-center">
-        <h1 class="display-4">Cuentas por Cobrar</h1>
+        <h1 class="display-4">Abono Cuentas por pagar</h1>
       </div>
     </div>
   
     <!-- Información del Cliente -->
-    <div class="row mb-3">
-      <div class="col-sm-2">
-        <h4>Cliente:</h4>
-      </div>
-      <div class="col">
-        <h4>{{ personaIngreso.nombreCompleto }}</h4>
-      </div>
-    </div>
+    <div class="row mb-3"> 
+      
+      <div class="col-sm-3"><span>Proveedor : </span>
+        <div class="input-group mb-3">
+            <div class="d-flex input-group">  
+                <div class="btn-group dropend">
+                    <button type="button"class="btn btn-outline-success "> 
+                            <span>{{personaIngreso!.nombreCompleto!}}</span>
+                    </button>
+                    <button type="button" class="btn btn-info" 
+                    title="Añadir cliente al Documento" 
+                    (click)='buscarCliente()'><i class="bi bi-person"></i>&nbsp;
+               </button>
   
-    <!-- Totales -->
-    <div class="row mb-4">
+        </div>   </div> </div></div>
+    
       <div class="col-sm-2">
         <div class="card">
           <div class="card-body text-center">
@@ -43,7 +48,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <div class="card">
           <div class="card-body text-center">
             <h5 class="card-title">Opciones</h5>
