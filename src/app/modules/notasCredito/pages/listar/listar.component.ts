@@ -94,7 +94,7 @@ export class ListarComponent implements OnInit {
   { console.log(factura); 
    let printerManager =  new PrinterManager();
    printerManager.setDocumentoDevolucion(factura)
-   printerManager.printBonoDevolucion() ;
+   printerManager.printBonoDevolucion(false) ;
   } 
 
   getDocumentos(){

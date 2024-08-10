@@ -268,6 +268,22 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
      }; 
      return this.http.post<cntOperacionesRequest>(url.action , datos, httpOptions()) ;
   } 
+
+ 
+  getCntOperacionesAutoTipoDocumento( tipdoc:number):Observable<cntOperacionesRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_oper_auto ,
+      "_where" : [{columna : 'tipoDocumentoFinal' , tipocomp : '=' , dato : tipdoc }]   
+     }; 
+     return this.http.post<cntOperacionesRequest>(url.action , datos, httpOptions()) ;
+  } 
+  getCntOperacionesAutoIdDocumento( tipdoc:number):Observable<cntOperacionesRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_oper_auto ,
+      "_where" : [{columna : 'idDocumento' , tipocomp : '=' , dato : tipdoc }]   
+     }; 
+     return this.http.post<cntOperacionesRequest>(url.action , datos, httpOptions()) ;
+  } 
   getTipDocOperacionesAuto():Observable<cntTipDocOperacionesRequest>{
     let datos = {"action": actions.actionSelect ,  
       "_tabla": "vw_documento_operaciones",
@@ -285,6 +301,8 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
       "_groupby": ["idDocumento" , "idDocumentoFinal"]  ,
       "_orderby": [["idDocumento" , "DESC"]] 
      }; 
+     console.log('getDocumentosOperacionesAuto',datos);
+     
      return this.http.post<cntDocOperacionesRequest>(url.action , datos, httpOptions()) ;
   }
   getCntTransacciones( idOperacion:number):Observable<cntTransaccionesRequest>{

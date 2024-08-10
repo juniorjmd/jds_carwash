@@ -66,6 +66,20 @@ export class DocumentoService {
     return this.http.post(url.action, datos, httpOptions());
   }
 
+  
+  getDevolucionesSinUso(): Observable<any> {
+    
+    let _where = [{"columna": 'uso_del_bono', "tipocomp": '=', "dato": 'SinUso'}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.documentoDev, 
+      "_obj": ['objeto'],
+      "_columnas": ['objeto'] , _where
+    };
+    console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
   getCuentasXCobrarByPersona( idPersona :number): Observable<CarteraRequest> {
     let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona}];
     let datos = {

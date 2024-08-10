@@ -45,34 +45,22 @@ export class ListarOperacionesAutomaticasComponent implements OnInit {
   }
   
   buscarPorDocumento( ){ 
-
     if(this.selIdDocumento <=  0 ) return ; 
-
-
      
-  this.cntService.getDocumentosOperacionesAuto().subscribe({next:(value:cntDocOperacionesRequest )=>{
-    this.docOperaciones =  value.data; 
-  },error : (e:any)=>console.error(e.error.error)}) 
-
-
-  this.cntService.getTipDocOperacionesAuto().subscribe({next:(value:cntTipDocOperacionesRequest )=>{
-    this.tipDocOperaciones =  value.data; 
-  },error : (e:any)=>console.error(e.error.error)}) 
-
+  this.cntService.getCntOperacionesAutoIdDocumento(this.selIdDocumento).subscribe({next:(value:cntOperacionesRequest )=>{ 
+     this.operaciones =  value.data; 
+    console.log('getDocumentosOperacionesAuto' , value);
+    
+  },error : (e:any)=>console.error(e.error.error)}) ; 
   }
 
   buscarPorTipoDocumento( ){
-    
-    if(this.selTipoDocuemto <=  0 ) return ; 
-     
-      this.cntService.getDocumentosOperacionesAuto().subscribe({next:(value:cntDocOperacionesRequest )=>{
-        this.docOperaciones =  value.data; 
-      },error : (e:any)=>console.error(e.error.error)}) 
-
-
-      this.cntService.getTipDocOperacionesAuto().subscribe({next:(value:cntTipDocOperacionesRequest )=>{
-        this.tipDocOperaciones =  value.data; 
-      },error : (e:any)=>console.error(e.error.error)}) 
+    if(this.selTipoDocuemto <=  0 ) return ;      
+  this.cntService.getCntOperacionesAutoTipoDocumento(this.selTipoDocuemto).subscribe({next:(value:cntOperacionesRequest )=>{ 
+    this.operaciones =  value.data; 
+   console.log('getDocumentosOperacionesAuto' , value);
+   
+ },error : (e:any)=>console.error(e.error.error)}) ; 
 
   }
  

@@ -83,7 +83,7 @@ margin-right: auto;
 .container-sub{
     background-color: aliceblue !important;
     height: 100% !important;
-    min-height: 520px !important;
+    min-height: 700px !important;
     border: transparent !important;
     width: 100% !important;
     background-image: url('assets/img/home-menu-bg-overlay.svg')!important;

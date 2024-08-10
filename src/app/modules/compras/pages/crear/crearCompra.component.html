@@ -1,6 +1,11 @@
 
+<div class="container-fluid  " >
+    <!-- Título principal -->
+    <div class="row" >
+      <div class="col-sm-12" style="color: aliceblue;">    <h4 >Nueva Compra</h4></div></div>
+      <div class=" container-sub" style="width: 100% !important;margin: 0;padding: 15px;">
 <div *ngIf="establecimientos.length> 0; else ErrorEstablecimiento">
-  <div *ngIf="documentoActivo != undefined" class="container-fluid container-sub" (click)='irbuscarProducto()' (keyup)='irbuscarProducto()'>
+  <div *ngIf="documentoActivo != undefined" class="container-fluid " (click)='irbuscarProducto()' (keyup)='irbuscarProducto()'>
     
       <div class="row">
           <div class="col-sm-3"><span>Proveedor : </span>
@@ -132,3 +137,5 @@
               </div>
           </div>
       </div></ng-template>
+
+      </div></div>

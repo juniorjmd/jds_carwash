@@ -123,4 +123,5 @@ export class DevolucionModel extends DocumentosModel{
     */
         saldo_bono:number = 0;
         estado_bono:string = '';
+        uso_del_bono:string = '';
 }
