@@ -56,7 +56,8 @@ export class ProductoModel extends ModelBase {
     @Inject(String) public nombreMarca?:string, 
     @Inject(String) public nombreCategoria?:string, 
     @Inject(String) public nombreCategoria2?:string, 
-    @Inject(String) public nombreCategoria3?:string 
+    @Inject(String) public nombreCategoria3?:string, 
+    @Inject(String) public cod_prd_externo?:string 
   ){
     super();
     if (this.precios?.length == 0 )

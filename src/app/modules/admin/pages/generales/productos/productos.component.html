@@ -44,6 +44,7 @@
                     <th noWrap > porcent_iva </th>
                     <th noWrap > categoria </th>
                     <th noWrap > marca </th>
+                    <th noWrap > ref. externa </th>
                     <th colspan="2">
                         opcion
                     </th>
@@ -56,6 +57,7 @@
                     <td >{{Producto.porcent_iva }} %</td>
                     <td>{{Producto.categoria?.nombre }}</td>
                     <td noWrap>{{Producto.nombreMarca }}</td>
+                    <td noWrap>{{Producto.cod_prd_externo }}</td>
                     <td title="editar producto">
                         <i class="bi bi-pencil-fill boton_activo" (click)="editarPrd(Producto)"></i>
                     </td>
@@ -83,7 +85,9 @@
             <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.nombre2" class="form-control" placeholder="nombre secundario "></div>
             <div class="col-sm-10">Nombre 3 : </div>
             <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.nombre3" class="form-control" placeholder="nombre secundario "></div>
-        </div>
+             <div class="col-sm-10">Ref. Proveedor : </div>
+            <div class="col-sm-12"> <input type="text" [(ngModel)]="newProducto.cod_prd_externo" class="form-control" placeholder="nombre secundario "></div>
+       </div>
         <div class="col-sm-3">
             <div class="col-sm-10">Categoria : </div>
             <div class="col-sm-12">

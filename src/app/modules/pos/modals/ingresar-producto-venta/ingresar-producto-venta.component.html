@@ -5,7 +5,7 @@
             <div class="card mb-3" style="max-width: 500px;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img style="max-width: 100px;" [src]="(arrayDocPrd.producto?.images?.[0]?.url ?? '')| ImgB64" alt="{{arrayDocPrd.producto?.nombre}}">
+                        <img style="max-width: 100px;" [src]="(arrayDocPrd.producto?.images?.[0]?.url || '')" alt="{{arrayDocPrd.producto?.nombre}}">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">

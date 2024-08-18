@@ -54,7 +54,7 @@ export class FndClienteComponent implements OnInit {
       } ;
      // console.log('datos de ingreso ' ,  this.dataIngreso)
       this.documentoActivo = this.dataIngreso.docActivo! ; 
-      this.NwCliente = this.dataIngreso.clienteIngreso?? new DocumentosModel() ; 
+      this.NwCliente = this.dataIngreso.clienteIngreso?? new ClientesModel() ; 
       if(this.dataIngreso.invoker == 'clienteListado'){
         this.busqueda = false;
       }
@@ -187,8 +187,7 @@ export class FndClienteComponent implements OnInit {
                    icon:'question', 
                   showCancelButton: true,
                   confirmButtonText: 'Si', 
-                  cancelButtonText:'No'}
-
+                  cancelButtonText:'No'} 
                 )
                 .then((result) => {
                   if (result.isConfirmed) {  
@@ -323,11 +322,11 @@ export class FndClienteComponent implements OnInit {
               }
           }    
      
-crearCliente(){
- 
+crearCliente(){ 
+  console.log('crearCliente' , this.NwCliente);
+ // return 
   this.loading.show() 
-  //this.documentoActivo.orden;
-this.clientesService.setClienteOdoo(this.NwCliente ).subscribe(
+this.clientesService.setClienteOdoo(this.NwCliente ).subscribe({next:
   (respuesta:any)=>{
     let cont = 0;
      console.log('setClienteOdoo',respuesta); 
@@ -350,7 +349,10 @@ this.clientesService.setClienteOdoo(this.NwCliente ).subscribe(
       
      }
      this.loading.hide();
-})
+},error:e=>{
+  this.loading.hide();
+  console.error(e.error.error);
+}})
 }
      
 crearPersonaYDevolverla(){

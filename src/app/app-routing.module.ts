@@ -40,6 +40,7 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
         { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
       ]
     },
+    { path: 'permisos', loadChildren: () => import('./modules/admin/modules/permisos/permisos.module').then(m => m.PermisosModule) },
    
      { path : '**' , pathMatch:'full' , redirectTo : 'login'},
 ] ;

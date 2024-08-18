@@ -24,7 +24,7 @@
     usuarios:"usuarios",
     perfiles:"perfiles",
     establecimiento:"establecimiento",
-    medios:"documentos_medios_de_pago",
+    medios:"establecimiento_medios_de_pago",
     documentos:"documentos",
     documentosListado:"documentos_listado_productos",
     tipoEstablecimiento:"tipo_establecimiento",

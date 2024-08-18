@@ -161,9 +161,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
   }
 
   async getAsyncDocumentos() { 
-    this.vueltas = true; 
-    await this.documentoService.getDocumentosCaja().pipe(
-      tap((datos: any) => {
+    this.loading.show();
+    await this.documentoService.getDocumentosCaja().subscribe({
+      next:(datos: any) => {
         this.documentos = [];
         let documentoSeleccionado: DocumentosModel[] ;
         console.log('getDocumentos', datos.numdata); 
@@ -187,24 +187,19 @@ export class VentasComponent implements AfterViewInit, OnInit {
         } else {
           this.crearDocumento();
         }
-        this.vueltas = false;
-      }),
-      catchError((error: any) => {
-        console.error('error', error );
-        return of(null); // Devuelve un observable vacío en caso de error
-      })
-    ).subscribe({
-      next: () => {},
-      error: (error) => console.error('Error:', error),
-      complete: () => console.log('getDocumentos completo')
+        this.loading.hide();
+      },
+      error: (error) =>{ console.error('getAsyncDocumentos - Error:', error);  this.loading.hide();},
+      complete: () =>this.loading.hide()
     });
   }
 
   
-   getDocumentos() { 
-    this.vueltas = true; 
-     this.documentoService.getDocumentosCaja().pipe(
-      tap((datos: any) => {
+   getDocumentos() {  
+    this.loading.show();
+     this.documentoService.getDocumentosCaja().subscribe({
+      next: (datos: any) => 
+        {
         this.documentos = [];
         let documentoSeleccionado: DocumentosModel[] ;
         console.log('getDocumentos', datos.numdata);
@@ -231,16 +226,12 @@ export class VentasComponent implements AfterViewInit, OnInit {
         } else {
           this.crearDocumento();
         }
-        this.vueltas = false;
-      }),
-      catchError((error: any) => {
-        console.error('error', error );
-        return of(null); // Devuelve un observable vacío en caso de error
-      })
-    ).subscribe({
-      next: () => {},
-      error: (error) => console.error('Error:', error),
-      complete: () => console.log('getDocumentos completo')
+        
+      },
+      error: (error) => {console.error('getDocumentos - Error:', error);
+        this.loading.hide();},
+      complete: () =>
+        this.loading.hide() 
     });
   }
 
