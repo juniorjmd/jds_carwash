@@ -1,4 +1,5 @@
 <div class="container" style="overflow-y:auto; min-width: 1000px !important">
+    <br>
     <div class="row">
         <div class="col-sm-12">
             <div class="row">
@@ -52,7 +53,7 @@
         </div>
     </div>
             <div class="row">
-                <div class="col-sm-12" style="overflow: auto; height:60%;min-height: 400px;max-height: 600px;">
+                <div class="col-sm-12" style="overflow: auto; height:60%;min-height: 400px;max-height: 580px;">
                          
             <table class="table">   
                 <tr>
@@ -66,8 +67,8 @@
                 <tr *ngFor="let prd of listPrdBusqueda">
                     <td>{{prd.id}}</td> 
                     <td>{{prd.nombre}}</td>
-                    <td>{{prd.categoria?.nombre}}</td>
-                    <td>{{prd.marca?.nombre}}</td>
+                    <td>{{prd.nombreCategoria}}</td>
+                    <td>{{prd.nombreMarca}}</td>
                     <td>{{prd.precioVenta}}</td>
                     <td>
                         <button (click)="enviarProducto(prd)" class="btn btn-primary btn-sm">

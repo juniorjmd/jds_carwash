@@ -74,6 +74,7 @@
             <th>Vencido</th>
             <th>Deuda Actual</th>
             <th>Total Abonos</th>
+            <th>Total devuelto</th>
             <th>Fecha Último Abono</th>
             <th>Abonar</th>
           </tr>
@@ -88,6 +89,7 @@
             <td>{{ item.suma_plazos_vencidos | currency }}</td>
             <td>{{ item.totalActual | currency }}</td>
             <td>{{ item.totalAbonos | currency }}</td>
+            <td>{{ item.totalDevolucion | currency }}</td>
             <td>{{ item.fecha_ultimo_abono | date: 'shortDate' }}</td>
             <td>
                 <div class="btn-group" role="group" aria-label="Basic example">

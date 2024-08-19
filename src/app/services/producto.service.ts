@@ -126,6 +126,28 @@ getProductosExistencia(codPrd:ProductoModel){
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
 
+get_producto_simple(){ 
+  let datos = {"action": actions.actionSelect , "_tabla" : vistas.inv_mst_producto ,  _limit: 300
+              };
+  console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
+  return this.http.post(this.baseUrl, datos, httpOptions()) ;
+}
+
+
+get_producto_simple_by_marca(marca:any){  
+  let _where =  [{"columna" : "idMarca" , "tipocomp" : '=' , "dato" : marca   } ]
+  let datos = {"action": actions.actionSelect , "_tabla" : vistas.inv_mst_producto ,  _limit: 300 , _where
+              };
+  console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
+  return this.http.post(this.baseUrl, datos, httpOptions()) ;
+} 
+get_producto_simple_by_categoria(categoria:any){ 
+  let _where =  [{"columna" : "idCategoria" , "tipocomp" : '=' , "dato" : categoria   } ]
+  let datos = {"action": actions.actionSelect , "_tabla" : vistas.inv_mst_producto ,  _limit: 300 , _where
+              };
+  console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
+  return this.http.post(this.baseUrl, datos, httpOptions()) ;
+}
 
 getTiposDeDocumentos(){
   let datos = {"action": actions.actionSelect ,
@@ -171,6 +193,17 @@ getProductosCodBarras(codPrd:any){
   console.log('servicios getProductosCodBarrasVCnt' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
+
+getProductosById(codPrd:any):Observable<ProductoRequest>{
+  let _where = [ {"columna" : "id" , "tipocomp" : '=' , "dato" : codPrd   }]
+  let datos = {"action": actions.actionSelect , "_tabla" : vistas.productos_con_existencia,  _where   , 
+    "_columnas": ['obj'],
+    "_obj": ['obj'],
+     };
+  console.log('servicios getProductosById' ,this.baseUrl, datos, httpOptions());
+  return this.http.post<ProductoRequest>(this.baseUrl, datos, httpOptions()) ;
+} 
+
 
 getPresentacioProducto():Observable<presentacionPrdRequest>{
   let datos = {"action": actions.actionSelect , "_tabla" : TABLA.presentacionProducto  }
@@ -265,13 +298,13 @@ borrarPrecarguePorBodega(bodega:number){
 
 //actionStockMoveDevolucion
 
-guardarPrdVentas(producto :ProductoModel , documentoActivo:DocumentosModel , precioVenta : PrdPreciosModule ){
+guardarPrdVentas(producto :ProductoModel , documentoActivo:DocumentosModel , precioVenta : PrdPreciosModule , _validarExistencia:boolean = true ){
 
   let datos = {"action": actions.action_insertar_producto_venta , 
   "_producto_enviado" : producto.id , 
   "_cantidadVenta" : producto.cantidadVendida ,
   '_documento' : documentoActivo.orden,
-  '_precioVenta' : precioVenta 
+  '_precioVenta' : precioVenta , _validarExistencia
 };
   console.log('servicios guardarPrdCompra' ,this.urlVentas, datos, httpOptions());
   return this.http.post(this.urlVentas, datos, httpOptions()) ;
@@ -300,6 +333,7 @@ updateDocumento(documento :DocumentosModel  ){
          "establecimiento" : documento.establecimiento,
          "id_cliente" :  documento.cliente,
          "cliente" :  documento.cliente,
+         "fecha" :  documento.fecha,
          vendedor :   documento.cod_vendedor,
          cod_vendedor :   documento.cod_vendedor,
          cod_orden_compra :   documento.cod_orden_compra,
@@ -370,7 +404,7 @@ getProductosPorMarca(codMarca : any){
   console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 } 
-getProductoByIdOrCodBarra(idprd:string):Observable<ProductoRequest|any>{ 
+getProductoByIdOrCodBarra(idprd:any):Observable<ProductoRequest|any>{ 
   
   let  datos = {"action": actions.buscarProducto ,
     "_id_producto" : idprd 

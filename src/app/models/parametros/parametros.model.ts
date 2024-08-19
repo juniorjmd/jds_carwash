@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ]
 })
-export class ParametrosModule {
+export class ParametrosModel {
   public datosTabla = [{
     "id" : 0,
     "nombre" : 'ninguno'

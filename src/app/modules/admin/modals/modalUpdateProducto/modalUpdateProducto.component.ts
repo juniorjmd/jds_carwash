@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { categoriaRequest, marcaRequest, presentacionPrdRequest } from 'src/app/interfaces/producto-request';
+import { categoriaRequest, marcaRequest, presentacionPrdRequest, ProductoRequest } from 'src/app/interfaces/producto-request';
 import { loading } from 'src/app/models/app.loading';
 import { CategoriasModel } from 'src/app/models/categorias.model';
 import { MarcasModel } from 'src/app/models/marcas/marcas.module';
@@ -31,17 +31,29 @@ private dialogo= inject(MatDialogRef<ModalUpdateProductoComponent>);
   constructor( @Inject(MAT_DIALOG_DATA) public   newProducto:ProductoModel , private loading:loading){ 
     this.getPresentacion();
     this.getCategorias_marcas()  
-    console.log('producto injectado' , this.newProducto);
-    let precio:PrdPreciosModule = new PrdPreciosModule();
-    precio.id_producto = this.newProducto.id
-    precio.precio_con_iva = 0;
-    precio.precio_antes_de_iva = 0;
-    precio.valor_iva = 0;
- 
+    this.getProducto()
+    console.log('producto injectado' , this.newProducto); 
+    
+  }
+
+  
+  getProducto(){
+    this.loading.show()
+    this.productoService.getProductoByIdOrCodBarra(this.newProducto.id!).subscribe({next:(value:ProductoRequest)=>{
+      console.log('producto completo', value); 
+      this.loading.hide()
+      this.newProducto= value.producto 
+      let precio:PrdPreciosModule = new PrdPreciosModule();
+      precio.id_producto = this.newProducto.id
+      precio.precio_con_iva = 0;
+      precio.precio_antes_de_iva = 0;
+      precio.valor_iva = 0;
     if(this.newProducto.precios[0] == undefined)this.newProducto.precios.push({...precio})  ;
     if(this.newProducto.precios[1] == undefined)this.newProducto.precios.push({...precio})  ;
     if(this.newProducto.precios[2] == undefined)this.newProducto.precios.push({...precio})  ;
-    
+     
+    }, error:e=>{console.error(e.error.error) ; this.loading.hide();  
+    }})
   }
     
   getPresentacion(){

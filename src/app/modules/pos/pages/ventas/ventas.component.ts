@@ -76,15 +76,20 @@ export class VentasComponent implements AfterViewInit, OnInit {
   ) {    
           this.getUsuarioLogueado();
           this.continuar =  true;
+
       
   }
 
   ngOnInit(): void {  
     this.getMediosP();
     this.getAsyncDocumentos();
+    this.dInicialServ.getParametroValidarExistencia().subscribe({next:value=>{
+      console.log('validar existencia en venta', value ); 
+      this.dInicialServ.setParametroExistencia(value.data[0]);
+    }});
     this.dInicialServ.currentVendedores.subscribe({next:value=>{
       this.empleados = value??[];
-    }})
+    }});
     
     this.dInicialServ.continueVenta.subscribe({next:(value)=>{
       this.continuar = value;

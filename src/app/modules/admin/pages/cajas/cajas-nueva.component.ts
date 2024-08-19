@@ -7,7 +7,7 @@ import { cajasServices } from 'src/app/services/Cajas.services';
 import { establecimientoModel } from 'src/app/models/ventas/establecimientos.model';
 import { Establecimientos } from 'src/app/interfaces/establecimientos.interface';
 import { ParametrosService } from 'src/app/services/parametros.service';
-import { ParametrosModule } from 'src/app/models/parametros/parametros.module';
+import { ParametrosModel } from 'src/app/models/parametros/parametros.model';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalCntSubCuentasComponent } from '../../modals/cuentasContables/cnt-sub-cuentas.component';
@@ -22,7 +22,7 @@ import { cajaRequest } from 'src/app/interfaces/producto-request';
 })
 export class CajasNuevaComponent implements OnInit {
   cajas :cajaModel[]  = []; 
-  parametros:ParametrosModule[] = [];
+  parametros:ParametrosModel[] = [];
   newCaja : cajaModel = new cajaModel(undefined);
   esta : establecimientoModel[] = [];
   guardarBtn = false;

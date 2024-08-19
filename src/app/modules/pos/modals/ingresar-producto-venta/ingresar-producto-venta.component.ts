@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto';
 import { ProductoService } from 'src/app/services/producto.service';
@@ -7,13 +7,15 @@ import { ProductoModel } from 'src/app/models/producto/producto.module';
 import { errorOdoo } from 'src/app/interfaces/odoo-prd';
 import { PrdExistenciasModule } from 'src/app/models/prd-existencias/prd-existencias.module';
 import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module';
+import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
+import { ProductoRequest } from 'src/app/interfaces/producto-request';
 
 @Component({
   selector: 'pos-ingresar-producto-venta',
   templateUrl: './ingresar-producto-venta.component.html',
   styleUrls: ['./ingresar-producto-venta.component.css']
 })
-export class IngresarProductoVentaComponent {
+export class IngresarProductoVentaComponent implements OnInit {
   precioVenta?:PrdPreciosModule;
   cantidadPrd = 0 ; 
   disabled = [true,true,true,true,true,true,true,true,true,true]; 
@@ -21,36 +23,52 @@ export class IngresarProductoVentaComponent {
   parceros : ProductoModel[] = []; 
   show = true ;
   show_reemplazo = false;  
+  validarExistencia?:boolean;  
   existencia?:PrdExistenciasModule;  
-  constructor(   private prdService : ProductoService,
+  constructor( 
+    private dInicialServ: DatosInicialesService ,  private prdService : ProductoService,
     
     public dialogo: MatDialogRef<IngresarProductoVentaComponent>,
     
     @Inject(MAT_DIALOG_DATA) public arrayDocPrd:DtoDocumentoProducto,
       
-    public loading : loading) { // console.clear();
+    public loading : loading) { // console.clear(); 
       console.log('arrayDocPrd' , this.arrayDocPrd); 
-     this.enabledBtnIngreso();
+      console.log('validarExistenciaProducto' , this.validarExistencia);  
     }
-
+  ngOnInit(): void { 
+    this.loading.show()
+    this.dInicialServ.parmValExistencia.subscribe({next:value=>{  
+      this.validarExistencia = value.par_boolean; 
+      this.loading.hide()
+      this.getProducto();
+    }});
+  }
+  getProducto(){
+    this.loading.show()
+    this.prdService.getProductoByIdOrCodBarra(this.arrayDocPrd.producto?.id!).subscribe({next:(value:ProductoRequest)=>{
+      console.log('producto completo', value); 
+      this.loading.hide()
+      this.arrayDocPrd.producto= value.producto  
+      this.enabledBtnIngreso();
+    }, error:e=>{console.error(e.error.error) ; this.loading.hide();  
+    }})
+  }
 
   enabledBtnIngreso()
-  { 
-   
+  {  
     this.precioVenta = this.arrayDocPrd.producto?.precios[0]! 
     let idBodegaStock =   this.arrayDocPrd.documento.idStockOdooPOS??0 
+
     try { 
       if (Array.isArray(this.arrayDocPrd.producto?.existencias)) {
-        this.existencia = 
-        this.arrayDocPrd.producto?.existencias?.
-        filter(x => x.id_bodega == idBodegaStock)[0] || this.existencia;
-      } 
-  
+        this.existencia = this.arrayDocPrd.producto?.existencias?.filter(x => x.id_bodega == idBodegaStock)[0] || this.existencia;
+      }  
     } catch (error) {
       console.error(error)
     }
-     console.log("existencia" , this.arrayDocPrd.producto?.existencias ,  this.existencia ) 
-
+     console.log("enabledBtnIngreso - existencia" , this.arrayDocPrd.producto?.existencias ,  this.existencia ) 
+    if(this.validarExistencia){
      if(this.existencia != undefined  ){
      
     console.log('menor o igual a 10' , typeof(this.existencia.cant_actual ) , this.existencia.cant_actual )
@@ -94,8 +112,9 @@ export class IngresarProductoVentaComponent {
       
       
     }
-  }
-  //this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,false];
+  }}else{
+    this.disabled = [false ,false ,false ,false ,false ,false ,false ,false ,false ,false];
+  } 
   }
     
   addCnt(cnt:number){
@@ -104,7 +123,8 @@ export class IngresarProductoVentaComponent {
     }else{
     this.cantidadPrd += cnt ;
    // console.log('existencia actual',this.existencia, (this.existencia?.cant_actual!   < this.cantidadPrd)); 
-    if (this.existencia?.cant_actual!    < this.cantidadPrd){
+    
+   if ( this.validarExistencia && (this.existencia?.cant_actual!    < this.cantidadPrd)){
        this.cantidadPrd =  this.existencia?.cant_actual ?? 0 ;
     }}
   }
@@ -116,12 +136,15 @@ export class IngresarProductoVentaComponent {
       console.log( 'enviarCnt' , this.cantidadPrd   )
         console.log( 'enviarCnt' ,      this.existencia?.cant_actual??0 )
 
-    if (this.arrayDocPrd.producto !== undefined && this.cantidadPrd > 0 &&  
-      (this.existencia?.cant_actual??0)    >= this.cantidadPrd){  
+    if (this.arrayDocPrd.producto !== undefined && this.cantidadPrd > 0 )
+    {
+        
+      if(!this.validarExistencia || ((this.existencia?.cant_actual??0)   >= this.cantidadPrd ) ) 
+      {  
             this.arrayDocPrd.producto.cantidadVendida = this.cantidadPrd;
             this.loading.show()  
 
-            this.prdService.guardarPrdVentas(this.arrayDocPrd.producto ,  this.arrayDocPrd.documento , this.precioVenta! ).subscribe(
+            this.prdService.guardarPrdVentas(this.arrayDocPrd.producto ,  this.arrayDocPrd.documento , this.precioVenta!,this.validarExistencia ).subscribe(
               (respuesta:any)=>{
                 if (respuesta.error !== 'ok'){
                     alert(respuesta.error);
@@ -138,7 +161,9 @@ export class IngresarProductoVentaComponent {
                   this.dialogo.close(false); 
                   this.loading.hide() 
                 })  
-    }
+    } 
+  }
+
   }
 
 }

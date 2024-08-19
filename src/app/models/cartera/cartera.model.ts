@@ -14,6 +14,7 @@ export class CarteraModel extends ModelBase {
   valorInicial = 0;
   totalActual = 0;
   totalAbonos = 0;
+  totalDevolucion = 0;
   abonoInicial = 0;
   idTercero = 0;
   idFacturaVenta = 0;

@@ -6,8 +6,11 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { cajaModel } from '../models/ventas/cajas.model';
 import { vistas } from '../models/app.db.view';
-import { cntGrupoRequest, empleadoRequest } from '../interfaces/producto-request';
+import { cntGrupoRequest, empleadoRequest, parametroRequest } from '../interfaces/producto-request';
 import { EmpleadoModel } from '../models/empleados/empleados.module';
+import { table } from 'ngx-bootstrap-icons';
+import { TABLA } from '../models/app.db.tables';
+import { ParametrosModel } from '../models/parametros/parametros.model';
 
 
 
@@ -21,8 +24,9 @@ export class DatosInicialesService {
     private sucursalSource = new BehaviorSubject<any>(null);
     currentSucursal = this.sucursalSource.asObservable(); 
     private continue = new BehaviorSubject<boolean>(false);
-    continueVenta = this.continue.asObservable();
-
+    continueVenta = this.continue.asObservable(); 
+    private validarExistencia = new BehaviorSubject<any>(null);
+    parmValExistencia =  this.validarExistencia.asObservable();
     
     private vendedores = new BehaviorSubject<EmpleadoModel[]|null>(null);
     currentVendedores = this.vendedores.asObservable();
@@ -32,13 +36,25 @@ export class DatosInicialesService {
     setArrayVendedores(sucursal:EmpleadoModel[]|null){ 
         this.vendedores.next(sucursal);
     }
+    setParametroExistencia(sucursal:ParametrosModel|null){ 
+        this.validarExistencia.next(sucursal);
+    }
+    chageParametroExistencia(sucursal:ParametrosModel){
+        this.sucursalSource.next(sucursal);
+    }
     chageSucursal(sucursal:vwsucursal){
         this.sucursalSource.next(sucursal);
     }
     chageContinueVenta(val:boolean){
         this.continue.next(val);
     }
-
+    getParametroValidarExistencia():Observable<parametroRequest>{
+        let datos = {"action": actions.actionSelect , 
+            "_tabla" : TABLA.PARAMETROS,
+            "_where" : [{columna : 'cod_parametro' , tipocomp : '=' , dato : 'VALIDAR_EXISTENCIA'}]     
+           }; 
+           return this.http.post<parametroRequest>(url.action , datos, httpOptions()) ;
+      }
   getVendedores():Observable<empleadoRequest>{
     let datos = {"action": actions.actionSelect , 
         "_tabla" : vistas.vendedores,

@@ -4,14 +4,14 @@ import { ParametrosService } from 'src/app/services/parametros.service';
 import { loading } from 'src/app/models/app.loading'; 
 import { select } from 'src/app/interfaces/generales.interface';
 import Swal from 'sweetalert2';
-import { ParametrosModule } from 'src/app/models/parametros/parametros.module';
+import { ParametrosModel } from 'src/app/models/parametros/parametros.model';
 @Component({
   selector: 'app-parametros',
   templateUrl: './parametros.component.html',
   styleUrls: ['./parametros.component.css']
 })
 export class ParametrosComponent implements OnInit {
-  parametros:ParametrosModule[] = [];
+  parametros:ParametrosModel[] = [];
   constructor(
     private parServices :ParametrosService ,  private loading : loading
   ) { this.getParametros();}

@@ -97,15 +97,16 @@ export class BuscarProdDirectoComponent implements OnInit  {
           },complete:()=>  this.loading.hide() }
      );
     }
-   buscarProductos(){
-    console.log('busqueda productos inicial' ); 
+   buscarProductos(){ 
      this.loading.show() 
      this.listPrdBusqueda = [];
-     this.prdService.getProductosGeneral([0,30]).subscribe({
+     this.prdService.get_producto_simple().subscribe({
       next :  (respuesta:any)=>{
+        console.log('busqueda productos inicial'  , respuesta);
+        
          if (respuesta.error === 'ok'){
             if (respuesta.numdata > 0 ){ 
-              const productos = respuesta.productos; 
+              const productos = respuesta.data; 
               console.log('producto general ===>>>' , productos)
               this.listPrdBusqueda = productos   
             }else{Swal.fire(  "error", 'la busqueda no genero ningun resultado') 
@@ -125,11 +126,11 @@ export class BuscarProdDirectoComponent implements OnInit  {
    buscarPorCategoria(categoria:dfltAnswOdoo2){
     this.listPrdBusqueda = []; 
       this.loading.show() 
-      this.prdService.getProductosPorCategoria(categoria.dato ).subscribe(
+      this.prdService.get_producto_simple_by_categoria(categoria.dato ).subscribe(
         (respuesta:any)=>{
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){ 
-               this.listPrdBusqueda = respuesta.productos?? [] ;   
+               this.listPrdBusqueda = respuesta.data?? [] ;   
              }else{Swal.fire(  "error", 'no existen productos con la categoria '+ categoria.label) 
                 } 
            }else{
@@ -155,12 +156,12 @@ export class BuscarProdDirectoComponent implements OnInit  {
     this.listPrdBusqueda = [];
     console.log('marca' , marca);
     this.loading.show() 
-      this.prdService.getProductosPorMarca(marca.dato ).subscribe( {
+      this.prdService.get_producto_simple_by_marca(marca.dato ).subscribe( {
         next:
         (respuesta:any)=>{
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){
-                this.listPrdBusqueda = respuesta.productos?? [] ;  
+                this.listPrdBusqueda = respuesta.data?? [] ;  
              }else{Swal.fire(  "error", 'no existen productos de la marca '+ marca.label) 
                 } 
            }else{

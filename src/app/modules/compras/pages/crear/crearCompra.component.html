@@ -39,7 +39,12 @@
                     <i class="bi bi-search"></i>
                 </button>
             </div></div>
-               
+           
+            <div class="col-sm-2"> 
+                <span>Fecha de Copra : </span>  
+                <div class="input-group mb-3">
+                    <input class="o_input form-control"  (change)="cambiarEstablecimientoDocumento()" type="date" [(ngModel)] = 'documentoActivo.fecha'> 
+                </div></div>
         <div class="col-sm-3"> 
             <span>Establecimiento : </span>  
             <div class="input-group mb-3">

@@ -15,7 +15,7 @@ import { EstablecerCajaComponent } from '../establecer-caja/establecer-caja.comp
 import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { caja } from 'src/app/interfaces/caja.interface';
-import { ParametrosModule } from 'src/app/models/parametros/parametros.module';
+import { ParametrosModel } from 'src/app/models/parametros/parametros.model';
 import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { tap } from 'rxjs';
@@ -89,7 +89,7 @@ export class IngresoComponent implements OnInit {
         } else if (datos[0].numdata > 0) {
           if (datos[1].numdata > 0) {
             let definir = 0;
-            datos[1].data!.forEach((dato: ParametrosModule) => {
+            datos[1].data!.forEach((dato: ParametrosModel) => {
               if (dato.cod_parametro === 'CAJA_PREDEFINIDA_PARA_INGRESO') {
                 definir = dato.par_numerico!;
               }
