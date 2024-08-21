@@ -419,6 +419,15 @@ getProductosPorMarca(codMarca : any){
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 } 
 
+getProductoById(idprd:any):Observable<ProductoRequest|any>{ 
+  
+  let  datos = {"action": actions.buscarProducto ,
+    "_id_producto" : idprd 
+   };
+
+  console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
+  return this.http.post<Observable<ProductoRequest|any>>(this.urlInventario, datos, httpOptions()) ;
+}
 getProductoByIdOrCodBarra(idprd:any):Observable<ProductoRequest|any>{ 
   
   let  datos = {"action": actions.buscarProductoCodBarras ,

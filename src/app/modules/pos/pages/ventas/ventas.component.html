@@ -61,27 +61,27 @@
         <div class="col-sm-7" style="min-height: 285px; overflow:auto;">
             <table class="table table-striped">
                 <thead class="thead-inverse">
-                    <tr>
+                    <tr  style="text-align: center;" >
                         <th>&nbsp;</th>
                         <th>Descripcion</th>
-                        <th>Cant</th>
                         <th>Precio</th>
                         <th>Descuento</th>
                         <th>IVA</th>
+                        <th>Cant</th>
                         <th>Total</th> <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of documentoActivo!.listado">
+                    <tr  *ngFor="let item of documentoActivo!.listado">
                         <td>
                             <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-x-circle" style="cursor:pointer" (click)="eliminarLinea(item)"></i>
                         </td>
                         <td>{{item.nombreProducto}}</td>
-                        <td>{{item.cantidadVendida}}</td>
-                        <td>{{item.presioSinIVa}}</td>
-                        <td>{{item.descuento}}</td>
-                        <td>{{item.IVA}}</td>
-                        <td>{{item.valorTotal}}</td>
+                        <td style="text-align: right;" >{{item.presioSinIVa|currency}}</td>
+                        <td style="text-align: right;" >{{item.descuento|currency}}</td>
+                        <td style="text-align: right;" >{{item.IVA|currency}}</td>
+                        <td style="text-align: right;" >{{item.cantidadVendida}}</td>
+                        <td style="text-align: right;" >{{item.valorTotal|currency}}</td>
                         <td>
                             <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-pencil" style="cursor:pointer" (click)="editar(item)"></i>
                         </td>
@@ -144,13 +144,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{documentoActivo!.valorParcial}}</td>
-                        <td>{{documentoActivo!.descuento}}</td>
-                        <td>{{documentoActivo!.valorIVA}}</td>
+                        <td>{{documentoActivo!.valorParcial|currency}}</td>
+                        <td>{{documentoActivo!.descuento|currency}}</td>
+                        <td>{{documentoActivo!.valorIVA|currency}}</td>
                         <td>0</td>
-                        <td>{{documentoActivo!.valorTotal}}</td>
-                        <td>{{documentoActivo!.ajusteAlpeso}}</td>
-                        <td>{{documentoActivo!.totalFactura}}</td>
+                        <td>{{documentoActivo!.valorTotal|currency}}</td>
+                        <td>{{documentoActivo!.ajusteAlpeso|currency}}</td>
+                        <td>{{documentoActivo!.totalFactura|currency}}</td>
                     </tr>
                 </tbody>
             </table>

@@ -46,7 +46,7 @@ export class IngresarProductoVentaComponent implements OnInit {
   }
   getProducto(){
     this.loading.show()
-    this.prdService.getProductoByIdOrCodBarra(this.arrayDocPrd.producto?.id!).subscribe({next:(value:ProductoRequest)=>{
+    this.prdService.getProductoById(this.arrayDocPrd.producto?.id!).subscribe({next:(value:ProductoRequest)=>{
       console.log('producto completo', value); 
       this.loading.hide()
       this.arrayDocPrd.producto= value.producto  
