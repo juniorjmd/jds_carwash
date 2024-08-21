@@ -508,8 +508,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       return;
     } 
     if (typeof(this.documentoActivo!.cliente) === 'undefined' || this.documentoActivo!.clienteNombre == "CLIENTE GENERICO") { 
-      this.buscarCliente()
-
+      this.buscarCliente();
       return;
     } 
     this.newAbrirDialog.open(GenerarCntPorPagarComponent, {   data:{ Documento:this.documentoActivo , origen:'venta'} })

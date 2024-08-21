@@ -5,7 +5,7 @@
       <div class="col-sm-12" style="color: aliceblue;">    <h4 >Nueva Compra</h4></div></div>
       <div class=" container-sub" style="width: 100% !important;margin: 0;padding: 15px;">
 <div *ngIf="establecimientos.length> 0; else ErrorEstablecimiento">
-  <div *ngIf="documentoActivo != undefined" class="container-fluid " (click)='irbuscarProducto()' (keyup)='irbuscarProducto()'>
+  <div *ngIf="documentoActivo != undefined" class="container-fluid " >
     
       <div class="row">
           <div class="col-sm-3"><span>Proveedor : </span>
@@ -17,8 +17,8 @@
                         </button>
                         <button type="button" class="btn btn-info" 
                         title="Añadir cliente al Documento" 
-                        (click)='buscarCliente()'><i class="bi bi-person"></i>&nbsp;
-                   </button>
+                        (click)='buscarCliente()'>
+                        <i class="bi bi-person"></i>&nbsp;</button>
       
             </div>   </div> </div></div> <div class="col-sm-3"><span>Usuario : </span> <div class="input-group mb-3">
                 <button type="button"class="btn btn-outline-success "> 
@@ -45,6 +45,12 @@
                 <div class="input-group mb-3">
                     <input class="o_input form-control"  (change)="cambiarEstablecimientoDocumento()" type="date" [(ngModel)] = 'documentoActivo.fecha'> 
                 </div></div>
+                <div class="col-sm-2"> 
+                    <span>Factura ext. : </span>  
+                    <div class="input-group mb-3">
+                        <input class="o_input form-control" (blur)="cambiarEstablecimientoDocumento()"
+                        (keyup.enter)="cambiarEstablecimientoDocumento()" type="text" [(ngModel)] = 'documentoActivo.campo_info_3'> 
+                    </div></div>
         <div class="col-sm-3"> 
             <span>Establecimiento : </span>  
             <div class="input-group mb-3">

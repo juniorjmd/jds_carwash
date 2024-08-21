@@ -373,7 +373,7 @@ console.log('listado',this.doc.listado);
 
     this.doc.listado?.forEach((lista) => {
       const precioSinIVA = typeof lista.presioSinIVa === 'number' ? lista.presioSinIVa : parseFloat(lista.presioSinIVa??'0');
-      const precioVenta = lista.presioSinIVa ;
+      const precioVenta = lista.presioSinIVa - lista.descuento  ;
       const cantidadVendida = typeof lista.cantidadVendida === 'number' ? lista.cantidadVendida : parseFloat(lista.cantidadVendida??'0');
       const descuento = typeof lista.descuento === 'number' ? lista.descuento : parseFloat(lista.descuento??'0');
       const iva = typeof lista.IVA === 'number' ? lista.IVA : parseFloat(lista.IVA??'0');

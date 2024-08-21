@@ -57,7 +57,7 @@ export class CrearComponent implements OnInit {
             this.newEsta.nombreCCntIngDifBonoRegalo = response.datoDevolucion.nombre_scuenta!;
             this.newEsta.idCCntIngDifBonoRegalo = response.datoDevolucion.id_scuenta!; 
             break
-            case 'compras' : 
+            case 'retefuente' : 
             this.newEsta.nombreCCntCompras = response.datoDevolucion.nombre_scuenta!;
             this.newEsta.idCCntCompras = response.datoDevolucion.id_scuenta!; 
             break

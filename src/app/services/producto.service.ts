@@ -334,6 +334,7 @@ updateDocumento(documento :DocumentosModel  ){
          "id_cliente" :  documento.cliente,
          "cliente" :  documento.cliente,
          "fecha" :  documento.fecha,
+         "campo_info_3" :  documento.campo_info_3,
          vendedor :   documento.cod_vendedor,
          cod_vendedor :   documento.cod_vendedor,
          cod_orden_compra :   documento.cod_orden_compra,

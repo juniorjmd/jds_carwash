@@ -9,12 +9,14 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>cod. Devolucion</th>
+                        <th>Compra</th>
+                        <th>Factura</th>
                         <th>Cliente</th>
                         <th>Cantidad</th>
                         <th>Valor Parcial</th>
                         <th>Descuento</th>
                         <th>IVA</th>
+                        <th>Retefuente</th>
                         <th>Total</th>
                         <th colspan="2">Opciones</th>
                     </tr>
@@ -22,11 +24,13 @@
                 <tbody>
                     <tr *ngFor="let venta of documentos">
                         <td>{{venta.idDocumentoFinal}}</td>
+                        <td>{{venta.campo_auxiliar_3}}</td>
                         <td>{{venta.clienteNombre}}</td>
                         <td>{{venta.cantidadVendida}}</td>
                         <td>{{venta.valorParcial | currency:'USD'}}</td>
                         <td>{{venta.descuento | currency:'USD'}}</td>
                         <td>{{venta.valorIVA | currency:'USD'}}</td>
+                        <td>{{venta.retefuente | currency:'USD'}}</td>
                         <td>{{venta.valorTotal | currency:'USD'}}</td>
                         <td><i class="bi bi-printer boton_activo" (click)="imprimirFactura(venta)"></i></td>
                         <td><i class="bi bi-list boton_activo" (click)="VerFactura(venta)"></i></td>
