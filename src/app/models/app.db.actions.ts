@@ -139,6 +139,7 @@
     'resultadoSimulacro' :resultadoSimulacro ,
     'cambioContrasena' :cambioContrasena     ,
     'buscarProducto' :actionBuscarProducto    ,
+    'buscarProductoCodBarras' :'BUSCAR_PRODUCTO_COD_BARRAS'    ,
     'actionChangeDocumentos' : actionChangeDocumentos , 
     'actionChangeCompraDocumentos' : actionChangeCompraDocumentos , 
     'actionStockMove' : STOCK_MOVE ,

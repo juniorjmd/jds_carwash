@@ -140,6 +140,19 @@ get_producto_simple_by_marca(marca:any){
               };
   console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
+}
+
+
+get_producto_simple_by_nombre(name:any){  
+  let _where =  [  {columna : 'nombre' , tipocomp : 'like' , dato : name , 'relacion' : 'or'},
+    {columna : 'nombre2' , tipocomp : 'like' , dato : name , 'relacion' : 'or'},
+    {columna : 'nombre3' , tipocomp : 'like' , dato : name, 'relacion' : 'or'} ,  
+    {columna : 'upper(cod_prd_externo)' , tipocomp : '=f' , dato : `upper('${name}')` } 
+     ]
+  let datos = {"action": actions.actionSelect , "_tabla" : vistas.inv_mst_producto ,  _limit: 300 , _where
+              };
+  console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
+  return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
 get_producto_simple_by_categoria(categoria:any){ 
   let _where =  [{"columna" : "idCategoria" , "tipocomp" : '=' , "dato" : categoria   } ]
@@ -405,9 +418,10 @@ getProductosPorMarca(codMarca : any){
   console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 } 
+
 getProductoByIdOrCodBarra(idprd:any):Observable<ProductoRequest|any>{ 
   
-  let  datos = {"action": actions.buscarProducto ,
+  let  datos = {"action": actions.buscarProductoCodBarras ,
     "_id_producto" : idprd 
    };
 

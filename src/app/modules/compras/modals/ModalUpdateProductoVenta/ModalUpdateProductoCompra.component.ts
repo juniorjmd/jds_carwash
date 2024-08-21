@@ -5,6 +5,7 @@ import { error } from 'jquery';
 import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { loading } from 'src/app/models/app.loading';
 import { DocumentoService } from 'src/app/services/documento.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modal-update-producto-venta', 
@@ -27,6 +28,10 @@ export class ModalUpdateProductoCompraComponent {
   editar(){
     this.disable = true
     console.log('ModalUpdateProductoVentaComponent' ,this.item );
+    if(this.item.cant_real_descontada <= 0 ){
+      Swal.fire('Debe ingresar la cantidad a comprar');
+      return;
+    }
     this.service.editarLineaDocumento(this.item).subscribe({next:value=>{
       if (value.error == 'ok'){
         this.dialogo.close(true)   
@@ -55,7 +60,9 @@ export class ModalUpdateProductoCompraComponent {
         des =   this.descuento  ;
       }
       if(origen!='precioCompra' ){
-      this.item.presioVenta  = this.item.val_aux_2! - des ; }else{
+      this.item.presioVenta  = this.item.val_aux_2! - des ;
+      this.item.presioVenta = parseFloat(this.item.presioVenta.toFixed(2));
+     }else{
         this.item.val_aux_1! += des ;
       }
 

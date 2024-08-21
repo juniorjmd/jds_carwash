@@ -327,8 +327,49 @@ export class VentasComponent implements AfterViewInit, OnInit {
       this.loading.show();
       this.productoService.getProductoByIdOrCodBarra(this.codigoProducto).subscribe({
         next:(value)=>{console.log(value)
+          if(value.numdata > 0 ){
+          if(value.numdata > 1 ){
+            this.buscarClose = false;
+            this.newAbrirDialog.open(BuscarProdDirectoComponent, { data: value.data })
+            .afterClosed()
+                  .pipe(
+                    tap((response: responsePrd) => {
+                      if ((response.confirmado||false) && response.datoDevolucion !== undefined ) {  
+
+                        let datoAsignacion:DtoDocumentoProducto = {
+                          'producto': response.datoDevolucion   ,
+                           'documento':this.documentoActivo!
+                         } 
+
+                         this.newAbrirDialog.open(IngresarProductoVentaComponent, { data:  datoAsignacion })
+                         .afterClosed()
+                         .pipe(
+                           tap((confirmado: Boolean) => {
+                             if (confirmado) { 
+                               this.getDocumentos();
+                             }
+                           })
+                         ).subscribe({
+                           next: () => {},
+                           error: (error) => console.error('Error:', error),
+                           complete: () => console.log('moverDocumentoCaja completo')
+                         }); 
+
+            
+                      } else { 
+                        this.codigoProducto = '';
+                        
+                      }
+                    })
+                  ).subscribe({
+                    next: () => {},
+                    error: (error) => console.error('Error:', error),
+                    complete: () => console.log('busquedaAuxiliarProducto completo')
+                  });
+     
+            }else{
           let datoAsignacion:DtoDocumentoProducto = {
-            'producto': value?.productos    ,
+            'producto': value.data[0]    ,
              'documento':this.documentoActivo!
            }
            this.newAbrirDialog.open(IngresarProductoVentaComponent, { data:  datoAsignacion })
@@ -343,8 +384,12 @@ export class VentasComponent implements AfterViewInit, OnInit {
              next: () => {},
              error: (error) => console.error('Error:', error),
              complete: () => console.log('moverDocumentoCaja completo')
-           });  
-        },
+           }); 
+          } 
+        }else{
+          Swal.fire('No existen datos con el codigo ' + this.codigoProducto )
+        }
+      },
       error:error=>console.error(error),complete:()=>
         this.loading.hide() 
       })
@@ -983,7 +1028,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       return;
     }
     this.buscarClose = false;
-    this.newAbrirDialog.open(BuscarProdDirectoComponent, { data: this.codigoProducto })
+    this.newAbrirDialog.open(BuscarProdDirectoComponent, { data: undefined })
       .afterClosed()
       .pipe(
         tap((response: responsePrd) => {

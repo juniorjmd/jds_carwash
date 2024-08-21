@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MaestroClienteServices } from '../../../../services/MaestroCliente.services';
 import { loading } from 'src/app/models/app.loading';
 import { dfltAnswOdoo2 } from 'src/app/interfaces/clientes-odoo'; 
 import { ProductoService } from 'src/app/services/producto.service';
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductoModel } from 'src/app/models/producto/producto.module'; 
 import Swal from 'sweetalert2';
 import { CategoriasModel } from 'src/app/models/categorias.model';
@@ -32,9 +32,14 @@ export class BuscarProdDirectoComponent implements OnInit  {
   categorias:dfltAnswOdoo2[] = [];
   categoriasAux:dfltAnswOdoo2[] = [];
   constructor(public loading : loading ,public dialogo: MatDialogRef<BuscarProdDirectoComponent>
-    , private prdService : ProductoService,
-    private MaestroClienteServices :MaestroClienteServices) {
-    this.buscarProductos(); 
+    , private prdService : ProductoService,@Inject(MAT_DIALOG_DATA) public producto:ProductoModel[] ,
+    private MaestroClienteServices :MaestroClienteServices ,
+  ) { 
+    console.log('productos ingresados en el llamados',this.producto);
+    if (this.producto != undefined){
+      this.listPrdBusqueda =  this.producto;
+    }else{
+    this.buscarProductos(); }
    }
   ngOnInit(): void { 
 
@@ -74,28 +79,25 @@ export class BuscarProdDirectoComponent implements OnInit  {
     console.log('busqueda productos inicial' ); 
      this.loading.show() 
      this.listPrdBusqueda = [];
-     this.prdService.getProductosPorNombre( this.textFindProductos ,[0,30] ).subscribe(
-
-      {next :
-       (respuesta:any)=>{
-         if (respuesta.error === 'ok'){
-            if (respuesta.numdata > 0 ){
-              const productos = respuesta.productos; 
-              console.log('producto general' , productos)
-              this.listPrdBusqueda = productos   
-            }else{ 
-              Swal.fire(  "error",  'la busqueda no genero ningun resultado', "error" );
-               } 
-          }else{ 
-            Swal.fire(  "error", respuesta.error , "error"); 
-          } 
-          console.log('getProductosPorFiltro',JSON.stringify(respuesta));
-         
-         
-          } , error:    error => { this.loading.hide();  
-                    Swal.fire(  "error", error , "error"); 
-          },complete:()=>  this.loading.hide() }
-     );
+     this.prdService.get_producto_simple_by_nombre( this.textFindProductos  )
+     .subscribe({next:
+      (respuesta:any)=>{
+        if (respuesta.error === 'ok'){
+           if (respuesta.numdata > 0 ){ 
+             this.listPrdBusqueda = respuesta.data?? [] ;   
+           }else{Swal.fire(  "error", 'no existen productos con la referencia o nombre '+ this.textFindProductos  ) 
+              } 
+         }else{
+           Swal.fire(  "error", respuesta.error);
+         } 
+         console.log('buscarPorCategoria',JSON.stringify(respuesta));
+         this.loading.hide();
+        
+         }, error:
+         error => {this.loading.hide();
+           Swal.fire(  "error",  error.error.error);
+         } }
+    );
     }
    buscarProductos(){ 
      this.loading.show() 
@@ -126,7 +128,9 @@ export class BuscarProdDirectoComponent implements OnInit  {
    buscarPorCategoria(categoria:dfltAnswOdoo2){
     this.listPrdBusqueda = []; 
       this.loading.show() 
-      this.prdService.get_producto_simple_by_categoria(categoria.dato ).subscribe(
+      this.prdService.get_producto_simple_by_categoria(categoria.dato )
+      
+      .subscribe({next:
         (respuesta:any)=>{
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){ 
@@ -139,10 +143,10 @@ export class BuscarProdDirectoComponent implements OnInit  {
            console.log('buscarPorCategoria',JSON.stringify(respuesta));
            this.loading.hide();
           
-           },
+           }, error:
            error => {this.loading.hide();
              Swal.fire(  "error",  error.error.error);
-           } 
+           } }
       );
      }
      enviarProducto(prd:ProductoModel){

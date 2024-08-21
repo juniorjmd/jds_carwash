@@ -8,7 +8,7 @@ import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { DtoDocumentoProducto } from 'src/app/interfaces/dto-documento-producto';
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
 import { errorOdoo, responsePrd } from 'src/app/interfaces/odoo-prd';
-import { cajaRequest,  DocumentoCierreRequest, DocumentoRequest } from 'src/app/interfaces/producto-request';
+import { cajaRequest,  DocumentoCierreRequest, DocumentoRequest, ProductoRequest } from 'src/app/interfaces/producto-request';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { vwsucursal } from 'src/app/models/app.db.interfaces'; 
 import { loading } from 'src/app/models/app.loading';
@@ -286,33 +286,69 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
     })
   }
   buscarProducto() { 
-    console.log('buscarProducto', this.codigoProducto);
-    let dataAuxEnvio: productoDocumento = {
-      'idproducto': this.codigoProducto,
-      'documento': this.documentoActivo!
-    }; 
+    console.log('buscarProducto', this.codigoProducto); 
     if (this.codigoProducto.trim() !== '' ) {
       
       this.loading.show();
       this.productoService.getProductoByIdOrCodBarra(this.codigoProducto).subscribe({
-        next:(value)=>{console.log(value)
-          let datoAsignacion:DtoDocumentoProducto = {
-            'producto': value?.productos    ,
-             'documento':this.documentoActivo!
-           }
-           this.newAbrirDialog.open(IngresarProductoVentaComponent, { data:  datoAsignacion })
-           .afterClosed()
-           .pipe(
-             tap((confirmado: Boolean) => {
-               if ((confirmado||false)) { 
-                 this.getDocumentos();
-               }
-             })
-           ).subscribe({
-             next: () => {},
-             error: (error) => console.error('Error:', error),
-             complete: () => console.log('moverDocumentoCaja completo')
-           });  
+        next:(value:ProductoRequest)=>{console.log(value)
+        if(value.numdata > 1 ){
+          this.buscarClose = false;
+          this.newAbrirDialog.open(BuscarProdDirectoComponent, { data: value.data })
+          .afterClosed()
+                .pipe(
+                  tap((response: responsePrd) => {
+                    if ((response.confirmado||false) && response.datoDevolucion !== undefined ) {  
+                      let precioSinIva =parseFloat( (response.datoDevolucion.precioCompra! / (1+(response.datoDevolucion.porcent_iva! / 100))).toFixed(2))
+                      let linea:DocumentoListado = {
+                        orden: this.documentoActivo.orden,
+                        idProducto:  ( typeof(response.datoDevolucion.id) == 'string')? response.datoDevolucion.id : response.datoDevolucion.id!.toString() ,
+                        nombreProducto: `${response.datoDevolucion.nombre} | ${response.datoDevolucion.nombre2} | ${response.datoDevolucion.nombre3} ` ,
+                        presioVenta: response.datoDevolucion.precioCompra!,
+                        porcent_iva:  response.datoDevolucion.porcent_iva!,
+                        presioSinIVa: precioSinIva,
+                        IVA:  parseFloat( (response.datoDevolucion.precioCompra! - precioSinIva ).toFixed(2)),
+                        cantidadVendida: 0,
+                        descuento: 0,
+                        tipoDescuento: 'porcentaje',
+                        valorTotal: 0,
+                        cant_real_descontada: 0,
+                        cant_devuelta: 0,
+                        estado_linea_venta: 'A'
+                      }; 
+                      this.editar(linea);
+          
+                    } else { 
+                      this.codigoProducto = '';
+                      
+                    }
+                  })
+                ).subscribe({
+                  next: () => {},
+                  error: (error) => console.error('Error:', error),
+                  complete: () => console.log('busquedaAuxiliarProducto completo')
+                });
+   
+          }else{
+            let precioSinIva =parseFloat( (value.data[0].precioCompra! / (1+(value.data[0].porcent_iva! / 100))).toFixed(2))
+            let linea:DocumentoListado = {
+              orden: this.documentoActivo.orden,
+              idProducto:  ( typeof(value.data[0].id) == 'string')? value.data[0].id : value.data[0].id!.toString() ,
+              nombreProducto: `${value.data[0].nombre} | ${value.data[0].nombre2} | ${value.data[0].nombre3} ` ,
+              presioVenta: value.data[0].precioCompra!,
+              porcent_iva:  value.data[0].porcent_iva!,
+              presioSinIVa: precioSinIva,
+              IVA:  parseFloat( (value.data[0].precioCompra! - precioSinIva ).toFixed(2)),
+              cantidadVendida: 0,
+              descuento: 0,
+              tipoDescuento: 'porcentaje',
+              valorTotal: 0,
+              cant_real_descontada: 0,
+              cant_devuelta: 0,
+              estado_linea_venta: 'A'
+            }; 
+            this.editar(linea); 
+          }
         },
       error:error=>console.error(error),complete:()=>
         this.loading.hide() 
