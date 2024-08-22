@@ -46,7 +46,23 @@
                     <label class="form-check-label" for="flexSwitchCheckDefault">Empresa</label>
                 </div>
             </div>
-            <div class="col-sm-7"></div>
+            <div class="col-sm-2" *ngIf="empresaShwich"> 
+                <div class="form-check form-switch">
+                <input class="form-check-input" 
+                type="checkbox" id="flexSwitchCheckDefault" [(ngModel)]="NwCliente.retefuenteCompras">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Retef. Compras</label>
+            </div>
+        </div>
+        <div class="col-sm-2" *ngIf="empresaShwich"> 
+            <div class="form-check form-switch">
+            <input  class="form-check-input" 
+            type="checkbox" id="flexSwitchCheckDefault" [(ngModel)]="NwCliente.retefuentesVentas">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Retef. ventas</label>
+        </div>
+    </div>
+
+
+
             <div class="col-sm-3">
                 
                 <div *ngIf="asignarADoc " class="btn-group" role="group" aria-label="Basic example">

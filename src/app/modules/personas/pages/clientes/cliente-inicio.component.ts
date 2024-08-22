@@ -22,6 +22,8 @@ export class ClienteInicioComponent implements OnInit {
 
   }
   mostrarCliente(cliente:ClientesModel){
+    console.log('cliente enviado a editar' , cliente);
+    
     this.newAbrirDialog.open(FndClienteComponent,{data: { clienteIngreso : cliente , invoker:'clienteListado' } })
     .afterClosed()
     .pipe(

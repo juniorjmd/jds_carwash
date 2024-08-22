@@ -20,10 +20,10 @@ idBodegaVitual?:number ;
     NameBodegaExistencia?:string ;
     bodegaInventarioPgm?:number;
      
-    nombreCCntCompras?:string  ; 
+    nombreRetefuenteCompra?:string  ; 
     nombreCCntCCobrar?:string  ;  
     nombreCCntCPagar?:string  ;
-    idCCntCompras?:number  ;
+    idRetefuenteCompra?:number  ;
     idCCntCCobrar?:number  ;
     idCCntCPagar?:number  ;
  

@@ -62,8 +62,8 @@
         <label for="establecimientoCaja">Cuenta para retefuente</label> 
         <div class="input-group mb-3">
            
-            <input type="text" class="form-control" readonly placeholder="cuenta retefuente" [(ngModel)]="newEsta.nombreCCntCompras" name="nombreCCntCompras"  aria-label="Username"  aria-describedby="basic-addon1">  
-            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("retefuente")'>
+            <input type="text" class="form-control" readonly placeholder="cuenta retefuente" [(ngModel)]="newEsta.nombreRetefuenteCompra" name="nombreRetefuenteCompra"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("retefuenteCompra")'>
                 <i class="bi bi-search"></i>  
             </button>
         </div>
@@ -78,34 +78,6 @@
             </button>
         </div>
     </div>
-    <div class="col-sm-3" >
-        <label for="establecimientoCaja">Cuenta Para cartera</label> 
-        <div class="input-group mb-3">
-           
-            <input type="text" class="form-control" readonly placeholder="cuenta cartera" [(ngModel)]="newEsta.nombreCCntCCobrar" name="nombreCCntCCobrar"  aria-label="Username"  aria-describedby="basic-addon1">  
-            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("cuentasPorCobrar")'>
-                <i class="bi bi-search"></i>  
-            </button>
-        </div>
-    </div>
-   
-    
-    <div class="col-sm-3" >
-        <label for="establecimientoCaja">Cuenta Para Ingresos Diferidos por Bonos de Regalo</label> 
-        <div class="input-group mb-3">
-           
-            <input type="text" class="form-control" readonly placeholder="cuenta cartera" [(ngModel)]="newEsta.nombreCCntIngDifBonoRegalo" name="nombreCCntCCobrar"  aria-label="Username"  aria-describedby="basic-addon1">  
-            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("IDifBonoRegalo")'>
-                <i class="bi bi-search"></i>  
-            </button>
-        </div>
-    </div>
-
- </div>
-
-
- <div class="row"> 
-
     <div class="col-sm-3"  >
         <label for="establecimientoCaja">Cuenta para iva en compra</label> 
         <div class="input-group mb-3">
@@ -116,6 +88,55 @@
             </button>
         </div>
     </div>
+    
+    <div class="col-sm-3" >
+        <label for="establecimientoCaja">Cuenta para descuento</label> 
+        <div class="input-group mb-3"> 
+            <input type="text" class="form-control" readonly placeholder="cuenta retefuente" [(ngModel)]="newEsta.nombreDescuentoCompra" name="nombreRetefuenteCompra"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("descuentoCompra")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div>
+
+ </div>
+
+
+ <div class="row"> 
+    <h4>Ventas</h4>
+    
+    <div class="col-sm-3" >
+        <label for="establecimientoCaja">Cuenta para retefuente</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta retefuente" [(ngModel)]="newEsta.nombreRetefuenteVenta" name="nombreRetefuenteCompra"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("retefuenteVenta")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div>
+    
+    <div class="col-sm-3" >
+        <label for="establecimientoCaja">Cuenta para descuento</label> 
+        <div class="input-group mb-3"> 
+            <input type="text" class="form-control" readonly placeholder="cuenta retefuente" [(ngModel)]="newEsta.nombreDescuentoVenta" name="nombreRetefuenteCompra"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("descuentoVenta")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div>
+    <div class="col-sm-3" >
+        <label for="establecimientoCaja">Cuenta Para cartera</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta cartera" [(ngModel)]="newEsta.nombreCCntCCobrar" name="nombreCCntCCobrar"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("cuentasPorCobrar")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div>
+
+   
     <div class="col-sm-3"  >
         <label for="establecimientoCaja">Cuenta Para iva en ventas</label> 
         <div class="input-group mb-3">
@@ -159,6 +180,18 @@
             </button>
         </div>
     </div> 
+    
+    
+    <div class="col-sm-3" >
+        <label for="establecimientoCaja">Cuenta Para Ingresos Diferidos por Bonos de Regalo</label> 
+        <div class="input-group mb-3">
+           
+            <input type="text" class="form-control" readonly placeholder="cuenta cartera" [(ngModel)]="newEsta.nombreCCntIngDifBonoRegalo" name="nombreCCntCCobrar"  aria-label="Username"  aria-describedby="basic-addon1">  
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentasContables("IDifBonoRegalo")'>
+                <i class="bi bi-search"></i>  
+            </button>
+        </div>
+    </div>
  </div>
     
   

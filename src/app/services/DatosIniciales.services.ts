@@ -66,7 +66,7 @@ export class DatosInicialesService {
         if (caja == undefined
             || caja!.idCCntCCobrar == 0
             || caja!.idCCntCPagar == 0
-            || caja!.idCCntCompras == 0   
+            || caja!.idRetefuenteCompra == 0   
             || caja!.idCCntIvaCompra == 0 
             || caja!.idCCnttIvaVenta == 0  
             || caja!.idCCntCostoVenta == 0 

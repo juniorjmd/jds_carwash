@@ -5,7 +5,7 @@
     <div class="form-group">
     <label for="codCuenta">Clase</label>
     <select id="codCuenta" (change)="filtrarSubCuentasPorClase()" class="form-control"   name="cod_cuenta"  [(ngModel)]="codClase"    >
-      <option *ngFor="let cuenta of clases" [value]="cuenta.cod_clase">{{ cuenta.nombre_clase }}</option>
+      <option *ngFor="let cuenta of clases" [value]="cuenta.cod_clase">{{ cuenta.cod_clase }} - {{ cuenta.nombre_clase }}</option>
     </select>
   </div>
 </div>
@@ -13,7 +13,7 @@
   <div class="form-group">
   <label for="codCuenta">Grupo</label>
   <select id="codCuenta" (change)="filtrarSubCuentasPorGrupo()" class="form-control" [(ngModel)]="codGrupo" name="cod_cuenta"     >
-    <option *ngFor="let cuenta of grupos" [value]="cuenta.cod_grupo">{{ cuenta.nombre_grupo }}</option>
+    <option *ngFor="let cuenta of grupos" [value]="cuenta.cod_grupo">{{ cuenta.cod_grupo }} - {{ cuenta.nombre_grupo }}</option>
   </select>
 </div>
 </div>
@@ -24,7 +24,7 @@
         <div class="form-group">
         <label for="codCuenta">Cuenta</label>
         <select id="codCuenta" (change)="filtrarSubCuentas()" class="form-control" [(ngModel)]="newSubcuenta.cod_cuenta" name="cod_cuenta" required   >
-          <option *ngFor="let cuenta of cuentas" [value]="cuenta.cod_cuenta">{{ cuenta.nombre_cuenta }}</option>
+          <option *ngFor="let cuenta of cuentas" [value]="cuenta.cod_cuenta">{{ cuenta.cod_cuenta }} - {{ cuenta.nombre_cuenta }}</option>
         </select>
       </div>
     </div>

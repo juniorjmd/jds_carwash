@@ -39,6 +39,8 @@ export class ClientesModel extends ModelBase {
     @Inject(String) public titulo?: string | null,
     @Inject(String) public categoria?: string | null, 
     @Inject(Boolean) public is_empresa?: boolean | null,
+    @Inject(Boolean) public retefuenteCompras?: boolean | null,
+    @Inject(Boolean) public retefuentesVentas?: boolean | null,
     @Inject(Number) public padre_id?: number | null  
   ) { super() 
    }

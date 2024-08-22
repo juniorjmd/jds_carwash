@@ -23,10 +23,10 @@ export class establecimientoModel{
     NameBodegaExistencia?:string ; 
     
     
-    nombreCCntCompras:string = ''; 
+    nombreRetefuenteCompra:string = ''; 
     nombreCCntCCobrar:string  = '';  
     nombreCCntCPagar:string  = '';
-    idCCntCompras:number = 0;
+    idRetefuenteCompra:number = 0;
     idCCntCCobrar:number = 0;
     idCCntCPagar:number = 0; 
     
@@ -43,6 +43,16 @@ export class establecimientoModel{
     nombreCCntVentas:string  = ''; 
     nombreCCntCajaGeneral : string  = ''; 
     idCCntCajaGeneral:number = 0 ;
+
+
+    idRetefuenteVenta:number = 0 ;
+    idDescuentoCompra:number = 0 ;
+    idDescuentoVenta:number = 0 ;
+    
+
+    nombreRetefuenteVenta:string  = '';  
+    nombreDescuentoCompra:string  = '';  
+    nombreDescuentoVenta:string  = '';  
     constructor(cargaEsta : Establecimientos|undefined){
         this.estado = 0;
         this.tipo = 0;

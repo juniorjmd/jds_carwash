@@ -287,6 +287,8 @@ export class DocumentoService {
       "presioVenta"  :item.presioVenta , 
       "presioSinIVa"  :item.presioSinIVa , 
       "nombreProducto"  :item.nombreProducto , 
+      "cant_real_descontada"  :item.cant_real_descontada , 
+      "cantidadVendida"  :item.cant_real_descontada , 
       val_aux_1 : item.val_aux_1,
       val_aux_2 : item.val_aux_2 
     }

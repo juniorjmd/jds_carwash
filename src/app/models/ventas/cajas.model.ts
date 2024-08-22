@@ -38,7 +38,7 @@ export class cajaModel {
   NameBodegaStock?: string;
   NameBodegaVirtual?: string;
   idCCntCCobrar: number = 0;
-  idCCntCompras: number = 0;
+  idRetefuenteCompra: number = 0;
   idCCntCPagar: number = 0; 
   idCCntIvaCompra: number = 0;
   idCCnttIvaVenta: number = 0;

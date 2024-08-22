@@ -393,8 +393,10 @@ asignarDefaultTipoId(){
 }
 
 asignarDefaults(){ 
-  this.NwCliente.is_empresa = false; 
-
+  
+  if (this.NwCliente.is_empresa == undefined)  this.NwCliente.is_empresa = false; 
+  if (this.NwCliente.retefuenteCompras == undefined)  this.NwCliente.retefuenteCompras = false; 
+  if (this.NwCliente.retefuentesVentas == undefined)  this.NwCliente.retefuentesVentas = false; 
   this.NwCliente.pais = this.maestro?.parametros.ID_PAIS_DEFAULT; 
   this.paises = (this.maestro?.paises)?[...this.maestro?.paises]:[];
   this.getDepartamento()

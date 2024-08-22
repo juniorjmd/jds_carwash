@@ -57,10 +57,6 @@ export class CrearComponent implements OnInit {
             this.newEsta.nombreCCntIngDifBonoRegalo = response.datoDevolucion.nombre_scuenta!;
             this.newEsta.idCCntIngDifBonoRegalo = response.datoDevolucion.id_scuenta!; 
             break
-            case 'retefuente' : 
-            this.newEsta.nombreCCntCompras = response.datoDevolucion.nombre_scuenta!;
-            this.newEsta.idCCntCompras = response.datoDevolucion.id_scuenta!; 
-            break
             case 'cuentasPorPagar' :  
             this.newEsta.nombreCCntCPagar = response.datoDevolucion.nombre_scuenta!;
             this.newEsta.idCCntCPagar = response.datoDevolucion.id_scuenta!; 
@@ -85,6 +81,26 @@ export class CrearComponent implements OnInit {
             case 'venta' : 
             this.newEsta.nombreCCntVentas = response.datoDevolucion.nombre_scuenta!;
             this.newEsta.idCCntVenta = response.datoDevolucion.id_scuenta!; 
+            break
+            
+            case 'retefuenteCompra' : 
+            this.newEsta.nombreRetefuenteCompra = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idRetefuenteCompra = response.datoDevolucion.id_scuenta!; 
+            break
+            
+            case 'retefuenteVenta' : 
+            this.newEsta.nombreRetefuenteVenta = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idRetefuenteVenta = response.datoDevolucion.id_scuenta!; 
+            break
+            
+            case 'descuentoVenta' : 
+            this.newEsta.nombreDescuentoVenta = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idDescuentoVenta = response.datoDevolucion.id_scuenta!; 
+            break
+            
+            case 'descuentoCompra' : 
+            this.newEsta.nombreDescuentoCompra = response.datoDevolucion.nombre_scuenta!;
+            this.newEsta.idDescuentoCompra = response.datoDevolucion.id_scuenta!; 
             break
 
           }
