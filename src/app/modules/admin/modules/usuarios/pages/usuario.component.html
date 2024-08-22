@@ -16,8 +16,7 @@
             <table class="table" *ngIf="usuarios.length > 0">
                 <tr>
                     <th>Nombre Completo</th>
-                    <th>Usuario</th>
-                    <th>Correo Electronico</th>
+                    <th>Usuario</th> 
                     <th>Activo Libranza</th>
                     <th>Ultimo ingreso</th>
                     <th>Fecha modificación</th>
@@ -25,8 +24,7 @@
                 </tr>
                 <tr *ngFor="let usuario of usuarios">
                     <td>{{usuario.nombreCompleto}}</td>
-                    <td>{{usuario.Login}}</td>
-                    <td>{{usuario.mail}}</td>
+                    <td>{{usuario.Login}}</td> 
                     <td>{{usuario.libranza! | booleanP}}</td>
                     <td>{{usuario.ultimo_ingreso}}</td>
                     <td>{{usuario.Fecha_Modif}}</td>

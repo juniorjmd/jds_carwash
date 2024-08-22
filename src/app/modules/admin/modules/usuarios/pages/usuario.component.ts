@@ -8,6 +8,9 @@ import { UsuarioDetalleComponent } from './usuario-detalle.component';
 import { UsuarioEditarComponent } from './usuario-editar.component';
 import { UsuarioNuevoComponent} from './usuario-nuevo.component';
 import { UsuarioPerfilComponent} from './usuario-perfil.component';
+import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
+import { tap } from 'rxjs';
+import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 
 @Component({
   selector: 'app-usuario',
@@ -27,15 +30,38 @@ export class UsuarioComponent implements OnInit {
   ngOnInit(): void {
   }
   crearUsuario(){
-    
-      this.newUsuarioDialog.open(UsuarioNuevoComponent,{data:null})
-      .afterClosed()
-      .subscribe((confirmado: Boolean)=>{
-        if (confirmado){
-        this.getUsuarios()  
-      }
+    this.newUsuarioDialog.open(FndClienteComponent,{ data: { invoker:'gasto' } })
+    .afterClosed()
+    .pipe(
+      tap((resp:{response: Boolean , persona:ClientesModel})=>{
+        this.loading.hide();
+        if (resp.response) { 
+          this.newUsuarioDialog.open(UsuarioNuevoComponent,{data:resp.persona})
+          .afterClosed()
+          .subscribe((confirmado: Boolean)=>{
+            if (confirmado){
+            this.getUsuarios()  
+          }
+          })
+        }
       })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCliente completo')
+    });  
+
+
+    
+    
   }
+
+
+
+
+
+
+
   setAgregarPerfil(usuario : UsuarioModel){
     this.newUsuarioDialog.open(UsuarioPerfilComponent,{data:usuario})
     .afterClosed()

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';  
 import { HomeComponent } from './components/home/home.component'; 
 import { InicioComponent } from './components/inicio/inicio.component';
-import { UsuarioComponent } from './components/usuario/usuario.component'; 
+import { UsuarioComponent } from './modules/admin/modules/usuarios/pages/usuario.component'; 
 import { CierresComponent } from './components/cierres/cierres.component';
 import { ReportesComponent } from './components/reportes/reportes.component'; 
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component';  
@@ -34,8 +34,9 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
           {path : 'reimprimirFacturas' , component:ReimpimirFacturasComponent},
           {path : 'VerFacturas' , component: VerFacturasComponent},
           { path : '**' , pathMatch:'full' , redirectTo : 'reportesMenu'}, ]
-        },
-        { path : 'usuarios' ,  component: UsuarioComponent },
+        }, 
+        
+    { path: 'usuarios', loadChildren: () => import('./modules/admin/modules/usuarios/usuarios.module').then(m => m.UsuariosModule) },
                   
         { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
       ]

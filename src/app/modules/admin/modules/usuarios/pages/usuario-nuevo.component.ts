@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UsuarioModel } from 'src/app/models/usuario.model'; 
 import { loading } from 'src/app/models/app.loading';
 import { usuarioService } from 'src/app/services/usuario.services'; 
+import { fndCliente } from 'src/app/interfaces/maestro-cliente';
+import { ClientesModel } from 'src/app/models/clientes/clientes.module';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-usuario-nuevo',
-  template: ` <div class="container-fluid" >
+  template: ` <div class="container-fluid modal_container" >
   <div class="row">
       <div class="col-sm-12  ">
 
@@ -50,13 +53,7 @@ import { usuarioService } from 'src/app/services/usuario.services';
               <option value=1>Activo</option>
               <option value=2>Inactivo</option>
           </select>
-          </div>  </div>  
-      <div class="col-sm-4">
-      <div class="form-group">
-                          <label for="email">Mail: </label>
-      <input type="text" class="o_input" [(ngModel)]="newUsuario.mail" placeholder="correo Electronico...">
-    
-      </div></div>
+          </div>  </div>   
       <div class="col-sm-2">
       <div class="form-group">
                           <label for="email">Libranza: </label>
@@ -87,9 +84,18 @@ export class UsuarioNuevoComponent implements OnInit {
   newUsuario:UsuarioModel =  new UsuarioModel(undefined);
     
   constructor( public dialogo: MatDialogRef<UsuarioNuevoComponent>,
-     public loading : loading,
+     public loading : loading, 
+    @Inject(MAT_DIALOG_DATA) public dataIngreso:ClientesModel ,
      private userService : usuarioService) { 
       this.newUsuario.estado = 0
+      this.newUsuario.idPersona = (typeof(this.dataIngreso.id) == 'string') ? parseInt(this.dataIngreso.id) : this.dataIngreso.id ; 
+      this.newUsuario.Nombre1 = this.dataIngreso.nombre||'' ;
+      this.newUsuario.Nombre2 = this.dataIngreso.sec_nombre||'' ;
+      this.newUsuario.Apellido1 = this.dataIngreso.apellido||'' ;
+      this.newUsuario.Apellido2 = this.dataIngreso.sec_apellido||'' ;
+      this.newUsuario.nombreCompleto = this.dataIngreso.nombreCompleto||'' ;
+
+
   }
 
   ngOnInit(): void {
@@ -100,6 +106,11 @@ export class UsuarioNuevoComponent implements OnInit {
     if (typeof(this.newUsuario.Nombre1) === 'undefined'){
      this.loading.hide();
      alert('Debe ingresar el Nombre de la caja');
+     return;
+    } 
+    if (typeof(this.newUsuario.idPersona) === 'undefined'){
+     this.loading.hide();
+     alert('Debe escoger un tercero');
      return;
     }
     if (typeof(this.newUsuario.Login) === 'undefined'){
@@ -117,7 +128,7 @@ export class UsuarioNuevoComponent implements OnInit {
   
     
     this.loading.show(); 
-    this.userService.guardarUsuarios(this.newUsuario).subscribe(
+    this.userService.guardarUsuarios(this.newUsuario).subscribe({next : 
      (respuesta:any)=>{console.log(respuesta)
       
      if (respuesta.error === 'ok'){
@@ -128,7 +139,11 @@ export class UsuarioNuevoComponent implements OnInit {
      }
      this.loading.hide();
      this.cerrarFormularioTrue()
-     })
+     },
+    error: e=>{
+      Swal.fire('error' , e.error.error,'error'); this.loading.hide();
+    } }
+    )
   }
   cerrarFormulario(){
     this.dialogo.close(false);

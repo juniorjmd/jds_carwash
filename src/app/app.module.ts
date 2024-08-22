@@ -7,10 +7,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { AdminLayoutComponent } from './components/layouts/admin-layout/admin-layout.component';
-import { UsuarioComponent } from './components/usuario/usuario.component';
-import { UsuarioNuevoComponent } from './components/usuario/usuario-nuevo.component';
-import { UsuarioEditarComponent } from './components/usuario/usuario-editar.component';
-import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle.component';
+import { UsuarioComponent } from './modules/admin/modules/usuarios/pages/usuario.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { ReporteDiarioComponent } from './components/reportes/reporte-diario.component'; 
 import { ReporteVentasPcajaComponent } from './components/reportes/reporte-ventas-pcaja.component';
@@ -19,7 +16,7 @@ import { ReporteVentasPcajaComponent } from './components/reportes/reporte-venta
 import { CierresComponent } from './components/cierres/cierres.component';
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component'; 
 import { loading } from './models/app.loading';
-import { UsuarioPerfilComponent } from './components/usuario/usuario-perfil.component';  
+
 import { EnviosComponent } from './components/envios/envios.component'; 
 
 import { ParametrosComponent } from './components/parametros/parametros.component';
@@ -27,9 +24,6 @@ import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-fact
 import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
 import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-facturas.component'; 
 import { HttpClientModule } from '@angular/common/http';
-import { MatDialogModule } from '@angular/material/dialog'; 
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';   
 import { AppRoutingModule } from './app-routing.module';    
 import { CommonModule } from '@angular/common'; 
 import { ModalModule } from 'ngx-bootstrap/modal'; 
@@ -47,16 +41,12 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     HomeComponent,
     InicioComponent,
     AdminLayoutComponent,
-    UsuarioComponent,
-    UsuarioNuevoComponent,
-    UsuarioEditarComponent,
-    UsuarioDetalleComponent,
+    UsuarioComponent, 
     ReportesComponent,
     ReporteDiarioComponent, 
     ReporteVentasPcajaComponent, 
     CierresComponent,
-    MiUsuarioComponent,   
-    UsuarioPerfilComponent, 
+    MiUsuarioComponent,    
     EnviosComponent, 
        ParametrosComponent,
         ReimpimirFacturasComponent,
@@ -67,13 +57,10 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
    imports: [
     NgbModule , 
     FormsModule, 
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatCheckboxModule, 
+    ReactiveFormsModule, 
     MatRadioModule,
     BrowserModule,
-    HttpClientModule, 
-    MatDialogModule, 
+    HttpClientModule,  
     AppRoutingModule ,  
     SharedModule, 
     CommonModule, 

@@ -26,6 +26,9 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { DocumentosDropdownComponent } from './components/documentos-dropdown/documentos-dropdown.component'; 
 import { FndClienteComponent } from './modals/fnd-cliente/fnd-cliente.component';
 import { EmpleadosDropdownComponent } from './components/empleados-dropdown/empleados-dropdown.component';
+import { MatDialogModule } from '@angular/material/dialog'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';   
  
 @NgModule({
   declarations: [
@@ -56,6 +59,9 @@ import { EmpleadosDropdownComponent } from './components/empleados-dropdown/empl
     FormsModule,
     ReactiveFormsModule,
     CommonModule, 
+    MatDialogModule ,
+    MatButtonModule ,
+    MatCheckboxModule  
   ],
   exports:[FndClienteComponent,
     LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,
@@ -75,6 +81,9 @@ import { EmpleadosDropdownComponent } from './components/empleados-dropdown/empl
     RouterModule,
     FormsModule,
     CommonModule,
+    MatDialogModule ,
+    MatButtonModule ,
+    MatCheckboxModule  
   ]
 })
 export class SharedModule { }

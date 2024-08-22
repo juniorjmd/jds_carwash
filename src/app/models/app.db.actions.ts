@@ -112,6 +112,7 @@
     'actionDelete' :actionDelete ,
     'actionUpdate' :actionUpdate ,
     'actionInsert' :actionInsert ,
+    'actionInsertUsuario' :'CREAR_USUARIO',
     'actionInsertSelect' :actionInsertSelect,
     'actionProcedure' :actionProcedure,
     'actionSelect' :actionSelect ,

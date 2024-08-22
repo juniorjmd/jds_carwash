@@ -18,7 +18,7 @@ import { BusquedaPersona } from 'src/app/interfaces/busqueda-persona';
 })
 export class FndClienteComponent implements OnInit {
  
-  
+  cli= new ClientesModel();
   Ciudad?:CiudadModel ;
   paises?:PaisModel[] = [];
   tipo_direccion:any[] = [] ; 

@@ -1,7 +1,6 @@
 import { Component, OnInit,Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { caja } from 'src/app/interfaces/caja.interface';
-import { select } from 'src/app/interfaces/generales.interface';
+import { caja } from 'src/app/interfaces/caja.interface'; 
 import { loading } from 'src/app/models/app.loading';
 import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { UsuarioModel } from 'src/app/models/usuario.model';
@@ -10,7 +9,7 @@ import { cajasServices } from 'src/app/services/Cajas.services';
 @Component({
   selector: 'app-usuario-detalle',
   template: `
-     <div class="container-fluid">
+     <div class="container-fluid modal_container">
      <div class="row">
         <div class="col-sm-12  ">
             <h2 class='centrado'>Asignar Cajas a Usuario</h2>
@@ -25,7 +24,7 @@ import { cajasServices } from 'src/app/services/Cajas.services';
           usuario : <b> {{usuarioActual.Login}}</b>
         </div></div><hr>
     <div class="row" *ngIf="cajas.length > 0">
-        <div class="col-sm-12  ">
+        <div class="col-sm-12  " style="color: blue;">
           <ul *ngIf="cajas.length > 0">
             <li *ngFor="let caja of cajas; let i = index">
             <mat-checkbox [(ngModel)]="opciones[i]">

@@ -6,7 +6,7 @@ import { loading } from 'src/app/models/app.loading';
 
 @Component({
   selector: 'app-usuario-editar',
-  template: `<div class="container-fluid" >
+  template: `<div class="container-fluid modal_container" >
     <div class="row">
         <div class="col-sm-12  ">
 
@@ -50,13 +50,7 @@ import { loading } from 'src/app/models/app.loading';
                 <option value=1>Activo</option>
                 <option value=2>Inactivo</option>
             </select>
-            </div>  </div>  
-        <div class="col-sm-4">
-        <div class="form-group">
-                            <label for="email">Mail: </label>
-        <input type="email" [email]="true" class="o_input" [(ngModel)]="newUsuario.mail" placeholder="correo Electronico...">
-      
-        </div></div>
+            </div>  </div>   
       
         <div class="col-sm-2">
       <div class="form-group">

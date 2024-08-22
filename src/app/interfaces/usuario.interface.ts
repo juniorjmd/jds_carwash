@@ -11,7 +11,8 @@ export interface Usuario{
 
 export interface Perfil{
     id:number,
-    Perf_Nombre:string
+    Perf_Nombre:string,
+    select:boolean
 }
 
 export interface Usuarios{
@@ -21,16 +22,15 @@ export interface Usuarios{
     Nombre2:string;
     Apellido1:string;
     Apellido2:string;
-    nombreCompleto:string;
+    nombreCompleto?:string;
     estado:number;
-    usr_registro:number;
+    usr_registro?:number;
     Fecha_Registro:string;
     Usr_Modif:number;
     Fecha_Modif:string;
     pass:string;
     change_pass:number;
-    ultimo_ingreso:string;
-    mail:string;
+    ultimo_ingreso:string; 
     descripcion?:string;
     perfil?:number;
     libranza?:boolean;

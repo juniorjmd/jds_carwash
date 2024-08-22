@@ -43,16 +43,19 @@ export class usuarioService {
 
     guardarUsuarios(usuario : Usuarios|UsuarioModel){ 
         const { ID, ...datosRestantes } = usuario; 
+         datosRestantes.nombreCompleto = undefined;
+        datosRestantes.usr_registro = undefined;
         const arrayDatos = datosRestantes; 
+        
         console.log(arrayDatos);
         
-        let datos = {"action": actions.actionInsert ,
+        let datos = {"action": actions.actionInsertUsuario ,
                      "_tabla" : TABLA.usuarios,
                      "_arraydatos" : arrayDatos
                     };
 
         console.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(url.actionAdmin , datos, httpOptions()) ;
     }
     guardarUsuarioPerfil(usuario : UsuarioModel ,  perfil:number){
       
@@ -69,8 +72,9 @@ export class usuarioService {
     updateUsuarios(usuario : Usuarios){ 
         let where:any[] = []  
         const { ID, perfil, ...datosRestantes } = usuario; 
+        datosRestantes.nombreCompleto = undefined ;
         const arrayDatos = datosRestantes;   
-        where = [{"columna": 'ID', "tipocomp": '=', "dato":ID }];
+        where = [{"columna": 'ID', "tipocomp": '=', "dato":ID }]; 
         console.log(arrayDatos);
         
         let datos = {"action": actions.actionUpdate ,
