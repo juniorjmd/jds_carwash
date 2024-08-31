@@ -13,7 +13,7 @@ import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModel } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { categoriaRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, marcaRequest, presentacionPrdRequest, ProductoRequest } from '../interfaces/producto-request';
+import { categoriaRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciaRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
@@ -427,6 +427,18 @@ getProductoById(idprd:any):Observable<ProductoRequest|any>{
 
   console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
   return this.http.post<Observable<ProductoRequest|any>>(this.urlInventario, datos, httpOptions()) ;
+}
+
+
+getProductoExtistenciaDocById(idprd:any , orden:number):Observable<ProductoExitenciaRequest|any>{ 
+  
+  let  datos = {"action": actions.buscarExistenciaProducto ,
+    "_id_producto" : idprd ,
+    "_orden_documento" : orden 
+   };
+
+  console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
+  return this.http.post<Observable<ProductoExitenciaRequest|any>>(this.urlInventario, datos, httpOptions()) ;
 }
 getProductoByIdOrCodBarra(idprd:any):Observable<ProductoRequest|any>{ 
   

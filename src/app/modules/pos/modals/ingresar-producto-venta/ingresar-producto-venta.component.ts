@@ -17,7 +17,7 @@ import { ProductoRequest } from 'src/app/interfaces/producto-request';
 })
 export class IngresarProductoVentaComponent implements OnInit {
   precioVenta?:PrdPreciosModule;
-  cantidadPrd = 0 ; 
+  cantidadPrd:number = 0 ; 
   disabled = [true,true,true,true,true,true,true,true,true,true]; 
   codPrd:string = '';  
   parceros : ProductoModel[] = []; 
@@ -129,6 +129,9 @@ export class IngresarProductoVentaComponent implements OnInit {
     }}
   }
 
+  enviarCntDirecto(){    
+    this.enviarCnt(0)
+  }
   enviarCnt( cnt:number ){
     this.disabled = [true, true, true, true, true, true, true, true, true, true];
     this.cantidadPrd  += cnt ;

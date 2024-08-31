@@ -1,25 +1,39 @@
 
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { error } from 'jquery';
 import { DocumentoListado } from 'src/app/interfaces/documento.interface';
+import { ProductoExitenciaRequest, ProductoRequest } from 'src/app/interfaces/producto-request';
 import { loading } from 'src/app/models/app.loading';
+import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { DocumentoService } from 'src/app/services/documento.service';
+import { ProductoService } from 'src/app/services/producto.service';
 
 @Component({
   selector: 'app-modal-update-producto-venta', 
   templateUrl: './ModalUpdateProductoVenta.component.html',
   styleUrls: ['./ModalUpdateProductoVenta.component.css'], 
 })
-export class ModalUpdateProductoVentaComponent { 
-
+export class ModalUpdateProductoVentaComponent implements OnInit { 
+  
+  validarExistencia?:boolean;  
   descuento:number = 0 ;  
-  constructor(public loading : loading, private service:DocumentoService , 
+  constructor(public loading : loading, private service:DocumentoService ,  private prdService : ProductoService,
      public dialogo: MatDialogRef<ModalUpdateProductoVentaComponent>,
-    @Inject(MAT_DIALOG_DATA) public item:DocumentoListado ){  
+    @Inject(MAT_DIALOG_DATA) public item:DocumentoListado,
+    private dInicialServ: DatosInicialesService  ){  
       this.item.val_aux_1 =   this.item.val_aux_1||this.item.presioSinIVa ; 
       this.item.val_aux_2 =  this.item.val_aux_2||this.item.presioVenta ; 
     }
+
+    
+  ngOnInit(): void { 
+    this.loading.show()
+    this.dInicialServ.parmValExistencia.subscribe({next:value=>{  
+      this.validarExistencia = value.par_boolean; 
+      this.loading.hide() 
+    }});
+  }
 
   editar(){
     console.log('ModalUpdateProductoVentaComponent' ,this.item );
@@ -30,7 +44,29 @@ export class ModalUpdateProductoVentaComponent {
     }, error:e=>console.error(e.error.error)})
 
     
-  }  
+  } 
+  enviarCntDirecto(){
+    if (this.validarExistencia){ 
+        this.loading.show()
+        this.prdService.getProductoExtistenciaDocById(this.item.idProducto,this.item.idDocumento!).subscribe({next:(value:ProductoExitenciaRequest)=>{
+          console.log('producto completo', value); 
+          this.loading.hide()    
+
+          if(value.data.existencia  <    this.item.cantidadVendida) 
+            {this.item.cantidadVendida = this.item.cant_real_descontada }
+          else{
+            this.item.cant_real_descontada = this.item.cantidadVendida;
+            this.cambioValor();
+          }
+
+        }, error:e=>{console.error(e.error.error) ; this.loading.hide();  
+        }})
+      
+    }else{
+    this.item.cant_real_descontada = this.item.cantidadVendida;
+    this.cambioValor();
+   }
+  } 
 
   cambioValor(){
     this.item.descuento = 0;

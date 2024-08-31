@@ -140,6 +140,7 @@
     'resultadoSimulacro' :resultadoSimulacro ,
     'cambioContrasena' :cambioContrasena     ,
     'buscarProducto' :actionBuscarProducto    ,
+    'buscarExistenciaProducto' :'BUSCAR_EXISTENCIA_PRODUCTO'    ,
     'buscarProductoCodBarras' :'BUSCAR_PRODUCTO_COD_BARRAS'    ,
     'actionChangeDocumentos' : actionChangeDocumentos , 
     'actionChangeCompraDocumentos' : actionChangeCompraDocumentos , 

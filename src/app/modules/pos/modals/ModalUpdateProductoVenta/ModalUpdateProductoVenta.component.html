@@ -7,7 +7,8 @@
                     <tr><td>Nombre</td><td>Cantidad</td><td>Precio sin iva</td><td>Descuento</td><td>IVA</td><td>Total</td><td></td></tr>
                     <tr>
                         <td><input type="text" [(ngModel)] = 'item.nombreProducto' class="form-control" > </td>
-                        <td> <input readonly type="text" [(ngModel)] = 'item.cantidadVendida' class="form-control" ></td>
+                        <td> <input type="number" step="0.001" [(ngModel)] = 'item.cantidadVendida' class="form-control" (keyup.enter)="enviarCntDirecto()"></td> 
+                     <!--  <input type="number" step="0.001"  [(ngModel)]="cantidadPrd" class="o_input form-control " (keyup.enter)="enviarCntDirecto()">--> 
                         <td> <input readonly type="number" [(ngModel)] = 'item.presioSinIVa' class="form-control" > </td>
                         <td> 
                            

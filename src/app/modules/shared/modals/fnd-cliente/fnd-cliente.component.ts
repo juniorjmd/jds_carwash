@@ -273,7 +273,7 @@ export class FndClienteComponent implements OnInit {
           }    
   
 
-  buscarClienteFinal(){
+  buscarClienteFinal(){ 
         if (this.NwCliente.numIdentificacion !== undefined && this.NwCliente.tipoIdentificacion!== undefined ){
           this.loading.show();
                 this.clientesService.getClientesByNumAndTipId(
@@ -387,7 +387,9 @@ this.clientesService.setClienteOdoo(this.NwCliente ).subscribe(
 asignarDefaultTipoId(){
   if(!this.NwCliente.is_empresa){
     this.NwCliente.tipoIdentificacion = this.maestro?.parametros.ID_TIPO_ID_CEDULA; 
+    this.cli.tipoIdentificacion = this.maestro?.parametros.ID_TIPO_ID_CEDULA; 
   }else{
+    
     this.NwCliente.tipoIdentificacion = this.maestro?.parametros.ID_TIPO_ID_NIT;  
   } 
 }

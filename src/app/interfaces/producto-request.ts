@@ -26,6 +26,14 @@ export interface ProductoRequest {
   error: string;
 }
 
+export interface ProductoExitenciaRequest { 
+  data: {idProducto:any , existencia:number , idBodega:number};  
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+
 export interface DocumentoCompraRequest { 
   data: {objeto: DocumentosComprasModel}[];
   query: string;
