@@ -27,7 +27,7 @@ export interface ProductoRequest {
 }
 
 export interface ProductoExitenciaRequest { 
-  data: {idProducto:any , existencia:number , idBodega:number};  
+  data: {nombreBodega:string, idProducto:any , existencia:number , idBodega:number};  
   query: string;
   numdata: number;
   error: string;

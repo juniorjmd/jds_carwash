@@ -8,6 +8,7 @@ import { loading } from 'src/app/models/app.loading';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { ProductoService } from 'src/app/services/producto.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modal-update-producto-venta', 
@@ -53,10 +54,13 @@ export class ModalUpdateProductoVentaComponent implements OnInit {
           this.loading.hide()    
 
           if(value.data.existencia  <    this.item.cantidadVendida) 
-            {this.item.cantidadVendida = this.item.cant_real_descontada }
+            {this.item.cantidadVendida = this.item.cant_real_descontada 
+              Swal.fire('El producto no posee la existencia requerida en la bodega ' + value.data.nombreBodega )
+            }
           else{
             this.item.cant_real_descontada = this.item.cantidadVendida;
             this.cambioValor();
+            this.editar();
           }
 
         }, error:e=>{console.error(e.error.error) ; this.loading.hide();  
@@ -65,6 +69,7 @@ export class ModalUpdateProductoVentaComponent implements OnInit {
     }else{
     this.item.cant_real_descontada = this.item.cantidadVendida;
     this.cambioValor();
+    this.editar();
    }
   } 
 
