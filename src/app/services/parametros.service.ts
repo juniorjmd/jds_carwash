@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core'; 
+import { inject, Injectable } from '@angular/core'; 
 import { ciudad, datosMaestros, departamento, maestros, maestroSelect, pais } from '../interfaces/maestros.interface';
 import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { HttpClient } from '@angular/common/http';
 import { TABLA } from '../models/app.db.tables';
+import { configService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ import { TABLA } from '../models/app.db.tables';
 export class ParametrosService {
 
 
-  constructor(private http: HttpClient){ 
+  // private _configService = inject(configService); 
+constructor(private http: HttpClient){ 
     console.log('servicios parametros inicializado');        
 }
 
@@ -23,8 +25,8 @@ getParametros(){
 }
 
 
-getDatosParametrosTabla(tabla:any){
-  let datos = {"action": actions.actionSelect , "_tabla" : tabla,  }
+getDatosParametrosTabla(tabla:any , col1:string, col2:string){
+  let datos = {"action": actions.actionSelect , "_tabla" : tabla, "_columnas": [col1 , col2] }
   console.log('getParametros  ' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
 }

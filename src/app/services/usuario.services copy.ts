@@ -13,7 +13,8 @@ import { UsuarioModel } from '../models/usuario.model';
 })
 export class usuarioService {
 
-    constructor(private http: HttpClient ,
+    // private _configService = inject(configService); 
+constructor(private http: HttpClient ,
         private loading : loading ){ 
         console.log('servicios usuarios inicializado');  
     }

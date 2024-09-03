@@ -12,7 +12,8 @@ import { EmpleadoModel } from '../models/empleados/empleados.module';
 })
 export class EmpleadosService {
 
-  constructor(private http: HttpClient ) { }
+  // private _configService = inject(configService); 
+constructor(private http: HttpClient ) { }
   
   getTiposEmpleados(){
     let datos = {"action": actions.actionSelect ,

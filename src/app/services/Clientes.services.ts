@@ -17,7 +17,8 @@ export class ClientesService {
     private urlpersona = url.action+'personas/';
     private clienteSource = new BehaviorSubject<any>(null);
     currentUsuario = this.clienteSource.asObservable();
-    constructor(private http: HttpClient ,
+    // private _configService = inject(configService); 
+constructor(private http: HttpClient ,
           ){  
         console.log('servicios datos iniciales inicializado'); 
     }

@@ -15,19 +15,17 @@
                     <div class="row">
                         <div class="col-sm-6">
 
-                            {{item.cod_parametro}} - tipo : {{item.tip_parametro}}
+                            {{item.cod_parametro}} -<br> tipo : {{item.tip_parametro}}
                         </div>
-                        <div class="col-sm-6">
-                            <select class="form-control" [(ngModel)]="item.par_boolean" *ngIf="item.tip_parametro === 'boolean' "> 
-                                <option value= 1>Si</option>
-                                <option  value=0>No</option></select>
-
+                        <div class="col-sm-6">  
                             <input *ngIf="item.tip_parametro === 'string' " [(ngModel)]="item.par_string" type="text" class="form-control">
                             <input *ngIf="item.tip_parametro === 'numerico' " [(ngModel)]="item.par_numerico" type="number" class="form-control">
-                            <select class="form-control" [(ngModel)]="item.par_numerico" *ngIf="item.tip_parametro === 'tabla' "> 
+                            <select class="form-control" [(ngModel)]="item.par_id" *ngIf="item.tip_parametro === 'identificacion' "> 
                                 <option *ngFor="let item2 of item.datosTabla" value="item2.id">{{item2.nombre}}</option> 
                             </select>
-
+                            <select class="form-control" [(ngModel)]="item.par_boolean" *ngIf="item.tip_parametro === 'booleano' "> 
+                                <option *ngFor="let item2 of item.datosTabla" [value]="item2.id">{{item2.nombre}}</option> 
+                            </select>
                         </div>
                     </div>
                 </div>

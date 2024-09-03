@@ -1,4 +1,5 @@
-import { HttpHeaders } from '@angular/common/http'; 
+import { HttpClient, HttpHeaders } from '@angular/common/http'; 
+import { firstValueFrom } from 'rxjs';
 
 const action = 'https://services.carwash.sofdla.com.co/services/view/action/';
 const inventario = 'https://services.carwash.sofdla.com.co/services/view/action/inventario/';
@@ -23,20 +24,31 @@ export let httpOptions = ()=>{
   }) 
   }
 }
-export const url = { 
-    'httpOptionsSinAutorizacion':httpOptionsSinAutorizacion,
-    'action': action,
-    'actionDocumentos': actionDoc,
-    'actionAdmin':admin,
-    'actionVentas':  actionVentas ,
-    'brand': brand,
-    'datosIniciales':datosIniciales,
-    'login': login,
-    'inventario': inventario
-    
+export let url:any = { }
+
+export let printer :any= {  
 }
 
-export const printer = { 
-  'namePrinterGenerico': 'impresora_punto_de_venta' 
+
+
+export async function loadConfig(http: HttpClient) {
+  const config = await firstValueFrom(http.get<any>('assets/config.json'));
+  
+  const baseURL = config.baseURL;
+  const endpoints = config.endpoints;
+
+  // Reemplazar las constantes con los valores del JSON 
+    url = { 
+        'httpOptionsSinAutorizacion':httpOptionsSinAutorizacion,
+        'action':  baseURL + endpoints.action,
+        'actionDocumentos': baseURL + endpoints.actionDocumentos,
+        'actionAdmin':baseURL + endpoints.admin,
+        'actionVentas':  baseURL + endpoints.actionVentas ,
+        'brand': baseURL + endpoints.brand,
+        'datosIniciales':baseURL + endpoints.datosIniciales,
+        'login': baseURL + endpoints.login,
+        'inventario': baseURL + endpoints.inventario
+      };
+      printer = config.printer ;
 }
 

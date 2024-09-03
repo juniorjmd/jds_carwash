@@ -17,7 +17,8 @@ export class usuarioService {
 
   private usuarioSource = new BehaviorSubject<any>(null);
   currentUsuario = this.usuarioSource.asObservable();
-    constructor(private http: HttpClient ,
+    // private _configService = inject(configService); 
+constructor(private http: HttpClient ,
         private loading : loading ){ 
         console.log('servicios usuarios inicializado');  
     }

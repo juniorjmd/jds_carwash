@@ -30,8 +30,8 @@ export class DatosInicialesService {
     
     private vendedores = new BehaviorSubject<EmpleadoModel[]|null>(null);
     currentVendedores = this.vendedores.asObservable();
-
-    constructor(private http: HttpClient){}
+ 
+constructor(private http: HttpClient){}
 
     setArrayVendedores(sucursal:EmpleadoModel[]|null){ 
         this.vendedores.next(sucursal);

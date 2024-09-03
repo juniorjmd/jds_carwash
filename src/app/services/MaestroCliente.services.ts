@@ -28,7 +28,8 @@ export class MaestroClienteServices {
     
     private cateSource = new BehaviorSubject<CategoriasModel[]|[]>([]);
     currentCategorias = this.cateSource.asObservable(); 
-  constructor(private http: HttpClient ,
+  // private _configService = inject(configService); 
+constructor(private http: HttpClient ,
         private loading : loading ){ 
         console.log('servicios datos iniciales inicializado');  
     }

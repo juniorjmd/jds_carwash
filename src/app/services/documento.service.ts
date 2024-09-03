@@ -17,8 +17,8 @@ import { DocumentoListado } from '../interfaces/documento.interface';
   providedIn: 'root'
 })
 export class DocumentoService {
-
-  constructor(private http: HttpClient, private loading: loading) {
+ 
+constructor(private http: HttpClient, private loading: loading) {
     console.log('servicio documentos');
   }
 
@@ -207,6 +207,23 @@ export class DocumentoService {
       "_columnas": ['objeto'],
       "_obj": ['objeto'],
       "_tabla": vistas.documentos_por_tip_documento , _where
+    };
+    console.log('servicios de documentos - getCajasActivas', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
+  getDocumentosCompra( idCliente?:any):Observable<any>{
+    let _tabla = vistas.documentos_por_tip_documento;
+    let _where = [{"columna": 'tipoDocumentoFinal', "tipocomp": '=f', "dato": "getIdTipoDocumentoPorNombre('comprobante_compras') " }];
+    if(idCliente !=undefined){
+      _where.push({"columna": 'cliente', "tipocomp": '=', "dato": idCliente})
+      _tabla = vistas.vw_obj_documentos_por_cliente
+    }
+    //vw_obj_documentos_por_usuario
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],_tabla ,  _where
     };
     console.log('servicios de documentos - getCajasActivas', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());

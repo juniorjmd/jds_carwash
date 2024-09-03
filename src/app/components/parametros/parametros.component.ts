@@ -26,32 +26,23 @@ export class ParametrosComponent implements OnInit {
           console.log(datos);
           
      if (datos.numdata > 0 ){ 
-      this.parametros = datos.data 
-       console.log('parametros',this.parametros);
+      this.parametros = datos.data  
        this.parametros!.forEach((parametro,index)=>
-       {if(parametro.tip_parametro.trim() === 'tabla' && parametro.par_tabla!.trim() !== ''){
+       {
+        if(parametro.tip_parametro.trim() === 'identificacion' && parametro.nombreTabla!.trim() !== ''){
         this.loading.show()
-        this.parServices.getDatosParametrosTabla(parametro.par_tabla).subscribe(
-          (datos2:any )=>{
-             console.log(datos2);
-             
-        if (datos2.numdata > 0 ){ 
-          let contadorInterno = 0;
-          this.parametros[index].datosTabla= [{
-            "id" : 0,
-            "nombre" : 'ninguno'
-          }]
-          datos2.data!.forEach((value:any)=>{
-            this.parametros[index].datosTabla[contadorInterno].id = value['id'];
-            this.parametros[index].datosTabla[contadorInterno].nombre = value[parametro.par_string!];
-            contadorInterno++;
-          })
+        this.parServices.getDatosParametrosTabla(parametro.nombreTabla , `${parametro.columnaId!}|id` , `${parametro.columnaDescripcion!}|nombre`).subscribe(
+        (datos2:any )=>{ 
+          if (datos2.numdata > 0 ){  
+            this.parametros[index].datosTabla=  datos2.data
+          this.loading.hide();} 
         }
-        this.loading.hide();}
-        
-        )
-
-
+    )
+  }else if(parametro.tip_parametro.trim() === 'booleano' ){
+    console.log('parametro booleano' ,    parametro.par_boolean , this.parametros[index].par_boolean); 
+            this.parametros[index].datosTabla=  [
+              { id:1 , nombre : 'Verdadero' }, 
+              { id:0 , nombre : 'Falso' }]
           }
        })
      }else{

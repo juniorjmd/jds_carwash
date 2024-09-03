@@ -36,7 +36,8 @@ currentCategorias = this.categoriasSource.asObservable();
 private marcasSource = new BehaviorSubject<MarcasModel[]|null>(null);
 currentMarcas = this.marcasSource.asObservable();
 
-  constructor(  ){ 
+  // private _configService = inject(configService); 
+constructor(  ){ 
     console.log('servicios productos inicializado');  
 }
 

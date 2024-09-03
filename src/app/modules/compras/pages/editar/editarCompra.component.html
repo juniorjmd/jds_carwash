@@ -1,0 +1,152 @@
+
+<div class="container-fluid  " >
+    <!-- Título principal -->
+    <div class="row" >
+      <div class="col-sm-12" style="color: aliceblue;">    <h4 >Nueva Compra</h4></div></div>
+      <div class=" container-sub" style="width: 100% !important;margin: 0;padding: 15px;">
+<div *ngIf="establecimientos.length> 0; else ErrorEstablecimiento">
+  <div *ngIf="documentoActivo != undefined" class="container-fluid " >
+    
+      <div class="row">
+          <div class="col-sm-3"><span>Proveedor : </span>
+            <div class="input-group mb-3">
+                <div class="d-flex input-group">  
+                    <div class="btn-group dropend">
+                        <button type="button"class="btn btn-outline-success "> 
+                                <span>{{documentoActivo!.clienteNombre!}}</span>
+                        </button>
+                        <button type="button" class="btn btn-info" 
+                        title="Añadir cliente al Documento" 
+                        (click)='buscarCliente()'>
+                        <i class="bi bi-person"></i>&nbsp;</button>
+      
+            </div>   </div> </div></div> <div class="col-sm-3"><span>Usuario : </span> <div class="input-group mb-3">
+                <button type="button"class="btn btn-outline-success "> 
+                    <span>{{documentoActivo!.vendedorNombre}}</span>
+            </button>  </div></div>
+            <div class="col-sm-3"><span>Compras Activas : </span>  <div class="input-group mb-3">  
+                <elemt-docDropdown [options] ="documentos" (clickBtnRefress)="getDocumentos()" (selectionChange)="cambiarDocumentoActivo($event);"
+                [selectedValue]="documentoActivo" ></elemt-docDropdown> 
+             </div></div>
+              
+          
+        <div class="col-sm-3"> 
+            <span>Buscar Productos : </span>  
+            <div class="input-group mb-3">
+                <input class="o_input form-control" (keyup.enter)='buscarProducto()' #codProd type="text" [(ngModel)]="codigoProducto"  placeholder="Buscar" aria-label="Buscar"/>
+           
+                <button (click)='buscarProducto()' class="btn btn-outline-secondary" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div></div>
+           
+            <div class="col-sm-2"> 
+                <span>Fecha de Copra : </span>  
+                <div class="input-group mb-3">
+                    <input class="o_input form-control"  (change)="cambiarEstablecimientoDocumento()" type="date" [(ngModel)] = 'documentoActivo.fecha'> 
+                </div></div>
+                <div class="col-sm-2"> 
+                    <span>Factura ext. : </span>  
+                    <div class="input-group mb-3">
+                        <input class="o_input form-control" (blur)="cambiarEstablecimientoDocumento()"
+                        (keyup.enter)="cambiarEstablecimientoDocumento()" type="text" [(ngModel)] = 'documentoActivo.campo_info_3'> 
+                    </div></div>
+        <div class="col-sm-3"> 
+            <span>Establecimiento : </span>  
+            <div class="input-group mb-3">
+                <select class="o_input form-control" (change)="cambiarEstablecimientoDocumento()" [(ngModel)] = 'documentoActivo.establecimiento'>
+                    <option *ngFor="let item of establecimientos" [value]="item.id"  >{{item.nombre}}</option>
+                </select>
+            </div></div>
+            <div class="col-sm-5"> 
+             
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-success" title="Facturar" (click)='asignarPagosACuentaPorCobrar()'><i class="bi bi-check2-all"></i></button>
+                    <button type="button" class="btn btn-primary" title="Crear Documento" (click)='crearDocumento()'><i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
+                    <button type="button" class="btn btn-danger" title="Eliminar Documento" (click)='cancelarDocumento()'><i class="bi bi-trash"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
+                    <button type="button" class="btn btn-warning" title="Busqueda Producto" (click)='busquedaAuxiliarProducto()'><i class="bi bi-search"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
+                   </div>
+      </div>
+        <div class="row">
+          <div class="col-sm-12" style="min-height: 400px; overflow:auto;">
+              <table class="table table-striped">
+                  <thead class="thead-inverse">
+                      <tr  style="text-align: center;" >
+                          <th>&nbsp;</th>
+                          <th>Descripcion</th>
+                          <th>Precio</th>
+                          <th>Descuento</th>
+                          <th>IVA</th>
+                          <th>Cant</th>
+                          <th>Total</th> <th>&nbsp;</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let item of documentoActivo!.listado">
+                          <td>
+                              <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-x-circle" style="cursor:pointer" (click)="eliminarLinea(item)"></i>
+                          </td>
+                          <td>{{item.nombreProducto}}</td>
+                          <td style="text-align: right;" >{{item.presioSinIVa|currency}}</td>
+                          <td style="text-align: right;" >{{item.descuento|currency}}</td>
+                          <td style="text-align: right;" >{{item.IVA|currency}}</td>
+                          <td style="text-align: right;" >{{item.cantidadVendida}}</td>
+                          <td style="text-align: right;" >{{item.valorTotal|currency}}</td>
+                          <td>
+                              <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-pencil" style="cursor:pointer" (click)="editar(item)"></i>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+
+       
+              
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-sm-12">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th>subTotal</th>
+                          <th>Descuento</th>
+                          <th>Iva</th>
+                          <th>Otros impuestos</th>
+                          <th>Total</th>
+                          <th>Ajuste</th>
+                          <th>TotalFactura</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>{{documentoActivo!.valorParcial|currency}}</td>
+                          <td>{{documentoActivo!.descuento|currency}}</td>
+                          <td>{{documentoActivo!.valorIVA|currency}}</td>
+                          <td>{{documentoActivo!.retefuente|currency}}</td>
+                          <td>{{documentoActivo!.valorTotal|currency}}</td>
+                          <td>{{documentoActivo!.ajusteAlpeso|currency}}</td>
+                          <td>{{documentoActivo!.totalFactura|currency}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+  </div>
+  
+  <ng-template #ErrorEstablecimiento>
+      <div class="container">
+          <div class="row mt-4" >
+              <div class="col-sm-12 mt-4">
+                  <div class="alert alert-danger" role="alert">
+                      <h4 class="alert-heading">Error en los datos necesarios del establecimiento</h4>
+                      <p>Contacte con su administrador para que valide que todos los parámetros necesarios del establecimiento estén correctos.</p>
+                      <hr>
+                      <p class="mb-0">Si el problema persiste, por favor proporcione detalles adicionales a su administrador.</p>
+                  </div>
+              </div>
+          </div>
+      </div></ng-template>
+
+      </div></div>

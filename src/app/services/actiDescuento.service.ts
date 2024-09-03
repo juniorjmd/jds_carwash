@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable, OnInit } from '@angular/core';
 import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
@@ -11,11 +11,12 @@ import { CategoriasModel } from '../models/categorias.model';
 import { ProductoModel } from '../models/producto/producto.module';
 import { ActividadesDescuentoModel } from '../models/actividadesDescuentoModel';
 import { TABLA } from '../models/app.db.tables';
+import { configService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ActiDescuentoService {
+export class ActiDescuentoService  {
   
  
   private clientes = new BehaviorSubject<ClientesModel[]|null>(null);
@@ -30,8 +31,9 @@ export class ActiDescuentoService {
   private productos = new BehaviorSubject<ProductoModel[]|null>(null);
   arrayProductos = this.productos.asObservable();
 
-
-  constructor(private http: HttpClient){}
+  
+  // private _configService = inject(configService); 
+constructor(private http: HttpClient){} 
 
   updateActividad(actividad:ActividadesDescuentoModel){
     let _where =   [{"columna" : "id" , "tipocomp" : "=" , "dato" : actividad.id }]

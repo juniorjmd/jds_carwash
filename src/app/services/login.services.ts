@@ -14,7 +14,8 @@ export class LoginService {
  usuario!:Usuario;
     private permisosUsuario : RecursoDetalle[] = [];
 
-    constructor(private http: HttpClient){ 
+    // private _configService = inject(configService); 
+constructor(private http: HttpClient){ 
         console.log('servicios loguin inicializado');        
     }
 

@@ -13,11 +13,12 @@ import { listarNotasDebitoComponent } from './pages/listar_notas_debito/listarNo
 import { pagosSaldoNotasDebitoComponent } from './modals/pagos-saldo-notas-debito/pagos-saldo-notas-debito.component';
 import { AbonosCuentasPorPagarComponent } from './pages/abonos-cuentas-por-pagar/abonos-cuentas-por-pagar.component';
 import { PagosCPPComponent } from './modals/pagos-CPP/pagos-CPP.component';
+import { EditarComprasComponent } from './pages/editar/editarCompra.component';
 
 
 @NgModule({
   declarations: [GenerarCntPorPagarComponent,listarNotasDebitoComponent,pagosSaldoNotasDebitoComponent,AbonosCuentasPorPagarComponent,
-    ComprasComponent,CreateComprasComponent , PagosCPPComponent,
+    ComprasComponent,CreateComprasComponent , PagosCPPComponent,EditarComprasComponent,
     AnularComprasComponent , ListarComprasComponent , ModalUpdateProductoCompraComponent
   ],
   imports: [ 

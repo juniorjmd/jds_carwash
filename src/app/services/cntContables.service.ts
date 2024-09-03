@@ -32,8 +32,8 @@ export class CntContablesService {
   currentsubcuenta = this.subcuentaSource.asObservable();  
   private operacionSource = new BehaviorSubject<CntOperacionesModel|null>(null);
   currentoperacion = this.operacionSource.asObservable();
-
-  constructor(private http: HttpClient  ) {  
+ 
+constructor(private http: HttpClient  ) {  
     console.log('servicios cuentas contables inicializado');  
   }
 

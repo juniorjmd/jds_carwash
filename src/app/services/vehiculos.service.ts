@@ -21,7 +21,9 @@ import { VehiculosIngresoServicioModule } from '../models/vehiculos-ingreso-serv
  
 export class VehiculosService {
   urlVehiculo =  url.action + 'vehiculos/';
-  constructor(private http: HttpClient, private loading: loading) {
+  
+  // private _configService = inject(configService); 
+constructor(private http: HttpClient, private loading: loading) {
     console.log('servicios usuarios inicializado');
   }
   //---------------------------------------------------------------------------

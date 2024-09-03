@@ -12,8 +12,8 @@ import { httpOptions } from '../models/app.db.url';
   providedIn: 'root'
 })
 export class CortesDeCajaService {
-
-  constructor(private http: HttpClient ) { }
+ 
+constructor(private http: HttpClient ) { }
 
   
   getCierresTotalesYparciales(){

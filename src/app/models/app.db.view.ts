@@ -35,6 +35,8 @@
    categorias : "vw_inv_categorias" ,
    cajasActivas : "vw_cajas_activas" ,
    documentos_por_tip_documento : "vw_obj_documentos_por_tipo_documento_final" ,
+   vw_obj_documentos_por_usuario:"vw_obj_documentos_por_usuario",
+   vw_obj_documentos_por_cliente:"vw_obj_documentos_por_cliente",
    ventasCerradas : "vw_obj_ventas" ,
    inv_descuentos : "vw_inv_descuentos" ,
 

@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
+import { configService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DomiciliosService { 
 
-  constructor(private http: HttpClient ) {  
+  // private _configService = inject(configService); 
+constructor(private http: HttpClient ) {  
   }
   
   getListadosDomicilios(){
