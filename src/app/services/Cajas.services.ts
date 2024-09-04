@@ -308,6 +308,15 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
        };
        console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())
         return this.http.post<DocumentoCierreRequest>(this.urlVentas  , datos, httpOptions()) ;
+    } 
+     setPagoDocumentoCompraCreditoEdit(origen:string, idDocumento:number  , pagos:DocpagosModel[], _numCuotas = 1 ,  _numDiasCuotas = 30 ):Observable<DocumentoCierreRequest>{
+        
+        let datos = {"action": actions.actionAsignarNewCompraCreditoEdicion ,
+        "_ordenDocumento" : idDocumento, 
+         "_pagos" : pagos , _numCuotas , _numDiasCuotas , _remision : (origen == 'remision')?true:undefined 
+       };
+       console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())
+        return this.http.post<DocumentoCierreRequest>(this.urlVentas  , datos, httpOptions()) ;
     }
     setCajasAUsuarios(idUsuario:number , cajas:number[] ){
         let datos = {"action": actions.actionAsignarCajas ,

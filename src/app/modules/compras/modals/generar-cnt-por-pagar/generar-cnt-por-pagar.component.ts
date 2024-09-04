@@ -38,21 +38,39 @@ export class GenerarCntPorPagarComponent implements OnInit {
   ngOnInit(): void {
   }
   finalizarOk(){
-    //documentos_pagos
-    this.serviceCaja.setPagoDocumentoCompraCredito(this.inData.origen ,this.inData.Documento.orden ,this.pagos , 
-      this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2)
-     .subscribe({next: (datos:DocumentoCierreRequest)=>{
-        console.log(datos); 
-        console.log('pagos realizados' , this.pagos ); 
-        this.loading.hide()
-        this.retorno.result = true;
-        this.retorno.documento = datos.data.documentoFinal;
-        this.dialogo.close(this.retorno);
-      } ,
-      error: error  => {this.loading.hide();
-        console.error('finalizarOk', error.error.error);
-      } } 
-      );
+    //documentos_pagos   
+    if(this.inData.origen == 'EdicionCompra'){
+      this.serviceCaja.setPagoDocumentoCompraCreditoEdit(this.inData.origen ,this.inData.Documento.orden ,this.pagos , 
+        this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2)
+       .subscribe({next: (datos:DocumentoCierreRequest)=>{
+          console.log(datos); 
+          console.log('pagos realizados' , this.pagos ); 
+          this.loading.hide()
+          this.retorno.result = true;
+          this.retorno.documento = datos.data.documentoFinal;
+          this.dialogo.close(this.retorno);
+        } ,
+        error: error  => {this.loading.hide();
+          console.error('finalizarOk', error.error.error);
+        } } 
+        );
+    }else{
+      this.serviceCaja.setPagoDocumentoCompraCredito(this.inData.origen ,this.inData.Documento.orden ,this.pagos , 
+        this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2)
+       .subscribe({next: (datos:DocumentoCierreRequest)=>{
+          console.log(datos); 
+          console.log('pagos realizados' , this.pagos ); 
+          this.loading.hide()
+          this.retorno.result = true;
+          this.retorno.documento = datos.data.documentoFinal;
+          this.dialogo.close(this.retorno);
+        } ,
+        error: error  => {this.loading.hide();
+          console.error('finalizarOk', error.error.error);
+        } } 
+        );
+    }
+
   }
   cancelar(){
     this.dialogo.close(false);

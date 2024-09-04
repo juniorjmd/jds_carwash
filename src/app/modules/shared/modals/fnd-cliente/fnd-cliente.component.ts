@@ -34,6 +34,7 @@ export class FndClienteComponent implements OnInit {
   crear:boolean = true ; 
   asignarADoc = true;
   buscarPorNombre = false;
+  buscarDocumentos = false;
   devolverPersona = false;  
   mostrarListado = false;
   documentoActivo:DocumentosModel;
@@ -94,6 +95,12 @@ export class FndClienteComponent implements OnInit {
         this.mostrarListado = true 
         this.buscarPorNombre = true;
       }
+      if(this.dataIngreso.invoker == 'EdicionCompra'){
+        this.asignarADoc = true;         
+        this.mostrarListado = true 
+        this.buscarPorNombre = true;
+        this.buscarDocumentos = true;
+      }
       if(this.dataIngreso.invoker == 'cuentasXpagar'){
         this.asignarADoc = false;         
         this.mostrarListado = true 
@@ -102,9 +109,13 @@ export class FndClienteComponent implements OnInit {
       }
       
   }
+  seleccionarBuscarDocumento(cliente:ClientesModel){
+    this.NwCliente = {...cliente}; 
+    this.clientesService.changeCliente( this.NwCliente);  
+   this.dialogo.close(true)
+  } 
   seleccionar(cliente:ClientesModel){
     this.NwCliente = {...cliente};
-    
     this.clientesService.changeCliente( this.NwCliente);
     if(this.dataIngreso.invoker == 'cuentasXpagar'){
       this.pasarComoEmpleado();

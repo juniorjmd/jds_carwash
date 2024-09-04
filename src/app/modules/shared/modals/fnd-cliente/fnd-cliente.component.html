@@ -262,6 +262,9 @@
                             <button type="button" (click)="seleccionar(cliente)" class="btn btn-secondary">
                               <i class="bi bi-send-fill"></i> 
                             </button>
+                            <button type="button" *ngIf="buscarDocumentos" (click)="seleccionarBuscarDocumento(cliente)" class="btn btn-secondary">
+                                <i class="bi bi-file-earmark-text"></i> 
+                            </button>
                         <!--    <button type="button" (click)="eliminar(cliente)"  class="btn btn-secondary">
                               <i class="bi bi-trash-fill"></i> 
                             </button>-->

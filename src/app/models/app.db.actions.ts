@@ -51,6 +51,7 @@
 
 
 
+
  const STOCK_MOVE = 'STOCK_MOVE';
  const action_insertar_producto_venta = 'insertar_producto_venta';
  const STOCK_MOVE_DEVOLUCION = 'STOCK_MOVE_DEVOLUCION';
@@ -107,6 +108,7 @@
     'actionAsignarDocumentosPagos':actionAsignarPagosDoc , 
     'actionAsignarNewCredito':actionAsignarPagosDocCredito , 
     'actionAsignarNewCompraCredito':actionAsignarPagosDocCompraCredito , 
+    'actionAsignarNewCompraCreditoEdicion':'ASIGNAR_PAGOS_DOCUMENTOS_COMPRA_CREDITO_EDICION',
     'actionBuscarMarcas' : actionBuscarMarcas,
     'actionAsignarCajas':actionAsignarCajas,
     'actionDelete' :actionDelete ,

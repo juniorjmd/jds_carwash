@@ -1,11 +1,37 @@
 
 <div class="container-fluid  " >
-    <!-- Título principal -->
+    
     <div class="row" >
-      <div class="col-sm-12" style="color: aliceblue;">    <h4 >Nueva Compra</h4></div></div>
-      <div class=" container-sub" style="width: 100% !important;margin: 0;padding: 15px;">
+        <div class="col-sm-12" style="color: aliceblue;">    <h4 >Edición Compra</h4></div></div>
+        <div class="row" >
+            <div class="col-sm-1" style="color: aliceblue;">    <h5>Proveedores</h5></div>
+            <div class="col-sm-2" style="color: aliceblue;">  
+                <div class="input-group mb-3">
+                    <div class="d-flex input-group">  
+                        <div class="btn-group dropend">
+                            <button type="button"class="btn btn-success "> 
+                                    <span>{{personaIngreso!.nombreCompleto!}}</span>
+                            </button>
+                            <button type="button" class="btn btn-info" 
+                            title="Añadir cliente al Documento" 
+                            (click)='buscarProveedor()'><i class="bi bi-person"></i>&nbsp;
+                       </button>
+          
+                </div>   </div> </div>     
+            </div>
+            <div class="col-sm-1" style="color: aliceblue;">    <h5>Compra</h5></div>
+            <div class="col-sm-2" style="color: aliceblue;">    <input class="form-control" [(ngModel)] = "idCompraEditar" /> </div>
+        </div>
+        <div *ngIf="documentos.length == 0" class="overlay">
+            <h1>Escoja un proveedor o ingrese el id de la compra a editar</h1>
+        </div>
+    <!-- Título principal -->
+   
+      <div class=" container-sub" *ngIf="documentos.length > 0"  style="width: 100% !important;margin: 0;padding: 15px;">
+        <div class="row" >
+            <div class="col-sm-12" style="color: aliceblue;">    <h4 >Datos Compra</h4></div></div>
 <div *ngIf="establecimientos.length> 0; else ErrorEstablecimiento">
-  <div *ngIf="documentoActivo != undefined" class="container-fluid " >
+  <div class="container-fluid " >
     
       <div class="row">
           <div class="col-sm-3"><span>Proveedor : </span>

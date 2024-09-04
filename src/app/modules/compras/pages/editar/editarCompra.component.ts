@@ -28,6 +28,8 @@ import { ProductoService } from 'src/app/services/producto.service';
 import Swal from 'sweetalert2';
 import { ModalUpdateProductoCompraComponent } from '../../modals/ModalUpdateProductoVenta/ModalUpdateProductoCompra.component';
 import { GenerarCntPorPagarComponent } from '../../modals/generar-cnt-por-pagar/generar-cnt-por-pagar.component';
+import { ClientesService } from 'src/app/services/Clientes.services';
+import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 
 @Component({
   selector: 'app-editarCompra',
@@ -35,7 +37,8 @@ import { GenerarCntPorPagarComponent } from '../../modals/generar-cnt-por-pagar/
   styleUrls: ['./editarCompra.component.css']
 })
 export class EditarComprasComponent implements AfterViewInit, OnInit {
-
+  idCompraEditar:string = '';
+  personaIngreso:ClientesModel = new ClientesModel(); 
   cotiza = false; 
   libranza = false; 
   pasaAotraCaja = false;
@@ -67,7 +70,9 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     private documentoService: DocumentoService,
     private productoService: ProductoService,
     private _ServLogin: LoginService, 
-    private dInicialServ: DatosInicialesService , private loading : loading
+    private dInicialServ: DatosInicialesService ,
+    private clientesService:ClientesService,
+     private loading : loading
   ) {    
     console.clear();
           this.getUsuarioLogueado();
@@ -79,8 +84,23 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       
   }
 
-  ngOnInit(): void {   
-     this.getAsyncDocumentos();
+  buscarProveedor(){ 
+    this.newAbrirDialog.open(FndClienteComponent,{ data: {  invoker:'cuentasXpagar' } })
+    .afterClosed()
+    .pipe(
+      tap((confirmado:  {response:true  , persona:ClientesModel})=>{
+        if (confirmado.response) { 
+          this.personaIngreso = confirmado.persona;
+          this.documentoActivo!.cliente =  (typeof(this.personaIngreso.id) == 'string' ) ? parseInt(this.personaIngreso.id) : this.personaIngreso.id ;
+          this.getDocumentos() }
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('buscarCliente completo')
+    });   
+  }
+  ngOnInit(): void {    
     this.dInicialServ.currentVendedores.subscribe({next:value=>{
       this.empleados = value??[];
     }})
@@ -96,6 +116,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
 
     }})
   
+   
   }
 
   getDatosContables(){
@@ -160,44 +181,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
 
     return menuCard;
   }
- 
-  async getAsyncDocumentos() { 
-    this.vueltas = true; 
-    await this.documentoService.getDocumentosCompra().pipe(
-      tap((datos: any) => {
-        this.documentos = [];
-        let documentoSeleccionado: DocumentosModel[] ;
-        console.log('getAsyncDocumentos recibido', datos); 
-        if (datos.numdata > 0) { 
-          this.documentos = datos.data.map((x:any)=>x.objeto)[0] ; 
-          console.log('getDocumentos_recuest getAsyncDocumentos', this.documentos ,this.documentos[0]);
-          if (datos.numdata === 1) {
-            this.documentoActivo = this.documentos[0];
-          } else {
-            documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ; 
-          console.log('documentoSeleccionado' , documentoSeleccionado);
-            this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
-          }  
-          this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0])??[] 
-
-          if(this.empleadoActivo.id == undefined){
-            this.empleadoActivo.nombreCompleto =  this.documentoActivo?.vendedorNombre!;
-            this.empleadoActivo.idPersona = this.documentoActivo?.cod_vendedor!;
-        }
-            
-        }  
-        
-      }),
-      catchError((error: any) => {
-        console.error('error', error );
-        return of(null); // Devuelve un observable vacío en caso de error
-      })
-    ).subscribe({
-      next: () => {},
-      error: (error) => console.error('Error:', error),
-      complete: () => console.log('getDocumentos completo')
-    });
-  }
+  
  
   
    getDocumentos() { 
@@ -226,7 +210,42 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
             this.empleadoActivo.nombreCompleto =  this.documentoActivo?.vendedorNombre!;
             this.empleadoActivo.idPersona = this.documentoActivo?.cod_vendedor!;
         }  
-        }  
+        } else{
+          Swal.fire('No existen comparas para el Proovedor seleccionado');
+          this.documentoService.getDocumentosCompra().pipe(
+            tap((datos: any) => { 
+              this.documentos = [];
+              let documentoSeleccionado: DocumentosModel[] ;  
+              if (datos.numdata > 0) {
+                this.documentos = datos.data.map((x:any)=>x.objeto)[0];     
+                if (this.documentos.length === 1) {
+                  this.documentoActivo = this.documentos[0];
+                } else {
+                  documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ;  
+                  this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
+                }
+                this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
+                if(this.empleadoActivo.id == undefined){
+                  this.empleadoActivo.nombreCompleto =  this.documentoActivo?.vendedorNombre!;
+                  this.empleadoActivo.idPersona = this.documentoActivo?.cod_vendedor!;
+              }  
+              } else{
+                Swal.fire('No existen comparas para el Proovedor seleccionado');
+      
+              }
+              
+            }),
+            catchError((error: any) => {
+              console.error('error', error );
+              return of(null); // Devuelve un observable vacío en caso de error
+            })
+          ).subscribe({
+            next: () => {},
+            error: (error) => console.error('Error:', error),
+            complete: () => console.log('getDocumentos completo')
+          });
+
+        }
         
       }),
       catchError((error: any) => {
@@ -541,7 +560,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       this.buscarCliente();
       return;
     } 
-    this.newAbrirDialog.open(GenerarCntPorPagarComponent, {   data:{ Documento:this.documentoActivo , origen:'venta'} })
+    this.newAbrirDialog.open(GenerarCntPorPagarComponent, {   data:{ Documento:this.documentoActivo , origen:'EdicionCompra'} })
       .afterClosed()
       .pipe(
         tap((confirmado:  {result : boolean , documento :  DocumentosModel }) => {
@@ -846,92 +865,8 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       error: (error) => console.error('Error:', error),
       complete: () => console.log('cancelarDocumento completo')
     });
-  }
-//generar factura domicilio
-  generarEnvio() { 
-    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
-      return;
-    }
-    if (this.documentoActivo!.totalFactura <= 0) { 
-      
-      Swal.fire('El valor en la factura debe ser mayor a cero', '', 'error');
-      
-      return;
-    }
-    if (this.documentoActivo!.cliente === 0) {
-      this.newAbrirDialog.open(FndClienteComponent, { data: { docActivo : this.documentoActivo , invoker:'ventas' }})
-        .afterClosed()
-        .pipe(
-          tap((confirmado: Boolean) => {
-            this.generarDomicilio();
-            this.buscarClose = true;
-          })
-        ).subscribe({
-          next: () => {},
-          error: (error) => console.error('Error:', error),
-          complete: () => console.log('generarEnvio completo')
-        });   
-    } else {
-      this.generarDomicilio();
-    }
-  }
- generarLibranza(){
-  if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
-    return;
-  }
- } 
-  generarDomicilio() {
-    this.loading.show();
-    this.documentoService.generarDomicilioDocumento(this.documentoActivo!.orden).pipe(
-      tap((respuesta: any) => {
-        if (respuesta.error === 'ok') {
-          this.getDocumentos(); 
-        } else {
-          this.getDocumentos();
-          try {
-            Swal.fire(respuesta.error, '', 'error');
-           } catch (error : any) {
-            Swal.fire('error en el servidor', '', 'error');
-           }
-        }
-        this.loading.hide();
-        
-      }),
-      catchError((error: any) => {
-        this.loading.hide();
-        try {
-          Swal.fire(error.error.error, '', 'error');
-         } catch (error : any) {
-          Swal.fire('error en el servidor', '', 'error');
-         }
-        return of(null);
-      })
-    ).subscribe({
-      next: () => {},
-      error: (error) => console.error('Error:', error),
-      complete: () => console.log('generarDomicilio completo')
-    });
-  }
- 
-  generarGasto(){
-    if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
-      return;
-    }
-    this.newAbrirDialog.open(NewGastoComponent, { data: null })
-    .afterClosed()
-    .pipe(
-      tap((response: {result : boolean , documento :  DocumentosModel } ) => {
-        if (response.result) { 
-             Swal.fire("ok" , "gasto generado con exito" , 'info')
-             this.documentoRetorno = response.documento;
-             this.printer_factura_final()  ;
-        }})
-    ).subscribe({
-      next: () => {},
-      error: (error) => console.error('Error:', error),
-      complete: () => console.log('busquedaAuxiliarProducto completo')
-    });
-  }
+  } 
+  
   busquedaAuxiliarProducto() { 
     if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
       return;
@@ -977,7 +912,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
       return;
     }
-    this.newAbrirDialog.open(FndClienteComponent,{ data: { docActivo : this.documentoActivo , invoker:'compra' } })
+    this.newAbrirDialog.open(FndClienteComponent,{ data: { docActivo : this.documentoActivo , invoker:'Compra' } })
     .afterClosed()
     .pipe(
       tap((confirmado: Boolean)=>{
