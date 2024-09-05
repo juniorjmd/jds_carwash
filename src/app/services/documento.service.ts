@@ -56,6 +56,18 @@ constructor(private http: HttpClient, private loading: loading) {
     return this.http.post(url.action, datos, httpOptions());
   }
 
+  getPlazoCreditoPorDocumentoBase(orden:number): Observable<any> {
+    
+    
+    let _where = [{"columna": 'idFacturaVenta', "tipocomp": '=', "dato": orden}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": TABLA.mst_mov_credito, _where , 
+      "_columnas": ['cuotas','plazos'] 
+    };
+    console.log('getPlazoCreditoPorDocumentoBase', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
   getCxPProveedores(): Observable<any> {
     let datos = {
       "action": actions.actionSelect,
@@ -232,6 +244,19 @@ constructor(private http: HttpClient, private loading: loading) {
       _tabla = vistas.vw_obj_documentos_por_cliente
     }
     //vw_obj_documentos_por_usuario
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],_tabla ,  _where
+    };
+    console.log('servicios de documentos - getCajasActivas', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
+  getDocumentosCompraById( idDocumentoFinal?:any):Observable<any>{
+    let _tabla = vistas.documento;
+    let _where = [{"columna": 'tipoDocumentoFinal', "tipocomp": '=f', "dato": "getIdTipoDocumentoPorNombre('comprobante_compras') " } ,
+                 {"columna": 'idDocumentoFinal', "tipocomp": '=', "dato": idDocumentoFinal}]
     let datos = {
       "action": actions.actionSelect,
       "_columnas": ['objeto'],

@@ -84,6 +84,48 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       
   }
 
+  buscarPorNumFactura(){ 
+       
+     this.documentoService.getDocumentosCompraById(this.idCompraEditar).pipe(
+      tap((datos: any) => {
+        console.log('getDocumentosCompraBlanco', datos); 
+        this.documentos = [];
+        let documentoSeleccionado: DocumentosModel[] ; 
+
+        if (datos.numdata > 0) {
+          this.documentos = datos.data.map((x:any)=>x.objeto) ;     
+          console.log('CC1-35' , this.documentos, this.documentos.length);
+          
+          if (this.documentos.length === 1) {
+            this.documentoActivo = this.documentos[0];
+          } else {
+            documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ;  
+            this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
+          }
+          this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
+          if(this.empleadoActivo.id == undefined){
+            this.empleadoActivo.nombreCompleto =  this.documentoActivo?.vendedorNombre!;
+            this.empleadoActivo.idPersona = this.documentoActivo?.cod_vendedor!;
+        }  
+        this.personaIngreso.nombreCompleto = this.documentoActivo.clienteNombre 
+        this.personaIngreso.id = this.documentoActivo.cliente 
+        } else{
+          Swal.fire('El numero de compra ingresado no existe, por favor verifique e intente nuevamente!');
+        
+
+        }
+        
+      }),
+      catchError((error: any) => {
+        console.error('error', error );
+        return of(null); // Devuelve un observable vacío en caso de error
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => console.error('Error:', error),
+      complete: () => console.log('getDocumentos completo')
+    });
+  } 
   buscarProveedor(){ 
     this.newAbrirDialog.open(FndClienteComponent,{ data: {  invoker:'cuentasXpagar' } })
     .afterClosed()
@@ -373,6 +415,12 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
 
   editar(linea: DocumentoListado){
     
+    
+    if(linea.id == undefined){
+      let arrAux:any = this.documentoActivo.listado.find(x=>x.idProducto == linea.idProducto) 
+        linea  = (arrAux == undefined)?linea:arrAux;
+      }
+    
     this.newAbrirDialog.open(ModalUpdateProductoCompraComponent, { data: {...linea} })
       .afterClosed()
       .pipe(
@@ -567,8 +615,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
           if (confirmado.result) { 
           this.documentoRetorno = Object.assign(new DocumentosModel(), confirmado.documento); 
           console.log('facturarDocumento =>>>>>', this.documentoRetorno);
-          this.printer_factura_final();
-          this.crearDocumento();
+          this.printer_factura_final(); 
           }
         })
       ).subscribe({
@@ -912,21 +959,21 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     if (this.documentoActivo?.campo_info_5 != undefined && this.documentoActivo?.campo_info_5 == 'NO_FACTURABLE'){
       return;
     }
-    this.newAbrirDialog.open(FndClienteComponent,{ data: { docActivo : this.documentoActivo , invoker:'Compra' } })
+    this.newAbrirDialog.open(FndClienteComponent,{ data: {  invoker:'cuentasXpagar' } })
     .afterClosed()
     .pipe(
-      tap((confirmado: Boolean)=>{
-        if (confirmado) { 
-          this.getDocumentos();  
-          this.codigoProducto = '';
-          
-          this.buscarClose = true;}
+      tap((confirmado:  {response:true  , persona:ClientesModel})=>{
+        if (confirmado.response) { 
+          this.personaIngreso = confirmado.persona;
+          this.documentoActivo!.clienteNombre = confirmado.persona.nombreCompleto;
+          this.documentoActivo!.cliente =  (typeof(this.personaIngreso.id) == 'string' ) ? parseInt(this.personaIngreso.id) : this.personaIngreso.id ;
+         }
       })
     ).subscribe({
       next: () => {},
       error: (error) => console.error('Error:', error),
       complete: () => console.log('buscarCliente completo')
-    });   
+    });    
   }
 
 

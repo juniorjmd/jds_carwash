@@ -13,6 +13,7 @@
    PARAMETROS:'parametros',
    empleados:'mst_per_empleados',
    personas:'mst_per_clientes',
+   mst_mov_credito:'mst_mov_credito',
    vehiculos_servicios_costos:'inv_mst_servicios_costos',
    TiposServicios : 'inv_mst_tipos_servicios',// vehiculos_servicios_tipos
    vehiculos_servicios :'inv_mst_servicios',

@@ -16,6 +16,7 @@ import { MediosDePagoModel } from '../models/ventas/medios-de-pago.model';
 import { DocpagosModel } from '../models/ventas/pagos.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { cajaRequest, DocumentoCierreRequest, establecimientosRequest } from '../interfaces/producto-request';
+import { DocumentosModel } from '../models/ventas/documento.model';
 
 
 @Injectable({
@@ -309,10 +310,13 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
        console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())
         return this.http.post<DocumentoCierreRequest>(this.urlVentas  , datos, httpOptions()) ;
     } 
-     setPagoDocumentoCompraCreditoEdit(origen:string, idDocumento:number  , pagos:DocpagosModel[], _numCuotas = 1 ,  _numDiasCuotas = 30 ):Observable<DocumentoCierreRequest>{
+     setPagoDocumentoCompraCreditoEdit(origen:string,   pagos:DocpagosModel[], _numCuotas = 1 ,  _numDiasCuotas = 30 , 
+        doc:DocumentosModel):Observable<DocumentoCierreRequest>{
         
         let datos = {"action": actions.actionAsignarNewCompraCreditoEdicion ,
-        "_ordenDocumento" : idDocumento, 
+        "_ordenDocumento" : doc.orden, 
+        "_fecha":doc.fecha , "_establecimiento" : doc.establecimiento , "_proveedor":doc.cliente,
+        "_facturaExterna": doc.campo_info_3 ,
          "_pagos" : pagos , _numCuotas , _numDiasCuotas , _remision : (origen == 'remision')?true:undefined 
        };
        console.log('setPagoDocumento',this.urlVentas , datos, httpOptions())

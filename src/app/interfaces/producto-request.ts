@@ -68,7 +68,13 @@ export interface actividadesDetalleRequest {
   numdata: number;
   error: string;
 }
-
+interface plazo {cuotas: number; plazos: number; }
+export interface plazoRequest { 
+  data:plazo[] ;
+  query: string;
+  numdata: number;
+  error: string;
+}
 export interface DocumentoCierreRequest { 
   data: { documentoFinal: DocumentosModel };
   query?: string;

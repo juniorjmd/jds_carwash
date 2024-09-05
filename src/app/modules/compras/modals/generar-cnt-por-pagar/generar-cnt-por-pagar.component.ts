@@ -5,7 +5,8 @@ import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocpagosModel } from 'src/app/models/ventas/pagos.model';
 import { cajasServices } from 'src/app/services/Cajas.services'; 
 import { loading } from 'src/app/models/app.loading'; 
-import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
+import { DocumentoCierreRequest,  plazoRequest } from 'src/app/interfaces/producto-request';
+import { DocumentoService } from 'src/app/services/documento.service';
 
 @Component({
   selector: 'modal-generar-cnt-por-pagar',
@@ -22,7 +23,7 @@ export class GenerarCntPorPagarComponent implements OnInit {
     documento: new DocumentosModel
   };
   constructor(
-    public loading : loading,private serviceCaja : cajasServices ,
+    public loading : loading,private serviceCaja : cajasServices ,private docService:DocumentoService,
     public dialogo: MatDialogRef<GenerarCntPorPagarComponent>,
     @Inject(MAT_DIALOG_DATA) public inData : { Documento:DocumentosModel , origen:string}
 
@@ -33,6 +34,15 @@ export class GenerarCntPorPagarComponent implements OnInit {
         this.pagoPorCredito.valorRecibido = this.pagoPorCredito.valorPagado;
         this.pagoPorCredito.vueltos = 0; 
         this.getMediosP()
+        if(this.inData.origen == 'EdicionCompra'){
+          this.docService.getPlazoCreditoPorDocumentoBase(inData.Documento.orden).subscribe({next:( value:plazoRequest )=>{
+            console.log('plazos y cuota ', value); 
+            this.pagoPorCredito.aux1 =  value.data[0].cuotas ; 
+            this.pagoPorCredito.aux2 = value.data[0].plazos;
+          },error:(e)=>console.error(e.error.error), 
+
+          })
+        }
       }
 
   ngOnInit(): void {
@@ -40,8 +50,9 @@ export class GenerarCntPorPagarComponent implements OnInit {
   finalizarOk(){
     //documentos_pagos   
     if(this.inData.origen == 'EdicionCompra'){
-      this.serviceCaja.setPagoDocumentoCompraCreditoEdit(this.inData.origen ,this.inData.Documento.orden ,this.pagos , 
-        this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2)
+      this.serviceCaja.setPagoDocumentoCompraCreditoEdit(this.inData.origen ,this.pagos , 
+        this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2 , this.inData.Documento
+      )
        .subscribe({next: (datos:DocumentoCierreRequest)=>{
           console.log(datos); 
           console.log('pagos realizados' , this.pagos ); 

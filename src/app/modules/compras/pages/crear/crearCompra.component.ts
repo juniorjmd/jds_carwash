@@ -360,6 +360,11 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
 
   editar(linea: DocumentoListado){
     
+    if(linea.id == undefined){
+    let arrAux:any = this.documentoActivo.listado.find(x=>x.idProducto == linea.idProducto) 
+      linea  = (arrAux == undefined)?linea:arrAux;
+    }
+
     this.newAbrirDialog.open(ModalUpdateProductoCompraComponent, { data: {...linea} })
       .afterClosed()
       .pipe(

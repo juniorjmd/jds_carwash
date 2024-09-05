@@ -20,7 +20,7 @@
                 </div>   </div> </div>     
             </div>
             <div class="col-sm-1" style="color: aliceblue;">    <h5>Compra</h5></div>
-            <div class="col-sm-2" style="color: aliceblue;">    <input class="form-control" [(ngModel)] = "idCompraEditar" /> </div>
+            <div class="col-sm-2" style="color: aliceblue;">    <input class="form-control" [(ngModel)] = "idCompraEditar" (keyup.enter)="buscarPorNumFactura()" /> </div>
         </div>
         <div *ngIf="documentos.length == 0" class="overlay">
             <h1>Escoja un proveedor o ingrese el id de la compra a editar</h1>
@@ -69,18 +69,18 @@
             <div class="col-sm-2"> 
                 <span>Fecha de Copra : </span>  
                 <div class="input-group mb-3">
-                    <input class="o_input form-control"  (change)="cambiarEstablecimientoDocumento()" type="date" [(ngModel)] = 'documentoActivo.fecha'> 
+                    <input class="o_input form-control"   type="date" [(ngModel)] = 'documentoActivo.fecha'> 
                 </div></div>
                 <div class="col-sm-2"> 
                     <span>Factura ext. : </span>  
                     <div class="input-group mb-3">
-                        <input class="o_input form-control" (blur)="cambiarEstablecimientoDocumento()"
-                        (keyup.enter)="cambiarEstablecimientoDocumento()" type="text" [(ngModel)] = 'documentoActivo.campo_info_3'> 
+                        <input class="o_input form-control"  
+                         type="text" [(ngModel)] = 'documentoActivo.campo_info_3'> 
                     </div></div>
         <div class="col-sm-3"> 
             <span>Establecimiento : </span>  
             <div class="input-group mb-3">
-                <select class="o_input form-control" (change)="cambiarEstablecimientoDocumento()" [(ngModel)] = 'documentoActivo.establecimiento'>
+                <select class="o_input form-control"   [(ngModel)] = 'documentoActivo.establecimiento'>
                     <option *ngFor="let item of establecimientos" [value]="item.id"  >{{item.nombre}}</option>
                 </select>
             </div></div>
@@ -88,8 +88,6 @@
              
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-success" title="Facturar" (click)='asignarPagosACuentaPorCobrar()'><i class="bi bi-check2-all"></i></button>
-                    <button type="button" class="btn btn-primary" title="Crear Documento" (click)='crearDocumento()'><i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
-                    <button type="button" class="btn btn-danger" title="Eliminar Documento" (click)='cancelarDocumento()'><i class="bi bi-trash"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
                     <button type="button" class="btn btn-warning" title="Busqueda Producto" (click)='busquedaAuxiliarProducto()'><i class="bi bi-search"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
                    </div>
       </div>
