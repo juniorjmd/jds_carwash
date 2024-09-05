@@ -1,6 +1,6 @@
 import { Component, inject, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { tap } from 'rxjs';
+import { retry, tap } from 'rxjs';
 import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { CarteraRequest, DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 import { CarteraModel } from 'src/app/models/cartera/cartera.model';
@@ -15,6 +15,8 @@ import { PrinterManager } from 'src/app/models/printerManager';
 import { DocpagosModel } from 'src/app/models/ventas/pagos.model';
 import { loading } from 'src/app/models/app.loading';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
+import { establecimientoModel } from 'src/app/models/ventas/establecimientos.model';
+import { cajasServices } from 'src/app/services/Cajas.services';
 
 @Component({
   selector: 'modals-abonos-cuentas-por-pagar',
@@ -27,17 +29,29 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
   public lisCartera:CarteraModel[] = [];
   public docAbono:DocumentosModel = new DocumentosModel(); 
   private  docService = inject(DocumentoService)
-  public personaIngreso:ClientesModel = new ClientesModel(); 
-  constructor( private loading:loading , private inicioService:DatosInicialesService,
+  public personaIngreso:ClientesModel = new ClientesModel();  
+  establecimientos:establecimientoModel[] = [];
+  constructor( private loading:loading , private inicioService:DatosInicialesService,private serviceCaja : cajasServices,
     private newAbrirDialog: MatDialog,){
 
+      this.loading.show()
+      this.serviceCaja.getEstablecimientosCompras().subscribe({next:value=>{
+        if(value.numdata > 0 ){this.establecimientos = value.data
+          this.docAbono.establecimiento = this.establecimientos[0].id;
+        }else{Swal.fire('error','No existen establecimientos disponibles','error')}
+        
+      },error:e=>Swal.fire('error',e.error.error,'error'),complete:()=>this.loading.hide()    
+    })
   }
   ngOnInit(): void {
     this.inicioService.currentSucursal.subscribe({next:value=>{
       PrinterManager.setSucursal(value);
     }})
   }
-
+  buscarCreditosDesdeEstablecimiento(){
+    if(this.docAbono.cliente == undefined){return;}
+    this.buscarCreditoCliente();
+  }
   buscarCliente(){ 
     this.newAbrirDialog.open(FndClienteComponent,{ data: {  invoker:'cuentasXpagar' } })
     .afterClosed()
@@ -45,6 +59,8 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
       tap((confirmado:  {response:true  , persona:ClientesModel})=>{
         if (confirmado.response) { 
           this.personaIngreso = confirmado.persona;
+          console.log('personaIngreso',this.personaIngreso);
+          this.docAbono.cliente =  ( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id!;
           this.buscarCreditoCliente();   }
       })
     ).subscribe({
@@ -53,11 +69,15 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
       complete: () => console.log('buscarCliente completo')
     });   
   }
-  buscarCreditoCliente(  ){
-    this.docAbono.cliente =  ( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id!;
+  buscarCreditoCliente( ){
+    if(this.docAbono.cliente == undefined){Swal.fire('Debe seleccionar el proveedor');return;}
+    if(this.docAbono.establecimiento == undefined){Swal.fire('Debe seleccionar el establecimiento');return;} 
     this.docService
-    .getCuentasXPagarByPersonaAbonos(( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id! )
+    .getCuentasXPagarByPersonaAbonos(( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id! ,
+     this.docAbono.establecimiento )
     .subscribe({next:(retorno:CarteraRequest)=>{
+      console.log('getCuentasXPagarByPersonaAbonos',retorno);
+      
       if(retorno.numdata!> 0){
         this.lisCartera =  retorno.data;
         this.docAbono.campo_auxiliar_1 =   this.lisCartera.reduce((acc:number, item) => acc + parseFloat(item.totalActual.toString()), 0);
@@ -80,7 +100,8 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
                                 cant_real_descontada: 1,
                                 id_externo_auxiliar: x.id,
                                 cant_devuelta : 0,estado_linea_venta:'A',
-                                tipoDescuento:'porcentaje'
+                                tipoDescuento:'porcentaje',
+                                idDocBase:x.comprobante
                               }
           return ret
           
@@ -170,6 +191,8 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
     }
      console.log('documento a enviar',this.docAbono);
      this.docService.crearDocumentoAbonoCredito(this.docAbono).subscribe({next:(value:DocumentoCierreRequest)=>{
+      console.log('crearDocumentoAbonoCredito', value);
+      
      this.docActivo =   value.data.documentoFinal;
       
     this.newAbrirDialog.open(PagosCPPComponent,{ data: this.docActivo  })

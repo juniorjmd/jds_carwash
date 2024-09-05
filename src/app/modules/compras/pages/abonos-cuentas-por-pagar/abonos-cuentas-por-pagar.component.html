@@ -20,6 +20,13 @@
                </button>
   
         </div>   </div> </div></div>
+        <div class="col-sm-3"> 
+          <span>Establecimiento : </span>  
+          <div class="input-group mb-3">
+              <select class="o_input form-control" (change)="buscarCreditosDesdeEstablecimiento()" [(ngModel)] = 'docAbono.establecimiento'>
+                  <option *ngFor="let item of  establecimientos" [value]="item.id"  >{{item.nombre}}</option>
+              </select>
+          </div></div>
     
       <div class="col-sm-2">
         <div class="card">

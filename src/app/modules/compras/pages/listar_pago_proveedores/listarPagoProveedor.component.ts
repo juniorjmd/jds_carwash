@@ -6,11 +6,11 @@ import { DocumentoService } from 'src/app/services/documento.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-listarNotasDebito',
-  templateUrl: './listarNotasDebito.component.html',
-  styleUrls: ['./listarNotasDebito.component.css']
+  selector: 'app-listarPagoProveedor',
+  templateUrl: './listarPagoProveedor.component.html',
+  styleUrls: ['./listarPagoProveedor.component.css']
 })
-export class  listarNotasDebitoComponent implements OnInit {
+export class  listarPagoProveedorComponent implements OnInit {
   codFactura:string; 
   documentos : DevolucionModel[] = [];
   constructor(  private inicioService:DatosInicialesService,
@@ -99,7 +99,7 @@ export class  listarNotasDebitoComponent implements OnInit {
 
   getDocumentos(){
   
-    this.documentoService.getDevoluciones( ).subscribe({next:
+    this.documentoService.getPagosCPP( ).subscribe({next:
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 

@@ -7,6 +7,8 @@ import { AnularComprasComponent } from './pages/anular/anular.component';
 import { listarNotasDebitoComponent } from './pages/listar_notas_debito/listarNotasDebito.component';
 import { AbonosCuentasPorPagarComponent } from './pages/abonos-cuentas-por-pagar/abonos-cuentas-por-pagar.component';
 import { EditarComprasComponent } from './pages/editar/editarCompra.component';
+import { listarPagoProveedorComponent } from './pages/listar_pago_proveedores/listarPagoProveedor.component';
+import { listarCxPProveedorComponent } from './pages/listar_cuentas_por_pagar/listarCxPProveedor.component';
 
 const routes: Routes = [{ path: '', component: ComprasComponent , children:[
   { path: 'listar', component: ListarComprasComponent  },
@@ -14,6 +16,8 @@ const routes: Routes = [{ path: '', component: ComprasComponent , children:[
   { path: 'editar', component: EditarComprasComponent  } , 
   { path: 'anular', component: AnularComprasComponent  }, 
   { path: 'listarAnulaciones', component: listarNotasDebitoComponent  },
+  { path: 'listarCxP', component: listarCxPProveedorComponent  },
+  { path: 'listarPagosProveedor', component: listarPagoProveedorComponent  },
   { path: 'abonarCredito', component: AbonosCuentasPorPagarComponent  },
   { path : '**' , pathMatch:'full' , redirectTo : 'listar'}, 
 

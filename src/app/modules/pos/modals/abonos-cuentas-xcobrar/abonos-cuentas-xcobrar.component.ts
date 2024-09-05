@@ -48,7 +48,8 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
                                 cant_real_descontada: 1,
                                 id_externo_auxiliar: x.id,
                                 cant_devuelta : 0,estado_linea_venta:'A',
-                                tipoDescuento:'porcentaje'
+                                tipoDescuento:'porcentaje', 
+                                idDocBase:x.comprobante
                               }
           return ret
           

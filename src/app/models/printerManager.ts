@@ -323,12 +323,14 @@ private infoGeneral():string{
   if(this.doc.nombreDocumento == 'venta' )   receiptHTML += this.getResolucion() ;
   let labelCliente = 'Cliente : '
   let nombreDocumento = "";
+  //alert(this.doc.nombreDocumento)
      switch(this.doc.nombreDocumento ){
         case 'venta' : nombreDocumento = "Factura No." ; break;
         case 'cotizacion' : nombreDocumento = "Cotización No."; break;
         case 'gasto' : nombreDocumento = "Gasto No."; labelCliente = 'Pagado a : ' ; break;
         case 'cuentas_por_cobrar' : nombreDocumento = "Venta a credito No."; break;
         case 'cuentas_por_pagar' : nombreDocumento = "Compra a credito No."; labelCliente = 'Proveedor : ' ;break; 
+        case 'comprobante_cuentas_por_pagar' : nombreDocumento = "Cuenta por pagar No."; labelCliente = 'Proveedor : ' ;break; 
         case 'remision_cuentas_por_cobrar' : nombreDocumento = "Remision a credito No."; break;
         case 'RecaudosCuentaXCobrar' : nombreDocumento = "Abono a cartera No."; break;
         case 'comprobante_devolucion' : nombreDocumento = "Devolucion No."; break;
@@ -367,7 +369,7 @@ private detalle():string{
   const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
 let receiptHTML  = ` <hr> <div style="text-align: left;" name="detalle"><table  style="font-family: Arial, sans-serif; width: 100%;">`;
  
-receiptHTML += (this.tipoImpresora != 'POS')?`<tr><th>Producto </th><th>Precio uni. </th><th>Descuento</th> <th>IVA</th> <th>Precio Venta</th> <th>Cantidad</th><th>Total </th></tr>` : 
+receiptHTML += (this.tipoImpresora != 'POS' && this.doc.listado.length > 0)?`<tr><th>Producto </th><th>Precio uni. </th><th>Descuento</th> <th>IVA</th> <th>Precio Venta</th> <th>Cantidad</th><th>Total </th></tr>` : 
 '';
 console.log('listado',this.doc.listado);
 
@@ -481,6 +483,12 @@ private pagos():string{
           const valorRecibido = typeof pago.valorRecibido  === 'number' ? pago.valorRecibido : parseFloat(pago.valorRecibido??'0'); 
           const vueltos = typeof pago.vueltos  === 'number' ? pago.vueltos : parseFloat(pago.vueltos??'0'); 
 
+          if(pago.nombreMedio!.trim()==''){
+            html += `<tr>
+              <td style="width:95%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Referencia ==> ${pago.referencia }</td>
+              <td style="    text-align: right;"> ${currencyFormatter.format(valorPagado)}</td></tr>
+            `;
+          }else{
           html += `<tr>
               <td style="width:95%">${pago.nombreMedio!.trim()}</td>
               <td style="    text-align: right;"> ${currencyFormatter.format(valorPagado)}</td></tr>
@@ -492,7 +500,9 @@ private pagos():string{
               html += `
                   <tr> <td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Referencia ==> ${pago.referencia }</td></tr>
                 `;
-            }
+            }}
+
+
  });
 
  html += `</table><hr></div></div>`;

@@ -53,6 +53,7 @@
     documentoDev: 'vw_obj_documentos_devolucion',
     documentosCompra: 'vw_obj_documentos_compra',
     documentosPagosCPP: 'vw_obj_documentos_pagos_CPP',
+    documentosCuentasPorPagar: 'vw_obj_documentos_cuentas_por_pagar',
     cartera: 'vw_mst_mov_cartera',
     credito: 'vw_mst_mov_credito',
     carteraAbonos: 'vw_mst_mov_cartera_abonos',

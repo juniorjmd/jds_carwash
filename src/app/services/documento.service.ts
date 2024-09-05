@@ -55,6 +55,17 @@ constructor(private http: HttpClient, private loading: loading) {
     console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());
   }
+
+  getCxPProveedores(): Observable<any> {
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.documentosCuentasPorPagar, 
+      "_obj": ['objeto'],
+      "_columnas": ['objeto'] 
+    };
+    console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
   getDevoluciones(): Observable<any> {
     let datos = {
       "action": actions.actionSelect,
@@ -102,8 +113,9 @@ constructor(private http: HttpClient, private loading: loading) {
     console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
     return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
   }
-  getCuentasXPagarByPersonaAbonos( idPersona :number): Observable<CarteraRequest> {
+  getCuentasXPagarByPersonaAbonos( idPersona :number , idEstablecimiento:any): Observable<CarteraRequest> {
     let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona},
+      {"columna": 'establecimiento', "tipocomp": '=', "dato": idEstablecimiento},
       {"columna": 'totalActual', "tipocomp": '>', "dato": 0}];
     let datos = {
       "action": actions.actionSelect,

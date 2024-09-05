@@ -82,6 +82,7 @@ export interface DocumentoImpuestos{
     'id_externo_auxiliar'?:number|string,
     'nombreActividadDescuento'?:string,
     'descuentoAplicado'?:string,
+    idDocBase?:number;
     val_aux_1	?:number ; 
     val_aux_2	?:number ; 
     val_aux_3	?:number ; 
