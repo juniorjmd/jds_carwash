@@ -9,6 +9,7 @@ import { PrdExistenciasModule } from 'src/app/models/prd-existencias/prd-existen
 import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { ProductoRequest } from 'src/app/interfaces/producto-request';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'pos-ingresar-producto-venta',
@@ -23,6 +24,7 @@ export class IngresarProductoVentaComponent implements OnInit {
   parceros : ProductoModel[] = []; 
   show = true ;
   show_reemplazo = false;  
+  ingresaPrecio = false;
   validarExistencia?:boolean;  
   existencia?:PrdExistenciasModule;  
   constructor( 
@@ -50,11 +52,24 @@ export class IngresarProductoVentaComponent implements OnInit {
       console.log('producto completo', value); 
       this.loading.hide()
       this.arrayDocPrd.producto= value.producto  
-      this.enabledBtnIngreso();
+      if (value.producto.tipo_producto == 2){
+        this.validarExistencia = false;
+        this.ingresaPrecio = true;
+        this.enabledBtnIngreso();
+        this.precioVenta = new PrdPreciosModule();
+        this.precioVenta.precio_antes_de_iva = 0;
+        this.precioVenta.precio_con_iva=0;
+        this.precioVenta.valor_iva = 0;
+      }
+      
     }, error:e=>{console.error(e.error.error) ; this.loading.hide();  
     }})
   }
 
+  cambiaPrecio(){
+    if(this.precioVenta!.precio_con_iva == undefined) {this.precioVenta!.precio_con_iva = 0 ;}
+    this.precioVenta!.precio_antes_de_iva = this.precioVenta!.precio_con_iva ;  
+  }
   enabledBtnIngreso()
   {  
     this.precioVenta = this.arrayDocPrd.producto?.precios[0]! 
@@ -133,6 +148,10 @@ export class IngresarProductoVentaComponent implements OnInit {
     this.enviarCnt(0)
   }
   enviarCnt( cnt:number ){
+    if( this.precioVenta?.precio_con_iva! <= 0){
+      Swal.fire('Ingrese el precio de venta'); 
+      return;
+    }
     this.disabled = [true, true, true, true, true, true, true, true, true, true];
     this.cantidadPrd  += cnt ;
     console.log( 'enviarCnt' ,this.arrayDocPrd.producto  )

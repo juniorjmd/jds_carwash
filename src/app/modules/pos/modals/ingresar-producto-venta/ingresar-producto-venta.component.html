@@ -18,12 +18,20 @@
                                 <br><b>existencia: </b><small class="text-muted">{{ existencia?.cant_actual??0 }}</small> 
                                 <br><b>precio: </b>
                                 
-                                <select *ngIf=" arrayDocPrd.producto?.precios" class="form-control"  [(ngModel)]="precioVenta">
+                                <ng-container *ngIf="ingresaPrecio">
+                                    <input type="number" (keyup.enter)="cambiaPrecio()" (blur)="cambiaPrecio()" class="form-control"  [(ngModel)]="precioVenta!.precio_con_iva"/>
+                                </ng-container>
+                                <ng-container *ngIf="!ingresaPrecio">
+                                    <select *ngIf=" arrayDocPrd.producto?.precios" class="form-control"  [(ngModel)]="precioVenta">
 
-                                    <option *ngFor='let precio of arrayDocPrd.producto?.precios ' [ngValue]="precio">
-                                        {{precio.precio_con_iva}}   
-                                    </option>
-                                </select> 
+                                        <option *ngFor='let precio of arrayDocPrd.producto?.precios ' [ngValue]="precio">
+                                            {{precio.precio_con_iva}}   
+                                        </option>
+                                    </select> 
+                                </ng-container>
+                               
+
+
                                  </p>
                         </div>
                     </div>

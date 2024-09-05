@@ -45,7 +45,7 @@
                     <td  style="width: 20%;">
                         
                         <div class="input-group mb-3">
-                            <input class="o_input form-control" (keyup.enter)='buscarProducto()' #codProd type="text" [(ngModel)]="codigoProducto"  placeholder="Buscar" aria-label="Buscar"/>
+                            <input class="o_input form-control" (focus)="codigoProducto = ''" (keyup.enter)='buscarProducto()' #codProd type="text" [(ngModel)]="codigoProducto"  placeholder="Buscar" aria-label="Buscar"/>
                        
                             <button (click)='buscarProducto()' class="btn btn-outline-secondary" type="button">
                                 <i class="bi bi-search"></i>

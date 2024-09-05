@@ -305,7 +305,7 @@ private footerCierre():string{
 generateReceiptHTML(): string {
 
   let receiptHTML = ''; 
-  receiptHTML = (this.tipoImpresora == 'POS')?`<div style="font-family: Arial, sans-serif; width: 300px;"> ` : 
+  receiptHTML = (this.tipoImpresora == 'POS')?`<div style="font-family: Arial, sans-serif; width: 219.24px;"> ` : 
   `<div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">`;
   receiptHTML += this.generateCabecera() ; 
   receiptHTML += this.infoGeneral(); 
@@ -521,7 +521,8 @@ private openPrintWindows(printContent:string){
       WindowPrt.document.close();
       WindowPrt.addEventListener('afterprint', () => {
             WindowPrt.close();
-        }); // WindowPrt.print();
+        });  
+         WindowPrt.print();
   }
 }
 

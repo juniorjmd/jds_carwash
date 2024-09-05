@@ -467,6 +467,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     console.log('elemento==>',activeTextarea);
     if (activeTextarea.toUpperCase().indexOf('SELECT') < 0) {
        this.codProdlement.nativeElement.focus();
+       
     }
   }
 
