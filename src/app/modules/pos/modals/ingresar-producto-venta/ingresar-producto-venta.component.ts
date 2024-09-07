@@ -60,7 +60,7 @@ export class IngresarProductoVentaComponent implements OnInit {
         this.precioVenta.precio_antes_de_iva = 0;
         this.precioVenta.precio_con_iva=0;
         this.precioVenta.valor_iva = 0;
-      }
+      }else{ this.enabledBtnIngreso();}
       
     }, error:e=>{console.error(e.error.error) ; this.loading.hide();  
     }})

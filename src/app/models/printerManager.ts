@@ -46,6 +46,7 @@ export class PrinterManager {
     <p>Desde: ${this.doc.consecutivoDesde} Hasta: ${this.doc.consecutivoHasta}</p>
     <p>Fecha: ${this.doc.fechaInicioResolucion} Hasta: ${this.doc.fechaFinResolucion}</p>
   </div>`;
+  if (this.doc.resolucion == undefined || this.doc.resolucion! <= ''){HTML='';}
     return HTML;
   } 
 
@@ -286,12 +287,20 @@ private footerCierre():string{
   
     let cabecera = '';
     if (this.tipoImpresora == 'POS'){
-    cabecera = ` <div style="text-align: center;">
+    cabecera = ` <div style="text-align: center;"> 
+    <h2>${PrinterManager.sucursal?.nombre_suc}</h2>
     <h2>${this.doc.nombreEsta}</h2>
-    <h2>${PrinterManager.sucursal?.nombre_suc}</h2>`; 
+   `; 
       if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
-        cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` 
+        cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` ;
       cabecera += ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>` ;
+      cabecera += ` <p> ${PrinterManager.sucursal?.dir}</p>` ;
+      cabecera += ` <p>${PrinterManager.sucursal?.ciudad} - Tel: ${PrinterManager.sucursal?.tel1}</p>` ;
+
+
+
+
+
     }else{
       cabecera = `<div>
       <table><tr><td>
@@ -318,14 +327,15 @@ generateReceiptHTML(): string {
 
   return receiptHTML;
 } 
-private infoGeneral():string{
+private   infoGeneral():string{
   let receiptHTML = '';
   if(this.doc.nombreDocumento == 'venta' )   receiptHTML += this.getResolucion() ;
   let labelCliente = 'Cliente : '
   let nombreDocumento = "";
+  let leyenda = "";
   //alert(this.doc.nombreDocumento)
      switch(this.doc.nombreDocumento ){
-        case 'venta' : nombreDocumento = "Factura No." ; break;
+        case 'venta' : nombreDocumento = "Factura No." ; leyenda = 'Este documento no reemplazala factura de venta ni el documento equivalente, es un soporte de uso contable' ; break;
         case 'cotizacion' : nombreDocumento = "Cotización No."; break;
         case 'gasto' : nombreDocumento = "Gasto No."; labelCliente = 'Pagado a : ' ; break;
         case 'cuentas_por_cobrar' : nombreDocumento = "Venta a credito No."; break;
@@ -342,6 +352,7 @@ private infoGeneral():string{
          `<div> 
          <table>
          <tr> <th>${nombreDocumento}</th><td> ${this.doc.idDocumentoFinal}</td>
+         
          <th> Usuario Ingreso</th><td> ${this.doc.vendedorNombre}</td> 
                   
          </tr> <tr>
@@ -351,10 +362,9 @@ private infoGeneral():string{
            
          </tr>
          </table></div> `:
-
-
-
-        `<div> <p>Usuario: ${this.doc.vendedorNombre}</p>
+          `<div>${leyenda}</div>
+          <div>
+           <p>Usuario: ${this.doc.vendedorNombre}</p>
                           <p>Fecha/Hora: ${this.doc.fecha}</p>
                           </div><hr>
         <div>
