@@ -11,10 +11,12 @@ import { LotesComponent } from './pages/lotes/lotes.component';
 import { GruposComponent } from './pages/grupos/grupos.component';
 import { DescuentosComponent } from './pages/descuentos/descuentos.component';
 import { ActividadesDescuentosComponent } from './pages/actividades-descuentos/actividades-descuentos.component';
-import { WrkInventarioComponent } from './pages/wrk-inventario/wrk-inventario.component';
+import { WrkInventarioComponent } from './pages/wrk-inventario/wrk-inventario.component'; 
+import { IndexComponent } from './pages/index/index.component';
 
 const routes: Routes = [{ path: '', component: ApiComponent , 
                        children:[
+                        { path: 'inicio', component: IndexComponent    } , 
                         { path: 'inventario', component: InventariosComponent    } , 
                         { path: 'inventario/wrk', component: WrkInventarioComponent},
                         { path: 'categorias', component: CategoriasComponent} , 
@@ -25,7 +27,8 @@ const routes: Routes = [{ path: '', component: ApiComponent ,
                         { path: 'lotes', component: LotesComponent} , 
                         { path: 'gruposProductos', component: GruposComponent} , 
                         { path: 'descuentos', component: DescuentosComponent} , 
-                        { path: 'actividades', component: ActividadesDescuentosComponent} , 
+                        { path: 'actividades', component: ActividadesDescuentosComponent} ,  
+                        { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
                                  ] }];
 
 @NgModule({

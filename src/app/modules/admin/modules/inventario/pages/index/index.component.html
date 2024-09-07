@@ -1,0 +1,35 @@
+<div class="container-fluid contenedor">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class='centrado'>Manejo de Inventarios</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5">
+            <div class="row" *ngFor="let item of listado.izquierdo" class="p2">
+                <div class="col-sm-12">
+                    <h3 class='boton_activo'>
+                        <a  [routerLink]="item.direccion" class="menuPrincipalLink " style="text-decoration: none;"
+                        [innerHTML]="getSanitizedHtml(item.img + ' &nbsp;&nbsp; ' + item.display_nombre)"
+                        >
+                        </a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+
+            <div class="row" *ngFor="let item2 of listado.derecho">
+                <div class="col-sm-12">
+                    <h3 class='boton_activo'>
+                        <a [routerLink]="item2.direccion" style="text-decoration: none;" class="menuPrincipalLink"  [innerHTML]="getSanitizedHtml(item2.img + ' &nbsp;&nbsp; ' + item2.display_nombre)" >
+                          
+                        </a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

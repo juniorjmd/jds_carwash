@@ -7,7 +7,7 @@ import { select } from 'src/app/interfaces/generales.interface';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { categoriaRequest, ProductoRequest } from 'src/app/interfaces/producto-request';
 import { MatDialog } from '@angular/material/dialog';
-import { AdminCategoriasComponent } from '../../../modals/admin-categorias/admin-categorias.component';
+import { AdminCategoriasComponent } from '../../modals/admin-categorias/admin-categorias.component';
 import { tap } from 'rxjs';
 
 @Component({

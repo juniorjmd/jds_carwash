@@ -3,6 +3,7 @@
     color : rgb(4 156 248) !important;
 }
 
+
 .menuPrincipalLink {
     color: #4e085a !important;
 }
@@ -272,8 +273,17 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+@media (max-height: 720px) {
+       
+#navbarNavMenu{
+    height: 600px !important;
+    overflow-y: auto !important;
+}
+  
+}
+
 @media (max-height: 600px) {
-    .container {
+   .container {
         height: 500px !important;
         overflow-y: auto !important;
     }

@@ -1,0 +1,14 @@
+UPDATE `recurso` SET `padreId` = '1' WHERE (`id` = '3');
+UPDATE `recurso` SET `padreId` = '1' WHERE (`id` = '4');
+UPDATE `recurso` SET `padreId` = '9' WHERE (`id` = '5');
+UPDATE `recurso` SET `padreId` = '9' WHERE (`id` = '10');
+UPDATE `recurso` SET `padreId` = '9' WHERE (`id` = '11');
+UPDATE `recurso` SET `padreId` = '9' WHERE (`id` = '60');
+UPDATE `recurso` SET `padreId` = '9' WHERE (`id` = '59');
+
+
+INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `estado`, `img`, `padreId`, `display_nombre`) VALUES ('5', 'marcas', '1', '<i class=\"bi bi-briefcase\"></i> ', '9', 'Marcas');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('62', '/home/admin');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('62', 'inventarios');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('62', 'marcas');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '62');

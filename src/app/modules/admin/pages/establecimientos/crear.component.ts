@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TiposEstablComponent } from './tipos-establ.component'; 
 import Swal from 'sweetalert2';
 import { BodegasModule } from 'src/app/models/bodegas/bodegas.module'; 
-import { ModalCntSubCuentasComponent } from '../../../modals/cuentasContables/cnt-sub-cuentas.component';
+import { ModalCntSubCuentasComponent } from '../../modals/cuentasContables/cnt-sub-cuentas.component';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { tap } from 'rxjs';
 import { establecimientosRequest } from 'src/app/interfaces/producto-request';

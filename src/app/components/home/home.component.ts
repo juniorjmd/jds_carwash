@@ -23,7 +23,11 @@ export class HomeComponent implements OnInit {
     private cntService:CntContablesService ,  
     private serviceCaja:cajasServices , 
     private _Router: Router , private usuarioService:usuarioService,  
-  ) { }
+  ) { 
+
+    const height = window.innerHeight;
+    //alert(height)
+  }
 
     
 

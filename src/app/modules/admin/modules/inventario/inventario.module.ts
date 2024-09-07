@@ -25,6 +25,7 @@ import { MarcasComponent } from './pages/marcas/marcas.component';
 import { ProductosComponent } from './pages/productos/productos.component';
 import { WrkInventarioComponent } from './pages/wrk-inventario/wrk-inventario.component';
 import { FormsModule } from '@angular/forms';
+import { IndexComponent } from './pages/index/index.component';
 
 
 
@@ -51,7 +52,8 @@ import { FormsModule } from '@angular/forms';
     ModalCrearGrupoComponent,
     ModalCrearDescuentoComponent,
     ModalCrearActDescuentoComponent,
-    WrkInventarioComponent
+    WrkInventarioComponent,
+    IndexComponent
   ],
   imports: [
     CommonModule,

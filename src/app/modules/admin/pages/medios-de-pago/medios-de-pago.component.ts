@@ -7,7 +7,7 @@ import { loading } from 'src/app/models/app.loading';
 import { select } from 'src/app/interfaces/generales.interface';
 import { MediosDePagoModel } from 'src/app/models/ventas/medios-de-pago.model';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
-import { ModalCntSubCuentasComponent } from '../../../modals/cuentasContables/cnt-sub-cuentas.component';
+import { ModalCntSubCuentasComponent } from '../../modals/cuentasContables/cnt-sub-cuentas.component';
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
 

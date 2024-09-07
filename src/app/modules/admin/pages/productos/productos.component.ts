@@ -14,7 +14,7 @@ import { BuscarProdDirectoComponent } from 'src/app/modules/pos/modals/buscar-pr
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import Swal from 'sweetalert2';
 import { categoriaRequest, marcaRequest, presentacionPrdRequest } from 'src/app/interfaces/producto-request';
-import { ModalUpdateProductoComponent } from '../../../modals/modalUpdateProducto/modalUpdateProducto.component';
+import { ModalUpdateProductoComponent } from '../../modals/modalUpdateProducto/modalUpdateProducto.component';
 import { PresentacionPrdModel } from 'src/app/models/presentacionPrdModel';
 import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module';
 @Component({
