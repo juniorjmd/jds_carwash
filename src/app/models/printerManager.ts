@@ -3,18 +3,31 @@ import { vwsucursal } from "./app.db.interfaces";
 import { DevolucionModel, DocumentosModel } from "./ventas/documento.model";
 import { cajasResumenModel } from "./ventas/cajasResumen.model";
 import { currencyDollar } from "ngx-bootstrap-icons";
-
+import { Inject, inject, Injectable } from "@angular/core";
+import { cajasServices } from "../services/Cajas.services";
+import { establecimientoModel } from "./ventas/establecimientos.model";
+@Injectable({
+  providedIn: 'root',
+})
 export class PrinterManager {
   private doc :DocumentosModel = new DocumentosModel() ; 
   private docDev :DevolucionModel = new DevolucionModel() ; 
   private static sucursal?: vwsucursal;
   private cierre:cajasResumenModel = new cajasResumenModel();
   private tipoImpresora : String = '';
+  private establecimientos :establecimientoModel[] = [] ;
+  // private serviceCaja =  inject(cajasServices);
+  public establecimiento?:establecimientoModel;
   // Método estático para establecer la sucursal
   public static setSucursal(sucursal: vwsucursal) {
     PrinterManager.sucursal = sucursal;
   }
-  constructor() { } 
+
+  constructor(private serviceCaja: cajasServices ) { 
+    this.serviceCaja.currentArrEsta.subscribe({next:(value=>{
+      if(value) this.establecimientos = value 
+    })});
+   } 
 
 
   public printBonoDevolucion(impresoraPos = true) {
@@ -281,32 +294,57 @@ private footerCierre():string{
   } 
   setDocumento( doc :DocumentosModel ){
     this.doc =  doc ; 
+    if(this.doc.establecimiento != undefined){
+     this.establecimiento = this.establecimientos.find( (x:establecimientoModel)=>x.id == this.doc.establecimiento )
+    }else{
+      this.establecimiento = this.establecimientos[0]
+    }
+
    }  
   private generateCabecera(){
   console.log('documento a imprimir' ,this.doc);
   
     let cabecera = '';
     if (this.tipoImpresora == 'POS'){
-    cabecera = ` <div style="text-align: center;"> 
-    <h2>${PrinterManager.sucursal?.nombre_suc}</h2>
-    <h2>${this.doc.nombreEsta}</h2>
-   `; 
+      cabecera = ` <div style="text-align: center;">   ` ;
       if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
-        cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` ;
-      cabecera += ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>` ;
-      cabecera += ` <p> ${PrinterManager.sucursal?.dir}</p>` ;
-      cabecera += ` <p>${PrinterManager.sucursal?.ciudad} - Tel: ${PrinterManager.sucursal?.tel1}</p>` ;
+        cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` ; 
 
-
-
-
+      cabecera += ` <h2>${this.establecimiento?.nombre}</h2>  `; 
+      cabecera += (this.establecimiento?.nit.trim() != '' )? ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`: ` <p>Nit: ${this.establecimiento?.nit}</p>`  ;
+    
+      cabecera += (this.establecimiento?.direccion.trim() != '' )?  ` <p> ${PrinterManager.sucursal?.dir}</p>`:  ` <p> ${this.establecimiento?.direccion}</p>` ;
+      cabecera += '<p> '
+      cabecera += (this.establecimiento?.ciudad.trim() != '' )?  ` ${PrinterManager.sucursal?.ciudad} `:  ` ${this.establecimiento?.ciudad} ` ;
+      cabecera += ' - '
+      cabecera += (this.establecimiento?.tel1.trim() != '' )?  `Tel: ${PrinterManager.sucursal?.tel1}`:  `Tel: ${this.establecimiento?.tel1} ` ;
+      cabecera += '</p> '; 
 
     }else{
-      cabecera = `<div>
-      <table><tr><td>
-      <h2>${this.doc.nombreEsta} - ${PrinterManager.sucursal?.nombre_suc}</h2></td> <td></td></tr>
-      <tr><td><h4>Nit: ${PrinterManager.sucursal?.nit_sucursal}</h4></td> <td></td></tr> 
-      </div>`;
+      cabecera = `<div><table><tr><td><h2>`;
+      if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
+        cabecera +=   PrinterManager.sucursal?.nombre_sucursal_sec + ' - ' ; 
+
+      cabecera += `${this.establecimiento?.nombre}</h2></td> <td></td></tr><tr><td>`;
+
+
+
+/*
+      cabecera += `<h4>Nit: ${PrinterManager.sucursal?.nit_sucursal}</h4>`;
+
+      cabecera += (this.establecimiento?.nit.trim() != '' )? ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`: ` <p>Nit: ${this.establecimiento?.nit}</p>`  ;
+    
+      cabecera += (this.establecimiento?.direccion.trim() != '' )?  ` <p> ${PrinterManager.sucursal?.dir}</p>`:  ` <p> ${this.establecimiento?.direccion}</p>` ;
+      cabecera += '<p> '
+      cabecera += (this.establecimiento?.ciudad.trim() != '' )?  ` ${PrinterManager.sucursal?.ciudad} `:  ` ${this.establecimiento?.ciudad} ` ;
+      cabecera += ' - '
+      cabecera += (this.establecimiento?.tel1.trim() != '' )?  `Tel: ${PrinterManager.sucursal?.tel1}`:  `Tel: ${this.establecimiento?.tel1} ` ;
+   */
+
+
+
+
+      cabecera += `</td> <td></td></tr></div>`; 
     }
     return cabecera
   } 

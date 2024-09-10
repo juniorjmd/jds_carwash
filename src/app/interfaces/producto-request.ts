@@ -17,6 +17,10 @@ import { TransaccionesModel, vwTransaccionesModel } from "../models/transaccione
 import { cajaModel } from "../models/ventas/cajas.model";
 import { DocumentosComprasModel, DocumentosModel } from "../models/ventas/documento.model";
 import { establecimientoModel } from "../models/ventas/establecimientos.model";
+import { OperacionesComponent } from "../modules/admin/modules/cuentas-contables/pages/operaciones/operaciones.component";
+import { TrasladosCntComponent } from "../modules/admin/modules/traslados-cnt/traslados-cnt.component";
+import { CntOperacionPrestablecidas } from "./traslados_cnt/cnt_operacion_prestablecidas.";
+import { CntOperacionPrestablecidasCuentas } from "./traslados_cnt/cnt_operacion_prestablecidas_cuentas.";
 
 export interface ProductoRequest { 
   data: ProductoModel[]; 
@@ -114,6 +118,21 @@ export interface cntGrupoRequest {
   numdata: number;
   error: string;
 }
+
+export interface trasladosCntRequest { 
+  data: CntOperacionPrestablecidas[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+export interface trasladosCntCuentasRequest { 
+  data: CntOperacionPrestablecidasCuentas[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
 export interface empleadoRequest { 
   data: EmpleadoModel[];
   query: string;

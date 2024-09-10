@@ -1,0 +1,24 @@
+<div class="container border border-1 border-muted rounded">
+    <div class="row pt-1 border-bottom  border-1 border-muted ">
+        <div class="col-10">
+            <h2>Grupos de producto</h2>
+        </div>
+        <div class="col-2">
+            <button tooltip='Nueva Grupo de producto' class="btn btn-success rounded-circle custom-button" (click)="openModal()">+</button>
+        </div>
+    </div>
+
+    <div class="row pt-2">
+        <div class="col-12" *ngIf="datos.length > 0">
+         
+            <table class="table">
+<tr *ngFor="let item of datos">
+    <td> {{item.nombre_preforma}}</td> <td >
+        <button (click)="ejecutarPerforma(item)" class="btn btn-success" [title]="item.descripcion" >ejecutar</button> &nbsp;
+        <button (click)="editar(item)" class="btn btn-info" [title]="item.descripcion" ><i class="bi bi-pencil"></i></button>&nbsp;
+        <button (click)="eliminar(item)" class="btn btn-danger" [title]="item.descripcion" ><i class="bi bi-trash"></i></button></td>
+</tr>
+            </table>
+        </div>
+    </div>
+</div>

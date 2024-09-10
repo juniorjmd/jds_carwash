@@ -1,49 +1,72 @@
-<div class="container-fluid contenedor" style="overflow-y: auto;width: 100%; height: 90%;">
+<div class="container-fluid contenedor" style="overflow-y: auto;width: 100%; height: 92%;">
     <div class="row">
         <div class="col-sm-12">
             <h2 class="centrado">Creación de Establecimientos</h2>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-2">&nbsp;</div>
-        <div class="col-sm-1">Nombre</div>
-        <div class="col-sm-3">
-            <input type="text" class="o_input" [(ngModel)]="newEsta.nombre" placeholder="Nombre del Establecimiento...">
-        </div>
-        <div class="col-sm-1" style="margin-right: 15px;">Estado</div>
-        <div class="col-sm-3">
-            <select class="o_input" [(ngModel)]="newEsta.estado">
+        <div class="col-sm-2">&nbsp;</div> 
+        <div class="col-sm-2"><span>Nombre</span>
+            <input type="text" class="form-control" [(ngModel)]="newEsta.nombre" placeholder="Nombre del Establecimiento...">
+        </div> 
+        <div class="col-sm-1"><span>Estado</span>
+            <select class="form-control" [(ngModel)]="newEsta.estado">
                 <option value=0>Estado</option>
                 <option value=1>Activo</option>
                 <option value=2>Inactivo</option>
             </select>
-        </div>
-    </div><br>
-    <div class="row">
-        <div class="col-sm-2">&nbsp;</div>
-        <div class="col-sm-1">Tipo Esta.</div>
-        <div class="col-sm-3">
+        </div> 
+        <div class="col-sm-2"><span>Tipo establecimiento</span>
             <div class="btn-group" role="group" aria-label="Basic example">
-                <select class="o_input" [(ngModel)]="newEsta.tipo">
+                <select class="form-control" [(ngModel)]="newEsta.tipo">
                 <option value=0>Tipo Establecimiento</option>
                 <option *ngFor="let item of tiposEsta" [ngValue]="item.id">{{item.nombre}}</option> 
             </select>
                 <button class="btn btn-success" (click)='mantenerTiposEsta()'><i class="bi bi-gear"></i></button>
             </div>
-        </div>
-        <div class="col-sm-1">Locación Fisica(bodega)</div>
-        <div class="col-sm-3">
-            <select class="o_input"   [(ngModel)]="newEsta.idBodegaStock"> 
+        </div> 
+        <div class="col-sm-2"><span>Bodega Fisica</span>
+            <select class="form-control"   [(ngModel)]="newEsta.idBodegaStock"> 
                 <option *ngFor="let item of locationStore" [ngValue]="item.id">{{item.nombre}}</option> 
             </select>
         </div>
+    </div> 
+    <div class="row"> 
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2">
+            <span>Nit : </span>
+            <input class="form-control"   [(ngModel)]="newEsta.nit"/>
+        </div>
+        <div class="col-sm-2">
+            <span>departamento : </span>
+            <input class="form-control"   [(ngModel)]="newEsta.departamento"/>
+        </div>
+        <div class="col-sm-2">
+            <span>ciudad : </span>
+            <input class="form-control"   [(ngModel)]="newEsta.ciudad"/>
+        </div>
+      
+    </div>
+        <div class="row">  
+            <div class="col-sm-2"></div>  <div class="col-sm-3"> 
+                <span>direccion : </span>
+                <input class="form-control"   [(ngModel)]="newEsta.direccion"/>
+            </div> 
+            <div class="col-sm-2">
+                <span>telefono 1 : </span>
+                <input class="form-control"   [(ngModel)]="newEsta.tel1"/>
+            </div>
+            <div class="col-sm-2">
+                <span>telefono 2 : </span>
+                <input class="form-control"   [(ngModel)]="newEsta.tel2"/>
+            </div>
     </div>
     <hr> 
     <div class="row"> 
         <div class="col-sm-2">&nbsp;</div>
-        <div class="col-sm-1" style="margin-right: 15px;">Descripción</div>
-        <div class="col-sm-3">
-            <textarea [(ngModel)]="newEsta.descripcion" class="o_input" placeholder="Descripcion..."></textarea>
+        
+        <div class="col-sm-3"><span>Descripción</span>
+            <textarea [(ngModel)]="newEsta.descripcion" class="form-control" placeholder="Descripcion..."></textarea>
         </div>
         <div class="col-sm-3 justify-content-center">
             <button class="btn btn-outline-primary" role="button" (click)='guardarCaja()'>
@@ -54,6 +77,7 @@
             </button>
         </div>
     </div>
+
     <hr> 
  <div class="row">
  <h4>Compras</h4>

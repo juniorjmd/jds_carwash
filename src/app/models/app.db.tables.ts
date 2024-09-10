@@ -33,7 +33,9 @@
     tiposVehiculos:"inv_mst_tipos_vehiculos",
     inv_descuentos:"inv_descuentos",
     inv_inventario_ingreso_auxiliar:'inv_inventario_ingreso_auxiliar',
-    transacciones_tmp:'cnt_transacciones_tmp'
+    transacciones_tmp:'cnt_transacciones_tmp', 
+    operaPrestablecidas:'cnt_operacion_prestablecidas', 
+    operaPrestablecidasCuentas:'cnt_operacion_prestablecidas_cuentas'
 
  }
 

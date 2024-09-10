@@ -10,6 +10,7 @@ import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { printer, url } from 'src/app/models/app.db.url';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
+import { cajasServices } from 'src/app/services/Cajas.services';
 
 @Component({
   selector: 'app-ver-facturas',
@@ -23,7 +24,7 @@ export class VerFacturasComponent implements OnInit {
   codCliente:string;
   fecha1:string;
   fecha2:string;
-  constructor(public loading : loading,
+  constructor(public loading : loading,private serviceCaja:cajasServices,
     private documentoService : DocumentoService, private inicioService:DatosInicialesService ) {
        this.codFactura = '';
        this.codCliente= '';
@@ -126,7 +127,7 @@ const day = date.getDate(); // */
   }
   async imprimirFactura(factura:DocumentosModel)
   { console.log(factura); 
-   let printerManager =  new PrinterManager()
+   let printerManager =  new PrinterManager(this.serviceCaja);;
    printerManager.setDocumento(factura);
    printerManager.printReceipt();
   } 

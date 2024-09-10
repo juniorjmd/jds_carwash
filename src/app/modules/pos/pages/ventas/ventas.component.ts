@@ -1092,7 +1092,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     doc = this.documentoRetorno;
 
     console.log('documento retorno',doc,'sucursal ', this.sucursal); 
-    let printM =  new PrinterManager();
+    let printM =  new PrinterManager(this.serviceCaja);;;
     printM.setDocumento(this.documentoRetorno);
     printM.printReceipt();
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DevolucionModel, DocumentosModel } from 'src/app/models/ventas/documento.model';
+import { cajasServices } from 'src/app/services/Cajas.services';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { DocumentoService } from 'src/app/services/documento.service';
 import Swal from 'sweetalert2';
@@ -13,7 +14,7 @@ import Swal from 'sweetalert2';
 export class ListarComponent implements OnInit {
   codFactura:string; 
   documentos : DevolucionModel[] = [];
-  constructor(  private inicioService:DatosInicialesService,
+  constructor( private serviceCaja:cajasServices, private inicioService:DatosInicialesService,
     private documentoService : DocumentoService ) {
        this.codFactura = '';
        this.getDocumentos();
@@ -92,7 +93,7 @@ export class ListarComponent implements OnInit {
   }
   async imprimirFactura(factura:DevolucionModel)
   { console.log(factura); 
-   let printerManager =  new PrinterManager();
+   let printerManager =  new PrinterManager(this.serviceCaja);;;
    printerManager.setDocumentoDevolucion(factura)
    printerManager.printBonoDevolucion(false) ;
   } 

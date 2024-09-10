@@ -6,6 +6,7 @@ export interface Categoria {
     'tipo':string,
     'tipoDescripcion' ?:string,
     'contador'?:number, 
-  idCuentaContable?:number,
-  NombreCuentaContable?:string,
+    'idPadreCategoria':number,
+  'idCuentaContable'?:number,
+  'NombreCuentaContable'?:string,
 }

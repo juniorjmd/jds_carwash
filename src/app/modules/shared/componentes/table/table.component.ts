@@ -25,13 +25,13 @@ export class TableComponent implements OnInit , AfterViewInit {
   showEditCol :any[][] = [] ;
 
   constructor( private updLinea : UpdateLineService){
-   console.log(this.datosTabla);
+   console.log('tableComponent' , this.datosTabla);
   }
   ngOnInit() {
   this.cerrarEdicionAll();
-   /* console.log('inicio tabla')
+   console.log('inicio tabla')
     console.log(this.datosTabla);
-    $(this.table.nativeElement).DataTable();*/
+    $(this.table.nativeElement).DataTable(); 
   }
 cerrarEdicionAll(){
   this.datosTabla.forEach((dato,  index )=>{

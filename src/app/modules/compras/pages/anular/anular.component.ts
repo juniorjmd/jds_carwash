@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { pagosSaldoNotasDebitoComponent } from '../../modals/pagos-saldo-notas-debito/pagos-saldo-notas-debito.component';
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
+import { cajasServices } from 'src/app/services/Cajas.services';
 
 @Component({
   selector: 'app-anular',
@@ -24,7 +25,7 @@ export class AnularComprasComponent implements OnInit {
   private  docService = inject(DocumentoService); 
   private dInicialServ= inject(DatosInicialesService)
   private newAbrirDialog= inject(MatDialog)
-  constructor(   ){ 
+  constructor(  private serviceCaja:cajasServices ){ 
 
    this.docEnvio = {
     idEsta:0,
@@ -46,7 +47,7 @@ printDocumento(doc:DocumentosModel){
   console.log('documento a imprimir',doc);
   
   if(doc  != undefined  && doc.orden != undefined ){
-    let printerManager:PrinterManager =  new PrinterManager();
+    let printerManager:PrinterManager =  new PrinterManager(this.serviceCaja);;;
     printerManager.setDocumento(doc )
     printerManager.printReceipt();
   }

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core'; 
 import { loading } from 'src/app/models/app.loading';
 import { cajasServices } from 'src/app/services/Cajas.services'; 
-import { establecimientoModel } from 'src/app/models/ventas/establecimientos.model';
-import { Establecimientos } from 'src/app/interfaces/establecimientos.interface';
+import { establecimientoModel } from 'src/app/models/ventas/establecimientos.model'; 
 import { TiposEstablecimientosModel } from 'src/app/models/ventas/tipos-establecimientos.model';
 import { TiposEstablecimientos } from 'src/app/interfaces/tipos-establecimientos';
 import { MatDialog } from '@angular/material/dialog';

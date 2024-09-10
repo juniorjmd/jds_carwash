@@ -31,7 +31,8 @@ const routes: Routes = [{ path : '' , component: IndexComponent,
                 { path : 'tipoDocumentos' ,      component: TiposDeDocumentosComponent},
                 { path : 'establecimientos' ,    component: CrearComponent}, 
                 { path : 'impuestos', component:ImpuestosComponent}, 
-                { path : 'caja' ,      component: CajasNuevaComponent},
+                { path : 'caja' ,      component: CajasNuevaComponent}, 
+                { path: 'trasladosCnt', loadChildren: () => import('./modules/traslados-cnt/traslados-cnt.module').then(m => m.TrasladosCntModule) },
                 { path : 'cajaDetalle:id' ,      component: CajasDetalleComponent},
                 { path : 'actividadesDescuento' ,      component: ActividadDescuentoComponent,children:[
                   { path : 'listar' ,      component: ListarActividadComponent},
@@ -41,7 +42,8 @@ const routes: Routes = [{ path : '' , component: IndexComponent,
                 
                 { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
               ]          
-              } ];
+              },
+              ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

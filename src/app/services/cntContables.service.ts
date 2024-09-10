@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { httpOptions, url } from '../models/app.db.url';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntSubCuentaVwRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest } from '../interfaces/producto-request';
+import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntSubCuentaVwRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest, trasladosCntRequest } from '../interfaces/producto-request';
 import { actions } from '../models/app.db.actions';
 import { vistas } from '../models/app.db.view';
 import { CntGruposModel } from '../models/cnt-grupos/cnt-grupos.module';
@@ -37,12 +37,33 @@ constructor(private http: HttpClient  ) {
     console.log('servicios cuentas contables inicializado');  
   }
 
+  getTrasladoByType(tipo:string){ 
+    
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : TABLA.operaPrestablecidas,
+      "_where" : [{"columna" : "tipo" , "tipocomp" : "=" , "dato" : tipo } ]
+     }; 
+     return this.http.post<trasladosCntRequest>(url.action , datos, httpOptions()) ;
+  }
+
+  
+
   setNewOperacion(_operacion:CntOperacionesModel){ 
     let datos = {"action": actions.action_generar_nueva_operacion ,
       _operacion
    };
    console.log('setNewOperacion' ,url.actionAdmin , datos, httpOptions());
    return this.http.post(url.actionAdmin , datos, httpOptions()) ;
+  }
+
+  deleteItemListadoOprPre(dato:any){ 
+    let where =   [{"columna" : "id" , "tipocomp" : "=" , dato}   ];
+    let datos = {"action": actions.actionDelete ,
+    "_tabla" : TABLA.operaPrestablecidas,
+    "_where" : where  
+   };
+   console.log('borrar tablas operaPrestablecidas ' ,url.action , datos, httpOptions());
+   return this.http.post(url.action , datos, httpOptions()) ;
   }
   
   deleteListadoOprTmp(){ 

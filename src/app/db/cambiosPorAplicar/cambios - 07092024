@@ -12,3 +12,18 @@ INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('62', '/ho
 INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('62', 'inventarios');
 INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('62', 'marcas');
 INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '62');
+
+
+ALTER TABLE `jdpsoluc_l_monrroy`.`establecimiento` 
+ADD COLUMN `tel1` VARCHAR(45) NULL DEFAULT '0' AFTER `idDescuentoVenta`,
+ADD COLUMN `tel2` VARCHAR(45) NULL DEFAULT '0' AFTER `tel1`,
+ADD COLUMN `direccion` TEXT NULL AFTER `tel2`,
+ADD COLUMN `pais` VARCHAR(45) NULL DEFAULT 'Colombia' AFTER `direccion`,
+ADD COLUMN `departamento` VARCHAR(45) NULL DEFAULT 'Atlantico' AFTER `pais`,
+ADD COLUMN `ciudad` VARCHAR(100) NULL DEFAULT 'Barranquilla' AFTER `departamento`,
+ADD COLUMN `nit` VARCHAR(100) NULL DEFAULT '' AFTER `ciudad`,
+ADD COLUMN `logo` TEXT NULL AFTER `nit`;
+
+ALTER TABLE `cnt_operaciones` 
+ADD COLUMN `vendedor` INT NOT NULL DEFAULT 1 AFTER `automatica`,
+ADD COLUMN `establecimiento` INT NOT NULL DEFAULT 1 AFTER `vendedor`;

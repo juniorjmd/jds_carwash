@@ -42,7 +42,7 @@ export class AbrirCajaComponent implements OnInit {
   abrirResumen(cajaResumen : cajasResumenModel){
     
     /*["/home", "pos"]*/ 
-    let printerManager : PrinterManager =  new PrinterManager();
+    let printerManager : PrinterManager =  new PrinterManager(this.serviceCaja);;;
     printerManager?.printClose(cajaResumen)
     this.newAbrirCajaDialog.open(ResumenCajaComponent,{ data:cajaResumen})
     .afterClosed()

@@ -11,6 +11,7 @@ import { printer, url } from 'src/app/models/app.db.url';
 import { CurrencyPipe } from '@angular/common';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
+import { cajasServices } from 'src/app/services/Cajas.services';
 
 @Component({
   selector: 'app-reimpimir-facturas',
@@ -20,7 +21,7 @@ import { DatosInicialesService } from 'src/app/services/DatosIniciales.services'
 export class ReimpimirFacturasComponent implements OnInit {
   codFactura:string; 
   documentos : DocumentosModel[] = [];
-  constructor(public loading : loading, private inicioService:DatosInicialesService,
+  constructor(public loading : loading, private inicioService:DatosInicialesService,private serviceCaja: cajasServices,
     private documentoService : DocumentoService ) {
        this.codFactura = '';
      }
@@ -98,7 +99,7 @@ export class ReimpimirFacturasComponent implements OnInit {
   }
   async imprimirFactura(factura:DocumentosModel)
   { console.log(factura); 
-   let printerManager =  new PrinterManager();
+   let printerManager =  new PrinterManager(this.serviceCaja);;
    printerManager.setDocumento(factura)
    printerManager.printReceipt() ;
   } 

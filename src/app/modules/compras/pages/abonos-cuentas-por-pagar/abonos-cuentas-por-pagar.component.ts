@@ -179,7 +179,7 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
   }
 
   async printer_factura_final() {  
-    let printM =  new PrinterManager();
+    let printM =  new PrinterManager(this.serviceCaja);;;
     printM.setDocumento(this.docActivo);
     printM.printReceipt(false);
     this.buscarCreditoCliente();

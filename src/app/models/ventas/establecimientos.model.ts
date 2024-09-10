@@ -52,7 +52,16 @@ export class establecimientoModel{
 
     nombreRetefuenteVenta:string  = '';  
     nombreDescuentoCompra:string  = '';  
-    nombreDescuentoVenta:string  = '';  
+    nombreDescuentoVenta:string  = '';   
+    tel1:string = '';
+    tel2:string = '';
+    direccion:string = '';
+    pais:string = '';
+    departamento:string = '';
+    ciudad:string = '';
+    nit:string = '';
+    logo:string = '';
+
     constructor(cargaEsta : Establecimientos|undefined){
         this.estado = 0;
         this.tipo = 0;

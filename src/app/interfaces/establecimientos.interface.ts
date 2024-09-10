@@ -35,4 +35,13 @@ idBodegaVitual?:number ;
     idCCntCostoVenta:number  ; 
     nombreCCntCostoVenta:string   ; 
     nombreCCntVentas:string   ; 
+    
+    tel1?:string;
+    tel2?:string;
+    direccion?:string;
+    pais?:string;
+    departamento?:string;
+    ciudad?:string;
+    nit?:string;
+    logo?:string;
 }

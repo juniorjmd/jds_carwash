@@ -79,8 +79,11 @@ vw_cnt_oper_manuales:'vw_cnt_operaciones_manuales',
 vw_cnt_cuenta_mayores: 'vw_cnt_cuenta',
 vw_transacciones: 'vw_transacciones',
 vw_transacciones_tmp: 'vw_transacciones_tmp',
-vendedores: 'vw_mst_per_empleados_vendedores'
+vendedores: 'vw_mst_per_empleados_vendedores',
 
+operaPrestablecidas:'cnt_operacion_prestablecidas',
+
+operaPrestablecidasCuentas:'cnt_operacion_prestablecidas_cuentas'
 
 
 

@@ -7,6 +7,7 @@ import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { AbonosCuentasXCobrarComponent } from 'src/app/modules/pos/modals/abonos-cuentas-xcobrar/abonos-cuentas-xcobrar.component';
+import { cajasServices } from 'src/app/services/Cajas.services';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { DocumentoService } from 'src/app/services/documento.service';
 import Swal from 'sweetalert2';
@@ -23,7 +24,7 @@ export class DevolucionesCreateComponent implements OnInit {
   public docAbono:DocumentosModel = new DocumentosModel(); 
   private  docService = inject(DocumentoService); 
   private dInicialServ= inject(DatosInicialesService)
-  constructor(   ){  
+  constructor( private serviceCaja:cajasServices,   ){  
 
   }
   ngOnInit(): void {
@@ -38,7 +39,7 @@ printDocumento(doc:DocumentosModel){
   console.log('documento a imprimir',doc);
   
   if(doc  != undefined  && doc.orden != undefined ){
-    let printerManager:PrinterManager =  new PrinterManager();
+    let printerManager:PrinterManager =  new PrinterManager(this.serviceCaja);;;
     printerManager.setDocumento(doc )
     printerManager.printReceipt();
   }

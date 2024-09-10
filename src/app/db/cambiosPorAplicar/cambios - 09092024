@@ -1,0 +1,980 @@
+DROP procedure IF EXISTS `sp_generar_movimientos_cuenta_inventario`;
+DROP procedure IF EXISTS `sp_generar_movimientos_cuenta_inventario`; 
+DELIMITER $$ 
+CREATE  PROCEDURE `sp_generar_movimientos_cuenta_inventario`(IN p_idDocumento INT)
+BEGIN
+    DECLARE done INT DEFAULT FALSE; 
+    DECLARE _idUsuario INT;
+    DECLARE _idPersona , id_resumen_iva INT;
+    DECLARE v_nombreProducto VARCHAR(255); 
+    DECLARE v_total_IVA DECIMAL(10,2); 
+    DECLARE v_total_presioSinIVa , _descuento DECIMAL(16,2); 
+    DECLARE v_cant_real_descontada DECIMAL(10,2); 
+    
+    DECLARE v_total_IVA_g DECIMAL(10,2); 
+    DECLARE v_total_presioSinIVa_g DECIMAL(10,2); 
+    DECLARE v_total_venta_g DECIMAL(10,2); 
+    
+    DECLARE v_costo DECIMAL(10,2); 
+    declare _movimiento int ; 
+    declare _idCuentaContable int ; 
+    
+    declare   v_idCCntCCobrar,
+              v_idCCntCPagar,
+              v_idCCntIvaCompra,
+              v_idCCnttIvaVenta,
+              v_idCCntCostoVenta ,
+              v_idCCntVenta ,  
+                cuentaRetefuente  , _establecimiento , _cod_vendedor,
+              cuentaDescuento int;
+    declare fechaDocumento date;
+    declare _idTercero int ; 
+    declare _NombreCaja varchar(50) ; 
+    declare _tipoDocumento int ; 
+    declare _idDocumentoFinal text ; 
+    declare _caja int ; 
+    
+    DECLARE cur CURSOR FOR 
+    SELECT nombreProducto,  total_IVA, (total_presioSinIVa - total_descuento)  , cant_real_descontada , (vw_inv_mst_producto.idCuentaContable) ,
+    (precioCompra * cant_real_descontada)
+    FROM  documentos_listado_productos 
+      inner join vw_inv_mst_producto on vw_inv_mst_producto.id = documentos_listado_productos.idProducto
+    WHERE 
+        orden = p_idDocumento 
+        and estado_linea_venta = 'A'
+        ; 
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE; 
+    SET done = false;
+    
+      select  idCCntCCobrar,  idCCnttIvaVenta, idCCntCostoVenta, idCCntVenta ,
+            tipoDocumentoFinal , nombreCaja , cliente ,  
+             valorParcial  , valorIVA , totalFactura , usuario , idDocumentoFinal , caja , fecha , 
+              idRetefuenteVenta ,  idDescuentoVenta , descuento , establecimiento , cod_vendedor
+        into  v_idCCntCCobrar, v_idCCnttIvaVenta,  v_idCCntCostoVenta ,  v_idCCntVenta , 
+             _tipoDocumento , _NombreCaja , _idTercero ,
+			  v_total_presioSinIVa_g , v_total_IVA_g, v_total_venta_g  , _idUsuario , _idDocumentoFinal , _caja , fechaDocumento ,
+                cuentaRetefuente  , cuentaDescuento ,_descuento,  _establecimiento , _cod_vendedor
+    FROM vw_documentos where orden = p_idDocumento; 
+     
+   
+        insert into cnt_operaciones ( 
+               usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona , vendedor , establecimiento )
+        values ( _idUsuario ,now() , now(), 
+           concat( 'Opr. auto. POS - Mov. Cnt. por cobrar venta','-Doc => ',_idDocumentoFinal ) ,
+           concat('Documento creado desde punto de venta => caja : ', _caja , '-',_NombreCaja , '-fact=> ',_idDocumentoFinal)
+           ,p_idDocumento , _idTercero  , _cod_vendedor , _establecimiento ) ;  
+           
+          select max(id)  into _movimiento  
+          from cnt_operaciones where idDocumento =p_idDocumento;
+     
+    --   v_total_presioSinIVa_g , v_total_IVA_g, v_total_venta_g 
+    -- genera cuenta por cobrar  
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( v_idCCntCCobrar ,  v_total_venta_g , 0 , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero);
+		if _descuento > 0 then 
+       --  cuentaDescuento
+        	insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( cuentaDescuento ,  _descuento , 0 , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero);
+        end if;
+         -- genera iva  
+         if v_total_IVA_g > 0 then 
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante  , cod_tercero) 
+			values
+			( v_idCCnttIvaVenta  , 0,  v_total_IVA_g , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero );  
+					
+					select count(0) into id_resumen_iva from 
+					resumen_iva_en_compra_y_venta where 
+					mes = month(fechaDocumento)  and  
+					anio  =   year(fechaDocumento) ;
+                    if id_resumen_iva  = 0 then
+                       insert into resumen_iva_en_compra_y_venta (valor_iva_venta ,valor_iva_compra,fecha_creacion,mes ,anio) values (
+                       0,0, fechaDocumento , month(fechaDocumento)  ,   year(fechaDocumento)               );
+                    end if;
+                    select id into id_resumen_iva from 
+					resumen_iva_en_compra_y_venta where 
+					mes = month(fechaDocumento)  and  
+					anio  =   year(fechaDocumento) ;
+                    
+                    update resumen_iva_en_compra_y_venta set valor_iva_venta = valor_iva_venta + v_total_IVA_g ,
+                    fecha_ultimo_insert_venta = fechaDocumento
+                    where id = id_resumen_iva;
+            end if;
+              -- genera venta  
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( v_idCCntVenta  , 0,  v_total_presioSinIVa_g , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero );  
+            
+           --   v_idCCntCostoVenta ,  
+			
+    -- Open the cursor 
+
+     set _movimiento = 0;
+    
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO   v_nombreProducto,  v_total_IVA, v_total_presioSinIVa  , v_cant_real_descontada , _idCuentaContable , v_costo ;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;  
+        if _idCuentaContable > 0 then  
+			if _movimiento = 0 then
+				insert into cnt_operaciones ( 
+					   usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+				values ( _idUsuario ,now() , now(), 
+				   concat( 'Opr. auto. POS  - Mov. inventario','-Doc => ',_idDocumentoFinal ) ,
+				   concat('Documento creado desde punto de venta => caja : ', _caja , '-',_NombreCaja , '-fact=> ',_idDocumentoFinal)
+				   ,p_idDocumento , _idTercero, _cod_vendedor , _establecimiento  ) ;   
+				  select max(id)  into _movimiento  
+				  from cnt_operaciones where idDocumento =p_idDocumento; 
+			 end if;
+		-- movimiento valor inventario
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero)  
+			values
+			( _idCuentaContable , 0 ,v_costo  , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta', _idTercero );
+			
+		-- _movimiento costo en venta
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero)  
+			values
+			( v_idCCntCostoVenta , v_costo, 0, now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta', _idTercero );
+        end if; 
+        
+    END LOOP;
+
+    -- Close the cursor
+    CLOSE cur;
+END$$
+
+DELIMITER ;
+DROP procedure IF EXISTS `sp_generar_movimientos_cuenta_inventario_compra`;
+DROP procedure IF EXISTS `sp_generar_movimientos_cuenta_inventario_compra`;
+DELIMITER $$
+
+CREATE  PROCEDURE `sp_generar_movimientos_cuenta_inventario_compra`(IN p_idDocumento INT)
+BEGIN
+    DECLARE done INT DEFAULT FALSE; 
+    DECLARE _idUsuario, id_resumen_iva , _idPersona , _id_hst_iva_rete INT;
+    DECLARE  _idProducto VARCHAR(10);  
+    DECLARE  _cant_real_descontada DECIMAL(10,2);  
+    
+    DECLARE _descuento_antes,  _iva_antes ,  _retencion_Antes DECIMAL(16,2); 
+    DECLARE v_total_IVA_g , _presioVenta , _existencia , _precioCompra, _nuevo_costo , _porc_retefuente , totalDescuentoCompra  , _retefuente DECIMAL(16,2); 
+    DECLARE v_total_presioSinIVa_g , v_total_venta_g DECIMAL(10,2); 
+    
+    DECLARE v_costo , _abono_inicial , _cant_actual DECIMAL(10,2); 
+    declare _movimiento , _idCuentaContable ,   _id_existencia int ; 
+    declare fechaDocumento date;
+    declare   v_idCCntCxPagar,
+              v_idCCntCPagar, 
+              v_idCCnttIvaCompra,
+              v_idCCntCajaGeneral ,
+              v_idCuentaReteF ,
+              v_id_cuenta_inventario ,
+              cuentaRetefuente  ,  _establecimiento , _cod_vendedor,
+              cuentaDescuento int;
+    
+    declare _idTercero int ; 
+    declare _nombre_esta varchar(50) ; 
+    declare _tipoDocumento , _id_bodega bigint ; 
+     
+    declare _idDocumentoFinal , _descripcion_esta , _nombre_producto   text ; 
+    declare _caja int ; 
+    
+    
+    DECLARE cur CURSOR FOR 
+    SELECT coalesce(`cant_actual` , 0 ) , (presioSinIVa * cant_real_descontada ) , idProducto, nombre ,   cant_real_descontada , presioVenta , coalesce(`cant_actual` , 0 )    , precioCompra ,
+       case when  coalesce(`cant_actual` , 0 )  <= 0 then presioVenta else
+      cast( (( ( presioVenta * cant_real_descontada ) + (coalesce(`cant_actual` , 0 )  * precioCompra ) ) / ( coalesce(`cant_actual` , 0 )  + cant_real_descontada ))   
+            AS DECIMAL(16, 2)) end 
+            , idCuentaContable
+    FROM  documentos_listado_productos 
+      inner join vw_inv_mst_producto_existencias_resumen on vw_inv_mst_producto_existencias_resumen.id = documentos_listado_productos.idProducto
+    WHERE   orden = p_idDocumento  and estado_linea_venta = 'A' ; 
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    
+    
+    SET done = false;
+      SET SQL_SAFE_UPDATES = 0;
+      select porc_retefuente  , retefuente ,
+      idCCntCPagar,  idCCntIvaCompra, idCCntCajaGeneral,  
+            tipoDocumentoFinal , nombre , descripcion , idBodegaStock , 
+                cliente ,  
+             (totalFactura - valorIVA ) , valorIVA , totalFactura , usuario , idDocumentoFinal , caja , fecha ,
+             idRetefuenteCompra , idDescuentoCompra , descuento ,  establecimiento , cod_vendedor
+        into _porc_retefuente  , _retefuente , v_idCCntCxPagar, v_idCCnttIvaCompra,  v_idCCntCajaGeneral ,  
+             _tipoDocumento , _nombre_esta , _descripcion_esta , _id_bodega , _idTercero ,
+			  v_total_presioSinIVa_g , v_total_IVA_g, v_total_venta_g  , _idUsuario , _idDocumentoFinal , _caja , fechaDocumento ,
+                cuentaRetefuente  , cuentaDescuento , totalDescuentoCompra ,  _establecimiento , _cod_vendedor
+    FROM vw_documentos where orden = p_idDocumento;  
+    
+     
+    -- operacion cuenta por pagar
+        insert into cnt_operaciones ( 
+               usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+        values ( _idUsuario ,now() , now(), 
+           concat( 'Opr. auto. POS - Mov. Cnt. por pagar compra','-Doc => ',_idDocumentoFinal ) ,
+           concat('Documento creado desde Compras : ', _nombre_esta , '-', _descripcion_esta , '- Compra => ',_idDocumentoFinal)
+           ,p_idDocumento , _idTercero, _cod_vendedor , _establecimiento  ) ;  
+           
+          select max(id)  into _movimiento  
+          from cnt_operaciones where idDocumento =p_idDocumento;
+      
+    -- genera cuenta por pagar   
+			insert into cnt_transacciones 
+			( descripcion, id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( 'Cuentas por pagar' , v_idCCntCxPagar , 0 ,  v_total_venta_g , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero);
+            
+          if   totalDescuentoCompra  > 0 then
+          -- cuentaDescuento , totalDescuentoCompra
+            insert into cnt_transacciones 
+			( descripcion, id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( 'Descuento en compra' , cuentaDescuento , 0 ,  totalDescuentoCompra , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero);
+            end if     ;
+         -- genera iva  
+         /*
+    DECLARE _descuento_antes,  _iva_antes ,  _retencion_Antes DECIMAL(16,2); _id_hst_iva_rete*/
+         select count(0) into _id_hst_iva_rete from 
+         documento_IVA_retenciones where orden = p_idDocumento;
+         if _id_hst_iva_rete = 0 then
+            insert into documento_IVA_retenciones (orden) values (p_idDocumento) ; 
+         end if;
+         select id , IVA , retencion into _id_hst_iva_rete , _iva_antes ,  _retencion_Antes from 
+         documento_IVA_retenciones where orden = p_idDocumento;
+         
+         if v_total_IVA_g > 0 then 
+         
+ /*   select 'genera iva  ' ,   v_idCCnttIvaCompra  ,  v_total_IVA_g, 0 , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero;*/
+            
+			insert into cnt_transacciones 
+			(descripcion,  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante  , cod_tercero) 
+			values
+			('Iva descontable', v_idCCnttIvaCompra  ,  v_total_IVA_g , 0 , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero );  
+            -- -----------------------------------------------------------------------------------
+            
+					select count(0) into id_resumen_iva from 
+					resumen_iva_en_compra_y_venta where 
+					mes = month(fechaDocumento)  and  
+					anio  =   year(fechaDocumento) ;
+                    if id_resumen_iva  = 0 then
+                       insert into resumen_iva_en_compra_y_venta (valor_iva_venta ,valor_iva_compra,fecha_creacion,mes ,anio) values (
+                       0,0, fechaDocumento , month(fechaDocumento)  ,   year(fechaDocumento)               );
+                    end if;
+                    select id into id_resumen_iva from 
+					resumen_iva_en_compra_y_venta where 
+					mes = month(fechaDocumento)  and  
+					anio  =   year(fechaDocumento) ;
+                    
+                    update resumen_iva_en_compra_y_venta set valor_iva_compra =   valor_iva_compra + v_total_IVA_g - _iva_antes ,
+                    fecha_ultimo_insert_venta = fechaDocumento
+                    where id = id_resumen_iva;
+            -- -----------------------------------------------------------------------------------
+            end if;
+              -- genera compra (inventario) 
+     /*     select 'genera compra  ' , v_idCuentaReteF  ,v_total_presioSinIVa_g , 0   , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero ;    */ 
+		-- validar si el cliente tiene activo el cobro de retefuente en compra y si la base supera la minima
+        -- _porc_retefuente  , _retefuente
+        if _retefuente > 0 then
+           insert into cnt_transacciones 
+			( descripcion, id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			(concat('Retefuente ',_porc_retefuente , '%' ) , cuentaRetefuente , 0   ,_retefuente  , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero );  
+       end if     ;
+           --   v_idCCntCajaGeneral ,  
+        --    abono inicial 
+            SELECT coalesce(sum(valorPagado),0)  into _abono_inicial FROM documentos_pagos where idDocumento = p_idDocumento; 
+             -- genera cuenta por pagar  
+           --   select 'abono inicial ' ,_abono_inicial;
+             if _abono_inicial > 0 then
+             
+               -- operacion cuenta por pagar
+				insert into cnt_operaciones ( 
+					   usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+				values ( _idUsuario ,now() , now(), 
+				   concat( 'Opr. auto. POS - Mov. abono cuenta por pagar','-Doc => ',_idDocumentoFinal ) ,
+				   concat('Documento creado desde Compras : ', _nombre_esta , '-', _descripcion_esta , '- Compra => ',_idDocumentoFinal)
+				   ,p_idDocumento , _idTercero, _cod_vendedor , _establecimiento  ) ;  
+				   
+				  select max(id)  into _movimiento  
+				  from cnt_operaciones where idDocumento =p_idDocumento;
+             
+				insert into cnt_transacciones 
+				(descripcion,  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+				relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+				values
+				('Abono inicial a cxp', v_idCCntCxPagar ,_abono_inicial ,  0 , now()  , 
+				'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero); 
+                
+                
+       -- debes crear la cuenta por pagar en la tabla de cuentas por pagar y generar tambien los pagos iniciales, 
+                insert into cnt_transacciones 
+				( descripcion ,  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+				relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero)   
+                SELECT concat('Abono por ',nombreMedioDePago ) , case cuentaContable when 0 then v_idCCntCajaGeneral else cuentaContable end ,0 ,
+                 _abono_inicial  ,  curdate() , 'documentos' ,   _idUsuario  , curdate() ,   _movimiento
+                 , 'COMPRA' ,   _idTercero  
+                FROM vw_documentos_pagos    where idDocumento = p_idDocumento ;  
+            end if;
+            
+    -- Open the cursor  
+                 delete from documentos_compra_datos_productos_aux where orden =  p_idDocumento;
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO _cant_actual , v_total_presioSinIVa_g ,  _idProducto,_nombre_producto , _cant_real_descontada , 
+        _presioVenta , _existencia   , _precioCompra , _nuevo_costo , v_id_cuenta_inventario;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;  
+        
+        -- documentos_compra_datos_productos_aux tabla donde se guardan los valores iniciales antes de ingresar el producto
+        -- para que si mas adelante estos se modifican el producto regresa a sus valores iniciales y se le agregan los nuevos
+       set _id_existencia = 0; 
+       -- _id_bodega _id_existencia
+       select count(0) into _id_existencia from  inv_mst_producto_existencias where  id_producto = _idProducto and 
+       id_bodega  = _id_bodega ; 
+        -- debes validar que exista existencia en la bodega a la que estas apuntando, esta debe ser extraida utilizando el establecimiento
+       -- si no existe debes crear el registro en existencia  
+       if _id_existencia = 0 then
+	       insert into inv_mst_producto_existencias(id_producto , id_bodega  ,ult_mov , usuario_creacion ,
+           cant_inicial , compras , cant_actual) values ( _idProducto ,
+           _id_bodega , 'Compra inicial' , _idUsuario , _cant_actual ,_cant_real_descontada , _cant_real_descontada 
+           );
+		else         
+      -- debes actualizar la existencia del nuevo producto 
+         select id into _id_existencia from  inv_mst_producto_existencias where  id_producto = _idProducto and 
+        id_bodega  = _id_bodega ; 
+          update inv_mst_producto_existencias set 
+          compras = compras + _cant_real_descontada , 
+          cant_actual= cant_actual + _cant_real_descontada 
+          where id = _id_existencia ;  
+	   end if;
+       
+       
+       insert into documentos_compra_datos_productos_aux
+       (producto, precioCompraInicial, cantidadInicial, cantInsertada, precioFinal, orden, bodega)
+       values (_idProducto , _precioCompra , 0 , _cant_real_descontada , _nuevo_costo, p_idDocumento , _id_bodega   );
+       
+       
+       
+       insert into cnt_transacciones 
+			( descripcion ,  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( _nombre_producto ,  v_id_cuenta_inventario  ,v_total_presioSinIVa_g , 0   , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero );  
+      
+       update inv_mst_producto set precioCompra = _nuevo_costo 
+       where id = _idProducto; 
+    
+    END LOOP;
+
+    -- Close the cursor
+    CLOSE cur;  
+    SET SQL_SAFE_UPDATES = 1; 
+END$$
+
+DELIMITER ;
+;
+
+
+DROP procedure IF EXISTS `sp_generar_movimientos_cuenta_pagos`;
+
+
+DROP procedure IF EXISTS `sp_generar_movimientos_cuenta_pagos`;
+;
+
+DELIMITER $$
+
+CREATE  PROCEDURE `sp_generar_movimientos_cuenta_pagos`(IN p_idDocumento INT)
+BEGIN
+    DECLARE done INT DEFAULT FALSE; 
+    DECLARE _idUsuario INT;
+    DECLARE _idPersona INT;
+    DECLARE v_idMedioDePago INT;
+    DECLARE v_valorPagado DECIMAL(10,2); 
+    DECLARE v_sumTrc DECIMAL(10,2); 
+    DECLARE v_referencia VARCHAR(50); 
+    DECLARE v_nombre VARCHAR(50);  
+    DECLARE v_debito VARCHAR(50);  
+    DECLARE v_credito VARCHAR(50);  
+    DECLARE v_cuentaContable INT ; 
+    declare _movimiento int ;  
+    declare _idCuentaContable int ; 
+    declare _idCuentaContableGasto int ; 
+    declare _idTercero int ; 
+    declare _NombreCaja varchar(50) ; 
+    declare _tipoDocumento , 
+          _idCCntCCobrar , 
+		   _idCCntCPagar , _establecimiento , _cod_vendedor,
+		   _caja ,_cantidadPagos , _cuentaBonos int ; 
+    declare   _idDocumentoFinal text; 
+    DECLARE cur CURSOR FOR 
+    SELECT documentos_pagos.idMedioDePago , valorPagado , referencia, 
+    UPPER(vw_medios.nombre) ,  cuentaContable FROM  documentos_pagos
+		inner join vw_medios on vw_medios.id = idMedioDePago
+		  where documentos_pagos.idDocumento = p_idDocumento  ;  
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    SET done = false; 
+    set v_sumTrc = 0;
+     SELECT  count(0) into _cantidadPagos FROM  documentos_pagos
+		inner join vw_medios on vw_medios.id = idMedioDePago
+		  where documentos_pagos.idDocumento = p_idDocumento  ;   
+          
+    select cuentaContableGastos, cuentaContableEfectivo , tipoDocumentoFinal , nombreCaja , cliente ,  idCCntCCobrar , 
+       idCCntCPagar, usuario , idDocumentoFinal , caja ,  establecimiento , cod_vendedor into 
+    _idCuentaContableGasto ,_idCuentaContable , _tipoDocumento , _NombreCaja , _idTercero,  _idCCntCCobrar , 
+       _idCCntCPagar , 
+       _idUsuario , _idDocumentoFinal , _caja,  _establecimiento , _cod_vendedor
+    FROM vw_documentos where orden = p_idDocumento;  
+     if _tipoDocumento = getIdContadorByName('gastos') then
+          insert into cnt_operaciones ( 
+		   usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+		   values ( _idUsuario ,now() , now(), 
+		   concat( 'Opr. auto. POS  - Mov. Gasto','-Doc => ',_idDocumentoFinal ) ,
+		   concat('Documento creado desde punto de venta => caja : ', _caja , '-',_NombreCaja , '-fact=> ',_idDocumentoFinal)
+		   ,p_idDocumento , _idTercero, _cod_vendedor , _establecimiento  ) ;  
+     else
+		insert into cnt_operaciones ( 
+		   usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+		   values ( _idUsuario ,now() , now(), 
+		   concat( 'Opr. auto. POS  - Mov. pagos','-Doc => ',_idDocumentoFinal ) ,
+		   concat('Documento creado desde punto de venta => caja : ', _caja , '-',_NombreCaja , '-fact=> ',_idDocumentoFinal)
+		   ,p_idDocumento , _idTercero, _cod_vendedor , _establecimiento  ) ;     
+     end if;
+       select max(id)  into _movimiento  
+	   from cnt_operaciones where idDocumento =p_idDocumento;  
+       
+    -- Open the cursor
+    if _cantidadPagos > 0 then
+     SELECT par_id into _cuentaBonos FROM parametros
+	where cod_parametro = 'ID_CUENTA_BONOS_EMITIDOS';
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO   v_idMedioDePago , v_valorPagado , v_referencia, v_nombre ,  v_cuentaContable;
+        IF done THEN
+            LEAVE read_loop;
+        END IF; 
+        
+        if v_nombre = 'EFECTIVO' then
+          set v_cuentaContable = _idCuentaContable;
+        end if;
+        if v_nombre = 'BONOS' then
+          set v_cuentaContable = _cuentaBonos;
+        end if;
+        if v_cuentaContable > 0 then
+      
+      -- _idCuentaContableGasto
+      
+           if _tipoDocumento = getIdContadorByName('gastos') then
+           -- Gastos
+           -- sale de efectivo 
+				insert into cnt_transacciones 
+				(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+				relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante, cod_tercero) 
+				values
+				( v_cuentaContable , 0 , v_valorPagado  , now()  , 
+				'documentos',   _idUsuario ,  now() , _movimiento ,'gasto' ,_idTercero );
+            -- -----------------------------------------------------------------------
+            -- entra en gasto
+				insert into cnt_transacciones 
+				(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+				relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante ,cod_tercero) 
+				values
+				( _idCuentaContableGasto , v_valorPagado , 0  , now()  , 
+				'documentos',   _idUsuario ,  now() , _movimiento ,'gasto' , _idTercero );
+           else
+           -- entra el dinero  
+               if _tipoDocumento = getIdContadorByName('Pagos') then
+                 -- sale el dinero del pago
+                    insert into cnt_transacciones 
+					(  id_cuenta,  valor_debito, valor_credito, fecha_transaccion,
+					relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante ,cod_tercero) 
+					values
+					( v_cuentaContable , 0, v_valorPagado   , now()  , 
+					'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero);
+				else
+                   -- entra el dinero del pago
+					insert into cnt_transacciones 
+					(  id_cuenta,  valor_debito, valor_credito, fecha_transaccion,
+					relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante ,cod_tercero) 
+					values
+					( v_cuentaContable , v_valorPagado , 0  , now()  , 
+					'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero);
+				end if;
+                set v_sumTrc = v_sumTrc + v_valorPagado;
+            end if;
+        end if;
+        
+    END LOOP;
+ 
+    -- Close the cursor
+    CLOSE cur;
+     end if;
+     if v_sumTrc > 0 then
+     -- saco de la cuenta por cobrar  
+	 if _tipoDocumento = getIdContadorByName('Pagos') then
+        set v_cuentaContable = _idCCntCPagar;
+        set v_debito = v_sumTrc ;
+        set v_credito   = 0 ; 
+     else
+        set v_cuentaContable = _idCCntCCobrar ; 
+        set v_debito = 0 ;
+        set v_credito   = v_sumTrc ; 
+     end if;
+	 insert into cnt_transacciones 
+		(  id_cuenta,  valor_debito,
+                       valor_credito, fecha_transaccion,
+		relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante ,cod_tercero) 
+		values
+		( v_cuentaContable ,  v_debito  , v_credito  , now()  , 
+		'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero); 
+  end if;
+END$$
+
+DELIMITER ;
+;
+
+
+DROP procedure IF EXISTS `sp_generar_movimientos_devolucion`;
+
+
+DROP procedure IF EXISTS `sp_generar_movimientos_devolucion`;
+;
+
+DELIMITER $$
+
+CREATE  PROCEDURE `sp_generar_movimientos_devolucion`(IN p_idDocumento INT)
+BEGIN
+    DECLARE done INT DEFAULT FALSE; 
+    DECLARE _idUsuario INT;
+    DECLARE _idPersona INT;
+    DECLARE v_nombreProducto VARCHAR(255); 
+    DECLARE v_total_IVA DECIMAL(10,2); 
+    DECLARE v_total_presioSinIVa DECIMAL(10,2); 
+    DECLARE v_cant_real_descontada DECIMAL(10,2); 
+    
+    DECLARE v_total_IVA_g DECIMAL(10,2); 
+    DECLARE v_total_presioSinIVa_g DECIMAL(10,2); 
+    DECLARE v_total_venta_g DECIMAL(10,2); 
+    
+    DECLARE v_costo DECIMAL(10,2); 
+    declare _movimiento int ; 
+    declare _idCuentaContable int ; 
+    
+    declare   v_idCCntCCobrar,
+              v_idCCntCPagar,
+              v_idCCntIvaCompra,
+              v_idCCnttIvaVenta,
+              v_idCCntCostoVenta , _establecimiento , _cod_vendedor,
+              v_idCCntVenta, _cuentaBonos int ;  
+    
+    declare _idTercero int ; 
+    declare _NombreCaja varchar(50) ; 
+    declare _tipoDocumento int ; 
+    declare _idDocumentoFinal text ; 
+    declare _caja int ; 
+    
+    DECLARE cur CURSOR FOR 
+    SELECT nombreProducto,  total_IVA, total_presioSinIVa  , cant_real_descontada , (vw_inv_mst_producto.idCuentaContable) ,
+   costo
+    FROM  documentos_listado_productos 
+      inner join vw_inv_mst_producto on vw_inv_mst_producto.id = documentos_listado_productos.idProducto
+    WHERE 
+        orden = p_idDocumento 
+        and estado_linea_venta = 'A'
+        ; 
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    
+    
+    SELECT par_id into _cuentaBonos FROM parametros
+	where cod_parametro = 
+	'ID_CUENTA_BONOS_EMITIDOS';
+    SET done = false;
+    
+      select  idCCntCCobrar,  idCCnttIvaVenta, idCCntCostoVenta, idCCntVenta ,
+            tipoDocumentoFinal , nombreCaja , cliente ,  
+             valorParcial , valorIVA , totalFactura , usuario , idDocumentoFinal , caja ,  establecimiento , cod_vendedor
+        into  v_idCCntCCobrar, v_idCCnttIvaVenta,  v_idCCntCostoVenta ,  v_idCCntVenta , 
+             _tipoDocumento , _NombreCaja , _idTercero ,
+			  v_total_presioSinIVa_g , v_total_IVA_g, v_total_venta_g  , _idUsuario , _idDocumentoFinal , _caja ,  _establecimiento , _cod_vendedor
+    FROM vw_documentos where orden = p_idDocumento; 
+     
+   
+        insert into cnt_operaciones ( 
+               usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento, vendedor , establecimiento  )
+        values ( _idUsuario ,now() , now(), 
+           concat( 'Opr. auto. DEV - Mov. Bono Devolucion en venta','-Doc => ',_idDocumentoFinal ) ,
+           concat('Documento creado desde devolucion de venta => caja : ', _caja , '-',_NombreCaja , '-fact=> ',_idDocumentoFinal)
+           ,p_idDocumento , _idTercero , _cod_vendedor , _establecimiento ) ;  
+           
+          select max(id)  into _movimiento  
+          from cnt_operaciones where idDocumento =p_idDocumento;
+     
+    --   v_total_presioSinIVa_g , v_total_IVA_g, v_total_venta_g 
+    
+    -- genero bono del cliente
+    	insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( _cuentaBonos  , 0 ,  v_total_venta_g, now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'devolucion' , _idTercero);
+    -- genera cuenta por cobrar  
+		/*	insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( v_idCCntCCobrar , 0 , v_total_venta_g , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero); */
+            
+         -- genera iva  
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante  , cod_tercero) 
+			values
+			( v_idCCnttIvaVenta  , v_total_IVA_g , 0,  now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero );  
+              -- genera venta  
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( v_idCCntVenta , v_total_presioSinIVa_g , 0    , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero );  
+            
+           --   v_idCCntCostoVenta ,  
+			
+    -- Open the cursor 
+
+     set _movimiento = 0;
+    
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO   v_nombreProducto,  v_total_IVA, v_total_presioSinIVa  , v_cant_real_descontada , _idCuentaContable , v_costo ;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;  
+        if _idCuentaContable > 0 then  
+			if _movimiento = 0 then
+				insert into cnt_operaciones ( 
+					   usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+				values ( _idUsuario ,now() , now(), 
+				   concat( 'Opr. auto. DEV  - Mov. inventario','-Doc => ',_idDocumentoFinal ) ,
+				   concat('Documento creado desde punto de venta => caja : ', _caja , '-',_NombreCaja , '-fact=> ',_idDocumentoFinal)
+				   ,p_idDocumento , _idTercero, _cod_vendedor , _establecimiento  ) ;   
+				  select max(id)  into _movimiento  
+				  from cnt_operaciones where idDocumento =p_idDocumento; 
+			 end if;
+		-- movimiento valor inventario
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero)  
+			values
+			( _idCuentaContable  ,v_costo , 0 , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta', _idTercero );
+			
+		-- _movimiento costo en venta
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero)  
+			values
+			( v_idCCntCostoVenta, 0 , v_costo, now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta', _idTercero );
+        end if; 
+        
+    END LOOP;
+
+    -- Close the cursor
+    CLOSE cur;
+END$$
+
+DELIMITER ;
+;
+
+
+DROP procedure IF EXISTS `sp_generar_movimientos_nota_debito`;
+
+
+DROP procedure IF EXISTS `sp_generar_movimientos_nota_debito`;
+;
+
+DELIMITER $$
+
+CREATE  PROCEDURE `sp_generar_movimientos_nota_debito`(IN p_idDocumento INT)
+BEGIN
+    DECLARE done INT DEFAULT FALSE; 
+    DECLARE _idUsuario INT;
+    DECLARE _idPersona INT;
+    DECLARE v_nombreProducto VARCHAR(255); 
+    DECLARE v_total_IVA DECIMAL(10,2); 
+    DECLARE v_total_presioSinIVa DECIMAL(10,2); 
+    DECLARE v_cant_real_descontada DECIMAL(10,2); 
+    
+    DECLARE v_total_IVA_g DECIMAL(10,2); 
+    DECLARE v_total_presioSinIVa_g DECIMAL(10,2); 
+    DECLARE v_total_venta_g DECIMAL(10,2); 
+    
+    DECLARE v_costo DECIMAL(10,2); 
+    declare _movimiento int ; 
+    declare _idCuentaContable int ; 
+    
+    declare   v_idCCntCCobrar,
+              v_idCCntCPagar,
+              v_idCCntIvaCompra,
+              v_idCCnttIvaVenta,
+              v_idCCntCostoVenta , _establecimiento , _cod_vendedor,
+              v_idCCntVenta, _cuentaBonos int ;  
+    
+    declare _idTercero int ; 
+    declare _NombreCaja varchar(50) ; 
+    declare _tipoDocumento int ; 
+    declare _idDocumentoFinal text ; 
+    declare _caja int ; 
+    
+    DECLARE cur CURSOR FOR 
+    SELECT nombreProducto,  total_IVA, total_presioSinIVa  , cant_real_descontada , (vw_inv_mst_producto.idCuentaContable) ,
+   costo
+    FROM  documentos_listado_productos 
+      inner join vw_inv_mst_producto on vw_inv_mst_producto.id = documentos_listado_productos.idProducto
+    WHERE 
+        orden = p_idDocumento 
+        and estado_linea_venta = 'A'
+        ; 
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    
+    
+    SELECT par_id into _cuentaBonos FROM parametros
+	where cod_parametro = 
+	'ID_CUENTA_BONOS_EMITIDOS';
+    SET done = false;
+    
+      select  idCCntCCobrar,  idCCnttIvaVenta, idCCntCostoVenta, idCCntVenta ,
+            tipoDocumentoFinal , nombreCaja , cliente ,  
+             valorParcial , valorIVA , totalFactura , usuario , idDocumentoFinal , caja ,  establecimiento , cod_vendedor
+        into  v_idCCntCCobrar, v_idCCnttIvaVenta,  v_idCCntCostoVenta ,  v_idCCntVenta , 
+             _tipoDocumento , _NombreCaja , _idTercero ,
+			  v_total_presioSinIVa_g , v_total_IVA_g, v_total_venta_g  , _idUsuario , _idDocumentoFinal , _caja 
+              ,  _establecimiento , _cod_vendedor
+    FROM vw_documentos where orden = p_idDocumento; 
+     
+   
+        insert into cnt_operaciones ( 
+               usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+        values ( _idUsuario ,now() , now(), 
+           concat( 'Opr. auto. DEV - Mov. Bono Devolucion en venta','-Doc => ',_idDocumentoFinal ) ,
+           concat('Documento creado desde devolucion de venta => caja : ', _caja , '-',_NombreCaja , '-fact=> ',_idDocumentoFinal)
+           ,p_idDocumento , _idTercero, _cod_vendedor , _establecimiento  ) ;  
+           
+          select max(id)  into _movimiento  
+          from cnt_operaciones where idDocumento =p_idDocumento;
+     
+    --   v_total_presioSinIVa_g , v_total_IVA_g, v_total_venta_g 
+    
+    -- genero bono del cliente
+    	insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( _cuentaBonos  , 0 ,  v_total_venta_g, now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'devolucion' , _idTercero);
+    -- genera cuenta por cobrar  
+		/*	insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( v_idCCntCCobrar , 0 , v_total_venta_g , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero); */
+            
+         -- genera iva  
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante  , cod_tercero) 
+			values
+			( v_idCCnttIvaVenta  , v_total_IVA_g , 0,  now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero );  
+              -- genera venta  
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( v_idCCntVenta , v_total_presioSinIVa_g , 0    , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta' , _idTercero );  
+            
+           --   v_idCCntCostoVenta ,  
+			
+    -- Open the cursor 
+
+     set _movimiento = 0;
+    
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO   v_nombreProducto,  v_total_IVA, v_total_presioSinIVa  , v_cant_real_descontada , _idCuentaContable , v_costo ;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;  
+        if _idCuentaContable > 0 then  
+			if _movimiento = 0 then
+				insert into cnt_operaciones ( 
+					   usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+				values ( _idUsuario ,now() , now(), 
+				   concat( 'Opr. auto. DEV  - Mov. inventario','-Doc => ',_idDocumentoFinal ) ,
+				   concat('Documento creado desde punto de venta => caja : ', _caja , '-',_NombreCaja , '-fact=> ',_idDocumentoFinal)
+				   ,p_idDocumento , _idTercero, _cod_vendedor , _establecimiento  ) ;   
+				  select max(id)  into _movimiento  
+				  from cnt_operaciones where idDocumento =p_idDocumento; 
+			 end if;
+		-- movimiento valor inventario
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero)  
+			values
+			( _idCuentaContable  ,v_costo , 0 , now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta', _idTercero );
+			
+		-- _movimiento costo en venta
+			insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero)  
+			values
+			( v_idCCntCostoVenta, 0 , v_costo, now()  , 
+			'documentos',   _idUsuario ,  now() , _movimiento ,'venta', _idTercero );
+        end if; 
+        
+    END LOOP;
+
+    -- Close the cursor
+    CLOSE cur;
+END$$
+
+DELIMITER ;
+;
+
+
+DROP TRIGGER IF EXISTS `corte_de_caja_AFTER_INSERT`;
+
+DELIMITER $$
+
+CREATE DEFINER = CURRENT_USER TRIGGER `corte_de_caja_AFTER_INSERT` AFTER INSERT ON `corte_de_caja` FOR EACH ROW
+BEGIN
+declare _establecimiento ,_cuentaContableEfectivo , _cuentaCajaGeneral , _movimiento   int ; 
+declare  _nombreCaja   text ; 
+	SELECT  cajas.establecimiento , cajas.nombre ,  cajas.cuentaContableEfectivo , establecimiento.idCCntCajaGeneral 
+	 into  _establecimiento , _nombreCaja ,  _cuentaContableEfectivo , _cuentaCajaGeneral 
+	FROM cajas inner join establecimiento on cajas.establecimiento = establecimiento.id where cajas.id = new.id_Caja;
+    
+    insert into cnt_operaciones ( 
+		   usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+		   values ( new.usuario_apertura  ,now() , now(), 
+		   concat( 'Opr. auto. POS  - Apertura de Caja',' => ',_nombreCaja ) ,
+		   concat('Documento creado desde punto de venta => caja : ', new.id_Caja , '-',_nombreCaja )
+		   ,-99999999 , new.usuario_apertura,  new.usuario_apertura , _establecimiento  ) ;     
+            select max(id)  into _movimiento  
+          from cnt_operaciones where idDocumento =-99999999;
+     --     _cuentaContableEfectivo , _cuentaCajaGeneral 
+    insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( _cuentaContableEfectivo  ,  new.base ,  0, now()  , 
+			'Cierres de Caja',   new.usuario_apertura  ,  now() , _movimiento ,'Apertura de caja' , new.usuario_apertura);
+            
+     insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( _cuentaCajaGeneral  , 0 ,  new.base, now()  , 
+			'Cierres de Caja',   new.usuario_apertura  ,  now() , _movimiento ,'Apertura de caja' , new.usuario_apertura);        
+            
+END$$
+DELIMITER ;
+
+INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `estado`, `img`, `padreId`, `display_nombre`) 
+VALUES ('5', 'trasladosContables', '1', '<i class=\"bi bi-arrow-left-right\"></i> ', '19', 'Traslados Cuentas');
+
+
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('63', '/home/admin');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('63', 'inventarios'); 
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '63');
+/*sin aplicar productivo*/
+
+CREATE TABLE `cnt_operacion_prestablecidas` (
+  `id` INT NOT NULL,
+  `nombre_preforma` TEXT NOT NULL,
+  `descripcion` TEXT NOT NULL,
+  `activo` TINYINT NULL,
+  PRIMARY KEY (`id`));
+
+  ALTER TABLE `cnt_operacion_prestablecidas` 
+CHANGE COLUMN `id` `id` INT NOT NULL AUTO_INCREMENT  ; 
+CHANGE COLUMN `activo` `activo` TINYINT NULL DEFAULT 1 ;  
+ALTER TABLE `cnt_operacion_prestablecidas` 
+ADD COLUMN `tipo` TEXT NOT NULL COMMENT 'DESDE_CAJA\nASIGNA_SALDO\nDE_UNA_A_MUCHOS\nDE_MUCHOS_A_UNA' AFTER `activo`,
+CHANGE COLUMN `activo` `activo` TINYINT NOT NULL DEFAULT '1' ;
+
+
+CREATE TABLE `cnt_operacion_prestablecidas_cuentas` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `idCuenta` INT NOT NULL,
+  `tipo` VARCHAR(45) NOT NULL DEFAULT 'ORIGEN' COMMENT 'ORIGEN -  DESTINO',
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `cnt_operacion_prestablecidas_cuentas` 
+ADD COLUMN `id_opp` INT NOT NULL DEFAULT 0 AFTER `tipo`;
+
+  /*
+  DESDE_CAJA
+ASIGNA_SALDO
+DE_UNA_A_MUCHOS
+DE_MUCHOS_A_UNA
+*/
+
+DROP TRIGGER IF EXISTS `cnt_operacion_prestablecidas_AFTER_DELETE`;
+
+DELIMITER $$
+USE `jdpsoluc_car_wash`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `cnt_operacion_prestablecidas_AFTER_DELETE` AFTER DELETE ON `cnt_operacion_prestablecidas` FOR EACH ROW
+BEGIN
+      delete from cnt_operacion_prestablecidas_cuentas where id_opp = old.id;
+END$$
+DELIMITER ;
