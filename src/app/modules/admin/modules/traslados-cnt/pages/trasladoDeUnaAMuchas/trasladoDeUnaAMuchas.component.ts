@@ -12,11 +12,11 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
 import { CntOperacionPrestablecidas } from 'src/app/interfaces/traslados_cnt/cnt_operacion_prestablecidas.';
 
 @Component({
-  selector: 'app-traslado-desde-caja',
-  templateUrl: './trasladoDesdeCaja.component.html',
-  styleUrls: ['./trasladoDesdeCaja.component.css'], 
+  selector: 'app-traslado-de-una-a-muchas',
+  templateUrl: './trasladoDeUnaAMuchas.component.html',
+  styleUrls: ['./trasladoDeUnaAMuchas.component.css'], 
 })
-export class TrasladoDesdeCajaComponent implements AfterViewInit {
+export class trasladoDeUnaAMuchasComponent implements AfterViewInit {
 
   ngOnInit(): void { }
   origen = 'grupos';

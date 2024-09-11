@@ -14,6 +14,7 @@ import { ParametrosModel } from "../models/parametros/parametros.model";
 import { PresentacionPrdModel } from "../models/presentacionPrdModel";
 import { ProductoModel } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
+import { TrasladosCuentasArrModel, TrasladosCuentasModel } from "../models/trasladosCuentas.";
 import { cajaModel } from "../models/ventas/cajas.model";
 import { DocumentosComprasModel, DocumentosModel } from "../models/ventas/documento.model";
 import { establecimientoModel } from "../models/ventas/establecimientos.model";
@@ -108,6 +109,13 @@ export interface cajaRequest {
 
 export interface cntClaseRequest { 
   data: CntClasesModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+export interface cntTrasladosRequest { 
+  data: TrasladosCuentasArrModel[];
   query: string;
   numdata: number;
   error: string;

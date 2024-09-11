@@ -9,7 +9,7 @@
             <h5>Nombre traslado</h5>
         </div>
         <div class="col-sm-6" >
-            <input type="text" class="form-control" name="nombreTraslado" id="nombreTraslado"  [(ngModel)]="dataProceso!.nombre_preforma" >
+            <input type="text" class="form-control" name="nombreTraslado" id="nombreTraslado"  [(ngModel)]="dataProceso!.nombre" >
         </div></div> <br>
         <div class="row"   >
             <div class="col-sm-6" >
@@ -27,7 +27,7 @@
         <div class="col-sm-6" >  <div class="input-group mb-3"> <input type="text" class="form-control" 
             readonly placeholder="cuenta cartera" [(ngModel)]="nombreCuentaDestino" 
             name="nombreCuentaDestino"  aria-label="Username"  aria-describedby="basic-addon1">  
-            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentaContable()'>
+            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentaContableDestino()'>
                 <i class="bi bi-search"></i>  
             </button>
         </div></div>
@@ -40,5 +40,15 @@
         <div class="col-sm-6" >
           <button class="btn btn-success" (click)="guardar()">Guardar</button>
         </div>
+
+    </div> 
+    <div class="row" *ngFor="let item of dataProceso?.cuentas"  >  
+        <div class="col-sm-3" >
+        {{item.cuenta}}
+       </div>
+        <div class="col-sm-3" >
+            {{item.nombre}}
+           </div>
+        
     </div> 
 </div>

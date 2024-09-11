@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { httpOptions, url } from '../models/app.db.url';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntSubCuentaVwRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest, trasladosCntRequest } from '../interfaces/producto-request';
+import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntSubCuentaVwRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest, cntTrasladosRequest, trasladosCntRequest } from '../interfaces/producto-request';
 import { actions } from '../models/app.db.actions';
 import { vistas } from '../models/app.db.view';
 import { CntGruposModel } from '../models/cnt-grupos/cnt-grupos.module';
@@ -13,6 +13,7 @@ import { vwCntSubCuentaModel } from '../models/cnt-sub-cuenta/cnt-sub-cuenta.mod
 import { CntOperacionesModel } from '../models/cnt-operaciones/cnt-operaciones.module';
 import { TABLA } from '../models/app.db.tables';
 import { TransaccionesModel } from '../models/transacciones/transacciones.module';
+import { TrasladosCuentasModel } from '../models/trasladosCuentas.';
 
 @Injectable({
   providedIn: 'root'
@@ -120,6 +121,8 @@ getCntTransaccionesTmp():Observable<cntTransaccionesRequest>{
    return this.http.post<cntTransaccionesRequest>(url.action , datos, httpOptions()) ;
 }
 
+
+
 setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
   
   let datos ;
@@ -153,8 +156,27 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
    return this.http.post<any>(url.action , datos, httpOptions()) ;
 }
 
+ setTraslado(data:TrasladosCuentasModel):Observable<any>{
+ let datos = {"action": actions.crearTraslados ,
+    "_tabla" : TABLA.transacciones_tmp,
+    "_arraydatos" : data
+   };
+ 
+console.log('setCntTransaccionesTmp',url.actionAdmin , datos);
+
+ return this.http.post<any>(url.actionAdmin , datos, httpOptions()) ;
+ }
  
 
+
+  getCuentasTrasladosPree(idTraslado:number):Observable<cntTrasladosRequest>{
+    let _where =  [{"columna" : "id_opp" , "tipocomp" : "=" , "dato" :idTraslado}]  ; 
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.operaPrestablecidasCuentas,
+       _where 
+     }; 
+     return this.http.post<cntTrasladosRequest>(url.action , datos, httpOptions()) ;
+  }
 
   getCntGrupos():Observable<cntGrupoRequest>{
     let datos = {"action": actions.actionSelect , 

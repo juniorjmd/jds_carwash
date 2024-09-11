@@ -83,7 +83,7 @@ vendedores: 'vw_mst_per_empleados_vendedores',
 
 operaPrestablecidas:'cnt_operacion_prestablecidas',
 
-operaPrestablecidasCuentas:'cnt_operacion_prestablecidas_cuentas'
+operaPrestablecidasCuentas:'vw_cnt_operacion_prestablecidas_cuentas'
 
 
 

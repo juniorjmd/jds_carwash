@@ -972,9 +972,23 @@ DE_MUCHOS_A_UNA
 DROP TRIGGER IF EXISTS `cnt_operacion_prestablecidas_AFTER_DELETE`;
 
 DELIMITER $$
-USE `jdpsoluc_car_wash`$$
+
 CREATE DEFINER = CURRENT_USER TRIGGER `cnt_operacion_prestablecidas_AFTER_DELETE` AFTER DELETE ON `cnt_operacion_prestablecidas` FOR EACH ROW
 BEGIN
       delete from cnt_operacion_prestablecidas_cuentas where id_opp = old.id;
 END$$
 DELIMITER ;
+
+
+CREATE  OR REPLACE  
+VIEW `vw_cnt_operacion_prestablecidas_cuentas` AS
+    SELECT 
+        `cnt_operacion_prestablecidas_cuentas`.`id` AS `id`,
+        `cnt_operacion_prestablecidas_cuentas`.`idCuenta` AS `idCuenta`,
+        `cnt_operacion_prestablecidas_cuentas`.`tipo` AS `tipo`,
+        `cnt_operacion_prestablecidas_cuentas`.`id_opp` AS `id_opp`,
+        `cnt_cuentas`.`nro_cuenta` AS `cuenta`,
+        `cnt_cuentas`.`nombre_cuenta` AS `nombre` 
+    FROM
+        (`cnt_operacion_prestablecidas_cuentas`
+        JOIN `cnt_cuentas` ON ((`cnt_cuentas`.`id_cuenta` = `cnt_operacion_prestablecidas_cuentas`.`idCuenta`)));
