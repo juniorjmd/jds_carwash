@@ -62,7 +62,7 @@ editar(item:CntOperacionPrestablecidas){
 }
 ejecutarPerforma(item:CntOperacionPrestablecidas){}
   ngAfterViewInit(): void {
-    this.cntService.getTrasladoByType('DESDE_CAJA').subscribe({next:(value)=>{
+    this.cntService.getTrasladoByType('ASIGNA_SALDO').subscribe({next:(value)=>{
       this.datos = value.data;
       console.log('Datos recibidos',this.datos);
       

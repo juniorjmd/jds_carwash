@@ -10,12 +10,17 @@ import { TrasladoDesdeCajaComponent } from './pages/trasladoDesdeCaja/trasladoDe
 import { trasladoDeUnaAMuchasComponent } from './pages/trasladoDeUnaAMuchas/trasladoDeUnaAMuchas.component';
 import { TrasladoParaAsignarSaldoComponent } from './pages/trasladoParaAsignarSaldo/trasladoParaAsignarSaldo.component';
 import { trasladoDeMuchasAUnaComponent } from './pages/trasladoDeMuchasAUna/trasladoDeMuchasAUna.component';
+import { newTrasladoAsignarSaldoComponent } from './modals/newTrasladoAsignarSaldo/newTrasladoAsignarSaldo.component';
+import { newTrasladoDeUnaAMuchosComponent } from './modals/newTrasladoDeUnaAMuchos/newTrasladoDeUnaAMuchos.component';
+import { newTrasladoDeMuchasAUnaComponent } from './modals/newTrasladoDeMuchasAUna/newTrasladoDeMuchasAUna.component';
 
 
 @NgModule({
   declarations: [
-    TrasladosCntComponent,TrasladosCntComponent,TrasladoDesdeCajaComponent,NewTrasladoDesdeCajaComponent,
-    TrasladoParaAsignarSaldoComponent,trasladoDeUnaAMuchasComponent,trasladoDeMuchasAUnaComponent
+    TrasladosCntComponent,TrasladosCntComponent,TrasladoDesdeCajaComponent,
+    NewTrasladoDesdeCajaComponent,newTrasladoAsignarSaldoComponent,
+    newTrasladoDeUnaAMuchosComponent,newTrasladoDeMuchasAUnaComponent, 
+    TrasladoParaAsignarSaldoComponent,trasladoDeUnaAMuchasComponent,trasladoDeMuchasAUnaComponent,
   ],
   imports: [
     CommonModule,
