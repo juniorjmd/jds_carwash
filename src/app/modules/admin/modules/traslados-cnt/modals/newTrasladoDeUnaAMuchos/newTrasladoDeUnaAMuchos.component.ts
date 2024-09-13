@@ -29,7 +29,7 @@ ASIGNA_SALDO
 DE_UNA_A_MUCHOS
 DE_MUCHOS_A_UNA
 */
-    this.dataProceso.tipo = 'DESDE_CAJA'
+    this.dataProceso.tipo = 'DE_UNA_A_MUCHOS'
    if(this.dataIngreso != undefined){
     this.dataProceso  = this.dataProceso.createTraslado( dataIngreso );  
     this.cntService.getCuentasTrasladosPree(this.dataIngreso.id!).subscribe({next:(value)=>{
@@ -39,23 +39,13 @@ DE_MUCHOS_A_UNA
   }
   }
 
-buscarCuentaContableDestino(){
- /*public cuenta:number=0,
-               public idCuenta:number=0,
-               public nombre:number=0,
-               public tipo:string=''
-               
-                id_scuenta?: number; 
-     nro_scuenta?: number;  
-     nombre_scuenta
-               */
-
+buscarCuentaContableDestino(){  
 this.newAbrirDialog.open(ModalCntSubCuentasComponent, { data:  null })
 .afterClosed() 
 .pipe(
   tap((response: responseSubC) => {
     if (response.confirmado && response.datoDevolucion !== undefined ) {    
-      this.dataProceso!.cuentas=[];
+      //this.dataProceso!.cuentas = this.dataProceso!.cuentas.filter(cuenta => cuenta.tipo !== 'ORIGEN');
       this.dataProceso!.cuentas.push(new TrasladosCuentasArrModel(
         response.datoDevolucion.nro_scuenta ,
         response.datoDevolucion.id_scuenta ,
@@ -84,8 +74,8 @@ buscarCuentaContableOrigen(){
  .afterClosed() 
  .pipe(
    tap((response: responseSubC) => {
-     if (response.confirmado && response.datoDevolucion !== undefined ) {    
-       this.dataProceso!.cuentas=[];
+     if (response.confirmado && response.datoDevolucion !== undefined ) {   
+      this.dataProceso!.cuentas = this.dataProceso!.cuentas.filter(cuenta => cuenta.tipo !== 'ORIGEN');
        this.dataProceso!.cuentas.push(new TrasladosCuentasArrModel(
          response.datoDevolucion.nro_scuenta ,
          response.datoDevolucion.id_scuenta ,
@@ -116,10 +106,10 @@ if (((destino?.length)||0) <= 0){
   Swal.fire('Debe asignar la cuenta destino')
   return;}
 
-/*  if (((origen?.length)||0) <= 0){
+   if (((origen?.length)||0) <= 0){
     Swal.fire('Debe asignar la cuenta origen')
     return;}
-  */
+  
   if (this.dataProceso?.nombre == ''){
       Swal.fire('Debe asignar Nombre al traslado')
       return;

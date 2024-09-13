@@ -10,6 +10,7 @@ import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { tap } from 'rxjs';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 import { CntOperacionPrestablecidas } from 'src/app/interfaces/traslados_cnt/cnt_operacion_prestablecidas.';
+import { ejecutarTrasladoDesdeCajaComponent } from '../../modals/ejecutarTrasladoDesdeCaja/ejecutarTrasladoDesdeCaja.component';
 
 @Component({
   selector: 'app-traslado-desde-caja',
@@ -60,7 +61,12 @@ editar(item:CntOperacionPrestablecidas){
 
 
 }
-ejecutarPerforma(item:CntOperacionPrestablecidas){}
+ejecutarPerforma(item:CntOperacionPrestablecidas){
+  //EjecutarAsignacionSaldosComponent
+  this.newAbrirDialog.open(ejecutarTrasladoDesdeCajaComponent, { data:  item }); 
+  
+
+}
   ngAfterViewInit(): void {
     this.cntService.getTrasladoByType('DESDE_CAJA').subscribe({next:(value)=>{
       this.datos = value.data;

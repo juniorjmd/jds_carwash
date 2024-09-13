@@ -10,6 +10,8 @@ import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { tap } from 'rxjs';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 import { CntOperacionPrestablecidas } from 'src/app/interfaces/traslados_cnt/cnt_operacion_prestablecidas.';
+import { newTrasladoDeMuchasAUnaComponent } from '../../modals/newTrasladoDeMuchasAUna/newTrasladoDeMuchasAUna.component';
+import { ejecutarDeMuchaAUnaComponent } from '../../modals/ejecutarDeMuchaAUna/ejecutarDeMuchaAUna.component';
 
 @Component({
   selector: 'app-traslado-de-muchas-a-una',
@@ -41,7 +43,7 @@ eliminar(item:CntOperacionPrestablecidas){
   },error:e=>console.error(e.error.error)})
 }
 editar(item:CntOperacionPrestablecidas){
-  this.newAbrirDialog.open(NewTrasladoDesdeCajaComponent, { data:  item })
+  this.newAbrirDialog.open(newTrasladoDeMuchasAUnaComponent, { data:  item })
 .afterClosed() 
 .pipe(
   tap((response: responseSubC) => {
@@ -60,7 +62,9 @@ editar(item:CntOperacionPrestablecidas){
 
 
 }
-ejecutarPerforma(item:CntOperacionPrestablecidas){}
+ejecutarPerforma(item:CntOperacionPrestablecidas){
+  this.newAbrirDialog.open(ejecutarDeMuchaAUnaComponent, { data:  item }); 
+}
   ngAfterViewInit(): void {
     this.cntService.getTrasladoByType('DE_MUCHOS_A_UNA').subscribe({next:(value)=>{
       this.datos = value.data;
@@ -69,7 +73,7 @@ ejecutarPerforma(item:CntOperacionPrestablecidas){}
     },error:e=>console.error(e.error.error)})
   }
 openModal() {  
-this.newAbrirDialog.open(NewTrasladoDesdeCajaComponent, { data:  null })
+this.newAbrirDialog.open(newTrasladoDeMuchasAUnaComponent, { data:  null })
 .afterClosed() 
 .pipe(
   tap((response: responseSubC) => {

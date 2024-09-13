@@ -1,15 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, inject, type OnInit } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Categoria } from 'src/app/interfaces/categoria.interface';
-import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
-import { ModalCrearGrupoComponent } from '../../../inventario/component/modal-crear-grupo/modal-crear-grupo.component';
-import { NewTrasladoDesdeCajaComponent } from '../../modals/newTrasladoDesdeCaja/newTrasladoDesdeCaja.component';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { AfterViewInit,  Component,  inject,   } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap/modal'; 
+import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla'; 
+import {  MatDialog } from '@angular/material/dialog';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { tap } from 'rxjs';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 import { CntOperacionPrestablecidas } from 'src/app/interfaces/traslados_cnt/cnt_operacion_prestablecidas.';
+import { newTrasladoAsignarSaldoComponent } from '../../modals/newTrasladoAsignarSaldo/newTrasladoAsignarSaldo.component';
+import { EjecutarAsignacionSaldosComponent } from '../../modals/ejecutarAsignacionSaldos/ejecutarAsignacionSaldos.component';
 
 @Component({
   selector: 'app-traslado-para-asignar-saldo',
@@ -41,7 +39,7 @@ eliminar(item:CntOperacionPrestablecidas){
   },error:e=>console.error(e.error.error)})
 }
 editar(item:CntOperacionPrestablecidas){
-  this.newAbrirDialog.open(NewTrasladoDesdeCajaComponent, { data:  item })
+  this.newAbrirDialog.open(newTrasladoAsignarSaldoComponent, { data:  item })
 .afterClosed() 
 .pipe(
   tap((response: responseSubC) => {
@@ -60,7 +58,12 @@ editar(item:CntOperacionPrestablecidas){
 
 
 }
-ejecutarPerforma(item:CntOperacionPrestablecidas){}
+ejecutarPerforma(item:CntOperacionPrestablecidas){
+  //EjecutarAsignacionSaldosComponent
+  this.newAbrirDialog.open(EjecutarAsignacionSaldosComponent, { data:  item }); 
+  
+
+}
   ngAfterViewInit(): void {
     this.cntService.getTrasladoByType('ASIGNA_SALDO').subscribe({next:(value)=>{
       this.datos = value.data;
@@ -69,7 +72,7 @@ ejecutarPerforma(item:CntOperacionPrestablecidas){}
     },error:e=>console.error(e.error.error)})
   }
 openModal() {  
-this.newAbrirDialog.open(NewTrasladoDesdeCajaComponent, { data:  null })
+this.newAbrirDialog.open(newTrasladoAsignarSaldoComponent, { data:  null })
 .afterClosed() 
 .pipe(
   tap((response: responseSubC) => {

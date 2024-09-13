@@ -22,15 +22,16 @@
     <div class="row"  style="margin: 10px;"  >
         
         <div class="col-sm-6" >
-            <h5>Cuenta Destino</h5>
-        </div>
-        <div class="col-sm-6" >  <div class="input-group mb-3"> <input type="text" class="form-control" 
-            readonly placeholder="cuenta cartera" [(ngModel)]="nombreCuentaDestino" 
-            name="nombreCuentaDestino"  aria-label="Username"  aria-describedby="basic-addon1">  
-            <button type="button"class="btn btn-outline-primary" (click)='buscarCuentaContableDestino()'>
-                <i class="bi bi-search"></i>  
+            
+            <button type="button"class="btn btn-danger" (click)='buscarCuentaContableOrigen()'>
+                <i class="bi bi-search"></i>  Cuentas Origen
             </button>
-        </div></div>
+        </div>
+        <div class="col-sm-6" >
+            <button type="button"class="btn btn-info" (click)='buscarCuentaContableDestino()'>
+                <i class="bi bi-search"></i>  Cuenta Destino
+            </button>
+        </div>
             
     </div>
     <div class="row"   >
@@ -43,12 +44,14 @@
 
     </div> 
     <div class="row" *ngFor="let item of dataProceso?.cuentas"  >  
-        <div class="col-sm-3" >
+        <div class="col-sm-2" >
         {{item.cuenta}}
        </div>
-        <div class="col-sm-3" >
-            {{item.nombre}}
-           </div>
+       <div class="col-sm-4" >
+        {{item.nombre}}
+       </div><div class="col-sm-1" >
+        {{item.tipo}}
+       </div>
         
     </div> 
 </div>

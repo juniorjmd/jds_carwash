@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.custom-container {
+  display: flex;
+  align-items: flex-end; /* Alinea el h5 al borde inferior del contenedor */
+  justify-content: flex-start; /* Alinea los elementos a la izquierda */
+}
+.custom-container h5 {
+  margin-bottom: 0; /* Elimina el margen inferior del h5 */
+}
+.ml-2 {
+  margin-left: 0.5rem; /* Asegura que haya un espacio entre h3 y h5 */
+}

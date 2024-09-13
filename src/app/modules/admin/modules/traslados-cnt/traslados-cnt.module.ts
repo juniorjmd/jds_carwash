@@ -13,6 +13,10 @@ import { trasladoDeMuchasAUnaComponent } from './pages/trasladoDeMuchasAUna/tras
 import { newTrasladoAsignarSaldoComponent } from './modals/newTrasladoAsignarSaldo/newTrasladoAsignarSaldo.component';
 import { newTrasladoDeUnaAMuchosComponent } from './modals/newTrasladoDeUnaAMuchos/newTrasladoDeUnaAMuchos.component';
 import { newTrasladoDeMuchasAUnaComponent } from './modals/newTrasladoDeMuchasAUna/newTrasladoDeMuchasAUna.component';
+import { EjecutarAsignacionSaldosComponent } from './modals/ejecutarAsignacionSaldos/ejecutarAsignacionSaldos.component';
+import { ejecutarDeMuchaAUnaComponent } from './modals/ejecutarDeMuchaAUna/ejecutarDeMuchaAUna.component';
+import { ejecutarDeUnaAMuchosComponent } from './modals/ejecutarDeUnaAMuchos/ejecutarDeUnaAMuchos.component';
+import { ejecutarTrasladoDesdeCajaComponent } from './modals/ejecutarTrasladoDesdeCaja/ejecutarTrasladoDesdeCaja.component';
 
 
 @NgModule({
@@ -21,6 +25,7 @@ import { newTrasladoDeMuchasAUnaComponent } from './modals/newTrasladoDeMuchasAU
     NewTrasladoDesdeCajaComponent,newTrasladoAsignarSaldoComponent,
     newTrasladoDeUnaAMuchosComponent,newTrasladoDeMuchasAUnaComponent, 
     TrasladoParaAsignarSaldoComponent,trasladoDeUnaAMuchasComponent,trasladoDeMuchasAUnaComponent,
+    ejecutarDeMuchaAUnaComponent,EjecutarAsignacionSaldosComponent,ejecutarDeUnaAMuchosComponent,ejecutarTrasladoDesdeCajaComponent
   ],
   imports: [
     CommonModule,

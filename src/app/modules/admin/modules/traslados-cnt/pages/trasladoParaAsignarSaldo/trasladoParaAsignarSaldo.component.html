@@ -1,5 +1,5 @@
 <div class="container border border-1 border-muted rounded">
-    <div class="row pt-1 border-bottom  border-1 border-muted ">
+    <div class="row">
         <div class="col-10">
             <h2>Traslado para asignar saldo a una cuenta</h2>
         </div>
@@ -7,7 +7,11 @@
             <button tooltip='Nueva Grupo de producto' class="btn btn-success rounded-circle custom-button" (click)="openModal()">+</button>
         </div>
     </div>
-
+    <div class="row pt-1 border-bottom  border-1 border-muted ">
+        <div class="col-10">
+            <h6>El proceso revisa el saldo de la cuenta origen, si el saldo es mayor  al valor ingresado, el proceso extraera el saldo de la cuenta menor el valor ingresado y lo colocara en la cuenta destino, de lo contrario si el saldo es inferior al valor ingresado el proceso sacara del saldo de la cuenta destino el faltante y lo colocara en la cuenta origen</h6>
+        </div> 
+    </div>
     <div class="row pt-2">
         <div class="col-12" *ngIf="datos.length > 0">
          

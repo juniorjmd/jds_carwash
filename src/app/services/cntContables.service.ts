@@ -178,6 +178,16 @@ console.log('setCntTransaccionesTmp',url.actionAdmin , datos);
      return this.http.post<cntTrasladosRequest>(url.action , datos, httpOptions()) ;
   }
 
+  getCuentasTrasladosPreeEjecucion(idTraslado:number):Observable<cntTrasladosRequest>{
+    let _where =  [{"columna" : "id_opp" , "tipocomp" : "=" , "dato" :idTraslado}]  ; 
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.operaPrestablecidasCuentasConSaldo,
+       _where 
+     }; 
+     return this.http.post<cntTrasladosRequest>(url.action , datos, httpOptions()) ;
+  }
+
+
   getCntGrupos():Observable<cntGrupoRequest>{
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_cnt_grupos,

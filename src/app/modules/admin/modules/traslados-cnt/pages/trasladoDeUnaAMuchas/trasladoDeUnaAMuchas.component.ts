@@ -3,13 +3,14 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, inject, type
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
-import { ModalCrearGrupoComponent } from '../../../inventario/component/modal-crear-grupo/modal-crear-grupo.component';
-import { NewTrasladoDesdeCajaComponent } from '../../modals/newTrasladoDesdeCaja/newTrasladoDesdeCaja.component';
+import { ModalCrearGrupoComponent } from '../../../inventario/component/modal-crear-grupo/modal-crear-grupo.component'; 
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { tap } from 'rxjs';
 import { CntContablesService } from 'src/app/services/cntContables.service';
 import { CntOperacionPrestablecidas } from 'src/app/interfaces/traslados_cnt/cnt_operacion_prestablecidas.';
+import { newTrasladoDeUnaAMuchosComponent } from '../../modals/newTrasladoDeUnaAMuchos/newTrasladoDeUnaAMuchos.component';
+import { ejecutarDeUnaAMuchosComponent } from '../../modals/ejecutarDeUnaAMuchos/ejecutarDeUnaAMuchos.component';
 
 @Component({
   selector: 'app-traslado-de-una-a-muchas',
@@ -41,7 +42,7 @@ eliminar(item:CntOperacionPrestablecidas){
   },error:e=>console.error(e.error.error)})
 }
 editar(item:CntOperacionPrestablecidas){
-  this.newAbrirDialog.open(NewTrasladoDesdeCajaComponent, { data:  item })
+  this.newAbrirDialog.open(newTrasladoDeUnaAMuchosComponent, { data:  item })
 .afterClosed() 
 .pipe(
   tap((response: responseSubC) => {
@@ -60,7 +61,12 @@ editar(item:CntOperacionPrestablecidas){
 
 
 }
-ejecutarPerforma(item:CntOperacionPrestablecidas){}
+ejecutarPerforma(item:CntOperacionPrestablecidas){
+  //EjecutarAsignacionSaldosComponent
+  this.newAbrirDialog.open(ejecutarDeUnaAMuchosComponent, { data:  item }); 
+  
+
+}
   ngAfterViewInit(): void {
     this.cntService.getTrasladoByType('DE_UNA_A_MUCHOS').subscribe({next:(value)=>{
       this.datos = value.data;
@@ -69,7 +75,7 @@ ejecutarPerforma(item:CntOperacionPrestablecidas){}
     },error:e=>console.error(e.error.error)})
   }
 openModal() {  
-this.newAbrirDialog.open(NewTrasladoDesdeCajaComponent, { data:  null })
+this.newAbrirDialog.open(newTrasladoDeUnaAMuchosComponent, { data:  null })
 .afterClosed() 
 .pipe(
   tap((response: responseSubC) => {

@@ -992,3 +992,8 @@ VIEW `vw_cnt_operacion_prestablecidas_cuentas` AS
     FROM
         (`cnt_operacion_prestablecidas_cuentas`
         JOIN `cnt_cuentas` ON ((`cnt_cuentas`.`id_cuenta` = `cnt_operacion_prestablecidas_cuentas`.`idCuenta`)));
+
+
+CREATE  OR REPLACE  
+VIEW `vw_cnt_operacion_prestablecidas_cuentas_con_saldo` AS with `SaldoPorCuenta` as 
+(select `cnt_transacciones`.`id_cuenta` AS `id_cuenta`,sum((`cnt_transacciones`.`valor_debito` - `cnt_transacciones`.`valor_credito`)) AS `saldo` from `cnt_transacciones` group by `cnt_transacciones`.`id_cuenta`) select `cnt_operacion_prestablecidas_cuentas`.`id` AS `id`,`cnt_operacion_prestablecidas_cuentas`.`idCuenta` AS `idCuenta`,`cnt_operacion_prestablecidas_cuentas`.`tipo` AS `tipo`,`cnt_operacion_prestablecidas_cuentas`.`id_opp` AS `id_opp`,`cnt_cuentas`.`nro_cuenta` AS `cuenta`,`cnt_cuentas`.`nombre_cuenta` AS `nombre`,coalesce(`s`.`saldo`,0) AS `saldo` from ((`cnt_operacion_prestablecidas_cuentas` join `cnt_cuentas` on((`cnt_cuentas`.`id_cuenta` = `cnt_operacion_prestablecidas_cuentas`.`idCuenta`))) left join `SaldoPorCuenta` `s` on((`cnt_operacion_prestablecidas_cuentas`.`idCuenta` = `s`.`id_cuenta`)))
