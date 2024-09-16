@@ -8,16 +8,13 @@
             </h3>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <table class="table">
-                <tr>
-                    <td>Cliente</td>
-                    <td style="width: 260px;">Vendedor</td>
-                    <td> documentos</td>
-                    <td colspan="2"> Cod producto</td>
-                </tr>
-                <tr><td style="width: 25%;">
+    <div class="row"> 
+        <div class="col-sm-12 col-lg-9">
+            <div class="row"> 
+                <div 
+                class="col-sm-12 col-lg-3 colCliente" 
+               >
+                    <span>Cliente</span> 
                     <div class="input-group mb-3">
                         <div class="d-flex input-group">  
                             <div class="btn-group dropend">
@@ -28,68 +25,72 @@
                                 title="Añadir cliente al Documento" 
                                 (click)='buscarCliente()'><i class="bi bi-person"></i>&nbsp;
                            </button>
-              
-                    </div>   </div> </div></td>
-                    <td  style="width: 28%;" > 
-                        <div class="input-group mb-3">
-                            <elemt-empDropdown   (selectionChange)="cambiarVendedor($event);"
-                           [selectedValue]="empleadoActivo" 
-                            ></elemt-empDropdown> </div>
-                    </td> 
-                    <td   style="width: 28%;" >
-                        <div class="input-group mb-3">  
-                           <elemt-docDropdown [options] ="documentos" (clickBtnRefress)="getDocumentos()" (selectionChange)="cambiarDocumentoActivo($event);"
-                           [selectedValue]="documentoActivo" ></elemt-docDropdown> 
                         </div>
-                    </td>
-                    <td  style="width: 20%;">
-                        
-                        <div class="input-group mb-3">
-                            <input class="o_input form-control" (focus)="codigoProducto = ''" (keyup.enter)='buscarProducto()' #codProd type="text" [(ngModel)]="codigoProducto"  placeholder="Buscar" aria-label="Buscar"/>
-                       
-                            <button (click)='buscarProducto()' class="btn btn-outline-secondary" type="button">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-sm-7 col-lg-4 colVendedor" >
+                    <span>Vendedor</span>
+                    <div class="input-group mb-3">
+                        <elemt-empDropdown   (selectionChange)="cambiarVendedor($event);"
+                       [selectedValue]="empleadoActivo" 
+                        ></elemt-empDropdown> </div>
+                </div>
+                <div class="col-sm-5 col-lg-3 colDocumentos" >
+                    <span>documentos</span>
+                    <div class="input-group mb-3">  
+                        <elemt-docDropdown [options] ="documentos" (clickBtnRefress)="getDocumentos()" (selectionChange)="cambiarDocumentoActivo($event);"
+                        [selectedValue]="documentoActivo" ></elemt-docDropdown> 
+                     </div>
+                </div>
+                <div class="col-sm-12 col-lg-2">
+                    <span> Cod producto</span>
                     
-                    </td>
-                </tr>
-            </table>
+                    <div class="input-group mb-3">
+                        <input class="o_input form-control" (focus)="codigoProducto = ''" (keyup.enter)='buscarProducto()' #codProd type="text" [(ngModel)]="codigoProducto"  placeholder="Buscar" aria-label="Buscar"/>
+                   
+                        <button (click)='buscarProducto()' class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="col-sm-12 tablaProductos" >
+                    <table class="table table-striped">
+                        <thead class="thead-inverse">
+                            <tr  style="text-align: center;" >
+                                <th>&nbsp;</th>
+                                <th>Descripcion</th>
+                                <th>Precio</th>
+                                <th>Descuento</th>
+                                <th>IVA</th>
+                                <th>Cant</th>
+                                <th>Total</th> <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr  *ngFor="let item of documentoActivo!.listado">
+                                <td>
+                                    <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-x-circle" style="cursor:pointer" (click)="eliminarLinea(item)"></i>
+                                </td>
+                                <td>{{item.nombreProducto}}</td>
+                                <td style="text-align: right;" >{{item.presioSinIVa|currency}}</td>
+                                <td style="text-align: right;" >{{item.descuento|currency}}</td>
+                                <td style="text-align: right;" >{{item.IVA|currency}}</td>
+                                <td style="text-align: right;" >{{item.cantidadVendida}}</td>
+                                <td style="text-align: right;" >{{item.valorTotal|currency}}</td>
+                                <td>
+                                    <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-pencil" style="cursor:pointer" (click)="editar(item)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+              
+            </div>            
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-7" style="min-height: 285px; overflow:auto;">
-            <table class="table table-striped">
-                <thead class="thead-inverse">
-                    <tr  style="text-align: center;" >
-                        <th>&nbsp;</th>
-                        <th>Descripcion</th>
-                        <th>Precio</th>
-                        <th>Descuento</th>
-                        <th>IVA</th>
-                        <th>Cant</th>
-                        <th>Total</th> <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr  *ngFor="let item of documentoActivo!.listado">
-                        <td>
-                            <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-x-circle" style="cursor:pointer" (click)="eliminarLinea(item)"></i>
-                        </td>
-                        <td>{{item.nombreProducto}}</td>
-                        <td style="text-align: right;" >{{item.presioSinIVa|currency}}</td>
-                        <td style="text-align: right;" >{{item.descuento|currency}}</td>
-                        <td style="text-align: right;" >{{item.IVA|currency}}</td>
-                        <td style="text-align: right;" >{{item.cantidadVendida}}</td>
-                        <td style="text-align: right;" >{{item.valorTotal|currency}}</td>
-                        <td>
-                            <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-pencil" style="cursor:pointer" (click)="editar(item)"></i>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-sm-5">
+        <div class="col-sm-12 col-lg-3">
             <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-success" title="Facturar" (click)='asignarPagosAVenta()'><i class="bi bi-check2-all"></i></button>
                 <button type="button" class="btn btn-primary" title="Crear Documento" (click)='crearDocumento()'><i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
@@ -129,33 +130,46 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>subTotal</th>
-                        <th>Descuento</th>
-                        <th>Iva</th>
-                        <th>Otros impuestos</th>
-                        <th>Total</th>
-                        <th>Ajuste</th>
-                        <th>TotalFactura</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{documentoActivo!.valorParcial|currency}}</td>
-                        <td>{{documentoActivo!.descuento|currency}}</td>
-                        <td>{{documentoActivo!.valorIVA|currency}}</td>
-                        <td>0</td>
-                        <td>{{documentoActivo!.valorTotal|currency}}</td>
-                        <td>{{documentoActivo!.ajusteAlpeso|currency}}</td>
-                        <td>{{documentoActivo!.totalFactura|currency}}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="col-sm-12 col-lg-5"> 
+        <div class="row"><hr class="division">
+            <div class="col-sm-12 col-lg-3"></div>
+            <div class="col-sm-2 col-lg-2">
+                <span>subTotal : </span>
+                <span class="text-end">{{documentoActivo!.valorParcial | currency}}</span>
+            </div>
+            <div class="col-sm-2 col-lg-2">
+                <span>Descuento : </span>
+                <span class="text-end">{{documentoActivo!.descuento | currency}}</span>
+            </div>
+            <div class="col-sm-2 col-lg-2">
+                <span>Iva    : </span>
+                <span class="text-end">{{documentoActivo!.valorIVA | currency}}</span>
+            </div>
+            <div class="col-sm-4 col-lg-3">
+                <span>Otros impuestos : </span>
+                <span class="text-end">{{'0' | currency}}</span>
+            </div>
         </div>
     </div>
+       <div class="col-sm-12 col-lg-5"> 
+       
+        <div class="row"> <hr class="division">
+        <div class="col-sm-4 col-lg-2">
+            <span>Total : </span>
+            <span class="text-end">{{documentoActivo!.valorTotal | currency}}</span>
+        </div>
+        <div class="col-sm-4 col-lg-2">
+            <span>Ajuste : </span>
+            <span class="text-end">{{documentoActivo!.ajusteAlpeso | currency}}</span>
+        </div>
+        <div class="col-sm-4 col-lg-2">
+            <span>Total Factura : </span>
+            <span class="text-end">{{documentoActivo!.totalFactura | currency}}</span>
+        </div> 
+    </div>
+</div>  </div>
+   
+  
 </div>
 </div>
 

@@ -1,10 +1,7 @@
-<div class="container" style="overflow-y:auto; min-width: 1000px !important">
+<div class="container-fluid modal_container" >
     <br>
     <div class="row">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-10"></div>
-            </div>
+        <div class="col-sm-12"> 
             <div class="row">
                 <div class="col-sm-6">
                     <nav class="navbar bg-light">
@@ -61,20 +58,15 @@
                     <th class="centrado">Nombre</th>
                     <th class="centrado">Categoría</th>
                     <th class="centrado">Marca</th>
-                    <th class="centrado">Precio</th>
-                    <th class="centrado">Acción</th>
+                    <th class="centrado">Precio</th> 
                 </tr>
-                <tr *ngFor="let prd of listPrdBusqueda">
+                <tr *ngFor="let prd of listPrdBusqueda"  (click)="enviarProducto(prd)" >
                     <td>{{prd.id}}</td> 
-                    <td>{{prd.nombre}}</td>
+                    <td style="width: 100px;" [noWrap]="false" class="text-wrap">{{prd.nombre}}</td>
                     <td>{{prd.nombreCategoria}}</td>
                     <td>{{prd.nombreMarca}}</td>
                     <td>{{prd.precioVenta}}</td>
-                    <td>
-                        <button (click)="enviarProducto(prd)" class="btn btn-primary btn-sm">
-                            <i class="bi bi-mouse"></i>
-                        </button>
-                    </td>
+                    
                 </tr>
             </table>
         </div>

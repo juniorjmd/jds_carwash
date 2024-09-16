@@ -1,0 +1,31 @@
+.colCliente .btn-group{
+    width: 100% !important;
+} 
+.colCliente .btn-group .btn-info {
+    width: 1% !important;
+} 
+elemt-empdropdown { width: 100% !important;
+}  
+elemt-empdropdown btn-group{
+    width: 100% !important;
+}  
+elemt-docdropdown {
+    width: 100% !important;
+}   
+
+elemt-docdropdown btn-group{
+    width: 100% !important;
+}   
+@media (max-width: 861px){ 
+    .division{display:inline;}
+}
+@media (min-width: 862px){
+.colDocumentos{max-width: 270px !important;}
+.colVendedor{max-width: 370px !important;}
+.colCliente{max-width: 270px !important;}
+.tablaProductos{
+    min-height: 385px !important; overflow:auto !important;
+}
+
+
+}
