@@ -13,12 +13,12 @@ export class LineBreakPipe implements PipeTransform {
     if (!value) return value;
 
     const pixelsPerCharacter = fontSize * 0.6; // Aproximadamente, depende de la fuente
-    const maxCharsPerLine = Math.floor(300 / pixelsPerCharacter);
+    const maxCharsPerLine = Math.floor(350 / pixelsPerCharacter);
     let result = '';
     let line = '';
 
     for (let char of value) {
-      if ((line.length + 1) * pixelsPerCharacter > 300) {
+      if ((line.length + 1) * pixelsPerCharacter > 350) {
         result += line + '<br>';
         line = char;
       } else {

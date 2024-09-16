@@ -106,9 +106,15 @@ margin-right: auto;
 
 .contenedor {
     overflow: auto;
-    background-color : aliceblue !important
+    background-color : aliceblue !important;
+    height: 90%;
+    
 }
 
+.contenedorTablas{
+    max-height: 500px;
+     overflow-y: auto;
+}
 .container::-webkit-scrollbar-thumb {
     background: #79727e;
     border-radius: 4px;
@@ -216,8 +222,18 @@ img.nav-avatar {
 .table th {
     padding: 2px !important;
 }
-
+  .contenedorTablas2{
+    overflow: auto; height:60%;  width: 100%;overflow-x: auto; 
+    }
 @media (max-width: 800px) {
+    .contenedorTablas{
+        max-height: 450px;
+         overflow-y: auto;
+    }
+    .contenedorTablas2{
+        max-height: 350px;
+         overflow-y: auto;
+    }
     .cdk-overlay-pane {
         width: 98% !important;
         max-width:  100% !important;
@@ -227,7 +243,7 @@ img.nav-avatar {
         min-width:  100% !important;  
     }
     .cdk-global-overlay-wrapper{
-        margin-top: 25% !important;  
+        margin-top: 20% !important;  
     }
 }
 @media (min-width: 1400px) {
