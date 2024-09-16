@@ -90,6 +90,7 @@ margin-right: auto;
     background-image: url('assets/img/home-menu-bg-overlay.svg')!important;
     background-size: cover;
     overflow-y: auto;
+    margin: auto;
 }
 .body::-webkit-scrollbar-thumb {
     background: #79727e;
@@ -216,6 +217,19 @@ img.nav-avatar {
     padding: 2px !important;
 }
 
+@media (max-width: 800px) {
+    .cdk-overlay-pane {
+        width: 98% !important;
+        max-width:  100% !important;
+        padding-top: 10px !important;
+    }
+    .modal_container{
+        min-width:  100% !important;  
+    }
+    .cdk-global-overlay-wrapper{
+        margin-top: 25% !important;  
+    }
+}
 @media (min-width: 1400px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
         max-width: 1380px !important;

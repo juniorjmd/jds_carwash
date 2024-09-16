@@ -33,7 +33,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MessageModalComponent } from './message-modal/message-modal.component';
+import { MessageModalComponent } from './message-modal/message-modal.component'; 
 
 @NgModule({
   declarations: [ 
@@ -52,7 +52,7 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
         ReimpimirFacturasComponent,
          InicioReportesComponent,
           VerFacturasComponent,
-          MessageModalComponent 
+          MessageModalComponent, 
   ],
    imports: [
     NgbModule , 

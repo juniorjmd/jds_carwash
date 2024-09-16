@@ -25,16 +25,22 @@ export class BuscarProdDirectoComponent implements OnInit  {
   "datoDevolucion":this.listPrdBusqueda[0]};
   codPrd!:string ;   
   cantidadPrd!:number ;  
-  disabled:boolean[] = []
+  disabled:boolean[] = [];
   //--------------------
   marcas:dfltAnswOdoo2[]=[];
   marcasAux:dfltAnswOdoo2[] = [];
   categorias:dfltAnswOdoo2[] = [];
   categoriasAux:dfltAnswOdoo2[] = [];
+  
+  marcaSeleccionada: MarcasModel = new MarcasModel();
+  categoriaSeleccionada: CategoriasModel = new CategoriasModel(null);
   constructor(public loading : loading ,public dialogo: MatDialogRef<BuscarProdDirectoComponent>
     , private prdService : ProductoService,@Inject(MAT_DIALOG_DATA) public producto:ProductoModel[] ,
     private MaestroClienteServices :MaestroClienteServices ,
-  ) { 
+  ) { this.marcaSeleccionada.nombre = 'Filtre por Marca';
+    this.marcaSeleccionada.id = 0;
+    this.categoriaSeleccionada.nombre = 'Filtre por Categoria';
+    this.categoriaSeleccionada.id = 0;
     console.log('productos ingresados en el llamados',this.producto);
     if (this.producto != undefined){
       this.listPrdBusqueda =  this.producto;
@@ -125,17 +131,17 @@ export class BuscarProdDirectoComponent implements OnInit  {
           } }
      );
     }
-   buscarPorCategoria(categoria:dfltAnswOdoo2){
+   buscarPorCategoriaDB(categoria:CategoriasModel){
     this.listPrdBusqueda = []; 
       this.loading.show() 
-      this.prdService.get_producto_simple_by_categoria(categoria.dato )
+      this.prdService.get_producto_simple_by_categoria(categoria.id )
       
       .subscribe({next:
         (respuesta:any)=>{
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){ 
                this.listPrdBusqueda = respuesta.data?? [] ;   
-             }else{Swal.fire(  "error", 'no existen productos con la categoria '+ categoria.label) 
+             }else{Swal.fire(  "error", 'no existen productos con la categoria '+ categoria.nombre) 
                 } 
            }else{
              Swal.fire(  "error", respuesta.error);
@@ -154,19 +160,19 @@ export class BuscarProdDirectoComponent implements OnInit  {
       this.respuestaDialog.datoDevolucion = prd;
 
       this.dialogo.close(this.respuestaDialog);
-     }
-   buscarPorMarca(marca:dfltAnswOdoo2){
+     } 
+   buscarPorMarcaDB(marca:MarcasModel){
      
     this.listPrdBusqueda = [];
     console.log('marca' , marca);
     this.loading.show() 
-      this.prdService.get_producto_simple_by_marca(marca.dato ).subscribe( {
+      this.prdService.get_producto_simple_by_marca(marca.id! ).subscribe( {
         next:
         (respuesta:any)=>{
           if (respuesta.error === 'ok'){
              if (respuesta.numdata > 0 ){
                 this.listPrdBusqueda = respuesta.data?? [] ;  
-             }else{Swal.fire(  "error", 'no existen productos de la marca '+ marca.label) 
+             }else{Swal.fire(  "error", 'no existen productos de la marca '+ marca.nombre) 
                 } 
            }else{
              Swal.fire(  "error", respuesta.error);
@@ -179,88 +185,6 @@ export class BuscarProdDirectoComponent implements OnInit  {
            }
       );
 
-   }
-   //BUSCAR_MARCAS
-   
-   getCategorias(){ 
-    this.MaestroClienteServices.setCategoriasPrd().subscribe((datos:any)=>{
-       console.log('setCategoriasPrd' , JSON.stringify(datos));
-      this.loading.show()
-      this.categorias = [];
-      
-      datos.data!.forEach((value:any )=>{  
-        this.categorias.push({
-          "dato": value.id,
-          "label":value.nombre,
-          "color":value.color,
-          "display":true
-        })  
-    
-      })       
-      this.categoriasAux = this.categorias ;
-      this.loading.hide() ;
-     // console.log('categorias',this.categorias);
-    });
-
-  }
-  getMarcas(){ 
-    this.MaestroClienteServices.setMarcas().subscribe((datos:any)=>{
-       console.log('setMarcas ODDO' , JSON.stringify(datos));
-      this.loading.show()
-      this.marcas = [];
-      datos.data!.forEach((value:any,index:number)=>{ 
-        this.marcas.push({
-          "dato": value.id,
-          "label":value.nombre,
-          "color":value.color,
-          "display":true
-        })  
-    
-      }) 
-      this.marcasAux = this.marcas;
-      // console.log(this.categorias);
-      
-      this.loading.hide() ;
-    });
-
-  }
-  getMarcasPorFiltro()
-  {
-    //this.marcasAux = this.marcas;
-    let marcas3 : dfltAnswOdoo2[] = [];
-    let cont = 0;
-    let auxTxt = this.textFindMarcas.trim().toUpperCase();
-    if (  auxTxt === '')
-     { this.marcas = this.marcasAux} 
-     else{
-
-      this.marcas!.forEach( ( value:dfltAnswOdoo2) =>{
-        console.log(value.label,value.label.indexOf(auxTxt));
-        
-        if ( value.label.toUpperCase() === auxTxt || value.label.toUpperCase().indexOf(auxTxt) >= 0){
-        // console.log(cont,value);
-         
-          marcas3[cont] = value ; 
-          cont++;
-        }
-      })
-     // console.log(marcas3);
-      this.marcas = marcas3;
-     }
-  }
-
-  
-  getCaterogiasPorFiltro()
-  {
-    //this.marcasAux = this.marcas; 
-    let cont = 0;
-    let auxTxt = this.textFindCategoria.trim().toUpperCase();
-    if (  auxTxt === '')
-     { this.categorias = this.marcasAux} 
-     else{
-      this.marcas = this.marcas.filter(value => {( value.label.toUpperCase() === auxTxt || value.label.toUpperCase().indexOf(auxTxt) >= 0)})
-      
-     }
-  }
+    }
  
 }

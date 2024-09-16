@@ -1,58 +1,35 @@
-<div class="container-fluid modal_container" >
-    <br>
+<div class="container-fluid modal_container" > 
     <div class="row">
         <div class="col-sm-12"> 
             <div class="row">
+           
                 <div class="col-sm-6">
-                    <nav class="navbar bg-light">
-                        <div class="container-fluid">
-                            <a class="navbar-brand">Categorias</a>
-                            <div class="d-flex" role="search">
-                                <input class="form-control me-2" [(ngModel)]='textFindCategoria' (keyup.enter)="getCaterogiasPorFiltro()" type="search" placeholder="Filtrar Cate" aria-label="Buscar">
-                                <button class="btn btn-outline-success" (click)="getCaterogiasPorFiltro()" type="button">Buscar</button>
-                            </div>
-                        </div>
-                    </nav>
-                    <span class="badge rounded-pill text-bg-success" (click)="buscarPorCategoria(categoria)" style="margin-left:5px; cursor: pointer;" *ngFor="let categoria of categorias">{{categoria.label}} </span>
+                    <span>Filtrar por categorias</span>
+                    <elemt-categoriasDropdown    (selectionChange)="buscarPorCategoriaDB($event);" [selectedValue]="categoriaSeleccionada"   ></elemt-categoriasDropdown>
+                 
                 </div>
                 <div class="col-sm-6">
-                    <div class="col-sm-12">
-                        <nav class="navbar bg-light">
-                            <div class="container-fluid">
-                                <a class="navbar-brand">Marcas</a>
-                                <div class="d-flex" role="search">
-                                    <input class="form-control me-2" [(ngModel)]='textFindMarcas' (keyup.enter)="getMarcasPorFiltro()" type="search" placeholder="Filtrar Marcas" aria-label="Buscar">
-                                    <button class="btn btn-outline-success" (click)="getMarcasPorFiltro()" type="button">Buscar</button>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="col-sm-12" style="max-height: 100px; overflow-y: auto;">
-                        <span class="badge rounded-pill text-bg-primary" (click)="buscarPorMarca(marca)" style="margin-left:5px; cursor: pointer;" *ngFor="let marca of marcas">{{marca.label}}</span>
-                    </div>
+                    <span>Filtrar por marcas</span>
+                    <elemt-marcaDropdown    (selectionChange)="buscarPorMarcaDB($event);" [selectedValue]="marcaSeleccionada"   ></elemt-marcaDropdown>
+                 
                 </div>
             </div>
         </div>
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-12" >
-            <nav class="navbar bg-light">
-                <div class="container-fluid">
-                    <a class="navbar-brand">Busqueda Producto</a>
-                    <div class="d-flex" role="search">
-                        <input type="text" [(ngModel)]='textFindProductos' (keyup.enter)="getProductosPorFiltro()" class="form-control" />
-                 
+        <div class="col-sm-12" > 
+            <a class="navbar-brand">Busqueda Producto</a>
+            <div class="d-flex" role="search">
+                <input type="text" [(ngModel)]='textFindProductos' (keyup.enter)="getProductosPorFiltro()" class="form-control" /> 
                         <button class="btn btn-outline-success" (click)="getProductosPorFiltro()" type="button">Buscar</button>
                     </div>
-                </div>
-            </nav>
-        </div>
-    </div>
-            <div class="row">
-                <div class="col-sm-12" style="overflow: auto; height:60%;min-height: 400px;max-height: 580px;">
+                </div>  
+    </div><hr>
+    <div class="row">
+                <div class="col-sm-12" style="overflow: auto; height:60%;max-height: 400px; width: 100%;overflow-x: auto; ">
                          
-            <table class="table">   
+            <table class="table table-striped" style="min-width: 600px;">   
                 <tr>
                     <th class="centrado">Código</th> 
                     <th class="centrado">Nombre</th>
@@ -60,9 +37,11 @@
                     <th class="centrado">Marca</th>
                     <th class="centrado">Precio</th> 
                 </tr>
-                <tr *ngFor="let prd of listPrdBusqueda"  (click)="enviarProducto(prd)" >
+                <tr *ngFor="let prd of listPrdBusqueda"  (click)="enviarProducto(prd)"  style="cursor: pointer;" class="listaPrdBusqueda">
                     <td>{{prd.id}}</td> 
-                    <td style="width: 100px;" [noWrap]="false" class="text-wrap">{{prd.nombre}}</td>
+                    <td >
+                        <span [innerHTML]="prd.nombre | lineBreak:16" style="background:none;"></span>
+                      </td>
                     <td>{{prd.nombreCategoria}}</td>
                     <td>{{prd.nombreMarca}}</td>
                     <td>{{prd.precioVenta}}</td>
@@ -70,5 +49,5 @@
                 </tr>
             </table>
         </div>
-    </div>
+    </div><hr>
 </div>

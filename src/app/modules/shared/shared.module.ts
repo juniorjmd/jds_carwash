@@ -29,6 +29,9 @@ import { EmpleadosDropdownComponent } from './components/empleados-dropdown/empl
 import { MatDialogModule } from '@angular/material/dialog'; 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';   
+import { MarcasDropdownComponent } from './components/marcas-dropdown/marcas-dropdown.component';
+import { CategiasDropdownComponent } from './components/categorias-dropdown/categorias-dropdown.component';
+import { LineBreakPipe } from './pipes/line-break.pipe';
  
 @NgModule({
   declarations: [
@@ -51,7 +54,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MenuItemLiComponent,
     DropdownComponent,
     DocumentosDropdownComponent,
-    EmpleadosDropdownComponent  ],
+    EmpleadosDropdownComponent ,MarcasDropdownComponent, CategiasDropdownComponent , LineBreakPipe],
   imports: [ NgbModule ,
     NgxBootstrapIconsModule.pick(allIcons)  ,
     NgxDatatableModule,
@@ -61,7 +64,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CommonModule, 
     MatDialogModule ,
     MatButtonModule ,
-    MatCheckboxModule  
+    MatCheckboxModule 
   ],
   exports:[FndClienteComponent,
     LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,
@@ -72,7 +75,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     booleanpPipe,
     ImgB64Pipe ,
     dataArrayOdooPipe,
-    Modal1Component, Modal1Component   ,
+    Modal1Component, Modal1Component   ,LineBreakPipe,
     MenucardsComponent,
     DialogoConfirmacionComponent,
     NavbarComponent,
@@ -83,7 +86,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CommonModule,
     MatDialogModule ,
     MatButtonModule ,
-    MatCheckboxModule  
+    MatCheckboxModule  ,MarcasDropdownComponent, CategiasDropdownComponent
   ]
 })
 export class SharedModule { }

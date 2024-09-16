@@ -2,3 +2,6 @@
     white-space: normal;
     word-wrap: break-word;
 }
+.listaPrdBusqueda:hover{
+    background-color: cornflowerblue;
+}

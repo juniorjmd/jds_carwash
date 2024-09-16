@@ -12,7 +12,7 @@ import { ModelBase } from '../ModelBase';
 })
 
 export class MarcasModel extends ModelBase { 
-   nombre!:string; 
+   nombre:string = ''; 
    descripcion?:string ; 
    id_actividad?:number; 
    selected:boolean =  false;
