@@ -994,6 +994,42 @@ VIEW `vw_cnt_operacion_prestablecidas_cuentas` AS
         JOIN `cnt_cuentas` ON ((`cnt_cuentas`.`id_cuenta` = `cnt_operacion_prestablecidas_cuentas`.`idCuenta`)));
 
 
-CREATE  OR REPLACE  
-VIEW `vw_cnt_operacion_prestablecidas_cuentas_con_saldo` AS with `SaldoPorCuenta` as 
+CREATE  OR REPLACE  VIEW `vw_cnt_operacion_prestablecidas_cuentas_con_saldo` AS with `SaldoPorCuenta` as 
 (select `cnt_transacciones`.`id_cuenta` AS `id_cuenta`,sum((`cnt_transacciones`.`valor_debito` - `cnt_transacciones`.`valor_credito`)) AS `saldo` from `cnt_transacciones` group by `cnt_transacciones`.`id_cuenta`) select `cnt_operacion_prestablecidas_cuentas`.`id` AS `id`,`cnt_operacion_prestablecidas_cuentas`.`idCuenta` AS `idCuenta`,`cnt_operacion_prestablecidas_cuentas`.`tipo` AS `tipo`,`cnt_operacion_prestablecidas_cuentas`.`id_opp` AS `id_opp`,`cnt_cuentas`.`nro_cuenta` AS `cuenta`,`cnt_cuentas`.`nombre_cuenta` AS `nombre`,coalesce(`s`.`saldo`,0) AS `saldo` from ((`cnt_operacion_prestablecidas_cuentas` join `cnt_cuentas` on((`cnt_cuentas`.`id_cuenta` = `cnt_operacion_prestablecidas_cuentas`.`idCuenta`))) left join `SaldoPorCuenta` `s` on((`cnt_operacion_prestablecidas_cuentas`.`idCuenta` = `s`.`id_cuenta`)))
+
+ 
+CREATE  OR REPLACE VIEW `vw_empleado_asignado_a_usuario` AS
+SELECT usuarios.ID idUsuario , usuarios.idPersona , coalesce( mst_per_empleados.id  , 0 ) idEmpleados FROM 
+ usuarios left join mst_per_empleados on usuarios.idPersona = mst_per_empleados.idPersona;
+  
+CREATE  OR REPLACE  VIEW `vw_cnt_operaciones` AS
+    SELECT 
+        `cnt_operaciones`.`id` AS `id`,
+        `cnt_operaciones`.`usuario` AS `usuario`,
+        `cnt_operaciones`.`fechaOperacion` AS `fechaOperacion`,
+        `cnt_operaciones`.`fechaCreacion` AS `fechaCreacion`,
+        `cnt_operaciones`.`totalDebito` AS `totalDebito`,
+        `cnt_operaciones`.`totalCredito` AS `totalCredito`,
+        `cnt_operaciones`.`idPersona` AS `idPersona`,
+        `cnt_operaciones`.`nombre` AS `nombre`,
+        `cnt_operaciones`.`descripcion` AS `descripcion`,
+        `cnt_operaciones`.`idDocumento` AS `idDocumento`,
+        `cnt_operaciones`.`automatica` AS `automatica`,
+        `cnt_operaciones`.`vendedor` AS `vendedor`,
+        `cnt_operaciones`.`establecimiento` AS `establecimiento`,
+       COALESCE(  `usuarios`.`nombreCompleto`, 'NA') AS `nombreUsuario`,
+       COALESCE( `mst_per_clientes`.`nombreCompleto`, 'NA') AS `nombrePersona`,
+        COALESCE(`vw_mst_per_empleados`.`nombreCompleto`,
+                'NA') AS `nombreVendedor`
+    FROM
+        (((`cnt_operaciones`
+        LEFT JOIN `vw_mst_per_empleados` ON ((`vw_mst_per_empleados`.`id` = `cnt_operaciones`.`vendedor`)))
+        JOIN `usuarios` ON ((`usuarios`.`ID` = `cnt_operaciones`.`usuario`)))
+        LEFT JOIN `mst_per_clientes` ON ((`mst_per_clientes`.`id` = `cnt_operaciones`.`idPersona`)));
+
+
+CREATE  OR REPLACE   VIEW
+ `vw_operaciones_obj` AS with `trn` as (select `cnt_transacciones`.`cod_comprobante` AS `cod_comprobante`,json_object('cuenta',`cnt_cuentas`.`nro_cuenta`,'nombreCuenta',`cnt_cuentas`.`nombre_cuenta`,'debito',`cnt_transacciones`.`valor_debito`,'credito',`cnt_transacciones`.`valor_credito`,'usuario',coalesce(`usuarios`.`nombreCompleto`,'NA'),'tercero',coalesce(`mst_per_clientes`.`nombreCompleto`,'NA')) AS `obj` from (((`cnt_transacciones` left join `usuarios` on((`usuarios`.`ID` = `cnt_transacciones`.`usuario`))) left join `mst_per_clientes` on((`mst_per_clientes`.`id` = `cnt_transacciones`.`cod_tercero`))) left join `cnt_cuentas` on((`cnt_cuentas`.`id_cuenta` = `cnt_transacciones`.`id_cuenta`)))) select `trn`.`cod_comprobante` AS `cod_comprobante`,`vw_cnt_operaciones`.`establecimiento` AS `establecimiento`,json_object('çomprobante',`trn`.`cod_comprobante`,
+'establecimiento',`vw_cnt_operaciones`.`establecimiento`,
+
+'usuario',`vw_cnt_operaciones`.`nombreUsuario`,'tercero',`vw_cnt_operaciones`.`nombrePersona`,'vendedor',`vw_cnt_operaciones`.`nombreVendedor`,'debito',`vw_cnt_operaciones`.`totalDebito`,'credito',`vw_cnt_operaciones`.`totalCredito`,'nombreOpr',`vw_cnt_operaciones`.`nombre`,'descripcionOpr',`vw_cnt_operaciones`.`descripcion`,'documento',`vw_cnt_operaciones`.`idDocumento`,'movimientos',json_arrayagg(`trn`.`obj`)) AS `obj` from (`trn` join `vw_cnt_operaciones` on((`vw_cnt_operaciones`.`id` = `trn`.`cod_comprobante`))) group by `trn`.`cod_comprobante`;

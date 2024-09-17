@@ -189,9 +189,10 @@ console.log('setCntTransaccionesTmp',url.actionAdmin , datos);
 
   ejecutarTrasladosCuentas(idTraslado:TrasladosCuentasModel):Observable<cntTrasladosRequest>{
      let datos = {"action": actions.ejecutarTraslados , 
-      "_datos" : idTraslado
+      "_arraydatos" : idTraslado
      }; 
-     return this.http.post<cntTrasladosRequest>(url.action , datos, httpOptions()) ;
+     console.log('ejecutarTrasladosCuentas' , url.actionAdmin , datos, httpOptions())
+     return this.http.post<cntTrasladosRequest>(url.actionAdmin , datos, httpOptions()) ;
   }
 
   getCntGrupos():Observable<cntGrupoRequest>{

@@ -26,17 +26,26 @@ export class ejecutarTrasladoDesdeCajaComponent {
   valorTraslado:number = 0;
   private cntService = inject(CntContablesService);
   private cajasService = inject(cajasServices);
-  public cajaSeleccionada:cajaModel= new cajaModel(undefined);
+  public cajaSeleccionada:number = 0;
 
   constructor(  @Inject(MAT_DIALOG_DATA) public dataIngreso:CntOperacionPrestablecidas,public dialogo: MatDialogRef<newTrasladoAsignarSaldoComponent>,  ){
     this.dataProceso =  new TrasladosCuentasModel();
     this.cajasService.getCajas().subscribe({next:(value:cajaRequest)=>{
       if(value.error != 'ok'){
         Swal.fire('error',value.error,'error')
-      }else{
-        this.cajaSeleccionada.id = 0;
-        this.cajaSeleccionada.nombre = 'Seleccione una caja origen';
-        this.cajas =[this.cajaSeleccionada  , ...value.data]
+      }else{ 
+        let cajasel:cajaModel = { id: 0, nombre: 'Seleccione una caja origen', 
+          idCCntCCobrar:  0,
+          idRetefuenteCompra:    0,
+          idCCntCPagar:  0, 
+          idCCntIvaCompra:    0,
+          idCCnttIvaVenta:    0,
+          idCCntCostoVenta:    0,
+          idCCntVenta:   0,
+          idCCntIngDifBonoRegalo:   0 
+};
+
+        this.cajas =[{...cajasel}  , ...value.data]  
         console.log('cajaas' , this.cajas);
         
       }
@@ -60,19 +69,26 @@ export class ejecutarTrasladoDesdeCajaComponent {
   }
   }
   ejecutar(){
-      if(this.cajaSeleccionada.id == 0){
+      console.log('cajaSeleccionada',this.cajaSeleccionada);
+      
+      if(this.cajaSeleccionada == 0){
         Swal.fire('error','Debe seleccionar el origen del traslado')
       }
+      this.dataProceso!.idEstablecimiento = this.cajas[this.cajaSeleccionada].establecimiento!
       if(this.valorTraslado == 0){
         Swal.fire('error','Debe ingresar el valor del traslado')
       }
       this.dataProceso?.cuentas.forEach(x=> x.valor = this.valorTraslado)
       let newCuentaOrigen = new TrasladosCuentasArrModel();
-      newCuentaOrigen.idCuenta = this.cajaSeleccionada.idCCntVenta;
+      newCuentaOrigen.idCuenta = this.cajas[this.cajaSeleccionada].idCCntVenta      ;
       newCuentaOrigen.tipo = 'ORIGEN';
       newCuentaOrigen.valor = this.valorTraslado;
-      this.dataProceso?.cuentas.push();
-      this.cntService.ejecutarTrasladosCuentas(this.dataProceso!).subscribe({next:val=>{}})
+      newCuentaOrigen.cuenta = this.cajas[this.cajaSeleccionada].nro_scuenta_venta!;
+      newCuentaOrigen.nombre = this.cajas[this.cajaSeleccionada].nombre_scuenta_venta!;
+
+      this.dataProceso?.cuentas.push(newCuentaOrigen);
+      this.cntService.ejecutarTrasladosCuentas(this.dataProceso!).subscribe({next:val=>{},error:e=>console.error('error' , e.error.error)
+      })
       
   }
 }

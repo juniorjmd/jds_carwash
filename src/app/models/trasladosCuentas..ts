@@ -6,7 +6,8 @@ export class TrasladosCuentasModel {
   constructor(public  id:number=0,
     public  nombre:string='',
     public descripcion:string='',
-    public tipo:string=''
+    public tipo:string='',
+    public idEstablecimiento:number=0,
  ) { }
   createTraslado( a:CntOperacionPrestablecidas){
     return new TrasladosCuentasModel(a.id , a.nombre_preforma , a.descripcion , a.tipo)
