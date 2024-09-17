@@ -158,5 +158,6 @@
     'actionCrearClienteOdooPlusDoc' : 'CREAR_CLIENTE_NUEVO_ODOO_PLUS_DOC',
     'actionActualizarClienteOdoo' : 'ACTUALIZAR_CLIENTE_ODOO',
     'actionPasarClienteAControl' : 'CREAR_CLIENTE_ODOO_A_CONTROL',
-    'crearTraslados':'CREAR_OPERACIONES_PREESTABLECIDAS'
+    'crearTraslados':'CREAR_OPERACIONES_PREESTABLECIDAS',
+    'ejecutarTraslados':'EJECUTAR_OPERACIONES_PREESTABLECIDAS'
     }

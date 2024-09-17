@@ -21,6 +21,7 @@ export class TrasladosCuentasArrModel {
   constructor( public cuenta:number=0,
                public idCuenta:number=0,
                public nombre:string='',
-               public tipo:string=''
+               public tipo:string='',
+               public valor:number = 0,
    ) { }
 }

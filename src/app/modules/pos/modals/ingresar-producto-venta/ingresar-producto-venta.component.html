@@ -1,44 +1,7 @@
-<div class="container-fluid modal_container" style="min-width: 700px;background-color: aliceblue">  
-    <h3 >Ingreso Productos a venta</h3>
-    <div class="row" >
-        <div class="col-sm-7">
-            <div class="card mb-3" style="max-width: 500px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img style="max-width: 100px;" [src]="(arrayDocPrd.producto?.images?.[0]?.url || '')" alt="{{arrayDocPrd.producto?.nombre}}">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <p class="card-text">{{ arrayDocPrd.producto?.nombre }}</p>
-                            <p class="card-text"><b>precio: </b><small class="text-muted">{{ arrayDocPrd.producto?.precioVenta }}</small>
-                                <br><b>precio base : </b><small class="text-muted">{{ arrayDocPrd.producto?.PrecioSinIVA??0 }}</small><br>
-                                <b>valor IVA : </b><small class="text-muted">{{ arrayDocPrd.producto?.valorIVA??0 }}</small>
-                                <br><b>Descuento: </b><small class="text-muted">{{ arrayDocPrd.producto?.descuento ??0}}</small>  
-                                <br><b>IVA: </b><small class="text-muted">{{ arrayDocPrd.producto?.porcent_iva}} %</small>
-                                <br><b>existencia: </b><small class="text-muted">{{ existencia?.cant_actual??0 }}</small> 
-                                <br><b>precio: </b>
-                                
-                                <ng-container *ngIf="ingresaPrecio">
-                                    <input type="number" (keyup.enter)="cambiaPrecio()" (blur)="cambiaPrecio()" class="form-control"  [(ngModel)]="precioVenta!.precio_con_iva"/>
-                                </ng-container>
-                                <ng-container *ngIf="!ingresaPrecio">
-                                    <select *ngIf=" arrayDocPrd.producto?.precios" class="form-control"  [(ngModel)]="precioVenta">
-
-                                        <option *ngFor='let precio of arrayDocPrd.producto?.precios ' [ngValue]="precio">
-                                            {{precio.precio_con_iva}}   
-                                        </option>
-                                    </select> 
-                                </ng-container>
-                               
-
-
-                                 </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-5" >
+<div class="container-fluid modal_container" style="background-color: aliceblue ; min-width: 600px !important;">  
+    <h3 >{{ arrayDocPrd.producto?.nombre }}</h3>
+    <div class="row" > 
+        <div class="col-sm-5" > 
             <table>
                 <tr>
                     <td colspan="3"> 
@@ -69,6 +32,44 @@
                 </tr>
             </table>
         </div>
+        <div class="col-sm-7">
+            <div class="card mb-3"  >
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img style="width: 100%;" [src]="(arrayDocPrd.producto?.images?.[0]?.url || '')" alt="{{arrayDocPrd.producto?.nombre}}">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body"> 
+                            <p class="card-text">
+                                <b>precio: </b><small class="text-muted">{{ arrayDocPrd.producto?.precioVenta }}</small>
+                                <br><b>precio base : </b><small class="text-muted">{{ arrayDocPrd.producto?.PrecioSinIVA??0 }}</small><br>
+                                <b>valor IVA : </b><small class="text-muted">{{ arrayDocPrd.producto?.valorIVA??0 }}</small>
+                                <br><b>Descuento: </b><small class="text-muted">{{ arrayDocPrd.producto?.descuento ??0}}</small>  
+                                <br><b>IVA: </b><small class="text-muted">{{ arrayDocPrd.producto?.porcent_iva}} %</small>
+                                <br><b>existencia: </b><small class="text-muted">{{ existencia?.cant_actual??0 }}</small> 
+                                <br><b>precio: </b>
+                                
+                                <ng-container *ngIf="ingresaPrecio">
+                                    <input type="number" (keyup.enter)="cambiaPrecio()" (blur)="cambiaPrecio()" class="form-control"  [(ngModel)]="precioVenta!.precio_con_iva"/>
+                                </ng-container>
+                                <ng-container *ngIf="!ingresaPrecio">
+                                    <select *ngIf=" arrayDocPrd.producto?.precios" class="form-control"  [(ngModel)]="precioVenta">
+
+                                        <option *ngFor='let precio of arrayDocPrd.producto?.precios ' [ngValue]="precio">
+                                            {{precio.precio_con_iva}}   
+                                        </option>
+                                    </select> 
+                                </ng-container>
+                               
+
+
+                                 </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
     </div>
 
 
