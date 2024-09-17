@@ -246,6 +246,16 @@ img.nav-avatar {
         margin-top: 20% !important;  
     }
 }
+@media (min-width: 801px) {
+    .contenedorTablas{
+        max-height: 550px;
+         overflow-y: auto;
+    }
+    .contenedorTablas2{
+        max-height: 550px;
+         overflow-y: auto;
+    } 
+}
 @media (min-width: 1400px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
         max-width: 1380px !important;
