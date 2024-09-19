@@ -9,7 +9,9 @@ import { cajasResumenModel } from 'src/app/models/ventas/cajasResumen.model';
 import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import Swal from 'sweetalert2';
-import { cajaRequest } from 'src/app/interfaces/producto-request';
+import { cajaRequest, ejecucionTrasladosRequest } from 'src/app/interfaces/producto-request';
+import { PrinterManager } from 'src/app/models/printerManager';
+import { SoporteOperacion } from 'src/app/interface/soporte-operacion';
 
 @Component({
   selector: 'app-ejecutarTrasladoDesdeCaja',
@@ -30,7 +32,7 @@ export class ejecutarTrasladoDesdeCajaComponent {
 
   constructor(  @Inject(MAT_DIALOG_DATA) public dataIngreso:CntOperacionPrestablecidas,public dialogo: MatDialogRef<newTrasladoAsignarSaldoComponent>,  ){
     this.dataProceso =  new TrasladosCuentasModel();
-    this.cajasService.getCajas().subscribe({next:(value:cajaRequest)=>{
+    this.cajasService.getCajasTraslados().subscribe({next:(value:cajaRequest)=>{
       if(value.error != 'ok'){
         Swal.fire('error',value.error,'error')
       }else{ 
@@ -45,7 +47,7 @@ export class ejecutarTrasladoDesdeCajaComponent {
           idCCntIngDifBonoRegalo:   0 
 };
 
-        this.cajas =[{...cajasel}  , ...value.data]  
+        this.cajas =[{...cajasel}  , ...value.data.filter(x=>(x.cuentaContableEfectivo||0) > 0)]  
         console.log('cajaas' , this.cajas);
         
       }
@@ -80,15 +82,25 @@ export class ejecutarTrasladoDesdeCajaComponent {
       }
       this.dataProceso?.cuentas.forEach(x=> x.valor = this.valorTraslado)
       let newCuentaOrigen = new TrasladosCuentasArrModel();
-      newCuentaOrigen.idCuenta = this.cajas[this.cajaSeleccionada].idCCntVenta      ;
+      newCuentaOrigen.idCuenta = this.cajas[this.cajaSeleccionada].cuentaContableEfectivo!      ;
       newCuentaOrigen.tipo = 'ORIGEN';
       newCuentaOrigen.valor = this.valorTraslado;
       newCuentaOrigen.cuenta = this.cajas[this.cajaSeleccionada].nro_scuenta_venta!;
       newCuentaOrigen.nombre = this.cajas[this.cajaSeleccionada].nombre_scuenta_venta!;
 
       this.dataProceso?.cuentas.push(newCuentaOrigen);
-      this.cntService.ejecutarTrasladosCuentas(this.dataProceso!).subscribe({next:val=>{},error:e=>console.error('error' , e.error.error)
+      this.cntService.ejecutarTrasladosCuentas(this.dataProceso!).subscribe({next:(val:ejecucionTrasladosRequest)=>{
+        this.printer_soporte_final(val.objeto);
+      },error:e=>console.error('error' , e.error.error)
       })
       
+  }
+
+  
+  async printer_soporte_final(soporte:SoporteOperacion) {   
+   // console.log('documento retorno',doc,'sucursal ', this.sucursal); 
+    let printM =  new PrinterManager(this.cajasService);  
+    printM.printSoporteMovimiento(false,soporte);
+    this.dialogo.close(true);
   }
 }

@@ -6,10 +6,13 @@ import { currencyDollar } from "ngx-bootstrap-icons";
 import { Inject, inject, Injectable } from "@angular/core";
 import { cajasServices } from "../services/Cajas.services";
 import { establecimientoModel } from "./ventas/establecimientos.model";
+import { SoporteOperacion } from "../interface/soporte-operacion";
+import { DatePipe } from "@angular/common";
 @Injectable({
   providedIn: 'root',
 })
 export class PrinterManager {
+  movimiento!:SoporteOperacion
   private doc :DocumentosModel = new DocumentosModel() ; 
   private docDev :DevolucionModel = new DevolucionModel() ; 
   private static sucursal?: vwsucursal;
@@ -280,6 +283,15 @@ private footerCierre():string{
 }
 
 
+public printSoporteMovimiento(impresoraPos = true , movimiento:SoporteOperacion) {
+  this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ;  
+  this.movimiento = movimiento;
+    const printContent = this.generateSoporteHTML();
+    this.openPrintWindows(printContent);
+  
+
+} 
+
   public printReceipt(impresoraPos = true) {
     this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ; 
     if(this.doc.orden ==  undefined){
@@ -348,6 +360,143 @@ private footerCierre():string{
     }
     return cabecera
   } 
+
+
+
+  generateSoporteHTML(): string {
+
+    let receiptHTML = ''; 
+    receiptHTML = (this.tipoImpresora == 'POS')?`<div style="font-family: Arial, sans-serif; width: 219.24px;"> ` : 
+    `<div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">`;
+    receiptHTML += this.generateSoporteCabecera() ; 
+    receiptHTML += this.infoSoporteGeneral(); 
+    receiptHTML += this.detalleSoporte(); 
+    receiptHTML += this.footerSoporte() ; 
+    receiptHTML += ` </div> 
+    <style>  body table td { font-size:small !important     } </style>`;
+  
+    return receiptHTML;
+  } 
+  private generateSoporteCabecera(){
+    console.log('documento a imprimir' ,this.doc);
+    
+      let cabecera = '';
+      if (this.tipoImpresora == 'POS'){
+        cabecera = ` <div style="text-align: center;">   ` ;
+        if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
+          cabecera += `<h2 style=" margin: 0;">${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` ; 
+  
+        cabecera += ` <h2  style=" margin: 0;">${this.movimiento?.arrEsta.nombre}</h2>  `; 
+        cabecera += (this.movimiento?.arrEsta.nit.trim() == '' )? ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`: ` <p>Nit: ${this.movimiento?.arrEsta.nit}</p>`  ;
+      
+        cabecera += (this.movimiento?.arrEsta.direccion.trim() == '' )?  ` <p> ${PrinterManager.sucursal?.dir}</p>`:  ` <p> ${this.movimiento?.arrEsta.direccion}</p>` ;
+        cabecera += '<p> '
+        cabecera += (this.movimiento?.arrEsta.ciudad.trim() == '' )?  ` ${PrinterManager.sucursal?.ciudad} `:  ` ${this.movimiento?.arrEsta.ciudad} ` ;
+        cabecera += ' - '
+        cabecera += (this.movimiento?.arrEsta.tel1.trim() == '' )?  `Tel: ${PrinterManager.sucursal?.tel1}`:  `Tel: ${this.movimiento?.arrEsta.tel1} ` ;
+        cabecera += '</p> '; 
+  
+      }else{
+        cabecera = `<div >     <table><tr><td><h2  style=" margin: 0;">`;
+        if((PrinterManager.sucursal?.nombre_sucursal_sec||'').trim() != '')
+          cabecera +=   PrinterManager.sucursal?.nombre_sucursal_sec + ' - ' ; 
+  
+        cabecera += `${this.movimiento?.arrEsta.nombre}</h2>`;  
+        cabecera += (this.movimiento?.arrEsta.nit.trim() == '' )? `Nit: ${PrinterManager.sucursal?.nit_sucursal} `: `Nit: ${this.movimiento?.arrEsta.nit} `  ;
+        cabecera += '<br> '
+       cabecera += (this.movimiento?.arrEsta.ciudad.trim() == '' )?  `${PrinterManager.sucursal?.ciudad} `:  `${this.movimiento?.arrEsta.ciudad} ` ;
+       
+        cabecera += (this.movimiento?.arrEsta.direccion.trim() == '' )?  ` ${PrinterManager.sucursal?.dir} `:  ` ${this.movimiento?.arrEsta.direccion} ` ;
+        cabecera += '<br> '
+        cabecera += (this.movimiento?.arrEsta.tel1.trim() == '' )?  `Tel: ${PrinterManager.sucursal?.tel1}`:  `Tel: ${this.movimiento?.arrEsta.tel1} ` ;
+        
+        cabecera += (this.movimiento?.arrEsta.tel2.trim() == '' )?  `- ${PrinterManager.sucursal?.tel2}`:  `- ${this.movimiento?.arrEsta.tel2} ` ;
+        cabecera += `</td> <td></td></tr><tr><td></td> <td></td></tr></table><hr></div>`; 
+
+
+      }
+      return cabecera
+    } 
+  private   infoSoporteGeneral():string{
+      let receiptHTML = '';
+      let labelCliente = 'Tercero : ' 
+      let leyenda = `Soporte de movimientos entre cuentas contables <br> ${this.movimiento.descripcionOpr}`;
+      
+         receiptHTML += (this.tipoImpresora != 'POS')?
+             `<div> 
+             <table>
+             <tr> 
+                  <th>Operación #</th><td> ${this.movimiento.comprobante}</td> 
+                  <th> </th><td> </td>  
+             </tr>
+              <tr> 
+                  <th>Usuario Ingreso</th><td> ${this.movimiento.usuario}</td> 
+                  <th>Vendedor</th><td> ${this.movimiento.vendedor}</td> 
+             </tr>
+             <tr> <th colspan='4'>${leyenda} </th> </tr> 
+             <tr>
+             <th> Fecha/Hora</th><td> ${this.movimiento.fecha}</td> <th> 
+             ${labelCliente}</th><td>  ${this.movimiento.tercero}</td> 
+             </tr> 
+             <tr> 
+                  <th>Débito</th><td> ${this.movimiento.debito}</td> 
+                  <th>Crédito</th><td> ${this.movimiento.credito}</td> 
+             </tr>
+             </table></div> `:
+              `<div>${leyenda}</div>
+              <div>
+               <p>Usuario: ${this.movimiento.usuario}</p>
+               <p>Vendedor: ${this.movimiento.vendedor}</p>
+                              <p>Fecha/Hora: ${this.movimiento.fecha}</p>
+                              </div><hr>
+            <div>
+              <p>${this.movimiento.nombreOpr}</p>
+              <p>${labelCliente} ${this.movimiento.tercero}</p>
+              <p>Débito   : ${this.movimiento.debito}</p>
+              <p>Crédito  : ${this.movimiento.credito}</p>
+            </div>`
+            
+            ;
+            return receiptHTML;
+    }
+    private detalleSoporte():string{
+      const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+    let receiptHTML  = ` <hr> <div style="text-align: left;" name="detalle"><table  style="font-family: Arial, sans-serif; width: 100%;">`;
+     
+    receiptHTML += (this.tipoImpresora != 'POS')?
+    `<tr><th>Cuenta </th><th>Nombre</th><th>Débito</th> <th>Crédito</th></tr>` : 
+    '';
+    console.log('listado',this.doc.listado);
+    
+        this.movimiento.movimientos?.forEach((lista) => {
+          const debito =  lista.debito ;
+          const credito = lista.credito ; 
+          
+    
+          receiptHTML += (this.tipoImpresora == 'POS')?`
+           <tr> <th colspan = '4'  style="text-align: left;" >${lista.nombreCuenta}</p> </th> </tr>
+           <tr><td>Cuenta</td><td>Débito</td><td>Crédito </td></tr>
+           <tr><td>${lista.cuenta} </td>
+           <td>${currencyFormatter.format(debito)}</td> 
+           <td>${currencyFormatter.format(credito)} </td></tr>  
+          `:`
+          <tr> 
+          <td style="text-align: left;" >${lista.cuenta}</p> </td>  
+          <td style="text-align: left;" >${lista.nombreCuenta}</p> </td>    
+          <td style="text-align: right;" >${currencyFormatter.format(debito)} </td>
+          <td style="text-align: right;" >${currencyFormatter.format(credito)}</td>
+          </tr>  
+         `
+          ;   
+      });
+    receiptHTML += `</table></div>`
+    
+      return receiptHTML; 
+    } 
+    private footerSoporte():string{
+          return  '<div style="font-size: 10px;margin: 10px;">Documento de soporte de movimiento entre cuentas contables</div>' ; 
+      }
+  //*************************************************************************************** */
  
 generateReceiptHTML(): string {
 
@@ -570,7 +719,7 @@ private openPrintWindows(printContent:string){
       WindowPrt.addEventListener('afterprint', () => {
             WindowPrt.close();
         });  
-         WindowPrt.print();
+      //   WindowPrt.print();
   }
 }
 

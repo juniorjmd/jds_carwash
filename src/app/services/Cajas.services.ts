@@ -207,6 +207,14 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
         console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
         return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     } 
+    getCajasTraslados():Observable<cajaRequest>{
+        let datos = {"action": actions.actionSelect ,
+                     "_tabla" : vistas.cajas,
+                     "_where" : [{columna : 'cuentaContableEfectivo' , tipocomp : '>' , dato : 0}]
+                    };
+        console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
+        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+    } 
     getMediosCajaActiva(){
         let datos = {"action": actions.actionSelectPorUsuario ,
                      "_tabla" : vistas.mediosPorCajaActiva,

@@ -1,3 +1,4 @@
+import { SoporteOperacion } from "../interface/soporte-operacion";
 import { ActividadesDescuentoModel } from "../models/actividadesDescuentoModel";
 import { CarteraModel } from "../models/cartera/cartera.model";
 import { CategoriasModel } from "../models/categorias.model";
@@ -118,6 +119,21 @@ export interface cntTrasladosRequest {
   data: TrasladosCuentasArrModel[];
   query: string;
   numdata: number;
+  error: string;
+}
+
+
+//data: {objeto: DocumentosModel}[];
+export interface soporteMovimientoCntRequest { 
+  data: {obj:SoporteOperacion}[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+export interface ejecucionTrasladosRequest { 
+   
+  objeto: SoporteOperacion;
   error: string;
 }
 export interface cntGrupoRequest { 

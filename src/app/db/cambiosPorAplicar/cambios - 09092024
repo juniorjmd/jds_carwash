@@ -935,8 +935,7 @@ VALUES ('5', 'trasladosContables', '1', '<i class=\"bi bi-arrow-left-right\"></i
 
 INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('63', '/home/admin');
 INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('63', 'inventarios'); 
-INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '63');
-/*sin aplicar productivo*/
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '63'); 
 
 CREATE TABLE `cnt_operacion_prestablecidas` (
   `id` INT NOT NULL,
@@ -1027,9 +1026,59 @@ CREATE  OR REPLACE  VIEW `vw_cnt_operaciones` AS
         JOIN `usuarios` ON ((`usuarios`.`ID` = `cnt_operaciones`.`usuario`)))
         LEFT JOIN `mst_per_clientes` ON ((`mst_per_clientes`.`id` = `cnt_operaciones`.`idPersona`)));
 
-
-CREATE  OR REPLACE   VIEW
- `vw_operaciones_obj` AS with `trn` as (select `cnt_transacciones`.`cod_comprobante` AS `cod_comprobante`,json_object('cuenta',`cnt_cuentas`.`nro_cuenta`,'nombreCuenta',`cnt_cuentas`.`nombre_cuenta`,'debito',`cnt_transacciones`.`valor_debito`,'credito',`cnt_transacciones`.`valor_credito`,'usuario',coalesce(`usuarios`.`nombreCompleto`,'NA'),'tercero',coalesce(`mst_per_clientes`.`nombreCompleto`,'NA')) AS `obj` from (((`cnt_transacciones` left join `usuarios` on((`usuarios`.`ID` = `cnt_transacciones`.`usuario`))) left join `mst_per_clientes` on((`mst_per_clientes`.`id` = `cnt_transacciones`.`cod_tercero`))) left join `cnt_cuentas` on((`cnt_cuentas`.`id_cuenta` = `cnt_transacciones`.`id_cuenta`)))) select `trn`.`cod_comprobante` AS `cod_comprobante`,`vw_cnt_operaciones`.`establecimiento` AS `establecimiento`,json_object('çomprobante',`trn`.`cod_comprobante`,
-'establecimiento',`vw_cnt_operaciones`.`establecimiento`,
-
-'usuario',`vw_cnt_operaciones`.`nombreUsuario`,'tercero',`vw_cnt_operaciones`.`nombrePersona`,'vendedor',`vw_cnt_operaciones`.`nombreVendedor`,'debito',`vw_cnt_operaciones`.`totalDebito`,'credito',`vw_cnt_operaciones`.`totalCredito`,'nombreOpr',`vw_cnt_operaciones`.`nombre`,'descripcionOpr',`vw_cnt_operaciones`.`descripcion`,'documento',`vw_cnt_operaciones`.`idDocumento`,'movimientos',json_arrayagg(`trn`.`obj`)) AS `obj` from (`trn` join `vw_cnt_operaciones` on((`vw_cnt_operaciones`.`id` = `trn`.`cod_comprobante`))) group by `trn`.`cod_comprobante`;
+ 
+CREATE  OR REPLACE   VIEW `vw_operaciones_obj` AS
+with trn as( SELECT cnt_transacciones.cod_comprobante,
+JSON_OBJECT(
+'cuenta',
+cnt_cuentas.nro_cuenta,
+'nombreCuenta',
+cnt_cuentas.nombre_cuenta,
+'debito',
+cnt_transacciones.valor_debito,
+'credito',
+cnt_transacciones.valor_credito,
+'usuario' ,
+coalesce(usuarios.nombreCompleto , 'NA') ,
+'tercero' ,
+coalesce(mst_per_clientes.nombreCompleto , 'NA')
+) obj
+ FROM cnt_transacciones
+ left join usuarios on usuarios.ID = cnt_transacciones.usuario 
+ left join mst_per_clientes on mst_per_clientes.id = cnt_transacciones.cod_tercero 
+ left join cnt_cuentas on cnt_cuentas.id_cuenta = cnt_transacciones.id_cuenta ) select 
+ cod_comprobante , vw_cnt_operaciones.establecimiento ,
+ JSON_OBJECT( 'comprobante' , cod_comprobante  ,
+ 'fecha' ,vw_cnt_operaciones.fechaCreacion , 
+ 'arrEsta', JSON_OBJECT( 'nombre' , establecimiento.nombre , 
+              'descripcion', establecimiento.descripcion, 
+			  'tel1', establecimiento.tel1, 
+			  'tel2', establecimiento.tel2, 
+			  'direccion',establecimiento.direccion,
+			  'pais', establecimiento.pais, 
+			  'departamento', establecimiento.departamento, 
+			  'ciudad', establecimiento.ciudad, 
+			  'nit',establecimiento.nit,
+			  'logo' ,  establecimiento.logo 
+              ),
+ 
+ 'usuario',nombreUsuario,
+ 'tercero' , nombrePersona , 
+ 'vendedor',nombreVendedor ,
+ 'debito',
+ `totalDebito`,
+ 'credito',
+ `totalCredito`,
+ 'nombreOpr', 
+ vw_cnt_operaciones.`nombre`,
+ 'descripcionOpr',
+ vw_cnt_operaciones.`descripcion`,
+ 'documento',
+ `idDocumento`, 
+ 'movimientos', JSON_ARRAYAGG( obj)  
+ ) obj
+ from trn 
+ inner join vw_cnt_operaciones on vw_cnt_operaciones.id = cod_comprobante 
+ inner join establecimiento on establecimiento.id = vw_cnt_operaciones.establecimiento
+ group by cod_comprobante 
+ ;;

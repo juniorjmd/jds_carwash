@@ -24,5 +24,6 @@ export class TrasladosCuentasArrModel {
                public nombre:string='',
                public tipo:string='',
                public valor:number = 0,
+               public saldo:number = 0,
    ) { }
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { httpOptions, url } from '../models/app.db.url';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntSubCuentaVwRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest, cntTrasladosRequest, trasladosCntRequest } from '../interfaces/producto-request';
+import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntSubCuentaVwRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest, cntTrasladosRequest, ejecucionTrasladosRequest, soporteMovimientoCntRequest, trasladosCntRequest } from '../interfaces/producto-request';
 import { actions } from '../models/app.db.actions';
 import { vistas } from '../models/app.db.view';
 import { CntGruposModel } from '../models/cnt-grupos/cnt-grupos.module';
@@ -187,13 +187,46 @@ console.log('setCntTransaccionesTmp',url.actionAdmin , datos);
      return this.http.post<cntTrasladosRequest>(url.action , datos, httpOptions()) ;
   }
 
-  ejecutarTrasladosCuentas(idTraslado:TrasladosCuentasModel):Observable<cntTrasladosRequest>{
+  ejecutarTrasladosCuentas(idTraslado:TrasladosCuentasModel):Observable<ejecucionTrasladosRequest>{
      let datos = {"action": actions.ejecutarTraslados , 
       "_arraydatos" : idTraslado
      }; 
      console.log('ejecutarTrasladosCuentas' , url.actionAdmin , datos, httpOptions())
-     return this.http.post<cntTrasladosRequest>(url.actionAdmin , datos, httpOptions()) ;
+     return this.http.post<ejecucionTrasladosRequest>(url.actionAdmin , datos, httpOptions()) ;
   }
+  bucarSoporteMovimiento(idTraslado:number):Observable<soporteMovimientoCntRequest>{
+    let where = [{"columna" : "cod_comprobante" , "tipocomp" : '=' , "dato" :  idTraslado } ]
+    let datos = {"action": actions.actionSelect ,
+      "_tabla" : vistas.vw_operaciones_obj,
+      "_where" : where , 
+      "_obj" : ['obj'],  
+      "_columnas": ['obj'],           
+     };
+    console.log('bucarSoporteMovimiento' , url.action , datos, httpOptions())
+    return this.http.post<soporteMovimientoCntRequest>(url.action , datos, httpOptions()) ;
+ }
+/**
+ * 
+getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
+  let where = [{"columna" : "cod_empleado" , "tipocomp" : '=' , "dato" :  id },
+  {"columna" : "fecha" , "tipocomp" : '>=' , "dato" :  fechas.fechaInicio },
+  {"columna" : "fecha" , "tipocomp" : '<=' , "dato" :  fechas.fechaFin }
+]
+  let datos = {"action": actions.actionSelect ,
+               "_tabla" : vistas.acumulados_por_empleado,
+               "_where" : where , 
+               "_obj" : ['obj'],             
+              };
+  console.log('servicios de empleados - getEmpleadosAcumulados' ,url.action , datos, httpOptions());
+  return this.http.post(url.action , datos, httpOptions()) ;
+} 
+
+ * 
+*/
+
+
+
+
 
   getCntGrupos():Observable<cntGrupoRequest>{
     let datos = {"action": actions.actionSelect , 

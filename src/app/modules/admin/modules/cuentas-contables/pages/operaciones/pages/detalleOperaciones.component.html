@@ -1,7 +1,8 @@
 <div class="container-fluid" >  
   <table class="table table-bordered table-striped">
-     
-      <tr>  <th>comprobante : </th>   <td>{{ operacion?.id }}</td>  
+    
+    
+    <tr>  <th>comprobante : </th>   <td>{{ operacion?.id }}</td>  
         <th>Usuario Creador : </th>  <td>{{ operacion?.nombreUsuario }}</td></tr> 
           <tr>   <th>Tercero : </th>  <td>{{ operacion?.nombrePersona??'N-A' }}</td></tr> 
           <tr>  <th>Fecha Operación</th> <td>{{ operacion?.fechaOperacion | date: 'short' }}</td>  <th>Fecha Creación</th> <td>{{ operacion?.fechaCreacion | date: 'short' }}</td></tr>
@@ -10,7 +11,13 @@
   </table>
   <!-- transacciones.component.html -->
 <div  >
-  <h3>Transacciones</h3>
+  <div class="row">
+    <div class="col-8"></div>
+    <div class="col-2">
+      <button class="btn btn-success"  (click)="printer_soporte_final()" >Imprimir</button>
+    </div>
+  </div>
+  <h3>Transacciones</h3> 
   <table class="table table-bordered table-striped">
     <thead>
       <tr> 

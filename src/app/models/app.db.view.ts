@@ -14,7 +14,7 @@
   vw_actividad_disponible_cliente:'vw_actividad_disponible_cliente',
   vw_actividad_disponible_producto:'vw_actividad_disponible_producto',
   vw_actividad_disponible_marca:'vw_actividad_disponible_marca',
-  
+  vw_operaciones_obj:'vw_operaciones_obj',
    documentos_listado_productos_por_cierre : 'vw_documentos_listado_productos_por_cierre',
     acumulados_por_empleado : 'vw_empleados_acumulados_por_empleado',
    corte_de_caja : 'vw_corte_de_caja',
