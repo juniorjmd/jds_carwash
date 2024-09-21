@@ -3,14 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component'; 
 import { InicioComponent } from './components/inicio/inicio.component';
 import { UsuarioComponent } from './modules/admin/modules/usuarios/pages/usuario.component'; 
-import { CierresComponent } from './components/cierres/cierres.component';
-import { ReportesComponent } from './components/reportes/reportes.component'; 
+import { CierresComponent } from './components/cierres/cierres.component'; 
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component';  
 import { EnviosComponent } from './components/envios/envios.component'; 
-import { ParametrosComponent } from './components/parametros/parametros.component';
-import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
-import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
-import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-facturas.component'; 
+import { ParametrosComponent } from './components/parametros/parametros.component'; 
 
  const routes:  Routes = [ 
     { path: 'login', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule) },
@@ -28,21 +24,13 @@ import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-fac
         { path: 'devoluciones', loadChildren: () => import('./modules/notasCredito/devoluciones.module').then(m => m.DevolucionesModule) }        ,
         { path: 'compras', loadChildren: () => import('./modules/compras/compras.module').then(m => m.ComprasModule) },
         { path : 'envios' , component : EnviosComponent},
-        { path : 'cierres' ,      component: CierresComponent},
-        { path : 'reportes' ,      component: InicioReportesComponent , children:[
-          {path : 'reportesMenu' , component:ReportesComponent}, 
-          {path : 'reimprimirFacturas' , component:ReimpimirFacturasComponent},
-          {path : 'VerFacturas' , component: VerFacturasComponent},
-          { path : '**' , pathMatch:'full' , redirectTo : 'reportesMenu'}, ]
-        }, 
-        
-    { path: 'usuarios', loadChildren: () => import('./modules/admin/modules/usuarios/usuarios.module').then(m => m.UsuariosModule) },
-                  
+        { path : 'cierres' ,      component: CierresComponent}, 
+        { path: 'reportes', loadChildren: () => import('./modules/reportes/reportes.module').then(m => m.ReportesModule) },
+        { path: 'usuarios', loadChildren: () => import('./modules/admin/modules/usuarios/usuarios.module').then(m => m.UsuariosModule) }, 
         { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
       ]
     },
-    { path: 'permisos', loadChildren: () => import('./modules/admin/modules/permisos/permisos.module').then(m => m.PermisosModule) },
-   
+    { path: 'permisos', loadChildren: () => import('./modules/admin/modules/permisos/permisos.module').then(m => m.PermisosModule) }, 
      { path : '**' , pathMatch:'full' , redirectTo : 'login'},
 ] ;
 

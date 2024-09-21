@@ -119,7 +119,7 @@ getMediosP(){
   this.loading.show()
   this.serviceCaja.getMediosCajaActiva()
      .subscribe( {next:(datos:any)=>{
-      console.clear();
+      //console.clear();
          console.log('getMediosCajaActiva',datos);
       if (datos.numdata > 0 ){ 
         this.pagos = [];

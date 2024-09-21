@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; 
-import { select } from 'src/app/interfaces/generales.interface';
+import { Router } from '@angular/router';  
 import { RecursoDetalle, Usuario, Usuarios } from 'src/app/interfaces/usuario.interface';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { LoginService } from 'src/app/services/login.services';
@@ -27,14 +26,12 @@ export class ReportesComponent implements OnInit {
   ngOnInit(): void {
     
     this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ;  
-      console.log('estoy en getUsuarioLogeado generales', this.usuario  );
+      console.log('estoy en getUsuarioLogeado reportes+6', this.usuario  );
       if(this.usuario ){
 
-         let userPermisosAdmin:RecursoDetalle  = this.usuario.permisos.filter((x:RecursoDetalle)=> x.nombre_recurso == "Admin")[0]
-         let userPermisos:RecursoDetalle = userPermisosAdmin.recursosHijos?.filter((x:RecursoDetalle)=> x.nombre_recurso == "reportes")[0]!
-         console.log(userPermisosAdmin, userPermisos)
+         let userPermisos:RecursoDetalle  = this.usuario.permisos.find((x:RecursoDetalle)=> x.nombre_recurso == "reportes")!
       this.listado = this.getMenuImage(userPermisos.recursosHijos??[]);
-      console.log('estoy en getUsuarioLogeado generales', this.usuario , this.listado);
+      console.log('estoy en getUsuarioLogeado reportes', this.usuario , this.listado);
       }
      
     });

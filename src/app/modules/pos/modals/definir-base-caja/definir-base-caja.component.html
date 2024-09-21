@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row container-fluid container_modal " >
     <div class="col-sm-12">
         <h2 class="centrado">Establecer Caja {{caja.descripcion}}</h2>
     </div>
@@ -6,7 +6,7 @@
 <hr>
 <div class="row">
     <div class="col-sm-12">
-        <input type="number" [(ngModel)]="valorIngresar" class="form-control">
+        <input type="number" (keyup.enter)="cerrarFormularioTrue()" [(ngModel)]="valorIngresar" class="form-control">
     </div>
 </div>
 <hr>

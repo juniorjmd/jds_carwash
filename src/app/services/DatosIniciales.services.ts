@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { cajaModel } from '../models/ventas/cajas.model';
 import { vistas } from '../models/app.db.view';
-import { cntGrupoRequest, empleadoRequest, parametroRequest } from '../interfaces/producto-request';
+import { cntGrupoRequest, DocumentoRequest, empleadoRequest, parametroRequest, ProductosVendidosRequest } from '../interfaces/producto-request';
 import { EmpleadoModel } from '../models/empleados/empleados.module';
 import { table } from 'ngx-bootstrap-icons';
 import { TABLA } from '../models/app.db.tables';
@@ -55,6 +55,15 @@ constructor(private http: HttpClient){}
            }; 
            return this.http.post<parametroRequest>(url.action , datos, httpOptions()) ;
       }
+      
+      getProductosVendidos(): Observable<ProductosVendidosRequest> {
+        let datos = {
+          "action": actions.actionSelect,
+          "_tabla": vistas.vw_productos_vendidos,  
+        };
+        console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
+        return this.http.post<ProductosVendidosRequest>(url.action, datos, httpOptions());
+      }   
   getVendedores():Observable<empleadoRequest>{
     let datos = {"action": actions.actionSelect , 
         "_tabla" : vistas.vendedores,

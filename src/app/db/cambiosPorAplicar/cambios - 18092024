@@ -1,0 +1,175 @@
+CREATE VIEW `vw_productos_vendidos` AS
+SELECT idProducto , min(fecha) firstDate , max(fecha)  lastDate
+, inv_mst_producto.nombre , inv_mst_producto.nombre2 , inv_mst_producto.nombre3 
+ FROM  documentos_listado_productos
+inner join inv_mst_producto on inv_mst_producto.id = idProducto
+group by idProducto 
+;
+
+
+INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `img`, `padreId`, `display_nombre`) VALUES ('5', 'ventas',   '<i class=\"bi bi-bar-chart\"></i>', '33', 'Ventas');
+INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `img`, `padreId`, `display_nombre`) VALUES ('5', 'inventarios', '<i class=\"bi bi-box-seam\"></i>', '33', 'Inventarios');
+INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `img`, `padreId`, `display_nombre`) VALUES ('5', 'financieros', '<i class=\"bi bi-currency-dollar\"></i>', '33', 'Financieros');
+INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `img`, `padreId`, `display_nombre`) VALUES ('5', 'clientes', '<i class=\"bi bi-people\"></i>', '33', 'Clientes');
+INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `img`, `padreId`, `display_nombre`) VALUES ('5', 'empleados', '<i class=\"bi bi-person-badge\"></i> ', '33', 'Empleados');
+INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `img`, `padreId`, `display_nombre`) VALUES ('5', 'proveedores', '<i class=\"bi bi-truck\"></i>', '33', 'Proveedores');
+
+
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('64', '/home/reportes');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('64', 'reporteVentas');
+
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('65', '/home/reportes');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('65', 'reporteInventario');
+
+
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('66', '/home/reportes');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('66', 'reporteFinanciero');
+
+
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('67', '/home/reportes');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('67', 'reporteCliente');
+
+
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('68', '/home/reportes');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('68', 'reporteEmpleados');
+
+
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('69', '/home/reportes');
+INSERT INTO `recurso_direcciones` (`id_recurso`, `direccion`) VALUES ('69', 'reporteProveedor');
+
+
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '64');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('4', '64');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '65');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('4', '65');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '66');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('4', '66');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '67');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('4', '67');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '68');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('4', '68');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '69');
+INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('4', '69');
+
+
+-- no aplicados
+
+DROP TRIGGER IF EXISTS `corte_de_caja_AFTER_INSERT`;
+
+DELIMITER $$ 
+CREATE  TRIGGER `corte_de_caja_AFTER_INSERT` AFTER INSERT ON `corte_de_caja` FOR EACH ROW BEGIN
+declare _establecimiento ,_cuentaContableEfectivo , _cuentaCajaGeneral , _movimiento   int ; 
+declare  _nombreCaja   text ; 
+	SELECT  cajas.establecimiento , cajas.nombre ,  cajas.cuentaContableEfectivo , establecimiento.idCCntCajaGeneral 
+	 into  _establecimiento , _nombreCaja ,  _cuentaContableEfectivo , _cuentaCajaGeneral 
+	FROM cajas inner join establecimiento on cajas.establecimiento = establecimiento.id where cajas.id = new.id_Caja;
+	SET SQL_SAFE_UPDATES = 0;
+      update corte_de_caja_parcial
+      set fecha_cierre = new.fecha_cierre,
+      usuario_cierre =  new.usuario_cierre
+      where id_Caja = new.id_Caja;
+    SET SQL_SAFE_UPDATES = 1;
+    
+    insert into cnt_operaciones ( 
+		   usuario, fechaOperacion, fechaCreacion, nombre, descripcion, idDocumento , idPersona, vendedor , establecimiento )
+		   values ( new.usuario_apertura  ,now() , now(), 
+		   concat( 'Opr. auto. POS  - Apertura de Caja',' => ',_nombreCaja ) ,
+		   concat('Documento creado desde punto de venta => caja : ', new.id_Caja , '-',_nombreCaja )
+		   ,-99999999 , new.usuario_apertura,  new.usuario_apertura , _establecimiento  ) ;     
+            select max(id)  into _movimiento  
+          from cnt_operaciones where idDocumento =-99999999;
+     --     _cuentaContableEfectivo , _cuentaCajaGeneral 
+    insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( _cuentaContableEfectivo  ,  new.base ,  0, now()  , 
+			'Cierres de Caja',   new.usuario_apertura  ,  now() , _movimiento ,'Apertura de caja' , new.usuario_apertura);
+            
+     insert into cnt_transacciones 
+			(  id_cuenta,  valor_debito,valor_credito, fecha_transaccion,
+			relacion_tabla,   usuario, fecha_ingreso,  cod_comprobante, origen_comprobante , cod_tercero) 
+			values
+			( _cuentaCajaGeneral  , 0 ,  new.base, now()  , 
+			'Cierres de Caja',   new.usuario_apertura  ,  now() , _movimiento ,'Apertura de caja' , new.usuario_apertura);        
+            
+END$$
+DELIMITER ;
+
+CREATE  OR REPLACE    VIEW `vw_documentos_listado_productos_ventas` AS
+    SELECT 
+        `dlp`.`id` AS `id`,
+        `dlp`.`orden` AS `orden`,
+        `dlp`.`tipoDocumento` AS `tipoDocumento`,
+        `dlp`.`idDocumento` AS `idDocumento`,
+        `dlp`.`idProducto` AS `idProducto`,
+        `dlp`.`nombreProducto` AS `nombreProducto`,
+        `dlp`.`presioVenta` AS `presioVenta`,
+        `dlp`.`porcent_iva` AS `porcent_iva`,
+        `dlp`.`presioSinIVa` AS `presioSinIVa`,
+        `dlp`.`IVA` AS `IVA`,
+        `dlp`.`cantidadVendida` AS `cantidadVendida`,
+        `dlp`.`descuento` AS `descuento`,
+        `dlp`.`valorTotal` AS `valorTotal`,
+        `dlp`.`usuario` AS `usuario`,
+        `d`.`fecha` AS `fecha`,
+        `d`.`hora` AS `hora`,
+        `dlp`.`maq_activa` AS `maq_activa`,
+        `dlp`.`estado_venta` AS `estado_venta`,
+        `dlp`.`cant_real_descontada` AS `cant_real_descontada`,
+        `dlp`.`idDocumentoFinal` AS `idDocumentoFinal`,
+        `dlp`.`id_stock_move_odoo` AS `id_stock_move_odoo`,
+        `dlp`.`total_IVA` AS `total_IVA`,
+        `dlp`.`total_presioSinIVa` AS `total_presioSinIVa`,
+        `dlp`.`estado_linea_venta` AS `estado_linea_venta`,
+        `dlp`.`id_existencia` AS `id_existencia`,
+        `dlp`.`id_externo_auxiliar` AS `id_externo_auxiliar`,
+        `dlp`.`costo` AS `costo`,
+        `dlp`.`descuentoAplicado` AS `descuentoAplicado`,
+        `dlp`.`nombreActividadDescuento` AS `nombreActividadDescuento`,
+        `dlp`.`total_descuento` AS `total_descuento`,
+        `dlp`.`tipoDescuento` AS `tipoDescuento`,
+        `dlp`.`val_aux_1` AS `val_aux_1`,
+        `dlp`.`val_aux_2` AS `val_aux_2`,
+        `dlp`.`val_aux_3` AS `val_aux_3`,
+        `dlp`.`val_aux_4` AS `val_aux_4`,
+        `dlp`.`val_aux_5` AS `val_aux_5`,
+        `dlp`.`val_aux_6` AS `val_aux_6`,
+        `dlp`.`val_aux_7` AS `val_aux_7`,
+        `dlp`.`val_aux_8` AS `val_aux_8`,
+        `dlp`.`val_aux_9` AS `val_aux_9`,
+        `dlp`.`val_aux_10` AS `val_aux_10`,
+        `dlp`.`idDocBase` AS `idDocBase`
+    FROM
+        (`documentos_listado_productos` `dlp`
+        JOIN `documentos` `d` ON ((`d`.`orden` = `dlp`.`orden`)))
+    WHERE
+        (`d`.`tipoDocumentoFinal` IN (GETIDTIPODOCUMENTOPORNOMBRE('remision_cuentas_por_cobrar') , GETIDTIPODOCUMENTOPORNOMBRE('venta'),
+            GETIDTIPODOCUMENTOPORNOMBRE('remision'),
+            GETIDTIPODOCUMENTOPORNOMBRE('venta_por_domicilio'),
+            GETIDTIPODOCUMENTOPORNOMBRE('cuentas_por_cobrar')));
+
+CREATE  OR REPLACE  VIEW `vw_productos_vendidos` AS
+WITH filtered_products AS (
+    SELECT 
+        dlp.idProducto AS idProducto,
+        MIN(dlp.fecha) AS firstDate,
+        MAX(dlp.fecha) AS lastDate
+    FROM 
+        vw_documentos_listado_productos_ventas dlp 
+    GROUP BY 
+        dlp.idProducto
+)
+SELECT 
+    fp.idProducto AS idProducto,
+    fp.firstDate AS firstDate,
+    fp.lastDate AS lastDate,
+    imp.nombre AS nombre,
+    imp.nombre2 AS nombre2,
+    imp.nombre3 AS nombre3
+FROM 
+    filtered_products fp
+JOIN 
+    inv_mst_producto imp ON imp.id = fp.idProducto; 
+
+

@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { loading } from 'src/app/models/app.loading'; 
 import { cajasServices } from 'src/app/services/Cajas.services';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-definir-base-caja',
@@ -25,10 +26,9 @@ export class DefinirBaseCajaComponent implements OnInit {
   cerrarFormulario(){
     this.dialogo.close(false);
   }
-  cerrarFormularioTrue(){
-    alert(this.valorIngresar);
+  cerrarFormularioTrue(){ 
     if(typeof(this.valorIngresar) == 'undefined'){
-      alert('Debe ingresar el Valor inicial de la caja');
+      Swal.fire('Debe ingresar el Valor inicial de la caja');
     }else{
       this.loading.show() 
       this.cajaService.abrirCaja(this.caja, this.valorIngresar).subscribe(
@@ -36,16 +36,16 @@ export class DefinirBaseCajaComponent implements OnInit {
           console.log(respuesta)
          
         if (respuesta.error === 'ok'){
-         alert( respuesta.datos[0].msg );  
+         Swal.fire( respuesta.datos[0].msg );  
          this.dialogo.close(true);
         }else{
-          alert(respuesta.error);
+          Swal.fire(respuesta.error);
         }
         this.loading.hide();
        
         },
         error => {this.loading.hide();
-          alert( error.error.error);
+          Swal.fire( error.error.error);
         }
         );
     }

@@ -7,10 +7,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { AdminLayoutComponent } from './components/layouts/admin-layout/admin-layout.component';
-import { UsuarioComponent } from './modules/admin/modules/usuarios/pages/usuario.component';
-import { ReportesComponent } from './components/reportes/reportes.component';
-import { ReporteDiarioComponent } from './components/reportes/reporte-diario.component'; 
-import { ReporteVentasPcajaComponent } from './components/reportes/reporte-ventas-pcaja.component';
+import { UsuarioComponent } from './modules/admin/modules/usuarios/pages/usuario.component'; 
 
 
 import { CierresComponent } from './components/cierres/cierres.component';
@@ -19,10 +16,7 @@ import { loading } from './models/app.loading';
 
 import { EnviosComponent } from './components/envios/envios.component'; 
 
-import { ParametrosComponent } from './components/parametros/parametros.component';
-import { ReimpimirFacturasComponent } from './components/reportes/reimpimir-facturas/reimpimir-facturas.component';
-import { InicioReportesComponent } from './components/reportes/inicio-reportes/inicio-reportes.component';
-import { VerFacturasComponent } from './components/reportes/ver-facturas/ver-facturas.component'; 
+import { ParametrosComponent } from './components/parametros/parametros.component'; 
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';    
 import { CommonModule } from '@angular/common'; 
@@ -42,16 +36,10 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     InicioComponent,
     AdminLayoutComponent,
     UsuarioComponent, 
-    ReportesComponent,
-    ReporteDiarioComponent, 
-    ReporteVentasPcajaComponent, 
     CierresComponent,
     MiUsuarioComponent,    
     EnviosComponent, 
        ParametrosComponent,
-        ReimpimirFacturasComponent,
-         InicioReportesComponent,
-          VerFacturasComponent,
           MessageModalComponent, 
   ],
    imports: [

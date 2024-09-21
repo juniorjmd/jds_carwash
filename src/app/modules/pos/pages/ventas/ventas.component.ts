@@ -691,7 +691,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
     this.loading.show();
     this.documentoService.cerrarDocumento(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
-      //console.clear();
+      console.clear();
       console.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
         this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 

@@ -12,6 +12,7 @@ import { cajasResumenModel } from 'src/app/models/ventas/cajasResumen.model';
 import { cajaRequest } from 'src/app/interfaces/producto-request';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-abrir-caja',
   templateUrl: './abrir-caja.component.html',
@@ -74,7 +75,7 @@ export class AbrirCajaComponent implements OnInit {
       } 
 
         }else{
-          alert(respuesta.error);
+          Swal.fire(respuesta.error);
           this.loading.hide();
         }
        
@@ -102,7 +103,7 @@ export class AbrirCajaComponent implements OnInit {
       } 
 
         }else{
-          alert(respuesta.error);
+          Swal.fire(respuesta.error);
           this.loading.hide();
         }
        
@@ -127,7 +128,7 @@ export class AbrirCajaComponent implements OnInit {
           this.loading.hide()
         } ,
         error => {this.loading.hide();
-          alert( error.error.error);
+          Swal.fire( error.error.error);
         }
         );
    }
@@ -160,7 +161,7 @@ export class AbrirCajaComponent implements OnInit {
           this.loading.hide()
         } ,
         error: (error : any) => {this.loading.hide();
-          alert( error.error.error);
+          Swal.fire( error.error.error);
         } } 
         );
   }
@@ -188,16 +189,16 @@ export class AbrirCajaComponent implements OnInit {
         console.log(respuesta)
        
       if (respuesta.error === 'ok'){
-       alert( respuesta.datos[0].msg ); 
+       Swal.fire( respuesta.datos[0].msg ); 
        this.continuar();
       }else{
-        alert(respuesta.error);
+        Swal.fire(respuesta.error);
       }
       this.loading.hide();
      
       },
       error:(error : any) => {this.loading.hide();
-        alert( error.error.error);
+        Swal.fire( error.error.error);
       }}
       );
   } 

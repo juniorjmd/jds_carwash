@@ -47,7 +47,13 @@ export interface DocumentoCompraRequest {
   error: string;
 }
 export interface DocumentoRequest { 
-  data: {objeto: DocumentosModel}[];
+  data: {objeto:  DocumentosModel }[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface ProductosVendidosRequest { 
+  data:  {idProducto:string, firstDate:Date, lastDate:Date, nombre:string, nombre2:string, nombre3:string} [];
   query: string;
   numdata: number;
   error: string;

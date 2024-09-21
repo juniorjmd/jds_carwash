@@ -42,7 +42,7 @@
 
    ciudades : "vw_mst_per_clientes_ciudades" ,
     departamento: "vw_mst_per_clientes_deptos" ,
-
+    vw_productos_vendidos:'vw_productos_vendidos',
     maestros: "vw_maestros" ,
     tablasPorUsuario:'vw_tablas_usuarios',
     cajas_por_usuario :'vw_cajas_por_usuario',

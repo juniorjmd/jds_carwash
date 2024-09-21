@@ -1,0 +1,67 @@
+<div class="card">
+    <div class="card-header text-center">
+        <h1>Ventas Diarias</h1>
+      </div>  
+
+      <div class="card-body">  
+
+        <div class="row">
+            <div class="col-sm-3">
+                Escoja el rango de fecha:
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input type="date" max="{{fecha2}}" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <small id="helpId" class="form-text text-muted">Fecha inicial del rango de búsqueda de factura</small>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input type="date" min="{{fecha1}}" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha2" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <small id="helpId" class="form-text text-muted">Fecha final del rango de búsqueda de factura</small>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" (click)="getDocumentosPorFecha()" class="btn btn-primary"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+ 
+
+    <div class="row">
+        <div class="col-sm-12 centrado">
+            Listado de facturas
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12  ">
+            <table class="table">
+                <tr>
+                    <td>Fecha</td>
+                    <td>Factura ID</td>
+                    <td>Cliente</td>
+                    <td>Cantidad</td>
+                    <td>Valor Parcial</td>
+                    <td>Descuento</td>
+                    <td>IVA</td>
+                    <td>Total</td>
+                    <td colspan="4">Opciones</td>
+                </tr>
+                <tr *ngFor="let venta of documentos">
+                    <td>{{venta.fecha}}</td>
+                    <td>{{venta.idDocumentoFinal}}</td>
+                    <td>{{venta.clienteNombre}}</td>
+                    <td>{{venta.cantidadVendida}}</td>
+                    <td>{{venta.valorParcial|currency:'USD'}}</td>
+                    <td>{{venta.descuento|currency:'USD'}}</td>
+                    <td>{{venta.valorIVA|currency:'USD'}}</td>
+                    <td>{{venta.valorTotal|currency:'USD'}}</td>
+                    <td><i class="bi bi-printer-fill boton_activo" (click)="imprimirFactura(venta)"></i> </td>
+                    <td> <i class="bi bi-list-ul boton_activo" (click)="VerFactura(venta)"></i></td>
+                    <td> </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+</div>

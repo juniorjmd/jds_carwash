@@ -32,6 +32,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MarcasDropdownComponent } from './components/marcas-dropdown/marcas-dropdown.component';
 import { CategiasDropdownComponent } from './components/categorias-dropdown/categorias-dropdown.component';
 import { LineBreakPipe } from './pipes/line-break.pipe';
+import { productosVendidosDropdownComponent } from './components/productosVendidos-dropdown/productosVendidos-dropdown.component';
  
 @NgModule({
   declarations: [
@@ -54,7 +55,9 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
     MenuItemLiComponent,
     DropdownComponent,
     DocumentosDropdownComponent,
-    EmpleadosDropdownComponent ,MarcasDropdownComponent, CategiasDropdownComponent , LineBreakPipe],
+    EmpleadosDropdownComponent ,MarcasDropdownComponent, CategiasDropdownComponent , LineBreakPipe
+  ,productosVendidosDropdownComponent
+  ],
   imports: [ NgbModule ,
     NgxBootstrapIconsModule.pick(allIcons)  ,
     NgxDatatableModule,
@@ -86,7 +89,7 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
     CommonModule,
     MatDialogModule ,
     MatButtonModule ,
-    MatCheckboxModule  ,MarcasDropdownComponent, CategiasDropdownComponent
+    MatCheckboxModule  ,MarcasDropdownComponent, CategiasDropdownComponent, productosVendidosDropdownComponent
   ]
 })
 export class SharedModule { }

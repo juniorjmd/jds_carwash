@@ -22,6 +22,9 @@ constructor(private http: HttpClient, private loading: loading) {
     console.log('servicio documentos');
   }
 
+  
+
+
   getDocumentoActivo(): Observable<DocumentoRequest> {
     let datos = {
       "action": actions.actionSelectPorUsuario,
@@ -314,6 +317,29 @@ constructor(private http: HttpClient, private loading: loading) {
     return this.http.post(url.action, datos, httpOptions());
   }
 
+  getVentasFinalizadasPorProductoFecha(idProducto:string , fecha1: string, fecha2: string): Observable<any> {
+    /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
+                 . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
+    let where = [
+      {"columna": 'fecha', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'fecha', "tipocomp": '<=', "dato": fecha2},
+      {"columna": 'orden', "tipocomp": 'inS', "dato": {
+        columna: 'orden',
+        tabla: 'vw_documentos_listado_productos_ventas',
+        colValidacion: 'idProducto',
+        datoValidacion : `'${idProducto}'`
+      } }
+    ];
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.ventasCerradas,
+      "_where": where
+    };
+    console.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
   cambiarDocumento(documento: number): Observable<any> {
     let datos = {"action": actions.actionChangeDocumentos, "_docActual": documento};
     console.log('cambiarDocumento activo', url.actionDocumentos, datos, httpOptions());
