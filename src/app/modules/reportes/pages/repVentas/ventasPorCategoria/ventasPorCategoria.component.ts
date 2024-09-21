@@ -21,29 +21,28 @@ export class ventasPorCategoriaComponent implements OnInit {
   categoriaSeleccionada: CategoriasVendidasModel | null  = new CategoriasVendidasModel(null); 
   fecha1:string;
   fecha2:string;
+  maximo:string;
   constructor(public loading : loading,private serviceCaja:cajasServices,
     private documentoService : DocumentoService, private inicioService:DatosInicialesService ) {
       this.categoriaSeleccionada!.id = 0 ; 
-      this.categoriaSeleccionada!.nombre = 'Seleccione una categoria para filtrar'; 
-       /**const year = date.getFullYear() * 1e4; // 1e4 gives us the the other digits to be filled later, so 20210000.
-const month = (date.getMonth() + 1) * 100; // months are numbered 0-11 in JavaScript, * 100 to move two digits to the left. 20210011 => 20211100
-const day = date.getDate(); // */
-      let fecha = new Date();
+      this.categoriaSeleccionada!.nombre = 'Seleccione una categoria para filtrar';  
+       let fecha = new Date();
        this.fecha1 = fecha.getFullYear().toString() +'-'+ (fecha.getMonth() + 1).toString().padStart(2,'0')+'-'+ (fecha.getDate()).toString().padStart(2,'0') ;
        this.fecha2 = this.fecha1;
-    
+        this.maximo = this.fecha1;
      }
 
      getVentasPorProducto(prd:CategoriasVendidasModel){
       console.log('productos seleccionado' , this.categoriaSeleccionada);
       this.categoriaSeleccionada = prd;
       if(this.categoriaSeleccionada?.id != 0){
-        //Swal.fire('producto seleccionado ' +this.categoriaSeleccionada?.idProducto + ' - ' +this.categoriaSeleccionada?.nombre )
-    /*    let f1 =  this.categoriaSeleccionada.firstDate.toString()
+      //  alert('categoria seleccionado ' +JSON.stringify(this.categoriaSeleccionada!) )
+        let f1 =  this.categoriaSeleccionada.firstDate!.toString()
         this.fecha1 =  f1.slice(0,10) ;
-        f1 =  this.categoriaSeleccionada.lastDate.toString() ;
+        f1 =  this.categoriaSeleccionada.lastDate!.toString() ;
         this.fecha2 =  f1.slice(0,10) ;
-        this.documentoService.getVentasFinalizadasPorProductoFecha(this.categoriaSeleccionada?.id!,this.fecha1.trim(),this.fecha2.trim() )
+        this.maximo = this.fecha2 ;
+        this.documentoService.getVentasFinalizadasPorCategoriasFecha(this.categoriaSeleccionada?.id,this.fecha1.trim(),this.fecha2.trim() )
         .subscribe({next:
           (datos:any)=>{
             let cont = 0; 
@@ -65,7 +64,7 @@ const day = date.getDate(); // */
       
       }}
     
-    );*/
+    ); 
 
 
 
@@ -175,9 +174,8 @@ const day = date.getDate(); // */
     if(this.fecha2.trim() === ''){
       Swal.fire('Es necesario escoger la fecha final del rango de factura','error','error');
       return;
-    }
-    let idCat:string = '';
-    this.documentoService.getVentasFinalizadasPorProductoFecha(idCat,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+    } 
+    this.documentoService.getVentasFinalizadasPorCategoriasFecha(this.categoriaSeleccionada?.id,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 

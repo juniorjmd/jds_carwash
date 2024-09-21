@@ -31,7 +31,7 @@ export class categoriasVendidasDropdownComponent implements OnInit{
   } 
 
   getAllCategorias(){  
-    this.prdService.getCategorias().subscribe({
+    this.prdService.getCategoriasVendidas().subscribe({
        next :(datos:categoriaVendidosRequest)=>{
          console.log('getAllCategorias',datos);
       let opt:CategoriasVendidasModel = new CategoriasVendidasModel(null);

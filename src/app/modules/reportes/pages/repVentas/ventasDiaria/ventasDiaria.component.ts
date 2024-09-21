@@ -23,7 +23,8 @@ export class ventasDiariaComponent implements OnInit {
   codFactura:string;
   codCliente:string;
   fecha1:string;
-  fecha2:string;
+  fecha2:string; 
+  maximo:string; 
   constructor(public loading : loading,private serviceCaja:cajasServices,
     private documentoService : DocumentoService, private inicioService:DatosInicialesService ) {
        this.codFactura = '';
@@ -34,6 +35,7 @@ const day = date.getDate(); // */
       let fecha = new Date();
        this.fecha1 = fecha.getFullYear().toString() +'-'+ (fecha.getMonth() + 1).toString().padStart(2,'0')+'-'+ (fecha.getDate()).toString().padStart(2,'0') ;
        this.fecha2 = this.fecha1;
+       this.maximo = this.fecha2 ;
     
      }
 

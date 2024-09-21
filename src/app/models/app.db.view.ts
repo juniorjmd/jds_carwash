@@ -33,7 +33,7 @@
   prd_bodegas_inventario:'vw_inv_bodegas',
   mediosPorCajaActiva : "vw_medios_de_cajas_activas" ,
   categorias : "vw_inv_categorias" ,
-  categoriasVendidas : "vw_inv_categorias" ,
+  categoriasVendidas : "vw_inv_categorias_vendidos" ,
    cajasActivas : "vw_cajas_activas" ,
    documentos_por_tip_documento : "vw_obj_documentos_por_tipo_documento_final" ,
    vw_obj_documentos_por_usuario:"vw_obj_documentos_por_usuario",
