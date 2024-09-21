@@ -17,7 +17,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['categorias']">
             <i class="bi bi-box-seam"></i> Ventas por Categoría
           </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['vendedor']">
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['vendedorCajero']">
             <i class="bi bi-person-lines-fill"></i> Ventas por Vendedor/Cajero
           </a>
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['horas']">

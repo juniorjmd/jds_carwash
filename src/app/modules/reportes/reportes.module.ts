@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
+import { CommonModule } from '@angular/common'; 
 import { ReportesRoutingModule } from './reportes-routing.module'; 
 import { InicioReportesComponent } from './pages/inicio-reportes/inicio-reportes.component';
-import { ReimpimirFacturasComponent } from './pages/repVentas/reimpimir-facturas/reimpimir-facturas.component';
-import { ReporteDiarioComponent } from './pages/reporte-diario.component';
-import { ReporteVentasPcajaComponent } from './pages/reporte-ventas-pcaja.component';
+import { ReimpimirFacturasComponent } from './pages/repVentas/reimpimir-facturas/reimpimir-facturas.component'; 
 import { VerFacturasComponent } from './pages/repVentas/ver-facturas/ver-facturas.component';
 import { SharedModule } from '../shared/shared.module';
 import { ReportesComponent } from './pages/reportes.component';
@@ -15,6 +12,7 @@ import { BienvenidaRPComponent } from './pages/repVentas/bienvenidaRP/bienvenida
 import { ventasDiariaComponent } from './pages/repVentas/ventasDiaria/ventasDiaria.component';
 import { ventasPorProductoComponent } from './pages/repVentas/ventasPorProducto/ventasPorProducto.component';
 import { ventasPorCategoriaComponent } from './pages/repVentas/ventasPorCategoria/ventasPorCategoria.component';
+import { ventasPorVendedorComponent } from './pages/repVentas/ventasPorVendedor/ventasPorVendedor.component';
 
 
 @NgModule({
@@ -22,9 +20,8 @@ import { ventasPorCategoriaComponent } from './pages/repVentas/ventasPorCategori
     ReportesComponent, 
     ReimpimirFacturasComponent,
     InicioReportesComponent,ventasPorCategoriaComponent,
-     VerFacturasComponent, ventasPorProductoComponent,
-     ReporteDiarioComponent, BienvenidaRPComponent,ventasDiariaComponent,
-     ReporteVentasPcajaComponent, MovimientosCuentaComponent, InicioRepVentasComponent
+     VerFacturasComponent, ventasPorProductoComponent,ventasPorVendedorComponent,
+       BienvenidaRPComponent,ventasDiariaComponent, MovimientosCuentaComponent, InicioRepVentasComponent
   ],
   imports: [
     CommonModule,
