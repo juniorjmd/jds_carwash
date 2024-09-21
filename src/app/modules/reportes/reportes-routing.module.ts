@@ -10,6 +10,7 @@ import { InicioRepVentasComponent } from './pages/repVentas/inicioRepVentas/inic
 import { BienvenidaRPComponent } from './pages/repVentas/bienvenidaRP/bienvenidaRP.component';
 import { ventasDiariaComponent } from './pages/repVentas/ventasDiaria/ventasDiaria.component';
 import { ventasPorProductoComponent } from './pages/repVentas/ventasPorProducto/ventasPorProducto.component';
+import { ventasPorCategoriaComponent } from './pages/repVentas/ventasPorCategoria/ventasPorCategoria.component';
 
 const routes: Routes = [{ path: '', component: InicioReportesComponent ,   children:[
     {path : 'reportesMenu' , component:ReportesComponent}, 
@@ -23,6 +24,7 @@ const routes: Routes = [{ path: '', component: InicioReportesComponent ,   child
       {path : '' , component:BienvenidaRPComponent},
       {path : 'diarias' , component:ventasDiariaComponent},
       {path : 'productos' , component:ventasPorProductoComponent},
+      {path : 'categorias' , component:ventasPorCategoriaComponent},
       {path : 'reimprimirFacturas' , component:ReimpimirFacturasComponent},
       {path : 'VerFacturas' , component: VerFacturasComponent} ,
       { path : '**' , pathMatch:'full' , redirectTo : ''}

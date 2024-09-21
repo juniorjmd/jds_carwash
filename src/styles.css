@@ -247,6 +247,9 @@ img.nav-avatar {
     }
 }
 @media (min-width: 801px) {
+    #menuCentral{
+        margin-top: 100px;
+    }
     .contenedorTablas{
         max-height: 550px;
          overflow-y: auto;
@@ -313,14 +316,7 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-@media (max-height: 720px) {
-       
-#navbarNavMenu{
-    height: 600px !important;
-    overflow-y: auto !important;
-}
-  
-}
+ 
 
 @media (max-height: 600px) {
    .container {

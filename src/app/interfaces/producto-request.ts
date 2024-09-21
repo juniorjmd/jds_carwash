@@ -1,7 +1,7 @@
 import { SoporteOperacion } from "../interface/soporte-operacion";
 import { ActividadesDescuentoModel } from "../models/actividadesDescuentoModel";
 import { CarteraModel } from "../models/cartera/cartera.model";
-import { CategoriasModel } from "../models/categorias.model";
+import { CategoriasModel, CategoriasVendidasModel } from "../models/categorias.model";
 import { ClientesModel } from "../models/clientes/clientes.module";
 import { CntClasesModel } from "../models/cnt-clases/cnt-clases.module";
 import { CntCuentaMModel } from "../models/cnt-cuenta-m/cnt-cuenta-m.module";
@@ -228,6 +228,13 @@ export interface cntTransaccionesRequest {
 
 export interface categoriaRequest { 
   data: CategoriasModel[] ;
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+export interface categoriaVendidosRequest { 
+  data: CategoriasVendidasModel[] ;
   query: string;
   numdata: number;
   error: string;

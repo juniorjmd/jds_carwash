@@ -112,9 +112,7 @@ filtrarPadre3(){
         console.log(value)
         this.dialogo.close(true); 
       },error:error=>console.error(error)})
-    }
-
-
+    } 
   }
   getAllCategorias(){ 
     this.loading.show()

@@ -32,3 +32,8 @@ export class CategoriasModel extends ModelBase {
         this.NombreCuentaContable =   cat?.NombreCuentaContable;
       } } 
 } 
+
+export class CategoriasVendidasModel extends CategoriasModel {
+  firstDate?:Date =  new Date();
+  lastDate?:Date =  new Date();
+}

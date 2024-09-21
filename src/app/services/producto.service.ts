@@ -13,7 +13,7 @@ import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModel } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { categoriaRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciaRequest, ProductoRequest } from '../interfaces/producto-request';
+import { categoriaRequest, categoriaVendidosRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciaRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
@@ -188,6 +188,15 @@ getCategorias():Observable<categoriaRequest>{
               };
   console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
   return this.http.post<categoriaRequest>(this.baseUrl, datos, httpOptions()) ;
+} 
+getCategoriasVendidas():Observable<categoriaVendidosRequest>{
+  let datos = {"action": actions.actionSelect ,
+               "_tabla" : vistas.categoriasVendidas,
+              "_columnas": ['obj'],
+              "_obj": ['obj'],
+              };
+  console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
+  return this.http.post<categoriaVendidosRequest>(this.baseUrl, datos, httpOptions()) ;
 } 
 getMarcas():Observable<marcaRequest>{
   let datos = {"action": actions.actionSelect ,

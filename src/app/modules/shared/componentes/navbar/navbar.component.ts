@@ -34,9 +34,9 @@ export class NavbarComponent {
     this._datosInicialesService.getDatosIniSucursal().subscribe({
       next: (data: any) => {
         this.sucursal = data;
-        // console.log(this.sucursal);
+        console.log(this.sucursal);
       },
-      error: (error) => alert(error.error.error),
+      error: (error) => console.error(JSON.stringify(error)),
     });
   }
   goBack(): void {

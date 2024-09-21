@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="row" *ngIf="documentos && documentos.length > 0">
-        <div class="col-sm-12">
+        <div class="col-sm-12 contenedorTablas">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -53,7 +53,7 @@
                         <td><i class="bi bi-list boton_activo" (click)="VerFactura(venta)"></i></td>
                     </tr>
                 </tbody>
-            </table>
+            </table><hr>
         </div>
     </div>
     <div class="row" *ngIf="documentos && documentos.length === 0">
@@ -62,3 +62,5 @@
         </div>
     </div>
 </div>
+
+<hr>

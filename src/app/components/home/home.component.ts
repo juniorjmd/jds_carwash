@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.inicioService.getVendedores().subscribe({next: (datos:empleadoRequest) =>{
       this.inicioService.setArrayVendedores(datos.data)
-    },error:error=>console.error(error.error.error)
+    },error:error=>console.error(JSON.stringify(error))
     })
     this.inicioService.getDatosIniSucursal().subscribe({next :  (data:any)=>{
        data;
@@ -53,8 +53,8 @@ export class HomeComponent implements OnInit {
       console.log('sucursal',data[0]);
     } ,
     error: error => {
-      console.error(error.error.error)
-      alert( error.error.error)
+      console.error(JSON.stringify(error))
+       
     }}
       ); 
     
@@ -64,6 +64,9 @@ export class HomeComponent implements OnInit {
 
           this.inicioService.validarCuentasContablesEstablecimiento(value.data[0] )  
           
+      }, error: error => {
+        console.error(JSON.stringify(error))
+         
       }})
     
 
@@ -73,44 +76,44 @@ export class HomeComponent implements OnInit {
 
     this._servProducto.getCategorias().subscribe({next:(datos:categoriaRequest)=>{ 
       this._servProducto.asignarCategorias(datos.data.map((x:any)=>x.obj) ) 
-   }, error : (e)=>console.error(e.error.error)})
+   }, error : (e)=>console.error(JSON.stringify(e))})
 
     this._servProducto.getMarcas().subscribe({next:(datos:marcaRequest)=>{ 
       this._servProducto.asignarMarcas(datos.data ) 
-   }, error : (e)=>console.error(e.error.error)})
+   }, error : (e)=>console.error(JSON.stringify(e))})
     
     this.cntService.getCntCuentasMayores().subscribe({next:(value:cntCuentaMayorRequest)=>{  
       console.log("getCntCuentasMayores",value )
       this.cntService.changeCuentasM(value.data); 
-    },error : (e)=>console.error(e.error.error)})
+    },error : (e)=>console.error(JSON.stringify(e))})
     
     this.cntService.getCntGrupos().subscribe({
       next:(value:cntGrupoRequest)=>{ 
       this.cntService.changeGrupo(value.data); 
       console.log("getCntGrupos",value.data )
 
-    },error : (e)=>console.error(e.error.error)})
+    },error : (e)=>console.error(JSON.stringify(e))})
 
     this.cntService.getCntCuentas().subscribe({
       next:(value:cntSubCuentaRequest)=>{ 
       this.cntService.changeSubCuenta(value.data); 
       console.log("getCntCuentas",value.data )
 
-    },error : (e)=>console.error(e.error.error)})
+    },error : (e)=>console.error(JSON.stringify(e))})
 
 
     this.cntService.getCntClases().subscribe({next:(value:cntClaseRequest)=>{ 
       this.cntService.changeClase(value.data); 
       console.log("getCntClases",value.data )
 
-    },error : (e)=>console.error(e.error.error)})
+    },error : (e)=>console.error(JSON.stringify(e))})
 
 
     this.cntService.getCntClases().subscribe({next:(value:cntClaseRequest)=>{ 
       this.cntService.changeClase(value.data); 
       console.log("getCntClases",value.data )
 
-    },error : (e)=>console.error(e.error.error)})
+    },error : (e)=>console.error(JSON.stringify(e))})
 
     this.serviceCaja.getEstablecimientos()
     .subscribe({next: (datos:establecimientosRequest)=>{
@@ -118,8 +121,7 @@ export class HomeComponent implements OnInit {
        if (datos.numdata > 0 ){ 
         this.serviceCaja.asignarEstablecimientos( datos.data??null);  
        } 
-     } , error:   error => {  
-       alert( error.error.error);
+     } , error:   error => {  console.error(JSON.stringify(error))  
      }}
      );
 
@@ -135,8 +137,7 @@ export class HomeComponent implements OnInit {
     this.usuarioService.changeUsuario(this.usuario); // Actualiza con el usuario logueado
 
     },error: (error: any) => { 
-    console.log(error);
-    alert(error.error.error);
+      console.error(JSON.stringify(error))
     this._Router.navigate(['login']);
   }})  
 }

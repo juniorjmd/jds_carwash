@@ -1,0 +1,19 @@
+<div class="d-flex input-group" *ngIf="options != undefined">  
+    <div class="btn-group ">
+        <input type="text" class="form-control ddMarcasFiltro" style="width: 40%;"  (input)="filterOptions($event)">
+        <button type="button"class="btn btn-outline-success " > 
+                <span>{{(selectedValue!.nombre||'')}}</span>
+        </button> 
+        <button type="button" class="btn btn-outline-primary  dropdown-toggle ddMarcas" data-bs-toggle="dropdown" aria-expanded="false">
+        </button>
+       <ul class="dropdown-menu" aria-labelledby="dropdownMenuOffset" style="max-height: 400px;
+    overflow-y: auto;">
+           <li *ngFor="let option of filteredOptions" (click)="selectOption(option)">  
+               <a class="dropdown-item">
+                   <span style="cursor: pointer;">
+                    {{option.nombre }}
+                   </span> 
+           </a>  
+             </li>
+         </ul>
+       </div></div>

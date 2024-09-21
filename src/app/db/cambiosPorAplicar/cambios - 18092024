@@ -51,9 +51,7 @@ INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('4', '68');
 INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('1', '69');
 INSERT INTO `perfil_recurso` (`id_perfil`, `id_recurso`) VALUES ('4', '69');
 
-
--- no aplicados
-
+ 
 DROP TRIGGER IF EXISTS `corte_de_caja_AFTER_INSERT`;
 
 DELIMITER $$ 

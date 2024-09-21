@@ -25,8 +25,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         <li class="list-group-item"><i class="bi bi-arrow-counterclockwise"></i> Reportes de Devoluciones</li>
       </ul>
       <div class="text-center mt-4">
-        <a  [routerLink]="['ventas/productos']" class="btn btn-primary">Ir a los Reportes de Ventas</a>
-      </div>
+        <a  [routerLink]="['productos']" class="btn btn-primary">Ir a los Reportes de Ventas</a>
+      </div><hr>
     </div>
   </div>
 </div>`,
