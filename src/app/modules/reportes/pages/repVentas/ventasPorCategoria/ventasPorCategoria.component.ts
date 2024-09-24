@@ -8,6 +8,7 @@ import { cajasServices } from 'src/app/services/Cajas.services';
 import { ProductoVendido } from 'src/app/interfaces/productoVendido.';
 import Swal from 'sweetalert2';
 import { CategoriasVendidasModel } from 'src/app/models/categorias.model';
+import { ResumenVenta } from 'src/app/interfaces/resumenVenta.';
 
 @Component({
   selector: 'app-ventasPorCategoria',
@@ -15,7 +16,10 @@ import { CategoriasVendidasModel } from 'src/app/models/categorias.model';
   styleUrls: ['./ventasPorCategoria.component.css']
 })
 export class ventasPorCategoriaComponent implements OnInit {
-
+  resumenVenta?:ResumenVenta;
+  resumen:boolean=true;
+  hideR:boolean=true;
+  hideF:boolean=true;
   documentos : DocumentosModel[] = [];
   indexProductoSel:number = 0; 
   categoriaSeleccionada: CategoriasVendidasModel | null  = new CategoriasVendidasModel(null); 
@@ -42,6 +46,25 @@ export class ventasPorCategoriaComponent implements OnInit {
         f1 =  this.categoriaSeleccionada.lastDate!.toString() ;
         this.fecha2 =  f1.slice(0,10) ;
         this.maximo = this.fecha2 ;
+        this.hideR=false; 
+        this.hideF=false;
+
+        this.documentoService.getResumenCategoriaVentas
+        (this.categoriaSeleccionada?.id!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+          (datos:any)=>{
+           
+        if (datos.numdata > 0 ){
+          this.resumenVenta = datos.data  ;
+          console.log('getResumenProductosVentas',this.resumenVenta);
+       } else{
+        Swal.fire('No existen datos relacionados con la busqueda')
+       } 
+       this.hideR=true; 
+      } ,error:
+      (error: any) =>{
+        Swal.fire(JSON.stringify(error )); 
+        this.hideR=true; 
+      }});
         this.documentoService.getVentasFinalizadasPorCategoriasFecha(this.categoriaSeleccionada?.id,this.fecha1.trim(),this.fecha2.trim() )
         .subscribe({next:
           (datos:any)=>{
@@ -57,11 +80,11 @@ export class ventasPorCategoriaComponent implements OnInit {
           }) 
        } else{
         Swal.fire('No existen datos relacionados con la busqueda')
-       } 
+       } this.hideF=true; 
       } ,error:
       (error: any) =>{
         Swal.fire(JSON.stringify(error ));
-      
+        this.hideF=true; 
       }}
     
     ); 
@@ -175,6 +198,25 @@ export class ventasPorCategoriaComponent implements OnInit {
       Swal.fire('Es necesario escoger la fecha final del rango de factura','error','error');
       return;
     } 
+    this.hideR=false; 
+    this.hideF=false;
+
+    this.documentoService.getResumenCategoriaVentas
+    (this.categoriaSeleccionada?.id!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+      (datos:any)=>{
+       
+    if (datos.numdata > 0 ){
+      this.resumenVenta = datos.data  ;
+      console.log('getResumenProductosVentas',this.resumenVenta);
+   } else{
+    Swal.fire('No existen datos relacionados con la busqueda')
+   } 
+   this.hideR=true; 
+  } ,error:
+  (error: any) =>{
+    Swal.fire(JSON.stringify(error )); 
+    this.hideR=true; 
+  }});
     this.documentoService.getVentasFinalizadasPorCategoriasFecha(this.categoriaSeleccionada?.id,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
       (datos:any)=>{
         let cont = 0; 
@@ -189,11 +231,11 @@ export class ventasPorCategoriaComponent implements OnInit {
       }) 
    } else{
     Swal.fire('No existen datos relacionados con la busqueda')
-   } 
+   }  this.hideF=true; 
   } ,error:
   (error: any) =>{
     Swal.fire(JSON.stringify(error ));
-  
+    this.hideF=true; 
   }});
   } 
 }

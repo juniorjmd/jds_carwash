@@ -5,6 +5,9 @@ export interface ResumenVenta {
     cantidadVendida: number; 
     totalVenta: number;
     resumen: VentaDiaria[];
+    productos?:resumenPrd[];
+    productoMasVendido?:resumenPrd;
+    productoMenosVendido?: resumenPrd; 
  }
 
 
@@ -13,4 +16,10 @@ export interface VentaDiaria {
     cantidad: number;
     totalVendido: number;
   }
-   
+
+  export interface resumenPrd{
+    "total": number,
+    "nombre": string,
+    "cantidad": number,
+    "idProducto": string
+  } 
