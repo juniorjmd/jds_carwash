@@ -76,10 +76,20 @@ export class ProductosComponent implements OnInit {
      this.getBodegas();
      this.getCategorias_marcas(); 
      }
-     
+     cambioTipProducto(){
+      if(this.newProducto.tipo_producto == 2 ){
+        this.newProducto.presentacion = 0;
+      }
+     }
   getPresentacion(){
     this.productoService.getPresentacioProducto().subscribe({next:(value:presentacionPrdRequest)=>{
-      this.presentacion = value.data;  
+      let pre:PresentacionPrdModel = {
+        id: 0,
+        nombre: 'Ninguna',
+        descripcion: '',
+        sigla: ''
+      };
+      this.presentacion = [pre, ...value.data];  
     }});
   }
    getProductosPorFiltro(){
@@ -329,6 +339,9 @@ export class ProductosComponent implements OnInit {
         );
      }
      editarPrd(prd:ProductoModel){ 
+      console.clear();
+      console.log('producto enviado', prd);
+      
       this.limpiarFormulario() 
       this.newAbrirDialog.open(ModalUpdateProductoComponent , { data:  prd }  )
       .afterClosed()
@@ -546,7 +559,9 @@ export class ProductosComponent implements OnInit {
        if( this.newProducto.tipo_producto!   <= 0){ 
         Swal.fire( 'Debe establecer un tipo de producto', '', 'error');
        return ;
-       } 
+       }
+        
+
        if (this.newProducto.porcent_iva??0 > 0){
         let ivaPorcentaje = this.newProducto.porcent_iva??0;
         if (this.ivaIncluido){
@@ -609,7 +624,7 @@ export class ProductosComponent implements OnInit {
     if (datos.numdata > 0 ){ 
       this.buscar =  false;
       this.Productos = datos.productos 
-      console.log(this.Productos);
+      console.log('getProductos',this.Productos);
     }else{
       this.Productos = [];
     }

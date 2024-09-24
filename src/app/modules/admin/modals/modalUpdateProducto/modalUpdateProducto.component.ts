@@ -30,31 +30,19 @@ export class ModalUpdateProductoComponent {
 private dialogo= inject(MatDialogRef<ModalUpdateProductoComponent>);
   constructor( @Inject(MAT_DIALOG_DATA) public   newProducto:ProductoModel , private loading:loading){ 
     this.getPresentacion();
-    this.getCategorias_marcas()  
-    this.getProducto()
+    this.getCategorias_marcas()   
     console.log('producto injectado' , this.newProducto); 
-    
+    let precio:PrdPreciosModule = new PrdPreciosModule();
+    precio.id_producto = this.newProducto.id
+    precio.precio_con_iva = 0;
+    precio.precio_antes_de_iva = 0;
+    precio.valor_iva = 0;
+  if(this.newProducto.precios[0] == undefined)this.newProducto.precios[0]= {...precio}  ;
+  if(this.newProducto.precios[1] == undefined)this.newProducto.precios[1]= {...precio}  ;
+  if(this.newProducto.precios[2] == undefined)this.newProducto.precios[2]= {...precio}  ;
   }
 
-  
-  getProducto(){
-    this.loading.show()
-    this.productoService.getProductoByIdOrCodBarra(this.newProducto.id!).subscribe({next:(value:ProductoRequest)=>{
-      console.log('producto completo', value); 
-      this.loading.hide()
-      this.newProducto= value.producto 
-      let precio:PrdPreciosModule = new PrdPreciosModule();
-      precio.id_producto = this.newProducto.id
-      precio.precio_con_iva = 0;
-      precio.precio_antes_de_iva = 0;
-      precio.valor_iva = 0;
-    if(this.newProducto.precios[0] == undefined)this.newProducto.precios.push({...precio})  ;
-    if(this.newProducto.precios[1] == undefined)this.newProducto.precios.push({...precio})  ;
-    if(this.newProducto.precios[2] == undefined)this.newProducto.precios.push({...precio})  ;
-     
-    }, error:e=>{console.error(e.error.error) ; this.loading.hide();  
-    }})
-  }
+ 
     
   getPresentacion(){
     this.productoService.getPresentacioProducto().subscribe({next:(value:presentacionPrdRequest)=>{

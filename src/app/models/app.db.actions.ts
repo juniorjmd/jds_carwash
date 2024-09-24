@@ -119,6 +119,7 @@
     'actionProcedure' :actionProcedure,
     'actionSelect' :actionSelect ,
     'actionSelects' :actionSelects ,
+    'resumenVentaProducto' :'GET_RESUMEN_VENTA_PRODUCTOS' ,
     'MAESTROS_CLIENTES' :'GET_MAESTROS_CLIENTES',
     'actionBuscarPaisesOdoo' : 'BUSCAR_ODOO_PAIS',
     'actionBuscarStatesOdoo' : 'BUSCAR_ODOO_DEP',

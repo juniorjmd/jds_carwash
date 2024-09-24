@@ -1,2 +1,95 @@
 
 CREATE   OR REPLACE VIEW `vw_inv_categorias_vendidos` AS with `categoriasVendidas` as (select min(`vw_productos_vendidos`.`firstDate`) AS `firstDate`,max(`vw_productos_vendidos`.`lastDate`) AS `lastDate`,`vw_productos_vendidos`.`idCategoria` AS `idCategoria` from `vw_productos_vendidos` group by `vw_productos_vendidos`.`idCategoria`) select `inv_categorias`.`id` AS `id`,`inv_categorias`.`idPadreCategoria` AS `idPadreCategoria`,`inv_categorias`.`letra` AS `letra`,`inv_categorias`.`nombre` AS `nombre`,`inv_categorias`.`descripcion` AS `descripcion`,`inv_categorias`.`tipo` AS `tipo`,`inv_categorias`.`contador` AS `contador`,`inv_categorias`.`tipo_descripcion` AS `tipo_descripcion`,`inv_categorias`.`usuario_creacion` AS `usuario_creacion`,`inv_categorias`.`usuario_edicion` AS `usuario_edicion`,`inv_categorias`.`fecha_creacion` AS `fecha_creacion`,`inv_categorias`.`fecha_actualizacion` AS `fecha_actualizacion`,coalesce(`inv_categorias`.`idCuentaContable`,0) AS `idCuentaContable`,coalesce(`cnt_cuentas`.`nombre_cuenta`,'NA') AS `NombreCuentaContable`,json_object('id',`inv_categorias`.`id`,'idPadreCategoria',`inv_categorias`.`idPadreCategoria`,'letra',`inv_categorias`.`letra`,'nombre',`inv_categorias`.`nombre`,'descripcion',`inv_categorias`.`descripcion`,'tipo',`inv_categorias`.`tipo`,'contador',`inv_categorias`.`contador`,'tipo_descripcion',`inv_categorias`.`tipo_descripcion`,'usuario_creacion',`inv_categorias`.`usuario_creacion`,'usuario_edicion',`inv_categorias`.`usuario_edicion`,'fecha_creacion',`inv_categorias`.`fecha_creacion`,'fecha_actualizacion',`inv_categorias`.`fecha_actualizacion`,'name_usuario_creacion',`creador`.`nombreCompleto`,'name_usuario_edicion',`editor`.`nombreCompleto`,'nombre_estado',`estado`.`nombre_estado`,'idCuentaContable',coalesce(`inv_categorias`.`idCuentaContable`,0),'NombreCuentaContable',coalesce(`cnt_cuentas`.`nombre_cuenta`,'NA'),'firstDate',`categoriasVendidas`.`firstDate`,'lastDate',`categoriasVendidas`.`lastDate`) AS `obj` from (((((`inv_categorias` join `categoriasVendidas` on((`inv_categorias`.`id` = `categoriasVendidas`.`idCategoria`))) left join `usuarios` `creador` on((`creador`.`ID` = `inv_categorias`.`usuario_creacion`))) left join `usuarios` `editor` on((`editor`.`ID` = `inv_categorias`.`usuario_edicion`))) left join `estado_registro` `estado` on((`estado`.`id` = `inv_categorias`.`tipo`))) left join `cnt_cuentas` on((`cnt_cuentas`.`id_cuenta` = `inv_categorias`.`idCuentaContable`)));
+ 
+ CREATE   TABLE ventas_del_dia_procedimiento (
+         session_id VARCHAR(128),
+    fecha DATE,
+    total DECIMAL(16, 2),
+    cnt DECIMAL(12, 2)
+    );
+    
+
+DROP procedure IF EXISTS `sp_resumenVentasProductos`;   
+
+DELIMITER $$
+CREATE   PROCEDURE `sp_resumenVentasProductos`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
+
+ BEGIN
+  declare nombreUsuario
+   -- prdMasVendido , prdMenosVendido 
+   text;
+  declare fechaMenorCantidad , fechaMayorCantidad date ;
+  declare menorCantidad, menorValorTotal, mayorCantidad, mayorValorTotal,
+  totalVendido , totalMenosV, totalMasV , numTotal , numMenosV, numMasV  decimal(16,2);
+  /*si idPrd es diferente a vacio*/ 
+  
+     SET SQL_SAFE_UPDATES = 0;
+   SELECT sum(cantidadVendida) ,  sum(valorTotal) into numTotal , totalVendido FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin and idProducto = idPrd group by idProducto    ;
+   
+      -- Obtener la fecha con el menor scv
+    SELECT fecha, cnt, total
+    INTO fechaMenorCantidad, menorCantidad, menorValorTotal
+    FROM ventas_del_dia_procedimiento where cnt > 0
+    ORDER BY cnt ASC
+    LIMIT 1;   
+    
+     SELECT fecha, cnt, total
+    INTO fechaMayorCantidad, mayorCantidad, mayorValorTotal
+    FROM ventas_del_dia_procedimiento
+    ORDER BY cnt DESC
+    LIMIT 1; 
+       DELETE FROM ventas_del_dia_procedimiento WHERE session_id = _session_id;
+    insert into ventas_del_dia_procedimiento  WITH RECURSIVE date_range AS (
+			SELECT fechaInicio AS date
+			UNION ALL
+			SELECT DATE_ADD(date, INTERVAL 1 DAY)
+			FROM date_range
+			WHERE DATE_ADD(date, INTERVAL 1 DAY) <= fechaFin
+		)
+		SELECT _session_id ,  date , 0 , 0
+		FROM date_range;
+   --  select * from    ventas_del_dia_procedimiento ; 
+
+     update ventas_del_dia_procedimiento inner join 
+     ( SELECT fecha as fechaVenta ,  sum(cantidadVendida) scv ,  sum(valorTotal) svt  FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin and idProducto = idPrd group by fecha  ) as prdVenta on 
+           prdVenta.fechaVenta = ventas_del_dia_procedimiento.fecha
+           set total = svt , cnt = scv 
+           where ventas_del_dia_procedimiento.session_id = _session_id; 
+   SET SQL_SAFE_UPDATES = 1; 
+   
+   select nombreCompleto into nombreUsuario from usuarios where ID = _usuario;
+      SELECT 
+       JSON_OBJECT(
+       'usuarioGenerador' , nombreUsuario,
+       'cantidadVendida',numTotal ,'totalVenta', totalVendido ,
+       'menorDiaVenta' ,
+       JSON_OBJECT(
+            'fecha', fechaMenorCantidad,
+            'totalVendido', menorValorTotal,
+            'cantidad', menorCantidad
+        ),
+          'mayorDiaVenta' ,
+       JSON_OBJECT(
+            'fecha', fechaMayorCantidad,
+            'totalVendido', mayorValorTotal,
+            'cantidad', mayorCantidad
+        ),
+       'resumen' , 
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'fecha', fecha,
+            'totalVendido', total,
+            'cantidad', cnt
+        ))
+    ) AS resumenVentas
+    FROM ventas_del_dia_procedimiento where session_id = _session_id; 
+      
+ 
+ END$$
+
+DELIMITER ;
+;
+
+

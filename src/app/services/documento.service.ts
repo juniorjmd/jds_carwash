@@ -341,6 +341,17 @@ constructor(private http: HttpClient, private loading: loading) {
     return this.http.post(url.action, datos, httpOptions());
   }
 
+  getResumenProductosVentas(_idPrd:string , _fechaInicio: string, _fechaFin: string): Observable<any> {
+    /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
+                 . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
+    
+    let datos = {
+      "action": actions.resumenVentaProducto, _idPrd,_fechaInicio,_fechaFin
+    };
+    console.log('servicios de documentos - getResumenProductosVentas', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+
   getVentasFinalizadasPorCategoriasFecha(categoriaId:any , fecha1: string, fecha2: string): Observable<any> {
     /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
                  . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */

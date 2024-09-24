@@ -7,6 +7,7 @@ import { DatosInicialesService } from 'src/app/services/DatosIniciales.services'
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { ProductoVendido } from 'src/app/interfaces/productoVendido.';
 import Swal from 'sweetalert2';
+import { ResumenVenta } from 'src/app/interfaces/resumenVenta.';
 
 @Component({
   selector: 'app-ventasPorProducto',
@@ -14,13 +15,16 @@ import Swal from 'sweetalert2';
   styleUrls: ['./ventasPorProducto.component.css']
 })
 export class ventasPorProductoComponent implements OnInit {
-
+  resumenVenta?:ResumenVenta;
   documentos : DocumentosModel[] = [];
   indexProductoSel:number = 0; 
   productosVendidoc: ProductoVendido | null  =  {idProducto:'0', firstDate: new Date(), lastDate: new Date(), nombre:'Seleccione un Producto para filtrar', nombre2:'', nombre3:''};
   codFactura:string;
   codCliente:string;
   fecha1:string;
+  hideR:boolean=true;
+  hideF:boolean=true;
+  resumen:boolean=true;
   fecha2:string;
   maximo:string;
   constructor(public loading : loading,private serviceCaja:cajasServices,
@@ -47,6 +51,25 @@ const day = date.getDate(); // */
         f1 =  this.productosVendidoc.lastDate.toString() ;
         this.fecha2 =  f1.slice(0,10) ;
         this.maximo =   this.fecha2
+        this.hideR=false; 
+        this.hideF=false;
+
+        this.documentoService.getResumenProductosVentas
+        (this.productosVendidoc?.idProducto!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+          (datos:any)=>{
+           
+        if (datos.numdata > 0 ){
+          this.resumenVenta = datos.data  ;
+          console.log('getResumenProductosVentas',this.resumenVenta);
+       } else{
+        Swal.fire('No existen datos relacionados con la busqueda')
+       } 
+       this.hideR=true; 
+      } ,error:
+      (error: any) =>{
+        Swal.fire(JSON.stringify(error )); 
+        this.hideR=true; 
+      }});
         this.documentoService.getVentasFinalizadasPorProductoFecha(this.productosVendidoc?.idProducto!,this.fecha1.trim(),this.fecha2.trim() )
         .subscribe({next:
           (datos:any)=>{
@@ -62,10 +85,12 @@ const day = date.getDate(); // */
           }) 
        } else{
         Swal.fire('No existen datos relacionados con la busqueda')
-       } 
+       }  
+       this.hideF=true;
       } ,error:
       (error: any) =>{
-        Swal.fire(JSON.stringify(error ));
+        Swal.fire(JSON.stringify(error )); 
+        this.hideF=true;
       
       }});
 
@@ -178,12 +203,33 @@ const day = date.getDate(); // */
       Swal.fire('Es necesario escoger la fecha final del rango de factura','error','error');
       return;
     }
-    this.documentoService.getVentasFinalizadasPorProductoFecha(this.productosVendidoc?.idProducto!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+    this.hideR=false; 
+    this.hideF=false;
+
+    this.documentoService.getResumenProductosVentas
+    (this.productosVendidoc?.idProducto!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+      (datos:any)=>{ 
+    if (datos.numdata > 0 ){   this.resumenVenta = datos.data  ;
+      console.log('getResumenProductosVentas',this.resumenVenta);
+      
+   } else{
+    Swal.fire('No existen datos relacionados con la busqueda')
+   } 
+   this.hideR=true;
+    this.hideF=true;
+  } ,error:
+  (error: any) =>{
+    Swal.fire(JSON.stringify(error )); 
+    this.hideR=true;
+    this.hideF=true;
+  }});
+
+    this.documentoService.getVentasFinalizadasPorProductoFecha
+    (this.productosVendidoc?.idProducto!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
-         console.log('getDocumentos', datos.numdata);
-         console.log('getDocumentos_recuest', datos );
+         console.log('getDocumentos', datos.numdata , datos );
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:any , index : number  )=>{  
@@ -193,10 +239,15 @@ const day = date.getDate(); // */
    } else{
     Swal.fire('No existen datos relacionados con la busqueda')
    } 
+   this.hideR=true;
+    this.hideF=true;
   } ,error:
   (error: any) =>{
-    Swal.fire(JSON.stringify(error ));
-  
+    Swal.fire(JSON.stringify(error )); 
+    this.hideR=true;
+    this.hideF=true;
   }});
+
+
   } 
 }

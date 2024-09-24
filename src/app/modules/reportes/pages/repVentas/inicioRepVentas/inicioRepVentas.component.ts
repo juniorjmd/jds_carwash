@@ -26,9 +26,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['devoluciones']">
             <i class="bi bi-arrow-counterclockwise"></i> Reportes de Devoluciones
           </a>
-
-               
-          </div>
+        </div>
       </div>
       <!-- Contenido principal -->
       <div class="col-md-9 col-lg-10 ml-sm-auto px-md-4">

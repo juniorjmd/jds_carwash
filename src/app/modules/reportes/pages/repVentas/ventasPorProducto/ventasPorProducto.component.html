@@ -6,44 +6,120 @@
       <div class="card-body"> 
         <div class="row">
             
-            <div class="col-sm-1">
-                producto
-            </div> 
-            <div class="col-sm-5">
+            <div class="col-sm-12 col-lg-5">
+               <span>Producto</span>
                  <elemt-productosVendidosDropdown  [selectedValue]="productosVendidoc"
                  (selectionChange)="getVentasPorProducto($event)" 
                  ></elemt-productosVendidosDropdown>
             </div> 
 
-        <div class="col-sm-6" > 
+        <div class="col-sm-12 col-lg-6" > 
             
             <span>
                 Escoja el rango de fecha:
             </span>
             <div class="row"> 
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-lg-4">
                 <div class="form-group">
-                    <input type="date" [min]="fecha1" [max]="fecha2" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <input type="date" [min]="fecha1" [max]="maximo"  (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
                     <small id="helpId" class="form-text text-muted">Fecha inicial del rango de búsqueda de factura</small>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-12 col-lg-4">
                 <div class="form-group">
                     <input type="date" [min]="fecha1" [max]="fecha2" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha2" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
                     <small id="helpId" class="form-text text-muted">Fecha final del rango de búsqueda de factura</small>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-12 col-lg-2">
                 <button type="button" (click)="getDocumentosPorFecha()" class="btn btn-primary"><i class="bi bi-search"></i></button>
             </div>
         </div> </div></div>
  
+        <div class="row">
+            <div class="col-sm-6 centrado">
+              <div class="btn btn-primary" (click)="resumen=true">Resumen <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideR }"></i></div>
+             </div>
+             <div class="col-sm-6 centrado">
+                <div class="btn btn-primary" (click)="resumen=false">Listado de Ventas <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideF }"></i></div>
+             </div>
+        </div>
 
-    <div class="row">
+        <div class="row" *ngIf="resumen">
+            <div class="col-sm-12 centrado">
+             <h4>Resumen producto</h4>  
+            </div>
+            <div class="col-sm-12 col-lg-6   "  >
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6   "  >
+                        <table class="table">
+                            <tr>
+                                <th>Cantidad Vendida</th>
+                                <td>{{resumenVenta?.cantidadVendida}}</td>  
+                            </tr>
+                            <tr > <th>Total Vendido</th>
+                                <td>{{resumenVenta?.totalVenta}}</td> 
+                            </tr>
+                        </table>
+                    </div></div>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12   "  >
+                        <h5>Dia mas vendidos</h5> 
+                        <table class="table">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cantidad</th>
+                                <th>Total Vendido</th>
+                            </tr>
+                            <tr >
+                                <td>{{resumenVenta?.mayorDiaVenta?.fecha}}</td> 
+                                <td>{{resumenVenta?.mayorDiaVenta?.cantidad}}</td> 
+                                <td>{{resumenVenta?.mayorDiaVenta?.totalVendido}}</td> 
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12   "  >
+                        <h5>Dia menos vendidos</h5> 
+                        <table class="table">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cantidad</th>
+                                <th>Total Vendido</th>
+                            </tr>
+                            <tr >
+                                <td>{{resumenVenta?.menorDiaVenta?.fecha}}</td> 
+                                <td>{{resumenVenta?.menorDiaVenta?.cantidad}}</td> 
+                                <td>{{resumenVenta?.menorDiaVenta?.totalVendido}}</td> 
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-6   " style="max-height: 400px; overflow-y: auto;">
+               <h5>Venta Por Dia</h5> 
+                <table class="table">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Cantidad</th>
+                        <th>Total Vendido</th>
+                    </tr>
+                    <tr  *ngFor="let item of resumenVenta?.resumen">
+                        <td>{{item.fecha}}</td> 
+                        <td>{{item.cantidad}}</td> 
+                        <td>{{item.totalVendido}}</td> 
+                    </tr>
+                </table>
+             </div>
+        </div>
+
+
+    <div class="row" *ngIf="!resumen">
         <div class="col-sm-12 centrado">
             Listado de facturas
         </div>
-    </div>
+   
     <div class="row">
         <div class="col-sm-12 contenedorTablas ">
             <table class="table">
@@ -74,8 +150,8 @@
             </table>
             <hr>
         </div>
-    </div>
+    </div> </div>
 
 </div>
-</div>
+</div><hr><hr>
 

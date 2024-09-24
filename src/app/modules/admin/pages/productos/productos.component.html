@@ -121,13 +121,13 @@
 
             <div class="col-sm-10">Tipo de Producto : </div>
             <div class="col-sm-12">
-                <select class="form-control" [(ngModel)]="newProducto.tipo_producto">
+                <select class="form-control" [(ngModel)]="newProducto.tipo_producto" (change)="cambioTipProducto()">
                     <option *ngFor="let tipProducto of tipProductos" value="{{tipProducto.id}}">{{tipProducto.nombre}}</option>
                 </select>
             </div>
-            <div class="col-sm-10" >presentacion : </div>
+            <div class="col-sm-10"  >presentacion : </div>
             <div class="col-sm-12">
-                <select class="form-control" [(ngModel)]="newProducto.presentacion">
+                <select class="form-control" [ariaReadOnly]="newProducto.tipo_producto == 2 " [(ngModel)]="newProducto.presentacion">
                     <option *ngFor="let tipProducto of presentacion" value="{{tipProducto.id}}">{{tipProducto.nombre}}</option>
                 </select>
             </div> 
