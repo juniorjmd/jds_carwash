@@ -181,7 +181,14 @@ export class ventasPorCategoriaComponent implements OnInit {
    printerManager.printReceipt();
   } 
  
-
+  async imprimirResumen()
+  {  
+   let printerManager =  new PrinterManager(this.serviceCaja); 
+   if(this.resumenVenta != undefined){ 
+   printerManager.printResumenVenta(false,this.resumenVenta);
+  } 
+}
+ 
 
   getDocumentosPorFecha(){
     //this.printer_factura_final(); 

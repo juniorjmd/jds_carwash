@@ -8,11 +8,13 @@ import { cajasServices } from "../services/Cajas.services";
 import { establecimientoModel } from "./ventas/establecimientos.model";
 import { SoporteOperacion } from "../interface/soporte-operacion";
 import { DatePipe } from "@angular/common";
+import { ResumenVenta } from "../interfaces/resumenVenta.";
 @Injectable({
   providedIn: 'root',
 })
 export class PrinterManager {
   movimiento!:SoporteOperacion
+  resumenVenta!:ResumenVenta
   private doc :DocumentosModel = new DocumentosModel() ; 
   private docDev :DevolucionModel = new DevolucionModel() ; 
   private static sucursal?: vwsucursal;
@@ -282,7 +284,7 @@ private footerCierre():string{
   return  ` <div name='footer' style="text-align: center;"><p>*** Gracias***</p></div>`;
 }
 
-
+/**imprimir soporte de cuenta contable */
 public printSoporteMovimiento(impresoraPos = true , movimiento:SoporteOperacion) {
   this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ;  
   this.movimiento = movimiento;
@@ -291,7 +293,13 @@ public printSoporteMovimiento(impresoraPos = true , movimiento:SoporteOperacion)
   
 
 } 
-
+/**imprimir resumen de ventas */
+public printResumenVenta(impresoraPos = true , resumen:ResumenVenta) { 
+    this.resumenVenta =  resumen; 
+  this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ;   
+    const printContent = this.generateRVHTML();
+    this.openPrintWindows(printContent);
+} 
   public printReceipt(impresoraPos = true) {
     this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ; 
     if(this.doc.orden ==  undefined){
@@ -361,7 +369,26 @@ public printSoporteMovimiento(impresoraPos = true , movimiento:SoporteOperacion)
     return cabecera
   } 
 
+/*********************************************************************************************** */
 
+/*************************************************************************************************/
+generateRVHTML(): string {
+
+  let receiptHTML = ''; 
+  receiptHTML = (this.tipoImpresora == 'POS')?`<div style="font-family: Arial, sans-serif; width: 219.24px;"> ` : 
+  `<div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">`;
+  receiptHTML += this.generateSoporteCabecera() ; 
+  receiptHTML += this.infoSoporteGeneral(); 
+  receiptHTML += this.detalleSoporte(); 
+  receiptHTML += this.footerSoporte() ; 
+  receiptHTML += ` </div> 
+  <style>  body table td { font-size:small !important     } </style>`;
+
+  return receiptHTML;
+} 
+/*********************************************************************************************** */
+
+/*************************************************************************************************/
 
   generateSoporteHTML(): string {
 
