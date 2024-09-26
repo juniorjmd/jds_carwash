@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';  
 import { RecursoDetalle, Usuario, Usuarios } from 'src/app/interfaces/usuario.interface';
+import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { LoginService } from 'src/app/services/login.services';
 import { usuarioService } from 'src/app/services/usuario.services';
@@ -14,6 +15,7 @@ export class ReportesComponent implements OnInit {
   usuario?:Usuario;
   menusUsuario :RecursoDetalle[] = [];
   listado:any;
+   
   constructor( private _datosInicialesService: DatosInicialesService , private usuarioService:usuarioService,private _ServLogin:LoginService , 
     private _Router : Router) { 
       let auxmenusUsuario :RecursoDetalle[] = [];
@@ -23,7 +25,12 @@ export class ReportesComponent implements OnInit {
       }; 
       console.clear()  }
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
+    
+      this._datosInicialesService.currentSucursal.subscribe({next:(suc)=>{  
+         PrinterManager.setSucursal(suc!);   
+      }})
+    
     
     this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ;  
       console.log('estoy en getUsuarioLogeado reportes+6', this.usuario  );

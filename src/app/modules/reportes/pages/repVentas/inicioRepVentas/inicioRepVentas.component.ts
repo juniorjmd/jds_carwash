@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { PrinterManager } from 'src/app/models/printerManager';
+import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 
 @Component({
   selector: 'app-inicio-rep-ventas', 
@@ -7,8 +9,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   <div class="row">
       <!-- Menú lateral -->
       <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
-          <div class="list-group"> 
-               <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['diarias']">
+          <div class="list-group">
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['reimprimirFacturas']">
+            <i class="bi bi-calendar3"></i> Reimprimir una factura
+          </a> 
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['diarias']">
             <i class="bi bi-calendar3"></i> Ventas Diarias
           </a>
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['productos']">
@@ -38,4 +43,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 `,
   styleUrls: ['./inicioRepVentas.component.css'], 
 })
-export class InicioRepVentasComponent { }
+export class InicioRepVentasComponent  { 
+  private _datosInicialesService = inject( DatosInicialesService );
+  ngOnInit(): void {  
+    this._datosInicialesService.currentSucursal.subscribe({next:(suc)=>{   
+       PrinterManager.setSucursal(suc!);   
+    }})}
+}

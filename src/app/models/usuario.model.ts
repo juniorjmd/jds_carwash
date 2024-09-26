@@ -44,3 +44,13 @@ export class UsuarioModel {
       }
     }
   }
+
+
+
+  export class UsuarioConVentaModel extends UsuarioModel {
+    firstDate?:Date =  new Date();
+    lastDate?:Date =  new Date();
+    constructor( cargaUsuario : Usuarios|undefined){
+        super( cargaUsuario  );
+      }
+  }

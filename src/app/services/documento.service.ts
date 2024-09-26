@@ -337,7 +337,7 @@ constructor(private http: HttpClient, private loading: loading) {
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    console.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
+    console.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());
   }
 
@@ -346,7 +346,29 @@ constructor(private http: HttpClient, private loading: loading) {
     let datos = {
       "action": actions.resumenVentaCategoria, _idPrd,_fechaInicio,_fechaFin
     };
-    console.log('servicios de documentos - getResumenProductosVentas', url.actionDocumentos, datos, httpOptions());
+    console.log('servicios de documentos - getResumenCategoriaVentas', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+
+  getResumenUsuarioVentas(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 
+    let datos = {
+      "action": actions.resumenVentaUsuarioCajero, _idPrd,_fechaInicio,_fechaFin
+    };
+    console.log('servicios de documentos - getResumenUsuarioVentas', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+  getResumenVendedorVentas(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 
+    let datos = {
+      "action": actions.resumenVentaVendedor, _idPrd,_fechaInicio,_fechaFin
+    };
+    console.log('servicios de documentos - getResumenVendedorVentas', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+  getResumenVentas(  _fechaInicio: string, _fechaFin: string): Observable<any> { 
+    let datos = {
+      "action": actions.resumenVentas, _fechaInicio,_fechaFin
+    };
+    console.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
   getResumenProductosVentas(_idPrd:string , _fechaInicio: string, _fechaFin: string): Observable<any> {
@@ -372,6 +394,45 @@ constructor(private http: HttpClient, private loading: loading) {
         colValidacion: 'idCategoria',
         datoValidacion :  categoriaId 
       } }
+    ];
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.ventasCerradas,
+      "_where": where
+    };
+    console.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
+
+  getVentasFinalizadasPorVendedorFecha(id:any , fecha1: string, fecha2: string): Observable<any> {
+    /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
+                 . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
+    let where = [
+      {"columna": 'fecha', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'fecha', "tipocomp": '<=', "dato": fecha2},
+      {"columna": 'cod_vendedor', "tipocomp": '=', "dato": id  }
+    ];
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.ventasCerradas,
+      "_where": where
+    };
+    console.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
+  getVentasFinalizadasPorUsuarioFecha(id:any , fecha1: string, fecha2: string): Observable<any> {
+    /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
+                 . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
+    let where = [
+      {"columna": 'fecha', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'fecha', "tipocomp": '<=', "dato": fecha2},
+      {"columna": 'usuario', "tipocomp": '=', "dato": id } 
     ];
     let datos = {
       "action": actions.actionSelect,

@@ -26,6 +26,7 @@ export class ventasPorProductoComponent implements OnInit {
   hideF:boolean=true;
   resumen:boolean=true;
   fecha2:string;
+  minimo:string;
   maximo:string;
   constructor(public loading : loading,private serviceCaja:cajasServices,
     private documentoService : DocumentoService, private inicioService:DatosInicialesService ) {
@@ -39,6 +40,7 @@ const day = date.getDate(); // */
        this.fecha1 = fecha.getFullYear().toString() +'-'+ (fecha.getMonth() + 1).toString().padStart(2,'0')+'-'+ (fecha.getDate()).toString().padStart(2,'0') ;
        this.fecha2 = this.fecha1;
        this.maximo =   this.fecha2 ;
+       this.minimo = this.fecha1;
      }
 
      getVentasPorProducto(prd:ProductoVendido){
@@ -50,7 +52,8 @@ const day = date.getDate(); // */
         this.fecha1 =  f1.slice(0,10) ;
         f1 =  this.productosVendidoc.lastDate.toString() ;
         this.fecha2 =  f1.slice(0,10) ;
-        this.maximo =   this.fecha2
+        this.maximo =   this.fecha2; 
+        this.minimo = this.fecha1;
         this.hideR=false; 
         this.hideF=false;
 
@@ -102,6 +105,15 @@ const day = date.getDate(); // */
 
 
      }
+
+ async imprimirResumen()
+     {  
+      let printerManager =  new PrinterManager(this.serviceCaja); 
+      if(this.resumenVenta != undefined){ 
+      printerManager.printResumenVenta(false,this.resumenVenta);
+     } 
+   }
+
   ngOnInit(): void { 
        this.inicioService.currentSucursal.subscribe({next:value=>{
         PrinterManager.setSucursal(value);

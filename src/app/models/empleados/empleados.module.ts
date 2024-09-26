@@ -40,3 +40,11 @@ this.pagosEmpleados = (this.pagosEmpleados== undefined ) ?  [] :this.pagosEmplea
 this.pagosAnticiposEmpleados = (this.pagosAnticiposEmpleados== undefined ) ?  [] :  this.pagosAnticiposEmpleados; 
 }
 }
+
+
+export class VendedorModel extends EmpleadoModel{
+    firstDate?:Date =  new Date();
+    lastDate?:Date =  new Date();
+    constructor(){
+        super();}
+}

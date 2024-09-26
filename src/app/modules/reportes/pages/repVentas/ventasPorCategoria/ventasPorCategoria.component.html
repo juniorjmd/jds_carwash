@@ -21,7 +21,7 @@
             <div class="row"> 
             <div class="col-sm-4">
                 <div class="form-group">
-                    <input type="date" [min]="fecha1" [max]="fecha2" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <input type="date" [min]="minimo" [max]="fecha2" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
                     <small id="helpId" class="form-text text-muted">Fecha inicial del rango de búsqueda de factura</small>
                 </div>
             </div>
@@ -39,11 +39,14 @@
  
 
     <div class="row">
-        <div class="col-sm-6 centrado">
+        <div class="col-sm-3 centrado">
           <div class="btn btn-primary" (click)="resumen=true">Resumen <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideR }"></i></div>
          </div>
-         <div class="col-sm-6 centrado">
+         <div class="col-sm-3 centrado">
             <div class="btn btn-primary" (click)="resumen=false">Listado de Ventas <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideF }"></i></div>
+         </div>  
+         <div class="col-sm-3 centrado"> 
+            <div class="btn btn-primary" (click)="imprimirResumen()">Imprimir reporte </div>
          </div>
     </div>
 

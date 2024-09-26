@@ -48,6 +48,7 @@
     tablasPorUsuario:'vw_tablas_usuarios',
     cajas_por_usuario :'vw_cajas_por_usuario',
     usuario : 'vw_usuario',
+    usuarioConVentas : 'vw_usuario_con_ventas',
     establecimiento: 'vw_establecimiento',
     tipo_establecimiento: 'vw_tipo_establecimiento',
     documento: 'vw_obj_documentos',
@@ -81,6 +82,7 @@ vw_cnt_cuenta_mayores: 'vw_cnt_cuenta',
 vw_transacciones: 'vw_transacciones',
 vw_transacciones_tmp: 'vw_transacciones_tmp',
 vendedores: 'vw_mst_per_empleados_vendedores',
+vendedoresConVentas: 'vw_mst_per_empleados_vendedores_con_ventas',
 
 operaPrestablecidas:'cnt_operacion_prestablecidas',
 

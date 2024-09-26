@@ -9,13 +9,14 @@ import { CntGruposModel } from "../models/cnt-grupos/cnt-grupos.module";
 import { CntOperacionesModel } from "../models/cnt-operaciones/cnt-operaciones.module";
 import { CntSubCuentaModel, vwCntSubCuentaModel } from "../models/cnt-sub-cuenta/cnt-sub-cuenta.module";
 import { DescuentoModule } from "../models/descuento/descuento.model";
-import { EmpleadoModel } from "../models/empleados/empleados.module";
+import { EmpleadoModel, VendedorModel } from "../models/empleados/empleados.module";
 import { MarcasModel } from "../models/marcas/marcas.module";
 import { ParametrosModel } from "../models/parametros/parametros.model";
 import { PresentacionPrdModel } from "../models/presentacionPrdModel";
 import { ProductoModel } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
 import { TrasladosCuentasArrModel, TrasladosCuentasModel } from "../models/trasladosCuentas.";
+import { UsuarioConVentaModel, UsuarioModel } from "../models/usuario.model";
 import { cajaModel } from "../models/ventas/cajas.model";
 import { DocumentosComprasModel, DocumentosModel } from "../models/ventas/documento.model";
 import { establecimientoModel } from "../models/ventas/establecimientos.model";
@@ -170,6 +171,25 @@ export interface empleadoRequest {
   error: string;
 }
 
+export interface usuarioRequest { 
+  data: UsuarioModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+export interface usuarioVentasRequest { 
+  data: UsuarioConVentaModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface empleadoVentasRequest { 
+  data: VendedorModel[];
+  query: string;
+  numdata: number;
+  error: string;
+}
 export interface parametroRequest { 
   data: ParametrosModel[];
   query: string;

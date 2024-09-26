@@ -1,0 +1,642 @@
+ 
+DROP procedure IF EXISTS `sp_resumenVentasProductos`; 
+;
+
+DELIMITER $$ 
+CREATE  PROCEDURE `sp_resumenVentasProductos`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
+BEGIN
+  declare nombreUsuario , _desc
+   -- prdMasVendido , prdMenosVendido 
+   text;
+  declare fechaMenorCantidad , fechaMayorCantidad date ;
+  declare menorCantidad, menorValorTotal, mayorCantidad, mayorValorTotal,
+  totalVendido , totalMenosV, totalMasV , numTotal , numMenosV, numMasV  decimal(16,2);
+  declare _cantidadVendidaMa , _valorTotalMa , _cantidadVendidaMe , _valorTotalMe decimal(16,2);
+  declare _idProductoMa , _nombreProductoMa , _idProductoMe , _nombreProductoMe text;
+  /*si idPrd es diferente a vacio*/ 
+  
+     SET SQL_SAFE_UPDATES = 0;
+     select concat( 'Reporte de ventas    ' ) into _desc  ;
+     
+   SELECT coalesce( sum(cantidadVendida) , 0 )  ,  coalesce( sum(valorTotal), 0) into numTotal , totalVendido FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin 
+   -- and idCategoria = idPrd group by idCategoria   
+   ;
+ --  select numTotal , totalVendido , fechaInicio , fechaFin ;
+   -- mayor vendido 
+   select cantidadVendida , valorTotal , idProducto , nombreProducto 
+   into  _cantidadVendidaMa , _valorTotalMa , _idProductoMa , _nombreProductoMa
+   from (
+    SELECT  sum(cantidadVendida) as cantidadVendida ,  sum(valorTotal) as valorTotal , 
+    idProducto , inv_mst_producto.nombre as nombreProducto 
+  FROM vw_documentos_listado_productos_ventas INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+   where fecha between fechaInicio and fechaFin   
+   group by  idProducto ) as prdCatVent  
+    ORDER BY cantidadVendida DESC
+    LIMIT 1; 
+    -- menor vendido 
+      select cantidadVendida , valorTotal , idProducto , nombreProducto into 
+      _cantidadVendidaMe , _valorTotalMe , _idProductoMe , _nombreProductoMe 
+      from (
+    SELECT  sum(cantidadVendida) as cantidadVendida ,  sum(valorTotal) as valorTotal , idProducto , inv_mst_producto.nombre as nombreProducto 
+  FROM vw_documentos_listado_productos_ventas INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+   where fecha between fechaInicio and fechaFin 
+   group by   idProducto ) as prdCatVent  
+    ORDER BY cantidadVendida asc
+    LIMIT 1; 
+  
+       DELETE FROM ventas_del_dia_procedimiento WHERE session_id = _session_id;
+    insert into ventas_del_dia_procedimiento  WITH RECURSIVE date_range AS (
+			SELECT fechaInicio AS date
+			UNION ALL
+			SELECT DATE_ADD(date, INTERVAL 1 DAY)
+			FROM date_range
+			WHERE DATE_ADD(date, INTERVAL 1 DAY) <= fechaFin
+		)
+		SELECT _session_id ,  date , 0 , 0
+		FROM date_range;
+   --  select * from    ventas_del_dia_procedimiento ; 
+
+     update ventas_del_dia_procedimiento inner join 
+     ( SELECT fecha as fechaVenta ,  sum(cantidadVendida) scv ,  sum(valorTotal) svt  FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin group by fecha  ) as prdVenta on 
+           prdVenta.fechaVenta = ventas_del_dia_procedimiento.fecha
+           set total = svt , cnt = scv 
+           where ventas_del_dia_procedimiento.session_id = _session_id; 
+ 
+       -- Obtener la fecha con el menor scv
+     SELECT fecha, cnt, total
+    INTO fechaMenorCantidad, menorCantidad, menorValorTotal
+    FROM ventas_del_dia_procedimiento where cnt > 0 and session_id = _session_id  
+    ORDER BY cnt ASC
+    LIMIT 1;   
+    
+     SELECT fecha, cnt, total
+    INTO fechaMayorCantidad, mayorCantidad, mayorValorTotal
+    FROM ventas_del_dia_procedimiento where  session_id = _session_id  
+    ORDER BY cnt DESC
+    LIMIT 1; 
+    
+   /*
+    declare _cantidadVendidaMa , _valorTotalMa , _cantidadVendidaMe , _valorTotalMe decimal(16,2);
+  declare _idProductoMa , _nombreProductoMa , _idProductoMe , _nombreProductoMe text;
+ */ 
+   select nombreCompleto into nombreUsuario from usuarios where ID = _usuario;
+   
+   
+   with ArrPrdQry as (SELECT _session_id as idSession,
+    JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'cantidad', cantidad,  
+            'total', total,
+            'idProducto', idProducto,   
+            'nombre', nombre
+        )
+    ) AS productos
+FROM (
+    SELECT 
+        SUM(cantidadVendida) AS cantidad,
+        SUM(valorTotal) AS total,
+        idProducto,
+        inv_mst_producto.nombre
+    FROM vw_documentos_listado_productos_ventas 
+    INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+    WHERE fecha BETWEEN  fechaInicio and fechaFin  
+    GROUP BY  idProducto
+) AS subquery ) 
+      SELECT   
+       JSON_OBJECT(
+       'productos' , productos , 
+       'usuarioGenerador' , nombreUsuario,
+       'fechaInicial',fechaInicio ,
+       'fechaFinal', fechaFin ,
+       'descripcion', _desc ,
+       'cantidadVendida',numTotal ,'totalVenta', totalVendido ,
+       'productoMasVendido',
+        JSON_OBJECT( 'cantidad', _cantidadVendidaMa , 'total',_valorTotalMa, 'idProducto',_idProductoMa ,'nombre', _nombreProductoMa ),
+       'productoMenosVendido',
+        JSON_OBJECT('cantidad', _cantidadVendidaMe ,'total', _valorTotalMe  ,'idProducto', _idProductoMe ,'nombre', _nombreProductoMe),
+       'menorDiaVenta' ,
+      JSON_OBJECT(
+            'fecha', fechaMenorCantidad,
+            'totalVendido', menorValorTotal,
+            'cantidad', menorCantidad
+        ),
+          'mayorDiaVenta' ,
+       JSON_OBJECT(
+            'fecha', fechaMayorCantidad,
+            'totalVendido', mayorValorTotal,
+            'cantidad', mayorCantidad
+        ),
+       'resumen' ,  
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'fecha', fecha,
+            'totalVendido', total,
+            'cantidad', cnt
+        ))
+    ) AS resumenVentas
+    FROM ventas_del_dia_procedimiento inner join 
+     ArrPrdQry on    idSession = session_id
+    where session_id = _session_id; 
+     delete from  ventas_del_dia_procedimiento where session_id = _session_id; 
+      SET SQL_SAFE_UPDATES = 1; 
+END$$
+
+DELIMITER ;
+;
+
+DROP procedure IF EXISTS `sp_resumenVentas`; 
+;
+DELIMITER $$ 
+CREATE   PROCEDURE `sp_resumenVentas`(in _usuario int ,in fechaInicio date , in fechaFin date ,    in _session_id text )
+BEGIN
+  declare nombreUsuario , _desc
+   -- prdMasVendido , prdMenosVendido 
+   text;
+  declare fechaMenorCantidad , fechaMayorCantidad date ;
+  declare menorCantidad, menorValorTotal, mayorCantidad, mayorValorTotal,
+  totalVendido , totalMenosV, totalMasV , numTotal , numMenosV, numMasV  decimal(16,2);
+  declare _cantidadVendidaMa , _valorTotalMa , _cantidadVendidaMe , _valorTotalMe decimal(16,2);
+  declare _idProductoMa , _nombreProductoMa , _idProductoMe , _nombreProductoMe text;
+  /*si idPrd es diferente a vacio*/ 
+  
+     SET SQL_SAFE_UPDATES = 0;
+     select concat( 'Reporte de ventas    ' ) into _desc  ;
+     
+   SELECT coalesce( sum(cantidadVendida) , 0 )  ,  coalesce( sum(valorTotal), 0) into numTotal , totalVendido FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin 
+   -- and idCategoria = idPrd group by idCategoria   
+   ;
+ --  select numTotal , totalVendido , fechaInicio , fechaFin ;
+   -- mayor vendido 
+   select cantidadVendida , valorTotal , idProducto , nombreProducto 
+   into  _cantidadVendidaMa , _valorTotalMa , _idProductoMa , _nombreProductoMa
+   from (
+    SELECT  sum(cantidadVendida) as cantidadVendida ,  sum(valorTotal) as valorTotal , 
+    idProducto , inv_mst_producto.nombre as nombreProducto 
+  FROM vw_documentos_listado_productos_ventas INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+   where fecha between fechaInicio and fechaFin   
+   group by  idProducto ) as prdCatVent  
+    ORDER BY cantidadVendida DESC
+    LIMIT 1; 
+    -- menor vendido 
+      select cantidadVendida , valorTotal , idProducto , nombreProducto into 
+      _cantidadVendidaMe , _valorTotalMe , _idProductoMe , _nombreProductoMe 
+      from (
+    SELECT  sum(cantidadVendida) as cantidadVendida ,  sum(valorTotal) as valorTotal , idProducto , inv_mst_producto.nombre as nombreProducto 
+  FROM vw_documentos_listado_productos_ventas INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+   where fecha between fechaInicio and fechaFin 
+   group by   idProducto ) as prdCatVent  
+    ORDER BY cantidadVendida asc
+    LIMIT 1; 
+  
+       DELETE FROM ventas_del_dia_procedimiento WHERE session_id = _session_id;
+    insert into ventas_del_dia_procedimiento  WITH RECURSIVE date_range AS (
+			SELECT fechaInicio AS date
+			UNION ALL
+			SELECT DATE_ADD(date, INTERVAL 1 DAY)
+			FROM date_range
+			WHERE DATE_ADD(date, INTERVAL 1 DAY) <= fechaFin
+		)
+		SELECT _session_id ,  date , 0 , 0
+		FROM date_range;
+   --  select * from    ventas_del_dia_procedimiento ; 
+
+     update ventas_del_dia_procedimiento inner join 
+     ( SELECT fecha as fechaVenta ,  sum(cantidadVendida) scv ,  sum(valorTotal) svt  FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin group by fecha  ) as prdVenta on 
+           prdVenta.fechaVenta = ventas_del_dia_procedimiento.fecha
+           set total = svt , cnt = scv 
+           where ventas_del_dia_procedimiento.session_id = _session_id; 
+ 
+       -- Obtener la fecha con el menor scv
+     SELECT fecha, cnt, total
+    INTO fechaMenorCantidad, menorCantidad, menorValorTotal
+    FROM ventas_del_dia_procedimiento where cnt > 0 and session_id = _session_id  
+    ORDER BY cnt ASC
+    LIMIT 1;   
+    
+     SELECT fecha, cnt, total
+    INTO fechaMayorCantidad, mayorCantidad, mayorValorTotal
+    FROM ventas_del_dia_procedimiento where  session_id = _session_id  
+    ORDER BY cnt DESC
+    LIMIT 1; 
+    
+   /*
+    declare _cantidadVendidaMa , _valorTotalMa , _cantidadVendidaMe , _valorTotalMe decimal(16,2);
+  declare _idProductoMa , _nombreProductoMa , _idProductoMe , _nombreProductoMe text;
+ */ 
+   select nombreCompleto into nombreUsuario from usuarios where ID = _usuario;
+   
+   
+   with ArrPrdQry as (SELECT _session_id as idSession,
+    JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'cantidad', cantidad,  
+            'total', total,
+            'idProducto', idProducto,   
+            'nombre', nombre
+        )
+    ) AS productos FROM (    SELECT 
+        SUM(cantidadVendida) AS cantidad,
+        SUM(valorTotal) AS total,
+        idProducto,
+        inv_mst_producto.nombre
+    FROM vw_documentos_listado_productos_ventas 
+    INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+    WHERE fecha BETWEEN  fechaInicio and fechaFin  
+    GROUP BY  idProducto
+) AS subquery ) 
+      SELECT   
+       JSON_OBJECT(
+       'productos' , productos , 
+       'usuarioGenerador' , nombreUsuario,
+       'fechaInicial',fechaInicio ,
+       'fechaFinal', fechaFin ,
+       'descripcion', _desc ,
+       'cantidadVendida',numTotal ,'totalVenta', totalVendido ,
+       'productoMasVendido',
+        JSON_OBJECT( 'cantidad', _cantidadVendidaMa , 'total',_valorTotalMa, 'idProducto',_idProductoMa ,'nombre', _nombreProductoMa ),
+       'productoMenosVendido',
+        JSON_OBJECT('cantidad', _cantidadVendidaMe ,'total', _valorTotalMe  ,'idProducto', _idProductoMe ,'nombre', _nombreProductoMe),
+       'menorDiaVenta' ,
+      JSON_OBJECT(
+            'fecha', fechaMenorCantidad,
+            'totalVendido', menorValorTotal,
+            'cantidad', menorCantidad
+        ),
+          'mayorDiaVenta' ,
+       JSON_OBJECT(
+            'fecha', fechaMayorCantidad,
+            'totalVendido', mayorValorTotal,
+            'cantidad', mayorCantidad
+        ),
+       'resumen' ,  
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'fecha', fecha,
+            'totalVendido', total,
+            'cantidad', cnt
+        ))
+    ) AS resumenVentas
+    FROM ventas_del_dia_procedimiento inner join 
+     ArrPrdQry on    idSession = session_id
+    where session_id = _session_id; 
+     delete from  ventas_del_dia_procedimiento where session_id = _session_id; 
+      SET SQL_SAFE_UPDATES = 1; 
+END$$
+
+DELIMITER ;
+;
+ 
+
+CREATE  OR REPLACE  VIEW `vw_documentos_listado_productos_ventas` AS
+    SELECT 
+        `dlp`.`id` AS `id`,
+        `dlp`.`orden` AS `orden`,
+        `dlp`.`tipoDocumento` AS `tipoDocumento`,
+        `dlp`.`idDocumento` AS `idDocumento`,
+        `dlp`.`idProducto` AS `idProducto`,
+        `dlp`.`nombreProducto` AS `nombreProducto`,
+        `dlp`.`presioVenta` AS `presioVenta`,
+        `dlp`.`porcent_iva` AS `porcent_iva`,
+        `dlp`.`presioSinIVa` AS `presioSinIVa`,
+        `dlp`.`IVA` AS `IVA`,
+        `dlp`.`cantidadVendida` AS `cantidadVendida`,
+        `dlp`.`descuento` AS `descuento`,
+        `dlp`.`valorTotal` AS `valorTotal`,
+        `dlp`.`usuario` AS `usuario`,
+        `d`.`fecha` AS `fecha`,
+        `d`.`hora` AS `hora`,
+        `dlp`.`maq_activa` AS `maq_activa`,
+        `dlp`.`estado_venta` AS `estado_venta`,
+        `dlp`.`cant_real_descontada` AS `cant_real_descontada`,
+        `dlp`.`idDocumentoFinal` AS `idDocumentoFinal`,
+        `dlp`.`id_stock_move_odoo` AS `id_stock_move_odoo`,
+        `dlp`.`total_IVA` AS `total_IVA`,
+        `dlp`.`total_presioSinIVa` AS `total_presioSinIVa`,
+        `dlp`.`estado_linea_venta` AS `estado_linea_venta`,
+        `dlp`.`id_existencia` AS `id_existencia`,
+        `dlp`.`id_externo_auxiliar` AS `id_externo_auxiliar`,
+        `dlp`.`costo` AS `costo`,
+        `dlp`.`descuentoAplicado` AS `descuentoAplicado`,
+        `dlp`.`nombreActividadDescuento` AS `nombreActividadDescuento`,
+        `dlp`.`total_descuento` AS `total_descuento`,
+        `dlp`.`tipoDescuento` AS `tipoDescuento`,
+        `dlp`.`val_aux_1` AS `val_aux_1`,
+        `dlp`.`val_aux_2` AS `val_aux_2`,
+        `dlp`.`val_aux_3` AS `val_aux_3`,
+        `dlp`.`val_aux_4` AS `val_aux_4`,
+        `dlp`.`val_aux_5` AS `val_aux_5`,
+        `dlp`.`val_aux_6` AS `val_aux_6`,
+        `dlp`.`val_aux_7` AS `val_aux_7`,
+        `dlp`.`val_aux_8` AS `val_aux_8`,
+        `dlp`.`val_aux_9` AS `val_aux_9`,
+        `dlp`.`val_aux_10` AS `val_aux_10`,
+        `dlp`.`idDocBase` AS `idDocBase`,
+        `inv_mst_producto`.`idCategoria` AS `idCategoria`,
+        `inv_mst_producto`.`idMarca` AS `idMarca`,
+        `d`.`usuario` AS `usuarioCaja`,
+        `d`.`cod_vendedor` AS `cod_vendedor`,
+        `d`.`cliente` AS `cliente`
+    FROM
+        ((`documentos_listado_productos` `dlp`
+        LEFT JOIN `inv_mst_producto` ON ((`inv_mst_producto`.`id` = `dlp`.`idProducto`)))
+        JOIN `documentos` `d` ON ((`d`.`orden` = `dlp`.`orden`)))
+    WHERE
+        (`d`.`tipoDocumentoFinal` IN (GETIDTIPODOCUMENTOPORNOMBRE('remision_cuentas_por_cobrar') , GETIDTIPODOCUMENTOPORNOMBRE('venta'),
+            GETIDTIPODOCUMENTOPORNOMBRE('remision'),
+            GETIDTIPODOCUMENTOPORNOMBRE('venta_por_domicilio'),
+            GETIDTIPODOCUMENTOPORNOMBRE('cuentas_por_cobrar')));
+
+
+DROP procedure IF EXISTS `sp_resumenVentasVendedor`; 
+DELIMITER $$ 
+CREATE   PROCEDURE `sp_resumenVentasVendedor`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd int ,  in _session_id text )
+BEGIN  
+  declare nombreUsuario , _desc
+   -- prdMasVendido , prdMenosVendido 
+   text;
+  declare fechaMenorCantidad , fechaMayorCantidad date ;
+  declare menorCantidad, menorValorTotal, mayorCantidad, mayorValorTotal,
+  totalVendido , totalMenosV, totalMasV , numTotal , numMenosV, numMasV  decimal(16,2);
+  declare _cantidadVendidaMa , _valorTotalMa , _cantidadVendidaMe , _valorTotalMe decimal(16,2);
+  declare _idProductoMa , _nombreProductoMa , _idProductoMe , _nombreProductoMe text;
+  /*si idPrd es diferente a vacio*/ 
+  
+     SET SQL_SAFE_UPDATES = 0;
+     select concat( 'Reporte de ventas realizadas por el empleado : ' , nombreCompleto) into _desc 
+     from vw_mst_per_empleados where id = idPrd;
+     
+   SELECT sum(cantidadVendida) ,  sum(valorTotal) into numTotal , totalVendido FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin and cod_vendedor = idPrd group by cod_vendedor    ;
+   
+   -- mayor vendido 
+   select cantidadVendida , valorTotal , idProducto , nombreProducto 
+   into  _cantidadVendidaMa , _valorTotalMa , _idProductoMa , _nombreProductoMa
+   from (
+    SELECT  sum(cantidadVendida) as cantidadVendida ,  sum(valorTotal) as valorTotal , idProducto , inv_mst_producto.nombre as nombreProducto 
+  FROM vw_documentos_listado_productos_ventas INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+   where fecha between fechaInicio and fechaFin  and cod_vendedor = idPrd 
+   group by cod_vendedor , idProducto ) as prdCatVent  
+    ORDER BY cantidadVendida DESC
+    LIMIT 1; 
+    -- menor vendido 
+      select cantidadVendida , valorTotal , idProducto , nombreProducto into 
+      _cantidadVendidaMe , _valorTotalMe , _idProductoMe , _nombreProductoMe 
+      from (
+    SELECT  sum(cantidadVendida) as cantidadVendida ,  sum(valorTotal) as valorTotal , idProducto , inv_mst_producto.nombre as nombreProducto 
+  FROM vw_documentos_listado_productos_ventas INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+   where fecha between fechaInicio and fechaFin  and cod_vendedor = idPrd 
+   group by cod_vendedor , idProducto ) as prdCatVent  
+    ORDER BY cantidadVendida asc
+    LIMIT 1; 
+  
+       DELETE FROM ventas_del_dia_procedimiento WHERE session_id = _session_id;
+       
+    insert into ventas_del_dia_procedimiento  WITH RECURSIVE date_range AS (
+			SELECT fechaInicio AS date
+			UNION ALL
+			SELECT DATE_ADD(date, INTERVAL 1 DAY)
+			FROM date_range
+			WHERE DATE_ADD(date, INTERVAL 1 DAY) <= fechaFin )
+            SELECT _session_id ,  date , 0 , 0
+		FROM date_range;
+        
+   --  select * from    ventas_del_dia_procedimiento ; 
+
+     update ventas_del_dia_procedimiento inner join 
+     ( SELECT fecha as fechaVenta ,  sum(cantidadVendida) scv ,  sum(valorTotal) svt  FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin and cod_vendedor = idPrd group by fecha  ) as prdVenta on 
+           prdVenta.fechaVenta = ventas_del_dia_procedimiento.fecha
+           set total = svt , cnt = scv 
+           where ventas_del_dia_procedimiento.session_id = _session_id; 
+ 
+    SELECT fecha, cnt, total
+    INTO fechaMenorCantidad, menorCantidad, menorValorTotal
+    FROM ventas_del_dia_procedimiento where cnt > 0 and session_id = _session_id  
+    ORDER BY cnt ASC
+    LIMIT 1;   
+    
+     SELECT fecha, cnt, total
+    INTO fechaMayorCantidad, mayorCantidad, mayorValorTotal
+    FROM ventas_del_dia_procedimiento where  session_id = _session_id  
+    ORDER BY cnt DESC
+    LIMIT 1; 
+    
+   /*
+    declare _cantidadVendidaMa , _valorTotalMa , _cantidadVendidaMe , _valorTotalMe decimal(16,2);
+  declare _idProductoMa , _nombreProductoMa , _idProductoMe , _nombreProductoMe text;
+ */ 
+   select nombreCompleto into nombreUsuario from usuarios where ID = _usuario;
+   
+   
+   with ArrPrdQry as (SELECT _session_id as idSession,
+    JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'cantidad', cantidad,  
+            'total', total,
+            'idProducto', idProducto,   
+            'nombre', nombre
+        )
+    ) AS productos
+FROM (
+    SELECT 
+        SUM(cantidadVendida) AS cantidad,
+        SUM(valorTotal) AS total,
+        idProducto,
+        inv_mst_producto.nombre
+    FROM vw_documentos_listado_productos_ventas 
+    INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+    WHERE fecha BETWEEN  fechaInicio and fechaFin  
+      AND cod_vendedor = idPrd
+    GROUP BY cod_vendedor, idProducto
+) AS subquery ) 
+      SELECT   
+       JSON_OBJECT(
+       'productos' , productos , 
+       'usuarioGenerador' , nombreUsuario,
+       'fechaInicial',fechaInicio ,
+       'fechaFinal', fechaFin ,
+       'descripcion', _desc ,
+       'cantidadVendida',numTotal ,'totalVenta', totalVendido ,
+       'productoMasVendido',
+        JSON_OBJECT( 'cantidad', _cantidadVendidaMa , 'total',_valorTotalMa, 'idProducto',_idProductoMa ,'nombre', _nombreProductoMa ),
+       'productoMenosVendido',
+        JSON_OBJECT('cantidad', _cantidadVendidaMe ,'total', _valorTotalMe  ,'idProducto', _idProductoMe ,'nombre', _nombreProductoMe),
+       'menorDiaVenta' ,
+      JSON_OBJECT(
+            'fecha', fechaMenorCantidad,
+            'totalVendido', menorValorTotal,
+            'cantidad', menorCantidad
+        ),
+          'mayorDiaVenta' ,
+       JSON_OBJECT(
+            'fecha', fechaMayorCantidad,
+            'totalVendido', mayorValorTotal,
+            'cantidad', mayorCantidad
+        ),
+       'resumen' , 
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'fecha', fecha,
+            'totalVendido', total,
+            'cantidad', cnt
+        ))
+    ) AS resumenVentas
+    FROM ventas_del_dia_procedimiento inner join 
+     ArrPrdQry on    idSession = session_id
+    where session_id = _session_id; 
+   delete from  ventas_del_dia_procedimiento where session_id = _session_id; 
+      SET SQL_SAFE_UPDATES = 1; 
+END$$
+
+DELIMITER ;
+
+ 
+DROP procedure IF EXISTS `sp_resumenVentasUsuario`; 
+
+DELIMITER $$ 
+CREATE  PROCEDURE `sp_resumenVentasUsuario`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
+BEGIN 
+  declare nombreUsuario , _desc
+   -- prdMasVendido , prdMenosVendido 
+   text;
+  declare fechaMenorCantidad , fechaMayorCantidad date ;
+  declare menorCantidad, menorValorTotal, mayorCantidad, mayorValorTotal,
+  totalVendido , totalMenosV, totalMasV , numTotal , numMenosV, numMasV  decimal(16,2);
+  declare _cantidadVendidaMa , _valorTotalMa , _cantidadVendidaMe , _valorTotalMe decimal(16,2);
+  declare _idProductoMa , _nombreProductoMa , _idProductoMe , _nombreProductoMe text;
+  /*si idPrd es diferente a vacio*/ 
+  
+     SET SQL_SAFE_UPDATES = 0;
+     select concat( 'Reporte de ventas filtrado por el cajero : ' , nombreCompleto) into _desc  
+     from usuarios where ID = idPrd;
+     
+   SELECT sum(cantidadVendida) ,  sum(valorTotal) into numTotal , totalVendido FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin and usuarioCaja = idPrd group by usuarioCaja    ;
+   
+   -- mayor vendido 
+   select cantidadVendida , valorTotal , idProducto , nombreProducto 
+   into  _cantidadVendidaMa , _valorTotalMa , _idProductoMa , _nombreProductoMa
+   from (
+    SELECT  sum(cantidadVendida) as cantidadVendida ,  sum(valorTotal) as valorTotal , idProducto , inv_mst_producto.nombre as nombreProducto 
+  FROM vw_documentos_listado_productos_ventas INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+   where fecha between fechaInicio and fechaFin  and usuarioCaja = idPrd 
+   group by usuarioCaja, idProducto ) as prdCatVent  
+    ORDER BY cantidadVendida DESC
+    LIMIT 1; 
+    -- menor vendido 
+      select cantidadVendida , valorTotal , idProducto , nombreProducto into 
+      _cantidadVendidaMe , _valorTotalMe , _idProductoMe , _nombreProductoMe 
+      from (
+    SELECT  sum(cantidadVendida) as cantidadVendida ,  sum(valorTotal) as valorTotal , idProducto , inv_mst_producto.nombre as nombreProducto 
+  FROM vw_documentos_listado_productos_ventas INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+   where fecha between fechaInicio and fechaFin  and usuarioCaja = idPrd 
+   group by usuarioCaja , idProducto ) as prdCatVent  
+    ORDER BY cantidadVendida asc
+    LIMIT 1; 
+  
+       DELETE FROM ventas_del_dia_procedimiento WHERE session_id = _session_id;
+    insert into ventas_del_dia_procedimiento  WITH RECURSIVE date_range AS (
+			SELECT fechaInicio AS date
+			UNION ALL
+			SELECT DATE_ADD(date, INTERVAL 1 DAY)
+			FROM date_range
+			WHERE DATE_ADD(date, INTERVAL 1 DAY) <= fechaFin
+		)
+		SELECT _session_id ,  date , 0 , 0
+		FROM date_range;
+   --  select * from    ventas_del_dia_procedimiento ; 
+
+     update ventas_del_dia_procedimiento inner join 
+     ( SELECT fecha as fechaVenta ,  sum(cantidadVendida) scv ,  sum(valorTotal) svt  FROM vw_documentos_listado_productos_ventas 
+   where fecha between fechaInicio and fechaFin and usuarioCaja = idPrd group by fecha  ) as prdVenta on 
+           prdVenta.fechaVenta = ventas_del_dia_procedimiento.fecha
+           set total = svt , cnt = scv 
+           where ventas_del_dia_procedimiento.session_id = _session_id; 
+ 
+       -- Obtener la fecha con el menor scv
+    SELECT fecha, cnt, total
+    INTO fechaMenorCantidad, menorCantidad, menorValorTotal
+    FROM ventas_del_dia_procedimiento where cnt > 0 and session_id = _session_id  
+    ORDER BY cnt ASC
+    LIMIT 1;   
+    
+     SELECT fecha, cnt, total
+    INTO fechaMayorCantidad, mayorCantidad, mayorValorTotal
+    FROM ventas_del_dia_procedimiento where  session_id = _session_id  
+    ORDER BY cnt DESC
+    LIMIT 1; 
+    
+    
+   /*
+    declare _cantidadVendidaMa , _valorTotalMa , _cantidadVendidaMe , _valorTotalMe decimal(16,2);
+  declare _idProductoMa , _nombreProductoMa , _idProductoMe , _nombreProductoMe text;
+ */ 
+   select nombreCompleto into nombreUsuario from usuarios where ID = _usuario;
+   
+   
+   with ArrPrdQry as (SELECT _session_id as idSession,
+    JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'cantidad', cantidad,  
+            'total', total,
+            'idProducto', idProducto,   
+            'nombre', nombre
+        )
+    ) AS productos
+FROM (
+    SELECT 
+        SUM(cantidadVendida) AS cantidad,
+        SUM(valorTotal) AS total,
+        idProducto,
+        inv_mst_producto.nombre
+    FROM vw_documentos_listado_productos_ventas 
+    INNER JOIN inv_mst_producto ON inv_mst_producto.id = idProducto
+    WHERE fecha BETWEEN  fechaInicio and fechaFin  
+      AND usuarioCaja = idPrd
+    GROUP BY usuarioCaja, idProducto
+) AS subquery ) 
+      SELECT   
+       JSON_OBJECT(
+       'productos' , productos , 
+       'usuarioGenerador' , nombreUsuario,
+       'fechaInicial',fechaInicio ,
+       'fechaFinal', fechaFin ,
+       'descripcion', _desc ,
+       'cantidadVendida',numTotal ,'totalVenta', totalVendido ,
+       'productoMasVendido',
+        JSON_OBJECT( 'cantidad', _cantidadVendidaMa , 'total',_valorTotalMa, 'idProducto',_idProductoMa ,'nombre', _nombreProductoMa ),
+       'productoMenosVendido',
+        JSON_OBJECT('cantidad', _cantidadVendidaMe ,'total', _valorTotalMe  ,'idProducto', _idProductoMe ,'nombre', _nombreProductoMe),
+       'menorDiaVenta' ,
+      JSON_OBJECT(
+            'fecha', fechaMenorCantidad,
+            'totalVendido', menorValorTotal,
+            'cantidad', menorCantidad
+        ),
+          'mayorDiaVenta' ,
+       JSON_OBJECT(
+            'fecha', fechaMayorCantidad,
+            'totalVendido', mayorValorTotal,
+            'cantidad', mayorCantidad
+        ),
+       'resumen' , 
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'fecha', fecha,
+            'totalVendido', total,
+            'cantidad', cnt
+        ))
+    ) AS resumenVentas
+    FROM ventas_del_dia_procedimiento inner join 
+     ArrPrdQry on    idSession = session_id
+    where session_id = _session_id; 
+    delete from  ventas_del_dia_procedimiento where session_id = _session_id; 
+      SET SQL_SAFE_UPDATES = 1; 
+END$$
+
+DELIMITER ;  
+

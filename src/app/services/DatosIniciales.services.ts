@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { cajaModel } from '../models/ventas/cajas.model';
 import { vistas } from '../models/app.db.view';
-import { cntGrupoRequest, DocumentoRequest, empleadoRequest, parametroRequest, ProductosVendidosRequest } from '../interfaces/producto-request';
+import { cntGrupoRequest, DocumentoRequest, empleadoRequest, empleadoVentasRequest, parametroRequest, ProductosVendidosRequest, usuarioRequest, usuarioVentasRequest } from '../interfaces/producto-request';
 import { EmpleadoModel } from '../models/empleados/empleados.module';
 import { table } from 'ngx-bootstrap-icons';
 import { TABLA } from '../models/app.db.tables';
@@ -70,7 +70,31 @@ constructor(private http: HttpClient){}
         "_where" : []
        }; 
        return this.http.post<empleadoRequest>(url.action , datos, httpOptions()) ;
+  } 
+   getVendedoresConVentas():Observable<empleadoVentasRequest>{
+    let datos = {"action": actions.actionSelect , 
+        "_tabla" : vistas.vendedoresConVentas,
+        "_where" : []
+       }; 
+       return this.http.post<empleadoVentasRequest>(url.action , datos, httpOptions()) ;
   }
+
+  getUsuariosConVentas():Observable<usuarioRequest>{
+    let datos = {"action": actions.actionSelect , 
+        "_tabla" : vistas.usuarioConVentas,
+        "_where" : []
+       }; 
+       return this.http.post<usuarioRequest>(url.action , datos, httpOptions()) ;
+  }
+
+  getUsuarios():Observable<usuarioVentasRequest>{
+    let datos = {"action": actions.actionSelect ,
+        "_tabla" : vistas.usuario
+       };
+      console.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions()); 
+       return this.http.post<usuarioVentasRequest>(url.action , datos, httpOptions()) ;
+  }
+
     validarCuentasContablesEstablecimiento(caja:cajaModel) {
         if (caja == undefined
             || caja!.idCCntCCobrar == 0

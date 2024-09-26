@@ -11,6 +11,7 @@ import { printer, url } from 'src/app/models/app.db.url';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { cajasServices } from 'src/app/services/Cajas.services';
+import { resumenPrd, ResumenVenta } from 'src/app/interfaces/resumenVenta.';
 
 @Component({
   selector: 'app-ventasDiaria',
@@ -18,7 +19,10 @@ import { cajasServices } from 'src/app/services/Cajas.services';
   styleUrls: ['./ventasDiaria.component.css']
 })
 export class ventasDiariaComponent implements OnInit {
-
+  resumenVenta?:ResumenVenta;
+  resumen:boolean=true;
+  hideR:boolean=true;
+  hideF:boolean=true;
   documentos : DocumentosModel[] = [];
   codFactura:string;
   codCliente:string;
@@ -61,6 +65,13 @@ const day = date.getDate(); // */
     elemDiv!.style.display = 'block'
   }
 
+  async imprimirResumen()
+  {  
+   let printerManager =  new PrinterManager(this.serviceCaja); 
+   if(this.resumenVenta != undefined){ 
+   printerManager.printResumenVenta(false,this.resumenVenta);
+  } 
+}
   VerFactura(venta:DocumentosModel){
     let pagosHtml:string =  `<h1>Factura :  ${venta.idDocumentoFinal}</h1>
     <h2>Cliente :  ${venta.clienteNombre}</h2>
@@ -173,6 +184,22 @@ const day = date.getDate(); // */
       Swal.fire('Es necesario escoger la fecha final del rango de factura','error','error');
       return;
     }
+    this.documentoService.getResumenVentas
+        (this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+          (datos:any)=>{
+           
+        if (datos.numdata > 0 ){
+          this.resumenVenta = datos.data  ;
+          console.log('getResumenProductosVentas',this.resumenVenta);
+       } else{
+        Swal.fire('No existen datos relacionados con la busqueda')
+       } 
+       this.hideR=true; 
+      } ,error:
+      (error: any) =>{
+        Swal.fire(JSON.stringify(error )); 
+        this.hideR=true; 
+      }});
     this.documentoService.getVentasFinalizadasPorFecha(this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
       (datos:any)=>{
         let cont = 0; 

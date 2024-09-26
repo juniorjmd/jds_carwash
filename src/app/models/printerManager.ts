@@ -30,8 +30,11 @@ export class PrinterManager {
 
   constructor(private serviceCaja: cajasServices ) { 
     this.serviceCaja.currentArrEsta.subscribe({next:(value=>{
+      console.log('establecimiento ',value);
+      
       if(value) this.establecimientos = value 
-    })});
+    })
+  });
    } 
 
 
@@ -295,6 +298,7 @@ public printSoporteMovimiento(impresoraPos = true , movimiento:SoporteOperacion)
 } 
 /**imprimir resumen de ventas */
 public printResumenVenta(impresoraPos = true , resumen:ResumenVenta) { 
+  this.establecimiento = this.establecimientos[0]
     this.resumenVenta =  resumen; 
   this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ;   
     const printContent = this.generateRVHTML();
@@ -322,22 +326,21 @@ public printResumenVenta(impresoraPos = true , resumen:ResumenVenta) {
 
    }  
   private generateCabecera(){
-  console.log('documento a imprimir' ,this.doc);
-  
+   
     let cabecera = '';
     if (this.tipoImpresora == 'POS'){
       cabecera = ` <div style="text-align: center;">   ` ;
       if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
-        cabecera += `<h2>${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` ; 
+        cabecera += `<h2 style="padding: 0px; margin: 0px;">${PrinterManager.sucursal?.nombre_sucursal_sec}</h2> ` ; 
 
-      cabecera += ` <h2>${this.establecimiento?.nombre}</h2>  `; 
-      cabecera += (this.establecimiento?.nit.trim() != '' )? ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`: ` <p>Nit: ${this.establecimiento?.nit}</p>`  ;
+      cabecera += ` <h2 style="padding: 0px; margin: 0px;">${this.establecimiento?.nombre}</h2>  `; 
+      cabecera += (this.establecimiento?.nit.trim() == '' )? ` <p style="padding: 0px; margin: 0px;">Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`: ` <p style="padding: 0px; margin: 0px;">Nit: ${this.establecimiento?.nit}</p>`  ;
     
-      cabecera += (this.establecimiento?.direccion.trim() != '' )?  ` <p> ${PrinterManager.sucursal?.dir}</p>`:  ` <p> ${this.establecimiento?.direccion}</p>` ;
-      cabecera += '<p> '
-      cabecera += (this.establecimiento?.ciudad.trim() != '' )?  ` ${PrinterManager.sucursal?.ciudad} `:  ` ${this.establecimiento?.ciudad} ` ;
+      cabecera += (this.establecimiento?.direccion.trim() == '' )?  ` <p style="padding: 0px; margin: 0px;"> ${PrinterManager.sucursal?.dir}</p>`:  ` <p style="padding: 0px; margin: 0px;"> ${this.establecimiento?.direccion}</p>` ;
+      cabecera += '<p style="padding: 0px; margin: 0px;"> '
+      cabecera += (this.establecimiento?.ciudad.trim() == '' )?  ` ${PrinterManager.sucursal?.ciudad} `:  ` ${this.establecimiento?.ciudad} ` ;
       cabecera += ' - '
-      cabecera += (this.establecimiento?.tel1.trim() != '' )?  `Tel: ${PrinterManager.sucursal?.tel1}`:  `Tel: ${this.establecimiento?.tel1} ` ;
+      cabecera += (this.establecimiento?.tel1.trim() == '' )?  `Tel: ${PrinterManager.sucursal?.tel1}`:  `Tel: ${this.establecimiento?.tel1} ` ;
       cabecera += '</p> '; 
 
     }else{
@@ -345,26 +348,25 @@ public printResumenVenta(impresoraPos = true , resumen:ResumenVenta) {
       if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
         cabecera +=   PrinterManager.sucursal?.nombre_sucursal_sec + ' - ' ; 
 
-      cabecera += `${this.establecimiento?.nombre}</h2></td> <td></td></tr><tr><td>`;
-
-
-
-/*
-      cabecera += `<h4>Nit: ${PrinterManager.sucursal?.nit_sucursal}</h4>`;
-
-      cabecera += (this.establecimiento?.nit.trim() != '' )? ` <p>Nit: ${PrinterManager.sucursal?.nit_sucursal}</p>`: ` <p>Nit: ${this.establecimiento?.nit}</p>`  ;
-    
-      cabecera += (this.establecimiento?.direccion.trim() != '' )?  ` <p> ${PrinterManager.sucursal?.dir}</p>`:  ` <p> ${this.establecimiento?.direccion}</p>` ;
-      cabecera += '<p> '
-      cabecera += (this.establecimiento?.ciudad.trim() != '' )?  ` ${PrinterManager.sucursal?.ciudad} `:  ` ${this.establecimiento?.ciudad} ` ;
-      cabecera += ' - '
-      cabecera += (this.establecimiento?.tel1.trim() != '' )?  `Tel: ${PrinterManager.sucursal?.tel1}`:  `Tel: ${this.establecimiento?.tel1} ` ;
-   */
-
-
-
-
+      cabecera += `${this.establecimiento?.nombre}</h2></td> <td></td></tr><tr><td>`;  
       cabecera += `</td> <td></td></tr></div>`; 
+
+      cabecera = `<div >     <table><tr><td><h2  style=" margin: 0;">`;
+      if((PrinterManager.sucursal?.nombre_sucursal_sec||'').trim() != '')
+        cabecera +=   PrinterManager.sucursal?.nombre_sucursal_sec + ' - ' ; 
+
+      cabecera += `${this.establecimiento?.nombre}</h2>`;  
+      cabecera += (this.establecimiento?.nit.trim() == '' )? `Nit: ${PrinterManager.sucursal?.nit_sucursal} `: `Nit: ${this.establecimiento?.nit} `  ;
+      cabecera += '<br> '
+     cabecera += (this.establecimiento?.ciudad.trim() == '' )?  `${PrinterManager.sucursal?.ciudad} `:  `${this.establecimiento?.ciudad} ` ;
+     
+      cabecera += (this.establecimiento?.direccion.trim() == '' )?  ` ${PrinterManager.sucursal?.dir} `:  ` ${this.establecimiento?.direccion} ` ;
+      cabecera += '<br> '
+      cabecera += (this.establecimiento?.tel1.trim() == '' )?  `Tel: ${PrinterManager.sucursal?.tel1}`:  `Tel: ${this.establecimiento?.tel1} ` ;
+      
+      cabecera += (this.establecimiento?.tel2.trim() == '' )?  `- ${PrinterManager.sucursal?.tel2}`:  `- ${this.establecimiento?.tel2} ` ;
+      cabecera += `</td> <td></td></tr><tr><td></td> <td></td></tr></table><hr></div>`; 
+
     }
     return cabecera
   } 
@@ -377,15 +379,155 @@ generateRVHTML(): string {
   let receiptHTML = ''; 
   receiptHTML = (this.tipoImpresora == 'POS')?`<div style="font-family: Arial, sans-serif; width: 219.24px;"> ` : 
   `<div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">`;
-  receiptHTML += this.generateSoporteCabecera() ; 
-  receiptHTML += this.infoSoporteGeneral(); 
-  receiptHTML += this.detalleSoporte(); 
-  receiptHTML += this.footerSoporte() ; 
+  receiptHTML += this.generateCabecera() ; 
+  receiptHTML += this.infoRVGeneral(); 
+  receiptHTML += this.detalleRV(); 
+  receiptHTML += this.footerRV() ; 
   receiptHTML += ` </div> 
   <style>  body table td { font-size:small !important     } </style>`;
 
   return receiptHTML;
 } 
+private detalleRV():string{
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+let receiptHTML  = ` <hr> 
+<div style="text-align: left;" name="detalle">
+<table  style="font-family: Arial, sans-serif; width: 100%;"><tr>`;
+
+
+receiptHTML  += (this.tipoImpresora == 'POS')?`<td>` :`<td style="width: 50%; vertical-align: top;">`; 
+
+if(this.resumenVenta.mayorDiaVenta != undefined){
+receiptHTML +=`<h5>Dia mas vendido</h5>
+<table  style="font-family: Arial, sans-serif; width: 100%;">`;
+ 
+receiptHTML += `<tr><th>FECHA </th><th>CNT</th><th>TOTAL</th></tr>`  ; 
+receiptHTML += `<tr><td>${this.resumenVenta.mayorDiaVenta.fecha} </td>
+                    <td>${this.resumenVenta.mayorDiaVenta.cantidad}</td>
+                    <td style="text-align: right;">${currencyFormatter.format(this.resumenVenta.mayorDiaVenta.totalVendido)}</td></tr>`  ;  
+ receiptHTML += `</table>`  ;
+}
+
+if(this.resumenVenta.menorDiaVenta != undefined){
+  receiptHTML +=`<h5>Dia menos vendido</h5>
+  <table  style="font-family: Arial, sans-serif; width: 100%;">`;
+   
+  receiptHTML += `<tr><th>FECHA </th><th>CNT</th><th>TOTAL</th></tr>`  ; 
+  receiptHTML += `<tr><td>${this.resumenVenta.menorDiaVenta.fecha} </td>
+                      <td>${this.resumenVenta.menorDiaVenta.cantidad}</td>
+                      <td style="text-align: right;">${currencyFormatter.format(this.resumenVenta.menorDiaVenta.totalVendido)}</td></tr>`  ;  
+   receiptHTML += `</table>`  ;
+  }
+
+  
+if(this.resumenVenta.productoMasVendido != undefined){
+  receiptHTML +=`<h5>Producto mas vendido</h5>
+  <table  style="font-family: Arial, sans-serif; width: 100%;">`;
+   
+  receiptHTML += `<tr><th>PRODUCTO </th><th>CNT</th><th>TOTAL</th></tr>`  ; 
+  receiptHTML += `<tr><td>${this.resumenVenta.productoMasVendido.nombre} </td>
+                      <td >${this.resumenVenta.productoMasVendido.cantidad}</td>
+                      <td style="text-align: right;">${currencyFormatter.format(this.resumenVenta.productoMasVendido.total)}</td></tr>`  ;  
+   receiptHTML += `</table>`  ;
+  }
+
+  if(this.resumenVenta.productoMenosVendido != undefined){
+    receiptHTML +=`<h5>Producto menos vendido</h5>
+    <table  style="font-family: Arial, sans-serif; width: 100%;">`;
+     
+    receiptHTML += `<tr><th>FECHA </th><th>CNT</th><th>TOTAL</th></tr>`  ; 
+    receiptHTML += `<tr><td>${this.resumenVenta.productoMenosVendido.nombre} </td>
+                        <td>${this.resumenVenta.productoMenosVendido.cantidad}</td>
+                        <td style="text-align: right;">${currencyFormatter.format(this.resumenVenta.productoMenosVendido.total)}</td></tr>`  ;  
+     receiptHTML += `</table>`  ;
+    }
+receiptHTML  += (this.tipoImpresora == 'POS')? '' :`</td><td>`  ;
+
+//listado de dias vendidos
+receiptHTML +=`<h5>Resumen de ventas</h5>
+<table  style="font-family: Arial, sans-serif; width: 100%;">`;
+ 
+ receiptHTML += `<tr><th>FECHA </th><th>CANTIDAD</th><th>TOTAL</th></tr>`  ;
+
+    this.resumenVenta.resumen?.forEach((lista) => {  
+      receiptHTML += ` <tr> 
+      <td style="text-align: left;" >${lista.fecha} </td>     
+      <td style="text-align: right;" >${lista.cantidad} </td>
+      <td style="text-align: right;" >${currencyFormatter.format(lista.totalVendido)}</td>
+      </tr>  
+     `
+      ;   
+  });
+receiptHTML += `</table>`
+
+if(this.resumenVenta.productos != undefined){
+  
+receiptHTML +=`<h5>Resumen de productos</h5>
+<table  style="font-family: Arial, sans-serif; width: 100%;">`;
+ 
+ receiptHTML += `<tr><th>PRODUCTO </th><th>CNT</th><th>TOTAL</th></tr>`  ;
+
+    this.resumenVenta.productos?.forEach((lista) => {  
+      receiptHTML += ` <tr> 
+      <td style="text-align: left;" >${lista.nombre} </td>     
+      <td style="text-align: right;" >${lista.cantidad} </td>
+      <td style="text-align: right;" >${currencyFormatter.format(lista.total)}</td>
+      </tr>  
+     `
+      ;   
+  });
+  
+receiptHTML += `</table>`
+}
+
+receiptHTML += `</td></tr></table>`
+
+
+
+receiptHTML += `</div>`
+
+  return receiptHTML; 
+} 
+
+private footerRV():string{
+  return  '<div style="font-size: 10px;margin: 10px;">Documento de soporte de ventas en un rango de fecha</div>' ; 
+}
+private   infoRVGeneral():string{
+  let receiptHTML = ''; 
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }); 
+     receiptHTML += (this.tipoImpresora != 'POS')?
+         `<div> 
+         <table>
+         <tr> 
+              <th colspan="4">RESUMEN DE VENTA</th>  
+         </tr>
+          <tr> 
+              <th>Usuario </th><td> ${this.resumenVenta.usuarioGenerador}</td> 
+              <th> </th><td>  </td> 
+         </tr>
+         <tr> <th colspan='4'>${this.resumenVenta.descripcion} </th> </tr> 
+         <tr>
+         <th> Desde </th><td> ${this.resumenVenta.fechaInicial}</td> <th> 
+        hasta</th><td>  ${this.resumenVenta.fechaFinal}</td> 
+         </tr> 
+         <tr> 
+              <th>Cantidad Vendido</th><td> ${this.resumenVenta.cantidadVendida}</td> 
+              <th>Total</th><td> ${currencyFormatter.format(this.resumenVenta.totalVenta)}</td> 
+         </tr>
+         </table></div> `:
+          `<div>
+           <p>Usuario: ${this.resumenVenta.usuarioGenerador}</p> 
+           <p>Rango: desde el ${this.resumenVenta.fechaInicial} hasta el  ${this.resumenVenta.fechaFinal} </p>
+                          </div><hr>
+        <div>
+          <p>${this.resumenVenta.descripcion}}</p> 
+          <p>Cantidad   : ${this.resumenVenta.cantidadVendida}</p>
+          <p>Total venta  : ${this.resumenVenta.totalVenta}</p>
+        </div>`
+        
+        ;
+        return receiptHTML;
+}
 /*********************************************************************************************** */
 
 /*************************************************************************************************/

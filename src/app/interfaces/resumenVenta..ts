@@ -1,13 +1,16 @@
 export interface ResumenVenta {  
-    usuarioGenerador:string;
-    mayorDiaVenta: VentaDiaria;
-    menorDiaVenta: VentaDiaria;
+    usuarioGenerador:string; 
+    fechaInicial:Date;
+    fechaFinal:Date;
+    descripcion:string; 
     cantidadVendida: number; 
     totalVenta: number;
     resumen: VentaDiaria[];
+    mayorDiaVenta: VentaDiaria;
+    menorDiaVenta: VentaDiaria;
     productos?:resumenPrd[];
     productoMasVendido?:resumenPrd;
-    productoMenosVendido?: resumenPrd; 
+    productoMenosVendido?: resumenPrd;
  }
 
 

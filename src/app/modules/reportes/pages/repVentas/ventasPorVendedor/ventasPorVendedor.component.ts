@@ -7,47 +7,94 @@ import { DatosInicialesService } from 'src/app/services/DatosIniciales.services'
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { ProductoVendido } from 'src/app/interfaces/productoVendido.';
 import Swal from 'sweetalert2';
+import { CategoriasVendidasModel } from 'src/app/models/categorias.model';
+import { ResumenVenta } from 'src/app/interfaces/resumenVenta.';
+import { EmpleadoModel, VendedorModel } from 'src/app/models/empleados/empleados.module';
+import { UsuarioConVentaModel } from 'src/app/models/usuario.model';
 
 @Component({
   selector: 'app-ventasPorVendedor',
   templateUrl: './ventasPorVendedor.component.html',
   styleUrls: ['./ventasPorVendedor.component.css']
 })
-export class ventasPorVendedorComponent implements OnInit {
-
+export class ventasPorVendedorComponent  implements OnInit {
+  resumenVenta?:ResumenVenta;
+  resumen:boolean=true;
+  hideR:boolean=true;
+  hideF:boolean=true;
+  saler:boolean=true;
   documentos : DocumentosModel[] = [];
   indexProductoSel:number = 0; 
-  productosVendidoc: ProductoVendido | null  =  {idProducto:'0', firstDate: new Date(), lastDate: new Date(), nombre:'Seleccione un Producto para filtrar', nombre2:'', nombre3:''};
-  codFactura:string;
-  codCliente:string;
+  empleadoSeleccionado: VendedorModel | null  = new VendedorModel(); 
+  usuarioSeleccionado: UsuarioConVentaModel | null  = new UsuarioConVentaModel(undefined); 
   fecha1:string;
+  fechaMinima:string;
   fecha2:string;
   maximo:string;
   constructor(public loading : loading,private serviceCaja:cajasServices,
     private documentoService : DocumentoService, private inicioService:DatosInicialesService ) {
-       
-       this.codFactura = '';
-       this.codCliente= '';
-       /**const year = date.getFullYear() * 1e4; // 1e4 gives us the the other digits to be filled later, so 20210000.
-const month = (date.getMonth() + 1) * 100; // months are numbered 0-11 in JavaScript, * 100 to move two digits to the left. 20210011 => 20211100
-const day = date.getDate(); // */
-      let fecha = new Date();
+      this.empleadoSeleccionado!.id = 0 ; 
+      this.empleadoSeleccionado!.nombreCompleto = 'Seleccione un empleado para filtrar';  
+      this.usuarioSeleccionado!.ID = 0;
+      this.usuarioSeleccionado!.nombreCompleto = 'Seleccione un usuario Cajero para filtrar';
+       let fecha = new Date();
        this.fecha1 = fecha.getFullYear().toString() +'-'+ (fecha.getMonth() + 1).toString().padStart(2,'0')+'-'+ (fecha.getDate()).toString().padStart(2,'0') ;
        this.fecha2 = this.fecha1;
-       this.maximo =   this.fecha2 ;
+        this.maximo = this.fecha1;
+        this.fechaMinima=this.fecha1;
      }
 
-     getVentasPorProducto(prd:ProductoVendido){
-      console.log('productos seleccionado' , this.productosVendidoc);
-      this.productosVendidoc = prd;
-      if(this.productosVendidoc?.idProducto != '0'){
-        //Swal.fire('producto seleccionado ' +this.productosVendidoc?.idProducto + ' - ' +this.productosVendidoc?.nombre )
-        let f1 =  this.productosVendidoc.firstDate.toString()
+     setVendedor(){
+      this.saler=true;
+      this.documentos= [];
+      this.usuarioSeleccionado!.ID = 0;
+      this.usuarioSeleccionado!.nombreCompleto = 'Seleccione un usuario Cajero para filtrar';
+      this.empleadoSeleccionado!.id = 0 ; 
+      this.empleadoSeleccionado!.nombreCompleto = 'Seleccione un empleado para filtrar'; 
+      this.resumenVenta = undefined; 
+     }
+     setUsuario(){
+      this.saler=false;
+      this.documentos = [];
+      this.usuarioSeleccionado!.ID = 0;
+      this.usuarioSeleccionado!.nombreCompleto = 'Seleccione un usuario Cajero para filtrar';
+      this.empleadoSeleccionado!.id = 0 ; 
+      this.empleadoSeleccionado!.nombreCompleto = 'Seleccione un empleado para filtrar';  
+      this.resumenVenta = undefined; 
+     }
+     getVentasPorVendedor(prd:VendedorModel){
+      this.usuarioSeleccionado!.ID = 0;
+      this.usuarioSeleccionado!.nombreCompleto = 'Seleccione un usuario Cajero para filtrar';
+      console.log('productos seleccionado' , this.empleadoSeleccionado);
+      this.empleadoSeleccionado = prd;
+      if(this.empleadoSeleccionado?.id != 0){
+      //  alert('categoria seleccionado ' +JSON.stringify(this.empleadoSeleccionado!) )
+        let f1 =  this.empleadoSeleccionado.firstDate!.toString()
         this.fecha1 =  f1.slice(0,10) ;
-        f1 =  this.productosVendidoc.lastDate.toString() ;
+        f1 =  this.empleadoSeleccionado.lastDate!.toString() ;
         this.fecha2 =  f1.slice(0,10) ;
-        this.maximo =   this.fecha2
-        this.documentoService.getVentasFinalizadasPorProductoFecha(this.productosVendidoc?.idProducto!,this.fecha1.trim(),this.fecha2.trim() )
+        this.maximo = this.fecha2 ;
+        this.fechaMinima = this.fecha1;
+        this.hideR=false; 
+        this.hideF=false;
+
+        this.documentoService.getResumenVendedorVentas
+        (this.empleadoSeleccionado?.id!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+          (datos:any)=>{
+           
+        if (datos.numdata > 0 ){
+          this.resumenVenta = datos.data  ;
+          console.log('getResumenProductosVentas',this.resumenVenta);
+       } else{
+        Swal.fire('No existen datos relacionados con la busqueda')
+       } 
+       this.hideR=true; 
+      } ,error:
+      (error: any) =>{
+        Swal.fire(JSON.stringify(error )); 
+        this.hideR=true; 
+      }});
+        this.documentoService.getVentasFinalizadasPorVendedorFecha(this.empleadoSeleccionado?.id,this.fecha1.trim(),this.fecha2.trim() )
         .subscribe({next:
           (datos:any)=>{
             let cont = 0; 
@@ -62,18 +109,88 @@ const day = date.getDate(); // */
           }) 
        } else{
         Swal.fire('No existen datos relacionados con la busqueda')
-       } 
+       } this.hideF=true; 
       } ,error:
       (error: any) =>{
         Swal.fire(JSON.stringify(error ));
-      
-      }});
+        this.hideF=true; 
+      }}
+    
+    ); 
 
 
 
       }else{let fecha = new Date();
         this.fecha1 = fecha.getFullYear().toString() +'-'+ (fecha.getMonth() + 1).toString().padStart(2,'0')+'-'+ (fecha.getDate()).toString().padStart(2,'0') ;
-        this.fecha2 = this.fecha1;}
+        this.fecha2 = this.fecha1;
+        this.fechaMinima = this.fecha1;
+      }
+
+
+     }
+
+     getVentasPorUsuario(prd:UsuarioConVentaModel){
+      console.log('productos seleccionado' , this.empleadoSeleccionado); 
+      this.empleadoSeleccionado!.id = 0 ; 
+      this.empleadoSeleccionado!.nombreCompleto = 'Seleccione un empleado para filtrar';  
+      this.usuarioSeleccionado = prd;
+      if(this.usuarioSeleccionado?.ID != 0){
+      //  alert('categoria seleccionado ' +JSON.stringify(this.empleadoSeleccionado!) )
+        let f1 =  this.usuarioSeleccionado!.firstDate!.toString()
+        this.fecha1 =  f1.slice(0,10) ;
+        f1 =  this.usuarioSeleccionado!.lastDate!.toString() ;
+        this.fecha2 =  f1.slice(0,10) ;
+        this.fechaMinima = this.fecha1;
+        this.maximo = this.fecha2 ;
+        this.hideR=false; 
+        this.hideF=false;
+
+        this.documentoService.getResumenUsuarioVentas
+        (this.usuarioSeleccionado?.ID!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+          (datos:any)=>{
+           
+        if (datos.numdata > 0 ){
+          this.resumenVenta = datos.data  ;
+          console.log('getResumenProductosVentas',this.resumenVenta);
+       } else{
+        Swal.fire('No existen datos relacionados con la busqueda')
+       } 
+       this.hideR=true; 
+      } ,error:
+      (error: any) =>{
+        Swal.fire(JSON.stringify(error )); 
+        this.hideR=true; 
+      }});
+        this.documentoService.getVentasFinalizadasPorUsuarioFecha
+        (this.usuarioSeleccionado?.ID!,this.fecha1.trim(),this.fecha2.trim() )
+        .subscribe({next:
+          (datos:any)=>{
+            let cont = 0; 
+             this.documentos = []; 
+             console.log('getDocumentos', datos.numdata);
+             console.log('getDocumentos_recuest', datos );
+             
+        if (datos.numdata > 0 ){ 
+          datos.data!.forEach((dato:any , index : number  )=>{  
+           this.documentos.push(dato.objeto);
+           
+          }) 
+       } else{
+        Swal.fire('No existen datos relacionados con la busqueda')
+       } this.hideF=true; 
+      } ,error:
+      (error: any) =>{
+        Swal.fire(JSON.stringify(error ));
+        this.hideF=true; 
+      }}
+    
+    );  
+      }else{let fecha = new Date();
+        this.fecha1 = fecha.getFullYear().toString() +'-'+ (fecha.getMonth() + 1).toString().padStart(2,'0')+'-'+ (fecha.getDate()).toString().padStart(2,'0') ;
+        this.fecha2 = this.fecha1;
+      
+        this.fechaMinima = this.fecha1;
+      }
 
 
      }
@@ -161,14 +278,23 @@ const day = date.getDate(); // */
    printerManager.printReceipt();
   } 
  
-
+  async imprimirResumen()
+  {  
+   let printerManager =  new PrinterManager(this.serviceCaja); 
+   if(this.resumenVenta != undefined){ 
+   printerManager.printResumenVenta(false,this.resumenVenta);
+  } 
+}
+ 
 
   getDocumentosPorFecha(){
-    //this.printer_factura_final(); 
-    console.log('productosVendidoc' , this.productosVendidoc);
+    //this.printer_factura_final();  
     
-    if(this.productosVendidoc?.idProducto == '0'){  
-      Swal.fire('Es necesario escoger el producto a filtrar','error','error');
+    if(this.empleadoSeleccionado?.id == 0 && this.saler){  
+      Swal.fire('Es necesario escoger el Vendedor a filtrar','error','error');
+      return;}
+      if(this.usuarioSeleccionado?.ID == 0 && !this.saler){  
+      Swal.fire('Es necesario escoger Usuario de caja a filtrar','error','error');
       return;}
     if(this.fecha1.trim() === ''){
       Swal.fire('Es necesario escoger la fecha inicial del rango de factura','error','error');
@@ -177,26 +303,101 @@ const day = date.getDate(); // */
     if(this.fecha2.trim() === ''){
       Swal.fire('Es necesario escoger la fecha final del rango de factura','error','error');
       return;
-    }
-    this.documentoService.getVentasFinalizadasPorProductoFecha(this.productosVendidoc?.idProducto!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
-      (datos:any)=>{
-        let cont = 0; 
-         this.documentos = []; 
-         console.log('getDocumentos', datos.numdata);
-         console.log('getDocumentos_recuest', datos );
-         
-    if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:any , index : number  )=>{  
-       this.documentos.push(dato.objeto);
-       
-      }) 
-   } else{
-    Swal.fire('No existen datos relacionados con la busqueda')
-   } 
-  } ,error:
-  (error: any) =>{
-    Swal.fire(JSON.stringify(error ));
+    } 
+    this.hideR=false; 
+    this.hideF=false;
+
+  let idEmpleado:number|undefined = (typeof(this.empleadoSeleccionado?.id) =='string')?parseInt(this.empleadoSeleccionado?.id):this.empleadoSeleccionado?.id;
   
-  }});
+  let idUsuario:number|undefined = (typeof(this.usuarioSeleccionado?.ID) =='string')?parseInt(this.usuarioSeleccionado?.ID):this.usuarioSeleccionado?.ID;
+    
+  if( (idEmpleado||0) > 0){
+      this.documentoService.getResumenVendedorVentas
+      (this.empleadoSeleccionado?.id!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+        (datos:any)=>{
+         
+      if (datos.numdata > 0 ){
+        this.resumenVenta = datos.data  ;
+        console.log('getResumenProductosVentas',this.resumenVenta);
+     } else{
+      Swal.fire('No existen datos relacionados con la busqueda')
+     } 
+     this.hideR=true; 
+    } ,error:
+    (error: any) =>{
+      Swal.fire(JSON.stringify(error )); 
+      this.hideR=true; 
+    }});
+      this.documentoService.getVentasFinalizadasPorVendedorFecha(this.empleadoSeleccionado?.id,this.fecha1.trim(),this.fecha2.trim() )
+      .subscribe({next:
+        (datos:any)=>{
+          let cont = 0; 
+           this.documentos = []; 
+           console.log('getDocumentos', datos.numdata);
+           console.log('getDocumentos_recuest', datos );
+           
+      if (datos.numdata > 0 ){ 
+        datos.data!.forEach((dato:any , index : number  )=>{  
+         this.documentos.push(dato.objeto);
+         
+        }) 
+     } else{
+      Swal.fire('No existen datos relacionados con la busqueda')
+     } this.hideF=true; 
+    } ,error:
+    (error: any) =>{
+      Swal.fire(JSON.stringify(error ));
+      this.hideF=true; 
+    }}
+  
+  ); 
+    }else if((idUsuario||0) > 0){
+      
+      this.documentoService.getResumenUsuarioVentas
+      (this.usuarioSeleccionado?.ID!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+        (datos:any)=>{
+         
+      if (datos.numdata > 0 ){
+        this.resumenVenta = datos.data  ;
+        console.log('getResumenProductosVentas',this.resumenVenta);
+     } else{
+      Swal.fire('No existen datos relacionados con la busqueda')
+     } 
+     this.hideR=true; 
+    } ,error:
+    (error: any) =>{
+      Swal.fire(JSON.stringify(error )); 
+      this.hideR=true; 
+    }});
+      this.documentoService.getVentasFinalizadasPorUsuarioFecha
+      (this.usuarioSeleccionado?.ID!,this.fecha1.trim(),this.fecha2.trim() )
+      .subscribe({next:
+        (datos:any)=>{
+          let cont = 0; 
+           this.documentos = []; 
+           console.log('getDocumentos', datos.numdata);
+           console.log('getDocumentos_recuest', datos );
+           
+      if (datos.numdata > 0 ){ 
+        datos.data!.forEach((dato:any , index : number  )=>{  
+         this.documentos.push(dato.objeto);
+         
+        }) 
+     } else{
+      Swal.fire('No existen datos relacionados con la busqueda')
+     } this.hideF=true; 
+    } ,error:
+    (error: any) =>{
+      Swal.fire(JSON.stringify(error ));
+      this.hideF=true; 
+    }}
+  
+  ); 
+
+    }
+
+
+
+
   } 
 }

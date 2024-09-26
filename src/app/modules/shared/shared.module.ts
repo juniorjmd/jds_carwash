@@ -34,6 +34,8 @@ import { CategiasDropdownComponent } from './components/categorias-dropdown/cate
 import { LineBreakPipe } from './pipes/line-break.pipe';
 import { productosVendidosDropdownComponent } from './components/productosVendidos-dropdown/productosVendidos-dropdown.component';
 import { categoriasVendidasDropdownComponent } from './components/categoriasVendidas-dropdown/categoriasVendidas-dropdown.component';
+import { vendedoresDropdownComponent } from './components/vendedores-dropdown/vendedores-dropdown.component';
+import { usuarioDropdownComponent } from './components/usuario-dropdown/usuario-dropdown.component';
  
 @NgModule({
   declarations: [
@@ -55,9 +57,9 @@ import { categoriasVendidasDropdownComponent } from './components/categoriasVend
     NavbarComponent,
     MenuItemLiComponent,
     DropdownComponent,
-    DocumentosDropdownComponent,
+    DocumentosDropdownComponent,vendedoresDropdownComponent,
     EmpleadosDropdownComponent ,MarcasDropdownComponent, CategiasDropdownComponent , LineBreakPipe, categoriasVendidasDropdownComponent 
-  ,productosVendidosDropdownComponent
+  ,productosVendidosDropdownComponent, usuarioDropdownComponent
   ],
   imports: [ NgbModule ,
     NgxBootstrapIconsModule.pick(allIcons)  ,
@@ -72,9 +74,9 @@ import { categoriasVendidasDropdownComponent } from './components/categoriasVend
   ],
   exports:[FndClienteComponent,
     LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,categoriasVendidasDropdownComponent ,
-    TabComponent,
+    TabComponent,usuarioDropdownComponent,
     TableComponent ,
-    TableTrComponent,
+    TableTrComponent,vendedoresDropdownComponent,
     UlLinkComponent , 
     booleanpPipe,
     ImgB64Pipe ,
