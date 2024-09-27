@@ -1,0 +1,247 @@
+ 
+    <div class="card">
+        <div class="card-header text-center">
+            <h1>Ventas por cliente</h1>
+          </div>  
+    
+          <div class="card-body">  
+
+        <div class="row">
+            <div class="col-sm-3">
+                Digite el número o nombre del cliente:
+           
+                <div class="form-group">
+                    <input type="text" (keyup.enter)="getDocumentosPorCliente()" [(ngModel)]="codCliente" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <small id="helpId" class="form-text text-muted">Código o el nombre del cliente a validar facturación. El programa buscará la o las facturas que coincidan con el valor ingresado.</small>
+                </div>
+            </div>
+            <div class="col-sm-6" > 
+                
+                <span>
+                    Escoja el rango de fecha:
+                </span>
+                <div class="row"> 
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <input type="date"  [max]="fecha2" (keyup.enter)="getDocumentosPorCliente()" [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                        <small id="helpId" class="form-text text-muted">Fecha inicial del rango de búsqueda de factura</small>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <input type="date" [min]="fecha1" [max]="maximo" (keyup.enter)="getDocumentosPorCliente()" [(ngModel)]="fecha2" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                        <small id="helpId" class="form-text text-muted">Fecha final del rango de búsqueda de factura</small>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" (click)="getDocumentosPorCliente()" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                </div>
+            </div> 
+        </div> 
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3 centrado">
+          <div class="btn btn-primary" (click)="resumen=true">Resumen <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideR }"></i></div>
+         </div>
+         <div class="col-sm-3 centrado">
+            <div class="btn btn-primary" (click)="resumen=false">Listado de Ventas <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideF }"></i></div>
+         </div>
+         <div class="col-sm-3 centrado">
+            <div class="btn btn-primary" (click)="imprimirResumen()">Imprimir reporte </div>
+         </div>
+    </div>
+
+
+
+   
+    <div class="row" *ngIf="resumen" style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 5px;
+     border-radius: 10px; padding: 5px;">
+       <div  class="row" > 
+        <div class="col-sm-12 centrado">
+         <h4>Resumen Categorias</h4>  
+        </div></div>
+        <div  class="row" > 
+            <div class="col-sm-12 col-lg-1   " style="max-width: 1%;"></div>
+        <div class="col-sm-12 col-lg-4   " style="min-width: 46%;font-family: Arial, sans-serif; border: 1px solid gray;  border-radius: 10px; padding: 15px;" >
+            <div class="row">
+                <div class="col-sm-12 col-lg-6   "  >
+                    <table class="table">
+                        <tr>
+                            <th>Cantidad Vendida</th>
+                            <td>{{resumenVenta?.cantidadVendida}}</td>  
+                        </tr>
+                        <tr > <th>Total Vendido</th>
+                            <td>{{resumenVenta?.totalVenta|currency}}</td> 
+                        </tr>
+                    </table>
+                </div><hr></div>
+            <div class="row">
+                <div class="col-sm-12 col-lg-12   "   >
+                    <h5>Dia mas vendidos</h5> 
+                    <table class="table">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cantidad</th>
+                            <th>Total Vendido</th>
+                        </tr>
+                        <tr >
+                            <td>{{resumenVenta?.mayorDiaVenta?.fecha}}</td> 
+                            <td>{{resumenVenta?.mayorDiaVenta?.cantidad}}</td> 
+                            <td>{{resumenVenta?.mayorDiaVenta?.totalVendido|currency}}</td> 
+                        </tr>
+                    </table>
+                </div><hr>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-lg-12   "  >
+                    <h5>Dia menos vendidos</h5> 
+                    <table class="table">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cantidad</th>
+                            <th>Total Vendido</th>
+                        </tr>
+                        <tr >
+                            <td>{{resumenVenta?.menorDiaVenta?.fecha}}</td> 
+                            <td>{{resumenVenta?.menorDiaVenta?.cantidad}}</td> 
+                            <td>{{resumenVenta?.menorDiaVenta?.totalVendido|currency}}</td> 
+                        </tr>
+                    </table>
+                </div> <hr>
+            </div>
+            <div class="row"> 
+                <div class="col-sm-12 col-lg-12   "  >
+                    <h5>Producto más vendidos</h5> 
+                    <table class="table">
+                        <tr>
+                            <th>Producto</th> 
+                            <td>{{resumenVenta?.productoMasVendido?.idProducto}}</td> 
+                        </tr>  
+                        <tr>
+                            <th>Nombre</th> 
+                            <td>{{resumenVenta?.productoMasVendido?.nombre}}</td> 
+                        </tr>
+                        <tr>
+                            <th>Cantidad</th> 
+                            <td>{{resumenVenta?.productoMasVendido?.cantidad}}</td> 
+                        </tr>
+                        <tr>
+                            <th>Venta</th> 
+                            <td>{{resumenVenta?.productoMasVendido?.total|currency}}</td> 
+                        </tr>
+                    </table>
+                </div> <hr>
+            </div>
+            <div class="row"> 
+                <div class="col-sm-12 col-lg-12   "  >
+                    <h5>Producto menos vendidos</h5> 
+                    <table class="table">
+                        <tr>
+                            <th>Producto</th> 
+                            <td>{{resumenVenta?.productoMenosVendido?.idProducto}}</td> 
+                        </tr>  
+                        <tr>
+                            <th>Nombre</th> 
+                            <td>{{resumenVenta?.productoMenosVendido?.nombre}}</td> 
+                        </tr>
+                        <tr>
+                            <th>Cantidad</th> 
+                            <td>{{resumenVenta?.productoMenosVendido?.cantidad}}</td> 
+                        </tr>
+                        <tr>
+                            <th>Venta</th> 
+                            <td>{{resumenVenta?.productoMenosVendido?.total|currency}}</td> 
+                        </tr>
+                    </table>
+                </div> <hr>
+            </div>
+
+
+        </div>
+        
+        <div class="col-sm-12 col-lg-1   " style="max-width: 0.25%;"></div>
+        <div class="col-sm-12 col-lg-1   " style="max-width: 0.25%;"></div>
+        <div class="col-sm-12 col-lg-4  " style="min-width: 46%;font-family: Arial, sans-serif; border: 1px solid gray;  border-radius: 10px; padding: 15px;">
+         
+         <div class="row">  
+              <h5>Venta Por Dia</h5> 
+            <div class="col-sm-12 col-lg-12" style="max-height: 400px; overflow-y: auto;" >
+         
+            <table class="table">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Cantidad</th>
+                    <th>Total Vendido</th>
+                </tr>
+                <tr  *ngFor="let item of resumenVenta?.resumen">
+                    <td>{{item.fecha}}</td> 
+                    <td>{{item.cantidad}}</td> 
+                    <td>{{item.totalVendido|currency}}</td> 
+                </tr>
+            </table>
+            </div><hr>
+        </div>
+        <div class="row">
+            <h5>productos vendidos</h5> 
+                <div class="col-sm-12 col-lg-12" style="max-height: 400px; overflow-y: auto;"  >
+                    <table class="table">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Total Vendido</th>
+                        </tr>
+                        <tr  *ngFor="let item of resumenVenta?.productos">
+                            <td>{{item.nombre}}</td> 
+                            <td>{{item.cantidad}}</td> 
+                            <td>{{item.total|currency}}</td> 
+                        </tr>
+                    </table> 
+                </div>
+             </div>     
+        </div></div>
+    </div>
+
+
+   <div class="row" *ngIf="!resumen" style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">
+    <div class="row">
+        <div class="col-sm-12 centrado">
+            Listado de facturas
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12  contenedorTablas">
+            <table class="table">
+                <tr>
+                    <td>Fecha</td>
+                    <td>Factura ID</td>
+                    <td>Cliente</td>
+                    <td>Cantidad</td>
+                    <td>Valor Parcial</td>
+                    <td>Descuento</td>
+                    <td>IVA</td>
+                    <td>Total</td>
+                    <td colspan="4">Opciones</td>
+                </tr>
+                <tr *ngFor="let venta of documentos">
+                    <td>{{venta.fecha}}</td>
+                    <td>{{venta.idDocumentoFinal}}</td>
+                    <td>{{venta.clienteNombre}}</td>
+                    <td>{{venta.cantidadVendida}}</td>
+                    <td>{{venta.valorParcial|currency:'USD'}}</td>
+                    <td>{{venta.descuento|currency:'USD'}}</td>
+                    <td>{{venta.valorIVA|currency:'USD'}}</td>
+                    <td>{{venta.valorTotal|currency:'USD'}}</td>
+                    <td><i class="bi bi-printer-fill boton_activo" (click)="imprimirFactura(venta)"></i> </td>
+                    <td> <i class="bi bi-list-ul boton_activo" (click)="VerFactura(venta)"></i></td>
+                    <td> </td>
+                </tr>
+            </table><hr>
+        </div>
+    </div>
+  </div>
+</div>
+
+<hr>

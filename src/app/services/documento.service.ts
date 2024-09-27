@@ -300,7 +300,23 @@ constructor(private http: HttpClient, private loading: loading) {
     console.log('servicios de documentos - getVentasFinalizadasPorCliente', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());
   }
-
+  getVentasFinalizadasPorClienteFecha(codVenta: string, fecha1: string, fecha2: string): Observable<any> {
+    let where = [
+      {"columna": 'fecha', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'fecha', "tipocomp": '<=', "dato": fecha2},
+      {"columna": 'identificacionCliente', "tipocomp": 'like', "dato": codVenta, "relacion": 'OR'},
+      {"columna": 'clienteNombre', "tipocomp": 'like', "dato": codVenta, },
+    ];
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.ventasCerradas,
+      "_where": where
+    };
+    console.log('servicios de documentos - getVentasFinalizadasPorCliente', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
   getVentasFinalizadasPorFecha(fecha1: string, fecha2: string): Observable<any> {
     let where = [
       {"columna": 'fecha', "tipocomp": '>=', "dato": fecha1},
@@ -360,6 +376,14 @@ constructor(private http: HttpClient, private loading: loading) {
   getResumenVendedorVentas(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 
     let datos = {
       "action": actions.resumenVentaVendedor, _idPrd,_fechaInicio,_fechaFin
+    };
+    console.log('servicios de documentos - getResumenVendedorVentas', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+
+  getResumenVendedorCliente(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 
+    let datos = {
+      "action": actions.resumenVentaCliente, _idPrd,_fechaInicio,_fechaFin
     };
     console.log('servicios de documentos - getResumenVendedorVentas', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());

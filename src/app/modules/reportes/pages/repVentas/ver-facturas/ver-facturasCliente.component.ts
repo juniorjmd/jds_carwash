@@ -1,29 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocumentoService } from 'src/app/services/documento.service';
-import { loading } from 'src/app/models/app.loading';
-import { select } from 'src/app/interfaces/generales.interface';
-import Swal from 'sweetalert2';
-import { ConectorPlugin } from 'src/app/models/app.printer.con';
-import { DocpagosModel } from 'src/app/models/ventas/pagos.model';
-import { DocumentoListado } from 'src/app/interfaces/documento.interface';
-import { printer, url } from 'src/app/models/app.db.url';
+import { loading } from 'src/app/models/app.loading'; 
+import Swal from 'sweetalert2'; 
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { cajasServices } from 'src/app/services/Cajas.services';
+import { ResumenVenta } from 'src/app/interfaces/resumenVenta.';
 
 @Component({
-  selector: 'app-ver-facturas',
-  templateUrl: './ver-facturas.component.html',
-  styleUrls: ['./ver-facturas.component.css']
+  selector: 'app-ver-facturasCliente',
+  templateUrl: './ver-facturasCliente.component.html',
+  styleUrls: ['./ver-facturasCliente.component.css']
 })
-export class VerFacturasComponent implements OnInit {
-
+export class VerFacturasClienteComponent implements OnInit {
+ resumen:boolean = true;
+ hideR:boolean = true;
+ hideF:boolean = true;
+ 
+  resumenVenta?:ResumenVenta;
   documentos : DocumentosModel[] = [];
   codFactura:string;
   codCliente:string;
   fecha1:string;
+  fechaMinima:string;
   fecha2:string;
+  maximo:string;
   constructor(public loading : loading,private serviceCaja:cajasServices,
     private documentoService : DocumentoService, private inicioService:DatosInicialesService ) {
        this.codFactura = '';
@@ -34,7 +36,8 @@ const day = date.getDate(); // */
       let fecha = new Date();
        this.fecha1 = fecha.getFullYear().toString() +'-'+ (fecha.getMonth() + 1).toString().padStart(2,'0')+'-'+ (fecha.getDate()).toString().padStart(2,'0') ;
        this.fecha2 = this.fecha1;
-    
+       this.maximo = this.fecha1;
+       this.fechaMinima=this.fecha1; 
      }
 
   ngOnInit(): void {
@@ -160,9 +163,16 @@ const day = date.getDate(); // */
   });
   }
 
+ 
+ async imprimirResumen()
+ {  
+  let printerManager =  new PrinterManager(this.serviceCaja); 
+  if(this.resumenVenta != undefined){ 
+  printerManager.printResumenVenta(false,this.resumenVenta);
+ } 
+}
 
-  getDocumentosPorFecha(){
-    //this.printer_factura_final(); 
+  getDocumentosPorCliente(){ 
     if(this.fecha1.trim() === ''){
       Swal.fire('Es necesario escoger la fecha inicial del rango de factura','error','error');
       return;
@@ -171,35 +181,26 @@ const day = date.getDate(); // */
       Swal.fire('Es necesario escoger la fecha final del rango de factura','error','error');
       return;
     }
-    this.documentoService.getVentasFinalizadasPorFecha(this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
-      (datos:any)=>{
-        let cont = 0; 
-         this.documentos = []; 
-         console.log('getDocumentos', datos.numdata);
-         console.log('getDocumentos_recuest', datos );
-         
-    if (datos.numdata > 0 ){ 
-      datos.data!.forEach((dato:any , index : number  )=>{  
-       this.documentos.push(dato.objeto);
-       
-      }) 
-   } else{
-    Swal.fire('No existen datos relacionados con la busqueda')
-   } 
-  } ,error:
-  (error: any) =>{
-    alert(JSON.stringify(error ));
-  
-  }});
-  }
-  getDocumentosPorCliente(){
-    //this.printer_factura_final(); 
     if(this.codCliente.trim() === ''){
       Swal.fire('Es necesario ingresar el numero de identificacion o nombre del cliente de la factura','error','error');
       return
     }
-    this.documentoService.getVentasFinalizadasPorCliente(this.codCliente.trim() ).subscribe(
+    this.documentoService.getResumenVendedorCliente
+    (this.codCliente.trim(),this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
       (datos:any)=>{
+       
+    if (datos.numdata > 0 ){
+      this.resumenVenta = datos.data  ;
+      console.log('getResumenProductosVentas',this.resumenVenta);
+   } else{
+    Swal.fire('No existen datos relacionados con la busqueda')
+   }  
+  } ,error:
+  (error: any) =>{
+    Swal.fire(JSON.stringify(error ));  
+  }});
+    this.documentoService.getVentasFinalizadasPorClienteFecha(this.codCliente.trim(),this.fecha1.trim(),this.fecha2.trim() ).subscribe(
+      {next:(datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
          console.log('getDocumentos', datos.numdata);
@@ -213,10 +214,8 @@ const day = date.getDate(); // */
    }else{
     Swal.fire('No existen datos relacionados con la busqueda')
    } 
-  } ,
-  (error: any) =>{
-    alert(JSON.stringify(error ));
-  
-  });
+  } , error: (error: any) =>{
+    alert(JSON.stringify(error )); 
+  },});
   }
 }

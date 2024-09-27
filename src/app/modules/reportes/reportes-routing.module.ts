@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router'; 
 import { InicioReportesComponent } from './pages/inicio-reportes/inicio-reportes.component';
 import { ReimpimirFacturasComponent } from './pages/repVentas/reimpimir-facturas/reimpimir-facturas.component';
-import { VerFacturasComponent } from './pages/repVentas/ver-facturas/ver-facturas.component';
+import { VerFacturasClienteComponent } from './pages/repVentas/ver-facturas/ver-facturasCliente.component';
 import { ReportesComponent } from './pages/reportes.component';
 import { MovimientosCuentaComponent } from './pages/movimientosCuenta/movimientosCuenta.component';
 import { productosVendidosComponent } from './pages/productosVendidos/productosVendidos.component';
@@ -12,6 +12,7 @@ import { ventasDiariaComponent } from './pages/repVentas/ventasDiaria/ventasDiar
 import { ventasPorProductoComponent } from './pages/repVentas/ventasPorProducto/ventasPorProducto.component';
 import { ventasPorCategoriaComponent } from './pages/repVentas/ventasPorCategoria/ventasPorCategoria.component';
 import { ventasPorVendedorComponent } from './pages/repVentas/ventasPorVendedor/ventasPorVendedor.component';
+import { ventasDiariaHoraComponent } from './pages/repVentas/ventasDiariaHora/ventasDiariaHora.component';
 
 const routes: Routes = [{ path: '', component: InicioReportesComponent ,   children:[
     {path : 'reportesMenu' , component:ReportesComponent}, 
@@ -28,7 +29,8 @@ const routes: Routes = [{ path: '', component: InicioReportesComponent ,   child
       {path : 'categorias' , component:ventasPorCategoriaComponent},
       {path : 'vendedorCajero' , component:ventasPorVendedorComponent},
       {path : 'reimprimirFacturas' , component:ReimpimirFacturasComponent},
-      {path : 'VerFacturas' , component: VerFacturasComponent} ,
+      {path : 'cliente' , component: VerFacturasClienteComponent} ,
+      {path : 'horas' , component: ventasDiariaHoraComponent} ,
       { path : '**' , pathMatch:'full' , redirectTo : ''}
     ] } ,
 

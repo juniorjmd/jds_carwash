@@ -11,7 +11,7 @@ import { DatosInicialesService } from 'src/app/services/DatosIniciales.services'
       <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
           <div class="list-group">
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['reimprimirFacturas']">
-            <i class="bi bi-calendar3"></i> Reimprimir una factura
+            <i class="bi bi-printer"></i> Reimprimir una factura
           </a> 
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['diarias']">
             <i class="bi bi-calendar3"></i> Ventas Diarias
@@ -24,6 +24,9 @@ import { DatosInicialesService } from 'src/app/services/DatosIniciales.services'
           </a>
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['vendedorCajero']">
             <i class="bi bi-person-lines-fill"></i> Ventas por Vendedor/Cajero
+          </a>  
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['cliente']">
+            <i class="bi bi-person-lines-fill"></i> Ventas por Cliente
           </a>
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['horas']">
             <i class="bi bi-clock"></i> Ventas por Hora/Día de la Semana
