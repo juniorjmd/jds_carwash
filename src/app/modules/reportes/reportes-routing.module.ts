@@ -13,6 +13,7 @@ import { ventasPorProductoComponent } from './pages/repVentas/ventasPorProducto/
 import { ventasPorCategoriaComponent } from './pages/repVentas/ventasPorCategoria/ventasPorCategoria.component';
 import { ventasPorVendedorComponent } from './pages/repVentas/ventasPorVendedor/ventasPorVendedor.component';
 import { ventasDiariaHoraComponent } from './pages/repVentas/ventasDiariaHora/ventasDiariaHora.component';
+import { devolucionesRepoComponent } from './pages/repVentas/Devoluciones/devoluciones.component';
 
 const routes: Routes = [{ path: '', component: InicioReportesComponent ,   children:[
     {path : 'reportesMenu' , component:ReportesComponent}, 
@@ -31,6 +32,7 @@ const routes: Routes = [{ path: '', component: InicioReportesComponent ,   child
       {path : 'reimprimirFacturas' , component:ReimpimirFacturasComponent},
       {path : 'cliente' , component: VerFacturasClienteComponent} ,
       {path : 'horas' , component: ventasDiariaHoraComponent} ,
+      {path : 'devoluciones' , component: devolucionesRepoComponent} ,
       { path : '**' , pathMatch:'full' , redirectTo : ''}
     ] } ,
 

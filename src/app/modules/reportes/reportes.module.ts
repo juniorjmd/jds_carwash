@@ -14,6 +14,7 @@ import { ventasPorProductoComponent } from './pages/repVentas/ventasPorProducto/
 import { ventasPorCategoriaComponent } from './pages/repVentas/ventasPorCategoria/ventasPorCategoria.component';
 import { ventasPorVendedorComponent } from './pages/repVentas/ventasPorVendedor/ventasPorVendedor.component';
 import { ventasDiariaHoraComponent } from './pages/repVentas/ventasDiariaHora/ventasDiariaHora.component';
+import { devolucionesRepoComponent } from './pages/repVentas/Devoluciones/devoluciones.component';
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import { ventasDiariaHoraComponent } from './pages/repVentas/ventasDiariaHora/ve
     ReimpimirFacturasComponent,
     InicioReportesComponent,ventasPorCategoriaComponent,
      VerFacturasClienteComponent, ventasPorProductoComponent,ventasPorVendedorComponent,ventasDiariaHoraComponent,
-       BienvenidaRPComponent,ventasDiariaComponent, MovimientosCuentaComponent, InicioRepVentasComponent
+       BienvenidaRPComponent,ventasDiariaComponent, MovimientosCuentaComponent, InicioRepVentasComponent, devolucionesRepoComponent
   ],
   imports: [
     CommonModule,

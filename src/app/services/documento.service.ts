@@ -333,6 +333,23 @@ constructor(private http: HttpClient, private loading: loading) {
     return this.http.post(url.action, datos, httpOptions());
   }
 
+  
+  getDevolucionesPorFecha(fecha1: string, fecha2: string): Observable<any> {
+    let where = [
+      {"columna": 'fecha', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'fecha', "tipocomp": '<=', "dato": fecha2}
+    ];
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla":vistas.documentoDev, 
+      "_where": where
+    };
+    console.log('servicios de documentos - getDevolucionesPorFecha', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
   getVentasFinalizadasPorFechaHora(fecha1: string, fecha2: string , 
     horaIni: string, horaFin: string  ): Observable<any> {
     let where = [
@@ -410,6 +427,15 @@ constructor(private http: HttpClient, private loading: loading) {
   getResumenVentas(  _fechaInicio: string, _fechaFin: string): Observable<any> { 
     let datos = {
       "action": actions.resumenVentas, _fechaInicio,_fechaFin
+    };
+    console.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+
+  
+  getResumenDevoluciones(  _fechaInicio: string, _fechaFin: string): Observable<any> { 
+    let datos = {
+      "action": actions.resumenDevolucion, _fechaInicio,_fechaFin
     };
     console.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());

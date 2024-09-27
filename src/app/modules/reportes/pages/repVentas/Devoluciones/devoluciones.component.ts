@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocumentoService } from 'src/app/services/documento.service';
-import { loading } from 'src/app/models/app.loading'; 
+import { loading } from 'src/app/models/app.loading';
+import { select } from 'src/app/interfaces/generales.interface';
 import Swal from 'sweetalert2';
 import { ConectorPlugin } from 'src/app/models/app.printer.con';
 import { DocpagosModel } from 'src/app/models/ventas/pagos.model';
@@ -10,14 +11,14 @@ import { printer, url } from 'src/app/models/app.db.url';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { cajasServices } from 'src/app/services/Cajas.services';
-import {   ResumenVenta } from 'src/app/interfaces/resumenVenta.';
+import { resumenPrd, ResumenVenta } from 'src/app/interfaces/resumenVenta.';
 
 @Component({
-  selector: 'app-ventasDiariaHora',
-  templateUrl: './ventasDiariaHora.component.html',
-  styleUrls: ['./ventasDiariaHora.component.css']
+  selector: 'app-devolucionesRepo',
+  templateUrl: './devoluciones.component.html',
+  styleUrls: ['./devoluciones.component.css']
 })
-export class ventasDiariaHoraComponent implements OnInit {
+export class devolucionesRepoComponent implements OnInit {
   resumenVenta?:ResumenVenta;
   resumen:boolean=false;
   hideR:boolean=true;
@@ -27,8 +28,6 @@ export class ventasDiariaHoraComponent implements OnInit {
   codCliente:string;
   fecha1:string;
   fecha2:string; 
-  hora1:string = '08:00';  
-  hora2:string = '18:00';
   maximo:string; 
   constructor(public loading : loading,private serviceCaja:cajasServices,
     private documentoService : DocumentoService, private inicioService:DatosInicialesService ) {
@@ -185,13 +184,13 @@ const day = date.getDate(); // */
       Swal.fire('Es necesario escoger la fecha final del rango de factura','error','error');
       return;
     }
-    this.documentoService.getResumenVentasPorHora
-        (this.fecha1.trim(),this.fecha2.trim() , this.hora1.trim(),this.hora2.trim() ).subscribe({next:
+    this.documentoService.getResumenDevoluciones
+        (this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
           (datos:any)=>{
            
         if (datos.numdata > 0 ){
           this.resumenVenta = datos.data  ;
-          console.log('getResumenProductosVentas',this.resumenVenta);
+          console.log('getResumenDevoluciones',this.resumenVenta);
        } else{
         Swal.fire('No existen datos relacionados con la busqueda')
        } 
@@ -201,7 +200,7 @@ const day = date.getDate(); // */
         Swal.fire(JSON.stringify(error )); 
         this.hideR=true; 
       }});
-    this.documentoService.getVentasFinalizadasPorFechaHora(this.fecha1.trim(),this.fecha2.trim(), this.hora1.trim(),this.hora2.trim() ).subscribe({next:
+    this.documentoService.getDevolucionesPorFecha(this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
