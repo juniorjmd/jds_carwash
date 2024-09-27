@@ -394,7 +394,7 @@ let receiptHTML  = ` <hr>
 <div style="text-align: left;" name="detalle">
 <table  style="font-family: Arial, sans-serif; width: 100%;"><tr>`;
 
-
+let cont = 0;
 receiptHTML  += (this.tipoImpresora == 'POS')?`<td>` :`<td style="width: 50%; vertical-align: top;">`; 
 
 if(this.resumenVenta.mayorDiaVenta != undefined){
@@ -435,51 +435,119 @@ if(this.resumenVenta.productoMasVendido != undefined){
     receiptHTML +=`<h5>Producto menos vendido</h5>
     <table  style="font-family: Arial, sans-serif; width: 100%;">`;
      
-    receiptHTML += `<tr><th>FECHA </th><th>CNT</th><th>TOTAL</th></tr>`  ; 
+    receiptHTML += `<tr><th>PRODUCTO </th><th>CNT</th><th>TOTAL</th></tr>`  ; 
     receiptHTML += `<tr><td>${this.resumenVenta.productoMenosVendido.nombre} </td>
                         <td>${this.resumenVenta.productoMenosVendido.cantidad}</td>
                         <td style="text-align: right;">${currencyFormatter.format(this.resumenVenta.productoMenosVendido.total)}</td></tr>`  ;  
      receiptHTML += `</table>`  ;
     }
-receiptHTML  += (this.tipoImpresora == 'POS')? '' :`</td><td>`  ;
 
 //listado de dias vendidos
-receiptHTML +=`<h5>Resumen de ventas</h5>
-<table  style="font-family: Arial, sans-serif; width: 100%;">`;
- 
- receiptHTML += `<tr><th>FECHA </th><th>CANTIDAD</th><th>TOTAL</th></tr>`  ;
-
+ if  (this.tipoImpresora == 'POS'){ 
     this.resumenVenta.resumen?.forEach((lista) => {  
+      cont++;
       receiptHTML += ` <tr> 
       <td style="text-align: left;" >${lista.fecha} </td>     
       <td style="text-align: right;" >${lista.cantidad} </td>
       <td style="text-align: right;" >${currencyFormatter.format(lista.totalVendido)}</td>
-      </tr>  
-     `
-      ;   
-  });
-receiptHTML += `</table>`
-
-if(this.resumenVenta.productos != undefined){
+      </tr>     `  ;  
+    if (cont == 40){
+       receiptHTML += ` <tr> <td colspan='4'></td>   </tr><tr> <td colspan='4'></td></tr></table></table></div></div><br>
+       <div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">
+       ${this.generateCabecera() }${this.infoRVGeneral() }<div style="text-align: left;border-top: 1px solid black;" name="detalle"> 
+       <table style="font-family: Arial, sans-serif; width: 100%;"><tbody><tr><td style="width: 50%; vertical-align: top;"></td><td>   `  
+        ;
+      receiptHTML +=`<h5>Resumen de ventas</h5> 
+               <table  style="font-family: Arial, sans-serif; width: 100%;">
+               <tr><th>FECHA </th><th>CANTIDAD</th><th>TOTAL</th></tr>`  ;
+               cont = 0 ;  }
+  }); 
+  receiptHTML += `</table>`;
+   if(this.resumenVenta.productos != undefined){
   
-receiptHTML +=`<h5>Resumen de productos</h5>
-<table  style="font-family: Arial, sans-serif; width: 100%;">`;
- 
- receiptHTML += `<tr><th>PRODUCTO </th><th>CNT</th><th>TOTAL</th></tr>`  ;
+    receiptHTML +=`<h5>Resumen de productos</h5>
+    <table  style="font-family: Arial, sans-serif; width: 100%;">`;
+     
+     receiptHTML += `<tr><th>PRODUCTO </th><th>CNT</th><th>TOTAL</th></tr>`  ;
+    
+        this.resumenVenta.productos?.forEach((lista) => {  
+          receiptHTML += ` <tr> 
+          <td style="text-align: left;" >${lista.nombre} </td>     
+          <td style="text-align: right;" >${lista.cantidad} </td>
+          <td style="text-align: right;" >${currencyFormatter.format(lista.total)}</td>
+          </tr>  
+         `;
+         if (cont == 40){
+          receiptHTML += ` <tr> <td colspan='3'></td>   </tr><tr> <td colspan='3'></td></tr></table></table></div></div><br>
+          <div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">
+          ${this.generateCabecera() }${this.infoRVGeneral() }<div style="text-align: left;border-top: 1px solid black;" name="detalle"> 
+          <table style="font-family: Arial, sans-serif; width: 100%;"><tbody><tr><td style="width: 50%; vertical-align: top;"></td><td>   `  
+           ;
+         receiptHTML +=`<h5>Resumen de ventas</h5> 
+                  <table  style="font-family: Arial, sans-serif; width: 100%;">
+                  <tr><th>PRODUCTO </th><th>CNT</th><th>TOTAL</th></tr>`  ;
+                  cont = 0 ;  }   
+      });
+      
+    receiptHTML += `</table>`
+    }
+   
+ }else{
+  let arrayStrPrd:string[]=[];
+  let htmlPrd = '' 
+  if(this.resumenVenta.productos != undefined){ 
+        cont = 18; 
+        this.resumenVenta.productos?.forEach((lista) => {
+             cont++
+          htmlPrd += `<tr><td style="text-align: left;" >${lista.nombre} </td><td style="text-align: right;" >${lista.cantidad} </td><td style="text-align: right;" >${currencyFormatter.format(lista.total)}</td></tr>`;
+         if (cont == 40){
+          htmlPrd =`<h5>Resumen de productos vendidos</h5>
+          <table  style="font-family: Arial, sans-serif; width: 100%;">
+          <tr><th>PRODUCTO </th><th>CNT</th><th>TOTAL</th></tr>
+          ${htmlPrd}</table>`; 
+          arrayStrPrd.push(htmlPrd); 
+          htmlPrd = ''
+                  cont = 0 ;  }   
+      });
 
-    this.resumenVenta.productos?.forEach((lista) => {  
+      
+      if (cont > 0){
+        
+        htmlPrd =`<h5>Resumen de productos vendidos</h5>
+        <table  style="font-family: Arial, sans-serif; width: 100%;">
+        <tr><th>PRODUCTO </th><th>CNT</th><th>TOTAL</th></tr>
+        ${htmlPrd}</table>`; 
+        arrayStrPrd.push(htmlPrd); 
+        cont = 0 ;  }   
+    }
+    console.log('arrayStrPrd',arrayStrPrd);
+ let contPRD = 0;
+    this.resumenVenta.resumen?.forEach((lista) => {  
+      if(cont==0){
+        receiptHTML +=  (arrayStrPrd[contPRD]!= undefined)? `${arrayStrPrd[contPRD]}</td><td>`:`</td><td>`;
+        receiptHTML +=`<h5>Resumen de ventas</h5> 
+        <table  style="font-family: Arial, sans-serif; width: 100%;">
+        <tr><th>FECHA </th><th>CANTIDAD</th><th>TOTAL</th></tr>`  ;
+        contPRD++;
+      }
+      cont++;
       receiptHTML += ` <tr> 
-      <td style="text-align: left;" >${lista.nombre} </td>     
+      <td style="text-align: left;" >${lista.fecha} </td>     
       <td style="text-align: right;" >${lista.cantidad} </td>
-      <td style="text-align: right;" >${currencyFormatter.format(lista.total)}</td>
-      </tr>  
-     `
-      ;   
-  });
-  
-receiptHTML += `</table>`
-}
+      <td style="text-align: right;" >${currencyFormatter.format(lista.totalVendido)}</td>
+      </tr>     `  ;  
+    if (cont == 40){
+       receiptHTML += ` <tr> <td colspan='4'></td>   </tr><tr> <td colspan='4'></td></tr></table></table></div></div><br>
 
+
+       <div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">
+       ${this.generateCabecera() }${this.infoRVGeneral() }<div style="text-align: left;border-top: 1px solid black;" name="detalle">  
+       <table style="font-family: Arial, sans-serif; width: 100%;"><tbody><tr><td style="width: 50%; vertical-align: top;">   `  
+        ;
+        cont = 0 ;  }
+  });
+}
+if(cont> 0 ){receiptHTML += `</table>`}
 receiptHTML += `</td></tr></table>`
 
 
