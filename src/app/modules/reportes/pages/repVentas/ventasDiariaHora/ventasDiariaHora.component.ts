@@ -20,7 +20,7 @@ import { resumenPrd, ResumenVenta } from 'src/app/interfaces/resumenVenta.';
 })
 export class ventasDiariaHoraComponent implements OnInit {
   resumenVenta?:ResumenVenta;
-  resumen:boolean=true;
+  resumen:boolean=false;
   hideR:boolean=true;
   hideF:boolean=true;
   documentos : DocumentosModel[] = [];
@@ -28,8 +28,8 @@ export class ventasDiariaHoraComponent implements OnInit {
   codCliente:string;
   fecha1:string;
   fecha2:string; 
-  hora2:string = '18:00:00';
-  hora1:string = '8:00:00';; 
+  hora1:string = '08:00';  
+  hora2:string = '18:00';
   maximo:string; 
   constructor(public loading : loading,private serviceCaja:cajasServices,
     private documentoService : DocumentoService, private inicioService:DatosInicialesService ) {
@@ -186,8 +186,8 @@ const day = date.getDate(); // */
       Swal.fire('Es necesario escoger la fecha final del rango de factura','error','error');
       return;
     }
-    this.documentoService.getResumenVentas
-        (this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+    this.documentoService.getResumenVentasPorHora
+        (this.fecha1.trim(),this.fecha2.trim() , this.hora1.trim(),this.hora2.trim() ).subscribe({next:
           (datos:any)=>{
            
         if (datos.numdata > 0 ){
@@ -202,7 +202,7 @@ const day = date.getDate(); // */
         Swal.fire(JSON.stringify(error )); 
         this.hideR=true; 
       }});
-    this.documentoService.getVentasFinalizadasPorFecha(this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
+    this.documentoService.getVentasFinalizadasPorFechaHora(this.fecha1.trim(),this.fecha2.trim(), this.hora1.trim(),this.hora2.trim() ).subscribe({next:
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 

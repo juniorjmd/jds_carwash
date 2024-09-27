@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
+import { usuarioService } from 'src/app/services/usuario.services';
 
 @Component({
   selector: 'app-inicio-rep-ventas', 
@@ -10,30 +12,11 @@ import { DatosInicialesService } from 'src/app/services/DatosIniciales.services'
       <!-- Menú lateral -->
       <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
           <div class="list-group">
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['reimprimirFacturas']">
-            <i class="bi bi-printer"></i> Reimprimir una factura
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" 
+          *ngFor="let item of menusUsuario"
+          [routerLink]="item.direccion"><span [innerHTML] = "item.img"></span> {{item.display_nombre}}
           </a> 
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['diarias']">
-            <i class="bi bi-calendar3"></i> Ventas Diarias
-          </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['productos']">
-            <i class="bi bi-tags"></i> Ventas por Producto
-          </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['categorias']">
-            <i class="bi bi-box-seam"></i> Ventas por Categoría
-          </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['vendedorCajero']">
-            <i class="bi bi-person-lines-fill"></i> Ventas por Vendedor/Cajero
-          </a>  
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['cliente']">
-            <i class="bi bi-person-lines-fill"></i> Ventas por Cliente
-          </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['horas']">
-            <i class="bi bi-clock"></i> Ventas por Hora/Día de la Semana
-          </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['devoluciones']">
-            <i class="bi bi-arrow-counterclockwise"></i> Reportes de Devoluciones
-          </a>
+ 
         </div>
       </div>
       <!-- Contenido principal -->
@@ -48,7 +31,21 @@ import { DatosInicialesService } from 'src/app/services/DatosIniciales.services'
 })
 export class InicioRepVentasComponent  { 
   private _datosInicialesService = inject( DatosInicialesService );
-  ngOnInit(): void {  
+  private usuarioService = inject( usuarioService );
+  
+  menusUsuario: RecursoDetalle[] = [];
+  usuario?: Usuario;
+  ngOnInit(): void {
+    this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ; 
+      console.log('InicioRepVentasComponent - usuarioLogueado' , this.usuario);
+      
+      let recursos =  this.usuario?.permisos.find(x=> x.nombre_recurso  == "reportes")?.recursosHijos ; 
+
+      this.menusUsuario =  recursos?.find(x=> x.nombre_recurso  == "ventas")?.recursosHijos||[] ; 
+
+      console.log('InicioRepVentasComponent - permisos ' , this.menusUsuario  );
+      
+    });
     this._datosInicialesService.currentSucursal.subscribe({next:(suc)=>{   
        PrinterManager.setSucursal(suc!);   
     }})}

@@ -333,6 +333,25 @@ constructor(private http: HttpClient, private loading: loading) {
     return this.http.post(url.action, datos, httpOptions());
   }
 
+  getVentasFinalizadasPorFechaHora(fecha1: string, fecha2: string , 
+    horaIni: string, horaFin: string  ): Observable<any> {
+    let where = [
+      {"columna": 'fecha', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'fecha', "tipocomp": '<=', "dato": fecha2},
+      {"columna": 'hora', "tipocomp": '>=', "dato": horaIni},
+      {"columna": 'hora', "tipocomp": '<=', "dato": horaFin}
+    ];
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.ventasCerradas,
+      "_where": where
+    };
+    console.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
   getVentasFinalizadasPorProductoFecha(idProducto:string , fecha1: string, fecha2: string): Observable<any> {
     /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
                  . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
@@ -393,6 +412,13 @@ constructor(private http: HttpClient, private loading: loading) {
       "action": actions.resumenVentas, _fechaInicio,_fechaFin
     };
     console.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
+    return this.http.post(url.actionDocumentos, datos, httpOptions());
+  }
+  getResumenVentasPorHora(  _fechaInicio: string, _fechaFin: string , _horaInicio: string, _horaFin: string  ): Observable<any> { 
+    let datos = {
+      "action": actions.resumenVentas, _fechaInicio,_fechaFin, _horaInicio, _horaFin
+    };
+    console.log('servicios de documentos - getResumenVentasPorHora', url.actionDocumentos, datos, httpOptions());
     return this.http.post(url.actionDocumentos, datos, httpOptions());
   }
   getResumenProductosVentas(_idPrd:string , _fechaInicio: string, _fechaFin: string): Observable<any> {

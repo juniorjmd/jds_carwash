@@ -20,7 +20,7 @@ import { resumenPrd, ResumenVenta } from 'src/app/interfaces/resumenVenta.';
 })
 export class ventasDiariaComponent implements OnInit {
   resumenVenta?:ResumenVenta;
-  resumen:boolean=true;
+  resumen:boolean=false;
   hideR:boolean=true;
   hideF:boolean=true;
   documentos : DocumentosModel[] = [];

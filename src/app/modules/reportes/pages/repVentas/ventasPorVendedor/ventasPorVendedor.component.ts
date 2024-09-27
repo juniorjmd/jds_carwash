@@ -19,7 +19,7 @@ import { UsuarioConVentaModel } from 'src/app/models/usuario.model';
 })
 export class ventasPorVendedorComponent  implements OnInit {
   resumenVenta?:ResumenVenta;
-  resumen:boolean=true;
+  resumen:boolean=false;
   hideR:boolean=true;
   hideF:boolean=true;
   saler:boolean=true;

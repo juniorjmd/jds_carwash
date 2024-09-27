@@ -24,7 +24,7 @@ export class ventasPorProductoComponent implements OnInit {
   fecha1:string;
   hideR:boolean=true;
   hideF:boolean=true;
-  resumen:boolean=true;
+  resumen:boolean=false;
   fecha2:string;
   minimo:string;
   maximo:string;

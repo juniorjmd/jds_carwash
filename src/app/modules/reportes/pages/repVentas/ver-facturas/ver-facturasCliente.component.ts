@@ -14,7 +14,7 @@ import { ResumenVenta } from 'src/app/interfaces/resumenVenta.';
   styleUrls: ['./ver-facturasCliente.component.css']
 })
 export class VerFacturasClienteComponent implements OnInit {
- resumen:boolean = true;
+ resumen:boolean = false;
  hideR:boolean = true;
  hideF:boolean = true;
  
