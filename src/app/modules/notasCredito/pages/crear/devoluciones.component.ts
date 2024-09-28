@@ -1,12 +1,8 @@
-import { Component, inject, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DocumentoListado } from 'src/app/interfaces/documento.interface';
-import { CarteraRequest, DocumentoCierreRequest, DocumentoRequest } from 'src/app/interfaces/producto-request';
-import { CarteraModel } from 'src/app/models/cartera/cartera.model';
-import { ClientesModel } from 'src/app/models/clientes/clientes.module';
+import { Component, inject,  OnInit } from '@angular/core'; 
+import { DocumentoCierreRequest, DocumentoRequest } from 'src/app/interfaces/producto-request';
+import { CarteraModel } from 'src/app/models/cartera/cartera.model'; 
 import { PrinterManager } from 'src/app/models/printerManager';
-import { DocumentosModel } from 'src/app/models/ventas/documento.model';
-import { AbonosCuentasXCobrarComponent } from 'src/app/modules/pos/modals/abonos-cuentas-xcobrar/abonos-cuentas-xcobrar.component';
+import { DocumentosModel } from 'src/app/models/ventas/documento.model'; 
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { DocumentoService } from 'src/app/services/documento.service';
@@ -46,7 +42,7 @@ printDocumento(doc:DocumentosModel){
 }
   buscarDocumento(  ){
 
-    this.docService.getDocumentosByNumFactura(this.docAbono.idDocumentoFinal )
+    this.docService.getVentasByNumFactura(this.docAbono.idDocumentoFinal )
     .subscribe({next:(retorno:DocumentoRequest)=>{
       if(retorno.numdata!> 0){
         let docs:DocumentosModel[] = retorno.data.map(x=>x.objeto); 
@@ -80,13 +76,13 @@ printDocumento(doc:DocumentosModel){
   enviarAbono(){
     if(this.docAbono.campo_auxiliar_2! <= 0){
       Swal.fire('Error en el envio' , 'debe ingresar minimo un producto' , 'error')
+      return;
     }
      console.log('documento a enviar',this.docAbono);
      this.docService.crearDocumentoDevolucion(this.docAbono).subscribe({next:(value:DocumentoCierreRequest)=>{
-      console.log('crearDocumentoAbono',value); 
-      
+      console.log('crearDocumentoAbono',value);
       this.buscarDocumento();
-     this.printDocumento(value.data.documentoFinal )
+      this.printDocumento(value.data.documentoFinal )
 
      },error:error=>Swal.fire(error.error.error)})
   }

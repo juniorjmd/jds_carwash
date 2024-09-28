@@ -1,4 +1,5 @@
 export interface ResumenVenta {  
+    reporte ?:string; 
     usuarioGenerador:string; 
     fechaInicial:Date;
     fechaFinal:Date;

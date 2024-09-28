@@ -32,7 +32,7 @@ overflow-y: auto;max-height: 80%; padding-top: 10px; padding-bottom: 10px;
     margin: auto; 
     overflow: hidden;
     position: relative;
-    width: 30%; 
+    width: 40%; 
 
     background-size: cover; /* O puedes usar 'contain' según tus necesidades */
     background-position: center;

@@ -179,6 +179,19 @@ constructor(private http: HttpClient, private loading: loading) {
     console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());
   } 
+  getVentasByNumFactura( codFactura : string): Observable<any> {
+    let where = [{"columna": 'idDocumentoFinal', "tipocomp": '=', "dato": codFactura}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.ventasCerradas,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_columnaUsuario": 'usuario',
+      "_where": where
+    };
+    console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  } 
    getDocComprasByNumFactura( codFactura : string): Observable<any> {
     let where = [{"columna": 'idDocumentoFinal', "tipocomp": '=', "dato": codFactura}];
     let datos = {
