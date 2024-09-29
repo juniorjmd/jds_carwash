@@ -9,12 +9,14 @@ import { establecimientoModel } from "./ventas/establecimientos.model";
 import { SoporteOperacion } from "../interface/soporte-operacion";
 import { DatePipe } from "@angular/common";
 import { ResumenVenta } from "../interfaces/resumenVenta.";
+import { MovimientoResumen, ReporteMovimientoCuentas } from "../interfaces/reporteMovimientoCuentas.";
 @Injectable({
   providedIn: 'root',
 })
 export class PrinterManager {
   movimiento!:SoporteOperacion
   resumenVenta!:ResumenVenta
+  resumenCuentas!:ReporteMovimientoCuentas
   private doc :DocumentosModel = new DocumentosModel() ; 
   private docDev :DevolucionModel = new DevolucionModel() ; 
   private static sucursal?: vwsucursal;
@@ -225,9 +227,7 @@ public printClose( cierre:cajasResumenModel){
     receiptHTML += this.detalleCierre();  
     receiptHTML += this.footerCierre() ; 
     receiptHTML += ` </div> <style>
-    body table td {
-        font-size:small !important
-    }
+    body table td {    font-size: xx-small !important    }
 </style>`;
 
     return receiptHTML;
@@ -296,6 +296,118 @@ public printSoporteMovimiento(impresoraPos = true , movimiento:SoporteOperacion)
   
 
 } 
+/**imprimir resumen de ventas */
+public printResumenCuentas(impresoraPos = true , resumen:ReporteMovimientoCuentas) { 
+  this.establecimiento = this.establecimientos[0]
+    this.resumenCuentas =  resumen; 
+  this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ;   
+    const printContent = this.generateRMCHTML();
+    this.openPrintWindows(printContent);
+} 
+
+/*************************************************************************************************/
+generateRMCHTML(): string {
+
+  let receiptHTML = ''; 
+  receiptHTML = (this.tipoImpresora == 'POS')?`<div style="font-family: Arial, sans-serif; width: 219.24px;"> ` : 
+  `<div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">`;
+  receiptHTML += this.generateCabecera() ; 
+   
+    receiptHTML += this.infoRMCGeneral(); 
+    receiptHTML += this.detalleRMC(); 
+    receiptHTML += this.footerRMC() ; 
+  
+  receiptHTML += ` </div> 
+  <style>  body table td { font-size: xx-small !important     } </style>`;
+
+  return receiptHTML;
+} 
+
+private footerRMC():string{
+  return  '<div style="font-size: 10px;margin: 10px;">Documento de soporte de movimiento de una o mas cuentas en un rango de fecha</div>' ; 
+}
+
+private detalleRMC():string{
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+let receiptHTML  = ` <hr> 
+<div style="text-align: left;" name="detalle"> `;
+
+this.resumenCuentas.movimientos?.forEach((movimiento)=>{
+  receiptHTML += `<table  style="font-family: Arial, sans-serif; width: 100%; font-size: xx-small;">`;
+  receiptHTML +=(this.tipoImpresora != 'POS')? `<tr><th colspan='6'  style=" font-size: small !important ">
+  cuenta : ${movimiento.cuenta}   Saldo :${currencyFormatter.format(movimiento.saldo)}  <hr></th></tr><tr>
+                  <th>Fecha</th>
+                  <th>cliente</th>
+                  <th>vendedor</th>
+                  <th>operacion</th>
+                  <th>débito</th>
+                  <th>crédito</th>
+                  </tr>` :`<tr><th colspan='3' style=" font-size: small !important ">cuenta : ${movimiento.cuenta}   
+                  Saldo :${currencyFormatter.format(movimiento.saldo)}<hr></th></tr>` ;
+   movimiento.movimientos.forEach((lista) => {   
+    receiptHTML +=(this.tipoImpresora != 'POS')? ` <tr> 
+    <td style="text-align: left;" nowrap >${lista.fecha} </td>     
+    <td style="text-align: left;" >${lista.tercero} </td>
+    <td style="text-align: left;" >${lista.vendedor} </td>
+    <td style="text-align: left;" >${lista.operacion} </td>  
+    <td style="text-align: right;" >${currencyFormatter.format(lista.debito)}</td>
+    <td style="text-align: right;" >${currencyFormatter.format(lista.credito)}</td>
+    </tr>     `:`<tr ><td colspan='3'> cuenta : ${lista.operacion} </td></tr>
+    <tr><td style="text-align: left;" nowrap >${lista.fecha} </td> 
+            <td style="text-align: right;" nowrap >D: ${currencyFormatter.format(lista.debito)}</td>
+            <td style="text-align: right;" nowrap >C: ${currencyFormatter.format(lista.credito)}</td>
+    </tr>
+    `  ;   
+});
+receiptHTML += `</table ><hr>`;
+});
+receiptHTML += `</div>`
+
+  return receiptHTML; 
+} 
+ 
+private   infoRMCGeneral():string{
+  let receiptHTML = ''; 
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }); 
+     receiptHTML += (this.tipoImpresora != 'POS')?
+         `<div> 
+         <table>
+         <tr> 
+              <th colspan="4">RESUMEN DE MOVIMIENTO EN CUENTAS CONTABLES</th>  
+         </tr>
+          <tr> 
+              <th>Usuario </th><td  style=" font-size: small !important ">  ${this.resumenCuentas.usuarioGenerador}</td> 
+              <th> </th><td>  </td> 
+         </tr>
+         <tr> <th colspan='4'  style=" font-size: small !important ">${this.resumenCuentas.descripcion} </th> </tr> 
+         <tr>
+         <th> Desde </th><td  style=" font-size: small !important "> ${this.resumenCuentas.fechaInicial}</td> <th> 
+        hasta</th><td  style=" font-size: small !important ">  ${this.resumenCuentas.fechaFinal}</td> 
+         </tr> 
+         <tr> 
+              <th>Débito</th><td style=" font-size: small !important "> ${currencyFormatter.format(this.resumenCuentas.debito)}</td> 
+              <th>Crédito</th><td style=" font-size: small !important "> ${currencyFormatter.format(this.resumenCuentas.credito)}</td> 
+         </tr>
+         <tr> 
+              <th>Saldo</th><td style=" font-size: small !important "> ${currencyFormatter.format(this.resumenCuentas.saldo)}</td> 
+              <th>Numero de Movimientos</th><td style=" font-size: small !important "> ${ this.resumenCuentas.cantidadMovimientos }</td> 
+         </tr>
+         </table></div> `:
+          `<div>
+           <p style=" font-size: small !important ">Usuario: ${this.resumenCuentas.usuarioGenerador}</p> 
+           <p style=" font-size: small !important ">Rango: desde el ${this.resumenCuentas.fechaInicial} hasta el  ${this.resumenCuentas.fechaFinal} </p>
+                          </div><hr>
+        <div  style=" font-size: small !important ">
+          <p>${this.resumenCuentas.descripcion}</p>  
+               <p>Débito  ${currencyFormatter.format(this.resumenCuentas.debito)} </p>  
+              <p>Crédito  ${currencyFormatter.format(this.resumenCuentas.credito)} </p>  
+          <p>Saldo  ${currencyFormatter.format(this.resumenCuentas.saldo)} </p>  
+            <p>Numero de Movimientos   ${ this.resumenCuentas.cantidadMovimientos } </p>   
+        </div><hr>`
+        
+        ;
+        return receiptHTML;
+}
 /**imprimir resumen de ventas */
 public printResumenVenta(impresoraPos = true , resumen:ResumenVenta) { 
   this.establecimiento = this.establecimientos[0]
@@ -390,7 +502,7 @@ generateRVHTML(): string {
     receiptHTML += this.footerRV() ; 
   } 
   receiptHTML += ` </div> 
-  <style>  body table td { font-size:small !important     } </style>`;
+  <style>  body table td { font-size: xx-small !important } </style>`;
 
   return receiptHTML;
 } 
@@ -849,7 +961,7 @@ private footerDev():string{
     receiptHTML += this.detalleSoporte(); 
     receiptHTML += this.footerSoporte() ; 
     receiptHTML += ` </div> 
-    <style>  body table td { font-size:small !important     } </style>`;
+    <style>  body table td { font-size: xx-small !important     } </style>`;
   
     return receiptHTML;
   } 
@@ -986,7 +1098,7 @@ generateReceiptHTML(): string {
   receiptHTML += this.pagos() ; 
   receiptHTML += this.footer() ; 
   receiptHTML += ` </div> 
-  <style>  body table td {         font-size:small !important     } </style>`;
+  <style>  body table td { font-size: xx-small !important    } </style>`;
 
   return receiptHTML;
 } 

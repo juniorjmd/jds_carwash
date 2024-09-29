@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="card-header text-center">
+        <h1>Estado de resultado</h1>
+      </div>  
+
+      <div class="card-body">  
+
+        <div class="row">
+            <div class="col-sm-3">
+                Escoja el rango de fecha:
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input type="date" max="{{fecha2}}"  [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <small id="helpId" class="form-text text-muted">Fecha inicial del rango de búsqueda</small>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input type="date" min="{{fecha1}}" [max]="maximo"   [(ngModel)]="fecha2" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <small id="helpId" class="form-text text-muted">Fecha final del rango de búsqueda</small>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button type="button"   class="btn btn-primary"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+ </div></div>

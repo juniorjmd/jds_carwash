@@ -125,6 +125,7 @@
     'resumenVentaVendedor' :'GET_RESUMEN_VENTA_VENDEDOR' ,
     'resumenVentaUsuarioCajero' :'GET_RESUMEN_VENTA_CAJERO' ,
     'resumenVentas' :'GET_RESUMEN_VENTAS' , 
+    'resumenCuentas' :'GET_RESUMEN_MOVIMIENTOS_CUENTAS' , 
     'resumenDevolucion' :'GET_RESUMEN_DEVOLUCIONES' ,
     'MAESTROS_CLIENTES' :'GET_MAESTROS_CLIENTES',
     'actionBuscarPaisesOdoo' : 'BUSCAR_ODOO_PAIS',

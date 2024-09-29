@@ -22,6 +22,7 @@ import { DocumentosComprasModel, DocumentosModel } from "../models/ventas/docume
 import { establecimientoModel } from "../models/ventas/establecimientos.model";
 import { OperacionesComponent } from "../modules/admin/modules/cuentas-contables/pages/operaciones/operaciones.component";
 import { TrasladosCntComponent } from "../modules/admin/modules/traslados-cnt/traslados-cnt.component";
+import { ReporteMovimientoCuentas } from "./reporteMovimientoCuentas.";
 import { CntOperacionPrestablecidas } from "./traslados_cnt/cnt_operacion_prestablecidas.";
 import { CntOperacionPrestablecidasCuentas } from "./traslados_cnt/cnt_operacion_prestablecidas_cuentas.";
 
@@ -209,6 +210,12 @@ export interface cntSubCuentaRequest {
   error: string;
 }
 
+export interface cntMovCuentasRequest { 
+  data: ReporteMovimientoCuentas;
+  query: string;
+  numdata: number;
+  error: string;
+}
 
 
 export interface cntSubCuentaVwRequest { 

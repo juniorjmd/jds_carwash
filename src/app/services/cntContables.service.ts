@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { httpOptions, url } from '../models/app.db.url';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntSubCuentaVwRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest, cntTrasladosRequest, ejecucionTrasladosRequest, soporteMovimientoCntRequest, trasladosCntRequest } from '../interfaces/producto-request';
+import {  cntClaseRequest, cntCuentaMayorRequest, cntDocOperacionesRequest, cntGrupoRequest, cntMovCuentasRequest, cntOperacionesRequest,  cntSubCuentaRequest, cntSubCuentaVwRequest, cntTipDocOperacionesRequest, cntTransaccionesRequest, cntTrasladosRequest, ejecucionTrasladosRequest, soporteMovimientoCntRequest, trasladosCntRequest } from '../interfaces/producto-request';
 import { actions } from '../models/app.db.actions';
 import { vistas } from '../models/app.db.view';
 import { CntGruposModel } from '../models/cnt-grupos/cnt-grupos.module';
@@ -291,6 +291,27 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
       "_tabla" : vistas.vw_cnt_scuentas,
        _limit: 300,  
       "_where" : [{columna : 'digito' , tipocomp : '>' , dato : 0 }]
+     }; 
+     return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
+  }
+
+  
+  getResumenCuentasPorFecha( _idPrd:any[] ,   _fechaInicio: string, _fechaFin: string): Observable<cntMovCuentasRequest> { 
+    let datos = {
+      "action": actions.resumenCuentas, _fechaInicio,_fechaFin, _idPrd
+    };
+    console.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
+    return this.http.post<cntMovCuentasRequest>(url.actionDocumentos, datos, httpOptions());
+  }
+  getCntCuentasCajasAsignadas():Observable<cntSubCuentaRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_cajas_asignadas 
+     }; 
+     return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
+  }
+  getCntCuentasConMovimientos():Observable<cntSubCuentaRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_con_movimientos 
      }; 
      return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
   }

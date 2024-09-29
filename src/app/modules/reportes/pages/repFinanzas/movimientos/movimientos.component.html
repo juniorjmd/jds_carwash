@@ -1,0 +1,134 @@
+<div class="card">
+    <div class="card-header text-center">
+        <h1>Movimientos en cuentas</h1>
+      </div>  
+
+      <div class="card-body">  
+
+        <div class="row">
+            <div class="col-sm-5">Escoja la caja a filtrar:  
+                <div class="input-group">
+                    <input class="form-control" (input)="filtrarCuentas($event)" placeholder="Buscar cuenta" />
+                    <select class="form-control" [(ngModel)]="cuentaSeleccionada" (change)="getMovimientosPorFecha()">
+                      <option *ngFor="let item of cuenta" [value]="item.id_scuenta">{{item.nro_scuenta}} - {{item.nombre_scuenta}}</option>
+                    </select>
+                  </div>
+                  
+               </div>
+            <div class="col-sm-6">Escoja el rango de fecha:   <div class="row"> 
+                 <div class="col-sm-6"> 
+                
+                <div class="form-group">
+                    <input type="date" max="{{fecha2}}"  [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <small id="helpId" class="form-text text-muted">Fecha inicial del rango de búsqueda</small>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input type="date" min="{{fecha1}}" [max]="maximo"   [(ngModel)]="fecha2" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <small id="helpId" class="form-text text-muted">Fecha final del rango de búsqueda</small>
+                </div>
+            </div>  </div> </div>
+            <div class="col-sm-2">
+                <button type="button" (click)="getMovimientosPorFecha()"   class="btn btn-primary"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+
+
+
+        <div class="container-fluid mt-3" *ngIf="resumenVenta !== undefined">
+            <div class="row mb-2">
+                <div class="col-sm-12 col-lg-2 mb-2">
+                    <strong>Débito:</strong> {{resumenVenta.debito | currency}}
+                </div>
+                <div class="col-sm-12 col-lg-2 mb-2">
+                    <strong>Crédito:</strong> {{resumenVenta.credito | currency}}
+                </div>
+                <div class="col-sm-12 col-lg-2 mb-2">
+                    <strong>Saldo:</strong> {{resumenVenta.saldo | currency}}
+                </div>
+                <div class="col-sm-12 col-lg-2 mb-2">
+                    <strong>Total Movimientos:</strong> {{resumenVenta.cantidadMovimientos}}
+                </div>
+                <div class="col-sm-12 col-lg-2 mb-2">
+                     <div class="btn btn-success" (click)="imprimirResumen()">Imprimir reporte</div>
+                </div>
+            </div>
+            <hr>
+            <div class="row mb-2">
+                <div class="col-sm-12 text-center">
+                    <strong>{{resumenVenta.descripcion}}</strong>
+                </div>
+            </div>
+            <hr>
+        </div>
+        
+        <div class="row px-3" *ngIf="resumenVenta !== undefined">
+            <div class="col-sm-12 col-lg-6" style="max-height: 400px; overflow-y: auto;">
+                <h5>Resumen de Movimientos por día</h5>
+                
+                <div class="row "  *ngFor="let movimientos of  resumenVenta!.resumen  ">
+                 <div class="col-sm-12 col-lg-12"  >
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light"> 
+                                 <tr style="cursor: pointer;" (click)="show(movimientos)">
+                                     <th> Cuenta :  {{ movimientos.cuenta }}</th><th>Saldo : {{movimientos.saldo|currency}}</th></tr></thead></table>
+                  <table class="table table-bordered table-hover" *ngIf="movimientos.show">
+                   <thead class="table-light"> 
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Débito</th>
+                                <th>Crédito</th>
+                                <th>Saldo</th> 
+                            </tr>
+                    </thead>
+                    <tbody   > 
+                        <tr *ngFor="let movimiento of movimientos.movimientos">
+                            <td>{{ movimiento.fecha }}</td>
+                            <td>{{ movimiento.debito | currency }}</td>
+                            <td>{{ movimiento.credito |currency}}</td>
+                            <td>{{ movimiento.saldo | currency}}</td> 
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>   
+        </div>
+        <div class="col-sm-12 col-lg-6" style="max-height: 400px; overflow-y: auto;">
+            <h5>historial de Movimientos generados</h5>
+            
+            <div class="row  "  *ngFor="let movimientos of  resumenVenta!.movimientos  ">
+             <div class="col-sm-12 col-lg-12"  >
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light"> 
+                             <tr style="cursor: pointer;" (click)="show(movimientos)">
+                                 <th> Cuenta :  {{ movimientos.cuenta }}</th></tr></thead></table>
+              <table class="table table-bordered table-hover" *ngIf="movimientos.show">
+               <thead class="table-light"> 
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Débito</th>
+                            <th>Crédito</th>
+                            <th>Operacion</th> 
+                            <th>Tercero</th> 
+                            <th>Vendedor</th> 
+                        </tr>
+                </thead>
+                <tbody   > 
+                    <tr *ngFor="let movimiento of movimientos.movimientos">
+                        <td>{{ movimiento.fecha }}</td>
+                        <td>{{ movimiento.debito | currency}}</td>
+                        <td>{{ movimiento.credito |currency }}</td>
+                        <td>{{ movimiento.operacion   }}</td> 
+                        <td>{{ movimiento.tercero   }}</td> 
+                        <td>{{ movimiento.vendedor   }}</td> 
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>   
+   </div>
+
+ </div></div>
+
+</div>

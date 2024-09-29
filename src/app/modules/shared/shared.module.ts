@@ -35,8 +35,7 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
 import { productosVendidosDropdownComponent } from './components/productosVendidos-dropdown/productosVendidos-dropdown.component';
 import { categoriasVendidasDropdownComponent } from './components/categoriasVendidas-dropdown/categoriasVendidas-dropdown.component';
 import { vendedoresDropdownComponent } from './components/vendedores-dropdown/vendedores-dropdown.component';
-import { usuarioDropdownComponent } from './components/usuario-dropdown/usuario-dropdown.component';
- 
+import { usuarioDropdownComponent } from './components/usuario-dropdown/usuario-dropdown.component';  
 @NgModule({
   declarations: [
     FndClienteComponent,
@@ -61,7 +60,7 @@ import { usuarioDropdownComponent } from './components/usuario-dropdown/usuario-
     EmpleadosDropdownComponent ,MarcasDropdownComponent, CategiasDropdownComponent , LineBreakPipe, categoriasVendidasDropdownComponent 
   ,productosVendidosDropdownComponent, usuarioDropdownComponent
   ],
-  imports: [ NgbModule ,
+  imports: [ NgbModule , 
     NgxBootstrapIconsModule.pick(allIcons)  ,
     NgxDatatableModule,
     RouterModule,
@@ -70,9 +69,9 @@ import { usuarioDropdownComponent } from './components/usuario-dropdown/usuario-
     CommonModule, 
     MatDialogModule ,
     MatButtonModule ,
-    MatCheckboxModule 
+    MatCheckboxModule ,
   ],
-  exports:[FndClienteComponent,
+  exports:[FndClienteComponent, 
     LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,categoriasVendidasDropdownComponent ,
     TabComponent,usuarioDropdownComponent,
     TableComponent ,

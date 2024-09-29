@@ -15,15 +15,21 @@ import { ventasPorCategoriaComponent } from './pages/repVentas/ventasPorCategori
 import { ventasPorVendedorComponent } from './pages/repVentas/ventasPorVendedor/ventasPorVendedor.component';
 import { ventasDiariaHoraComponent } from './pages/repVentas/ventasDiariaHora/ventasDiariaHora.component';
 import { devolucionesRepoComponent } from './pages/repVentas/Devoluciones/devoluciones.component';
+import { BienvenidaRFComponent } from './pages/repFinanzas/bienvenidaRF/bienvenidaRF.component';
+import { InicioRepFinansasComponent } from './pages/repFinanzas/inicioRepFinansas/inicioRepFinansas.component';
+import { EstadoDeResultadoComponent } from './pages/repFinanzas/estadoDeResultado/estadoDeResultado.component';
+import { flujoDeCajaComponent } from './pages/repFinanzas/flujoDeCaja/flujoDeCaja.component';
+import { movimientosCuentasComponent } from './pages/repFinanzas/movimientos/movimientos.component';
 
 
 @NgModule({
   declarations: [
-    ReportesComponent, 
+    ReportesComponent, flujoDeCajaComponent,movimientosCuentasComponent,
     ReimpimirFacturasComponent,
     InicioReportesComponent,ventasPorCategoriaComponent,
      VerFacturasClienteComponent, ventasPorProductoComponent,ventasPorVendedorComponent,ventasDiariaHoraComponent,
        BienvenidaRPComponent,ventasDiariaComponent, MovimientosCuentaComponent, InicioRepVentasComponent, devolucionesRepoComponent
+       ,BienvenidaRFComponent,InicioRepFinansasComponent, EstadoDeResultadoComponent
   ],
   imports: [
     CommonModule,
