@@ -15,8 +15,11 @@ import { usuarioService } from 'src/app/services/usuario.services';
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['estado-resultados']">
             <i class="bi bi-file-earmark-text"></i> Estado de Resultados
           </a>
-          <a class="list-group-item list-group-item-action " routerLinkActive="active" [routerLink]="['flujo-caja']">
-            <i class="bi bi-cash"></i> Flujo de Caja
+          <a class="list-group-item list-group-item-action " routerLinkActive="active" [routerLink]="['caja']">
+            <i class="bi bi-cash"></i>Movimientos de Caja
+          </a> 
+          <a class="list-group-item list-group-item-action " routerLinkActive="active" [routerLink]="['gastos']">
+            <i class="bi bi-cash"></i>Movimientos de Gastos
           </a>
           <a class="list-group-item list-group-item-action " routerLinkActive="active" [routerLink]="['movimientos']">
             <i class="bi bi-cash"></i>Movimientos en una o mas cuentas

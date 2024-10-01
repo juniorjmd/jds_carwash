@@ -128,6 +128,13 @@ export class movimientosCuentasComponent {
     printerManager.printResumenCuentas(false,this.resumenVenta);
   } 
 }
+
+async ExportarResumen()
+{  
+ let printerManager =  new PrinterManager(this.serviceCaja); 
+ if(this.resumenVenta != undefined){ 
+  printerManager.exportResumenCuentas( this.resumenVenta , 'MovimientosCuentas');
+} }
 }
 
 

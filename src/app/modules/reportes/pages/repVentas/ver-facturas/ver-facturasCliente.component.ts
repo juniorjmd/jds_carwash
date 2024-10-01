@@ -49,6 +49,14 @@ const day = date.getDate(); // */
   limpiarListado(){
     this.documentos=[];
   }
+  
+
+  async ExportarResumen()
+  {  
+   let printerManager =  new PrinterManager(this.serviceCaja); 
+   if(this.resumenVenta != undefined){ 
+    printerManager.exportResumenVentas( this.resumenVenta , 'VentaPorCliente');
+  } }
   removeGetActivo(a:string){
     this.limpiarListado()
     console.log(a);

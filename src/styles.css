@@ -246,7 +246,26 @@ img.nav-avatar {
         margin-top: 20% !important;  
     }
 }
-@media (min-width: 801px) {
+
+
+@media   (max-height: 754px ) {
+    .modal_container{
+        margin-top: 50px;
+    }
+    #menuCentral{
+        margin-top: 100px;
+    }
+    .contenedorTablas{
+        max-height: 450px;
+         overflow-y: auto;
+    }
+    .contenedorTablas2{
+        max-height: 450px;
+         overflow-y: auto;
+    } 
+}
+
+@media (min-width: 801px ) and  (min-height: 755px ) {
     #menuCentral{
         margin-top: 100px;
     }

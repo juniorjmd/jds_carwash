@@ -177,7 +177,10 @@ private footerBono():string{
 }
 private pagosBono():string{
   let html = '';
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
 
   if(this.docDev.pagos?.length! > 0 ){
     html += ` <hr>
@@ -251,7 +254,10 @@ public printClose( cierre:cajasResumenModel){
   } 
 
   private detalleCierre():string{
-    const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+    const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
   
     return  ` <div name='detalle' style="text-align: left;">
              <p>base           : ${currencyFormatter.format(this.cierre.base)}</p>
@@ -272,7 +278,10 @@ public printClose( cierre:cajasResumenModel){
     
   }
 private pagosCierre():string{
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
   let html = '';
   if(this.cierre.arrPagos != undefined && this.cierre.arrPagos.length > 0 ) {
    html = '<div><hr><p>Pagos</p><table >'; 
@@ -305,6 +314,14 @@ public printResumenCuentas(impresoraPos = true , resumen:ReporteMovimientoCuenta
     this.openPrintWindows(printContent);
 } 
 
+public exportResumenCuentas(  resumen:ReporteMovimientoCuentas , nombre:string) { 
+  this.establecimiento = this.establecimientos[0]
+    this.resumenCuentas =  resumen; 
+  this.tipoImpresora =   'NO_POS' ;   
+    const printContent = this.generateRMCHTML();
+    this.openExcelWindows(printContent , 'ResumenCuentas'+nombre);
+} 
+
 /*************************************************************************************************/
 generateRMCHTML(): string {
 
@@ -328,7 +345,10 @@ private footerRMC():string{
 }
 
 private detalleRMC():string{
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
 let receiptHTML  = ` <hr> 
 <div style="text-align: left;" name="detalle"> `;
 
@@ -368,7 +388,10 @@ receiptHTML += `</div>`
  
 private   infoRMCGeneral():string{
   let receiptHTML = ''; 
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }); 
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 }); 
      receiptHTML += (this.tipoImpresora != 'POS')?
          `<div> 
          <table>
@@ -415,6 +438,14 @@ public printResumenVenta(impresoraPos = true , resumen:ResumenVenta) {
   this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ;   
     const printContent = this.generateRVHTML();
     this.openPrintWindows(printContent);
+} 
+  
+public exportResumenVentas(  resumen:ResumenVenta , nombre:string) { 
+  this.establecimiento = this.establecimientos[0]
+    this.resumenVenta =  resumen; 
+  this.tipoImpresora =   'NO_POS' ;   
+    const printContent = this.generateRVHTML();
+    this.openExcelWindows(printContent , 'ResumenVentas'+nombre);
 } 
   public printReceipt(impresoraPos = true) {
     this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ; 
@@ -507,7 +538,10 @@ generateRVHTML(): string {
   return receiptHTML;
 } 
 private detalleDev():string{
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
 let receiptHTML  = ` <hr> 
 <div style="text-align: left;" name="detalle">
 <table  style="font-family: Arial, sans-serif; width: 100%;"><tr>`;
@@ -685,7 +719,10 @@ receiptHTML += `</td></tr></table></div>`
   return receiptHTML; 
 } 
 private detalleRV():string{
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
 let receiptHTML  = ` <hr> 
 <div style="text-align: left;" name="detalle">
 <table  style="font-family: Arial, sans-serif; width: 100%;"><tr>`;
@@ -873,7 +910,10 @@ private footerRV():string{
 }
 private   infoRVGeneral():string{
   let receiptHTML = ''; 
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }); 
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 }); 
      receiptHTML += (this.tipoImpresora != 'POS')?
          `<div> 
          <table>
@@ -910,7 +950,10 @@ private   infoRVGeneral():string{
 
 private   infoDevGeneral():string{
   let receiptHTML = ''; 
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }); 
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 }); 
      receiptHTML += (this.tipoImpresora != 'POS')?
          `<div> 
          <table>
@@ -1048,7 +1091,10 @@ private footerDev():string{
             return receiptHTML;
     }
     private detalleSoporte():string{
-      const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+      const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
     let receiptHTML  = ` <hr> <div style="text-align: left;" name="detalle"><table  style="font-family: Arial, sans-serif; width: 100%;">`;
      
     receiptHTML += (this.tipoImpresora != 'POS')?
@@ -1151,7 +1197,10 @@ private   infoGeneral():string{
         return receiptHTML;
 }
 private detalle():string{
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
 let receiptHTML  = ` <hr> <div style="text-align: left;" name="detalle"><table  style="font-family: Arial, sans-serif; width: 100%;">`;
  
 receiptHTML += (this.tipoImpresora != 'POS' && this.doc.listado.length > 0)?`<tr><th>Producto </th><th>Precio uni. </th><th>Descuento</th> <th>IVA</th> <th>Precio Venta</th> <th>Cantidad</th><th>Total </th></tr>` : 
@@ -1210,7 +1259,10 @@ private totales():string{
   const valorIVA = typeof this.doc.valorIVA  === 'number' ? this.doc.valorIVA : parseFloat(this.doc.valorIVA??'0');  
   const valorAjuste = typeof this.doc.ajusteAlpeso  === 'number' ? this.doc.ajusteAlpeso : parseFloat(this.doc.ajusteAlpeso??'0'); 
   const totalFactura = typeof this.doc.totalFactura  === 'number' ? this.doc.totalFactura : parseFloat(this.doc.totalFactura??'0'); 
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
   return  ` 
   <div style="text-align: right;">
   <hr>
@@ -1254,7 +1306,10 @@ private footer():string{
 }
 private pagos():string{
   let html = '';
-  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' });
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
 
   if(this.doc.pagos?.length! > 0 ){
     html += ` <hr>
@@ -1309,6 +1364,73 @@ private openPrintWindows(printContent:string){
         });  
       //   WindowPrt.print();
   }
+}
+private openExcelWindows(printContent:string , fileName:string){
+  console.log("html a imprimir" , printContent)
+  printContent =  this.htmlEntities(printContent) ; 
+    const WindowPrt = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0')!;  
+    if (WindowPrt) {
+      
+      const contentType = "application/vnd.ms-excel; charset=iso-8859-1";
+    const contentDisposition = `attachment; filename=${fileName}.xls`;
+    const pragma = "no-cache";
+    const expires = "0";
+    printContent = printContent.replace(/\s?\$\s/g, '');
+ 
+      console.log('printContent' ,  printContent);
+    const html = `
+      <html>
+      <head>
+        <meta http-equiv="Content-Type" content="${contentType}">
+        <meta http-equiv="Content-Disposition" content="${contentDisposition}">
+        <meta http-equiv="Pragma" content="${pragma}">
+        <meta http-equiv="Expires" content="${expires}">
+        <meta charset="UTF-8">
+      </head>
+      <body>
+      <table>
+      <tr><td colspan='3' style="background-color: beige; height:25px"></td>       </tr>
+      <tr><td colspan='3' style="background-color: beige; height:25px"></td>       </tr>
+      <tr><td style="background-color: beige; width: 15px;"></td><td>
+        ${printContent}</td><td style="background-color: beige;width: 55px; "></td>
+        <tr><td colspan='3' style="background-color: beige; height:25px"></td>       </tr>
+        <tr><td colspan='3' style="background-color: beige; height:25px"></td>       </tr>
+        </table>
+      </body>
+      </html>
+    `;
+      WindowPrt.document.write(html);
+      WindowPrt.document.close(); 
+         // Forzar la descarga del archivo Excel
+    WindowPrt.addEventListener('load', () => {
+      const a = WindowPrt.document.createElement('a');
+      a.href = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+      a.download = `${fileName}.xls`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      WindowPrt.close(); // Cerrar la ventana después de la descarga
+    });
+  }
+   
+}
+
+
+private htmlEntities(str: string) {
+  return str
+  .replace(/Â/g, '')
+  .replace(/á/g, '&aacute;')
+  .replace(/é/g, '&eacute;')
+  .replace(/í/g, '&iacute;')
+  .replace(/ó/g, '&oacute;')
+  .replace(/ú/g, '&uacute;')
+  .replace(/Á/g, '&Aacute;')
+  .replace(/É/g, '&Eacute;')
+  .replace(/Í/g, '&Iacute;')
+  .replace(/Ó/g, '&Oacute;')
+  .replace(/Ú/g, '&Uacute;')
+  .replace(/ñ/g, '&ntilde;')
+  .replace(/Ñ/g, '&Ntilde;');
 }
 
 

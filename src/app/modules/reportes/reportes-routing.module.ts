@@ -19,6 +19,7 @@ import { InicioRepFinansasComponent } from './pages/repFinanzas/inicioRepFinansa
 import { EstadoDeResultadoComponent } from './pages/repFinanzas/estadoDeResultado/estadoDeResultado.component';
 import { flujoDeCajaComponent } from './pages/repFinanzas/flujoDeCaja/flujoDeCaja.component';
 import { movimientosCuentasComponent } from './pages/repFinanzas/movimientos/movimientos.component';
+import { movimientosGastosComponent } from './pages/repFinanzas/movimientosGastos/movimientosGastos.component';
 
 const routes: Routes = [{ path: '', component: InicioReportesComponent ,   children:[
     {path : 'reportesMenu' , component:ReportesComponent}, 
@@ -29,8 +30,9 @@ const routes: Routes = [{ path: '', component: InicioReportesComponent ,   child
     { path: 'reporteFinanciero', component: InicioRepFinansasComponent ,   children:[ 
       {path : '' , component:BienvenidaRFComponent}, 
       {path : 'movimientos' , component:movimientosCuentasComponent},  
+      {path : 'gastos' , component:movimientosGastosComponent} ,  
       {path : 'estado-resultados' , component:EstadoDeResultadoComponent}, 
-      {path : 'flujo-caja' , component:flujoDeCajaComponent},  
+      {path : 'caja' , component:flujoDeCajaComponent},  
         { path : '**' , pathMatch:'full' , redirectTo : ''}
     ] } ,
     { path: 'reporteVentas', component: InicioRepVentasComponent ,   children:[ 

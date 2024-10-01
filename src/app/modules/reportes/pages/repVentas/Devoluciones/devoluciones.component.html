@@ -28,15 +28,18 @@
  
 
     
-        <div class="row">
+        <div class="row" *ngIf="resumen" >
             <div class="col-sm-3 centrado">
               <div class="btn btn-primary" (click)="resumen=true">Resumen <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideR }"></i></div>
              </div>
              <div class="col-sm-3 centrado">
                 <div class="btn btn-primary" (click)="resumen=false">Listado de Ventas <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideF }"></i></div>
              </div>  
-             <div class="col-sm-3 centrado"> 
+             <div class="col-sm-2 centrado"> 
                 <div class="btn btn-primary" (click)="imprimirResumen()">Imprimir reporte </div>
+             </div>
+             <div class="col-sm-2 centrado"> 
+                <div class="btn btn-primary" (click)="ExportarResumen()">Excel</div>
              </div>
         </div>
     

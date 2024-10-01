@@ -49,8 +49,11 @@
          <div class="col-sm-3 centrado">
             <div class="btn btn-primary" (click)="resumen=false">Listado de Ventas <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideF }"></i></div>
          </div>
-         <div class="col-sm-3 centrado">
+         <div class="col-sm-2 centrado">
             <div class="btn btn-primary" (click)="imprimirResumen()">Imprimir reporte </div>
+         </div>
+         <div class="col-sm-2 centrado">
+            <div class="btn btn-primary" (click)="ExportarResumen()">Excel</div>
          </div>
     </div>
 
@@ -61,7 +64,7 @@
      border-radius: 10px; padding: 5px;">
        <div  class="row" > 
         <div class="col-sm-12 centrado">
-         <h4>Resumen Categorias</h4>  
+         <h4>Resumen Por Cliente(s)</h4>  
         </div></div>
         <div  class="row" > 
             <div class="col-sm-12 col-lg-1   " style="max-width: 1%;"></div>

@@ -191,6 +191,14 @@ export class ventasPorCategoriaComponent implements OnInit {
    printerManager.printResumenVenta(false,this.resumenVenta);
   } 
 }
+
+
+async ExportarResumen()
+{  
+ let printerManager =  new PrinterManager(this.serviceCaja); 
+ if(this.resumenVenta != undefined){ 
+  printerManager.exportResumenVentas( this.resumenVenta , 'ventaPorCategoria');
+} }
  
 
   getDocumentosPorFecha(){

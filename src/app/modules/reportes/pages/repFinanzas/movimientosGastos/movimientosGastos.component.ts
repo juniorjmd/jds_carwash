@@ -10,11 +10,11 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-flujo-de-caja', 
-  templateUrl:'./flujoDeCaja.component.html',
-  styleUrls: ['./flujoDeCaja.component.css'] 
+  selector: 'app-movimientosGastos', 
+  templateUrl:'./movimientosGastos.component.html',
+  styleUrls: ['./movimientosGastos.component.css'] 
 })
-export class flujoDeCajaComponent { 
+export class movimientosGastosComponent  { 
   resumenVenta?:ReporteMovimientoCuentas;
   resumen:boolean=false;
   hideR:boolean=true;
@@ -39,7 +39,7 @@ export class flujoDeCajaComponent {
     this.cuentaIni[1].nro_scuenta =  99999999 ;
     this.cuentaIni[1].id_scuenta = 99999999;
     this.cuentaIni[1].nombre_scuenta = 'Todas las cuentas'
-    this.cntService.getCntCuentasCajasAsignadas().subscribe({next:(value:cntSubCuentaRequest)=>{
+    this.cntService.getCntCuentasGastosAsignadas().subscribe({next:(value:cntSubCuentaRequest)=>{
       if(value.numdata>0){
         this.cuentas = [...value.data];
         this.cuenta = [...this.cuentaIni ,  ...value.data];
@@ -113,12 +113,6 @@ export class flujoDeCajaComponent {
       }});
   }
 
-  ExportarResumen()
-  {  
-   let printerManager =  new PrinterManager(this.serviceCaja); 
-   if(this.resumenVenta != undefined){ 
-    printerManager.exportResumenCuentas( this.resumenVenta , 'Caja');
-  } }
   
   async imprimirResumen()
   {  
@@ -127,7 +121,13 @@ export class flujoDeCajaComponent {
     printerManager.printResumenCuentas(false,this.resumenVenta);
   } 
 }
-}
 
+async ExportarResumen()
+{  
+ let printerManager =  new PrinterManager(this.serviceCaja); 
+ if(this.resumenVenta != undefined){ 
+  printerManager.exportResumenCuentas( this.resumenVenta , 'Gastos');
+} }
+}
 
 

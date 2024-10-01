@@ -43,6 +43,13 @@ const day = date.getDate(); // */
        this.minimo = this.fecha1;
      }
 
+
+     async ExportarResumen()
+     {  
+      let printerManager =  new PrinterManager(this.serviceCaja); 
+      if(this.resumenVenta != undefined){ 
+       printerManager.exportResumenVentas( this.resumenVenta , 'VentaPorProducto');
+     } }
      getVentasPorProducto(prd:ProductoVendido){
       console.log('productos seleccionado' , this.productosVendidoc);
       this.productosVendidoc = prd;

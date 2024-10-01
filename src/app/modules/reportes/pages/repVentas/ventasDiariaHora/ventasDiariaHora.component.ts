@@ -73,6 +73,13 @@ const day = date.getDate(); // */
    printerManager.printResumenVenta(false,this.resumenVenta);
   } 
 }
+
+async ExportarResumen()
+{  
+ let printerManager =  new PrinterManager(this.serviceCaja); 
+ if(this.resumenVenta != undefined){ 
+  printerManager.exportResumenVentas( this.resumenVenta , 'VentaFechaYHora');
+} }
   VerFactura(venta:DocumentosModel){
     let pagosHtml:string =  `<h1>Factura :  ${venta.idDocumentoFinal}</h1>
     <h2>Cliente :  ${venta.clienteNombre}</h2>

@@ -20,11 +20,12 @@ import { InicioRepFinansasComponent } from './pages/repFinanzas/inicioRepFinansa
 import { EstadoDeResultadoComponent } from './pages/repFinanzas/estadoDeResultado/estadoDeResultado.component';
 import { flujoDeCajaComponent } from './pages/repFinanzas/flujoDeCaja/flujoDeCaja.component';
 import { movimientosCuentasComponent } from './pages/repFinanzas/movimientos/movimientos.component';
+import { movimientosGastosComponent } from './pages/repFinanzas/movimientosGastos/movimientosGastos.component';
 
 
 @NgModule({
   declarations: [
-    ReportesComponent, flujoDeCajaComponent,movimientosCuentasComponent,
+    ReportesComponent, flujoDeCajaComponent,movimientosCuentasComponent,movimientosGastosComponent,
     ReimpimirFacturasComponent,
     InicioReportesComponent,ventasPorCategoriaComponent,
      VerFacturasClienteComponent, ventasPorProductoComponent,ventasPorVendedorComponent,ventasDiariaHoraComponent,

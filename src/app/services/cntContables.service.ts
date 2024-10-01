@@ -302,10 +302,16 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
     };
     console.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
     return this.http.post<cntMovCuentasRequest>(url.actionDocumentos, datos, httpOptions());
-  }
+  }  
   getCntCuentasCajasAsignadas():Observable<cntSubCuentaRequest>{
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_cnt_cajas_asignadas 
+     }; 
+     return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
+  }
+  getCntCuentasGastosAsignadas():Observable<cntSubCuentaRequest>{
+    let datos = {"action": actions.actionSelect , 
+      "_tabla" : vistas.vw_cnt_gasto_asignadas 
      }; 
      return this.http.post<cntSubCuentaRequest>(url.action , datos, httpOptions()) ;
   }

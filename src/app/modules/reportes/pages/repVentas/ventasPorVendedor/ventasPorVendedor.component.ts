@@ -286,6 +286,12 @@ export class ventasPorVendedorComponent  implements OnInit {
   } 
 }
  
+async ExportarResumen()
+{  
+ let printerManager =  new PrinterManager(this.serviceCaja); 
+ if(this.resumenVenta != undefined){ 
+  printerManager.exportResumenVentas( this.resumenVenta , 'VentaPorVendedor');
+} }
 
   getDocumentosPorFecha(){
     //this.printer_factura_final();  
