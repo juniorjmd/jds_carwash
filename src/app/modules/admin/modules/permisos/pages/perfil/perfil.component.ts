@@ -13,8 +13,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./perfil.component.css'], 
 })
 export class PerfilComponent implements OnInit  { 
-  perfiles: Perfil[] = [];
-  recursos: Recurso[] = [];
+  perfiles:Perfil[] = [];
+  recursos:Recurso[]=[];
   constructor(
     private perfilService:usuarioService
   ){
@@ -22,11 +22,13 @@ export class PerfilComponent implements OnInit  {
   ngOnInit(): void { 
 this.perfilService.getArrayRecursos().subscribe({next:(value:recursoRequest)=>{
    
-   this.recursos = [];
+   
+
    for(let i= 0 ; i< value.numdata ; i++ )  {
+    console.log('recursos ' + i , value.data[i]) 
     this.recursos.push(value.data[i]) 
    }  
-   console.log('recursos' , this.recursos);
+   console.log('recursos' , this.recursos , Array.isArray(this.recursos));
     
 }, error:e=>Swal.fire(JSON.stringify(e))
 }

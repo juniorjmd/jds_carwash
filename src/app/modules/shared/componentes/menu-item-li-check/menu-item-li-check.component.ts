@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Recurso } from 'src/app/interfaces/recurso';
-import { RecursoDetalle } from 'src/app/interfaces/usuario.interface';
+import { Recurso } from 'src/app/interfaces/recurso'; 
 
 @Component({
   selector: 'shared-menu-item-li-check',
@@ -9,7 +8,7 @@ import { RecursoDetalle } from 'src/app/interfaces/usuario.interface';
 })
 export class MenuItemLiCheckComponent {
   isDropdownActive:boolean = false;
-  @Input() recurso!: Recurso;
+  @Input() recurso!:Recurso;
 
    constructor(){
     console.log('recursos :::::  ',this.recurso);
@@ -17,7 +16,7 @@ export class MenuItemLiCheckComponent {
    }
 
   showDropdown() {
-    this.isDropdownActive = true;
+    this.isDropdownActive =(this.isDropdownActive)?false: true;
   }
 
   hideDropdown() {

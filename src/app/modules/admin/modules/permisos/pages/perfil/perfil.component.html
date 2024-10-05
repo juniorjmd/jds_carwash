@@ -29,10 +29,9 @@
         </div> 
             </div>  
             <div class="col-8">  
-                <div class="collapse navbar-collapse" id="navbarNavMenu">
-                    <ul class="navbar-nav  ">
-                      <ng-container *ngFor="let recurso of recursos" ngIf="recursos.length > 0">15643165
-                       <!--<shared-menu-item-li-check [recurso]="recurso"></shared-menu-item-li-check>--> 
+                <div > <ul class="navbar-nav  ">
+                      <ng-container *ngFor="let item of recursos" > 
+                      <shared-menu-item-li-check [recurso]="item"></shared-menu-item-li-check> 
                       </ng-container>
                     </ul>
                   </div>
