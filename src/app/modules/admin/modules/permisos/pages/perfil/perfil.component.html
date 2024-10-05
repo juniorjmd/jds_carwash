@@ -1,0 +1,41 @@
+<div class="container-fluid  ">
+    <div class="card">
+      <div class="card-header">
+        <h3>Crear Perfil</h3>
+      </div>
+      <div class="card-body">  
+
+        <div class="row">
+            <div class="col-4">  
+                <div class="row">
+                     <div class="col-12">  
+                <div class="mb-3">
+            <label for="perfNombre" class="form-label">Nombre del Perfil</label>
+            <input type="text" id="perfNombre"   class="form-control"  >
+                </div>
+          <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select id="estado"   class="form-select"  >
+              <option value="1">Activo</option>
+              <option value="2">Inactivo</option>
+            </select>
+          </div>
+          <button   class="btn btn-primary"  >Crear Perfil</button>
+        </div> </div>
+        <div class="row" *ngFor="let item of perfiles" >
+            <div class="col-12" style="cursor: pointer;" (click)="buscarRecursos()">  
+                {{item.Perf_Nombre}}
+            </div>
+        </div> 
+            </div>  
+            <div class="col-8">  
+                <div class="collapse navbar-collapse" id="navbarNavMenu">
+                    <ul class="navbar-nav  ">
+                      <ng-container *ngFor="let recurso of recursos" ngIf="recursos.length > 0">15643165
+                       <!--<shared-menu-item-li-check [recurso]="recurso"></shared-menu-item-li-check>--> 
+                      </ng-container>
+                    </ul>
+                  </div>
+            </div>
+    </div>
+  </div></div></div>

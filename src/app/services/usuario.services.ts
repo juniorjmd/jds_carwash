@@ -7,7 +7,9 @@ import { TABLA } from '../models/app.db.tables';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { UsuarioModel } from '../models/usuario.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Recurso } from '../interfaces/recurso';
+import { recursoRequest } from '../interfaces/producto-request';
 
 @Injectable({
     providedIn: 'root'
@@ -27,6 +29,13 @@ constructor(private http: HttpClient ,
     changeUsuario(usuario: any) {
         this.usuarioSource.next(usuario);
       }
+
+      getArrayRecursos():Observable<recursoRequest>{
+        let datos = {"action": actions.getAllRecursosArr   
+                    };
+        console.log('servicios de usuarios activo - getUsuarios' ,url.actionAdmin , datos, httpOptions());
+        return this.http.post<recursoRequest>(url.actionAdmin , datos, httpOptions()) ;
+    }   
     getPerfiles(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : TABLA.perfiles

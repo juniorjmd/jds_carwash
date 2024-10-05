@@ -119,6 +119,7 @@
     'actionProcedure' :actionProcedure,
     'actionSelect' :actionSelect ,
     'actionSelects' :actionSelects ,
+    'getAllRecursosArr' :'GET_ALL_RECURSOS' ,
     'resumenVentaCliente' :'GET_RESUMEN_VENTA_CLIENTE' ,
     'resumenVentaProducto' :'GET_RESUMEN_VENTA_PRODUCTOS' ,
     'resumenVentaCategoria' :'GET_RESUMEN_VENTA_CATEGORIAS' ,

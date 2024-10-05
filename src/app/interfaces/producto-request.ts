@@ -22,6 +22,7 @@ import { DocumentosComprasModel, DocumentosModel } from "../models/ventas/docume
 import { establecimientoModel } from "../models/ventas/establecimientos.model";
 import { OperacionesComponent } from "../modules/admin/modules/cuentas-contables/pages/operaciones/operaciones.component";
 import { TrasladosCntComponent } from "../modules/admin/modules/traslados-cnt/traslados-cnt.component";
+import { Recurso } from "./recurso";
 import { ReporteMovimientoCuentas } from "./reporteMovimientoCuentas.";
 import { ResumenCreditos } from "./resumenCuentas";
 import { CntOperacionPrestablecidas } from "./traslados_cnt/cnt_operacion_prestablecidas.";
@@ -55,6 +56,13 @@ export interface DocumentoRequest {
   numdata: number;
   error: string;
 }
+
+export interface recursoRequest { 
+  data:    Recurso[];
+  query: string;
+  numdata: number;
+  error: string;
+} 
 export interface ProductosVendidosRequest { 
   data:  {idProducto:string, firstDate:Date, lastDate:Date, nombre:string, nombre2:string, nombre3:string} [];
   query: string;

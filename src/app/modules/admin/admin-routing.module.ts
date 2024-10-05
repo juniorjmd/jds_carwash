@@ -32,6 +32,7 @@ const routes: Routes = [{ path : '' , component: IndexComponent,
                 { path : 'establecimientos' ,    component: CrearComponent}, 
                 { path : 'impuestos', component:ImpuestosComponent}, 
                 { path : 'caja' ,      component: CajasNuevaComponent}, 
+                { path : 'permisos' , loadChildren:()=>import('./modules/permisos/permisos.module').then(m=> m.PermisosModule)},
                 { path: 'trasladosCnt', loadChildren: () => import('./modules/traslados-cnt/traslados-cnt.module').then(m => m.TrasladosCntModule) },
                 { path : 'cajaDetalle:id' ,      component: CajasDetalleComponent},
                 { path : 'actividadesDescuento' ,      component: ActividadDescuentoComponent,children:[

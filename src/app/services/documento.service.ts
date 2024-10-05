@@ -134,7 +134,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
     return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
   } 
   
-  getCuentasXCobrarClienteByfecha(_proveedor:number , _fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
+  
+  getCuentasXPagarProveedorByfecha(_proveedor:number , _fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
     let datos = {
       "action": actions.resumenCuentaporPagarProveedor, 
       _fechaInicio , _fechaFin , _proveedor
@@ -142,7 +143,7 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
     console.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
     return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
   }
-  getCuentasXPagarProveedorByfecha(_cliente:number , _fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
+  getCuentasXCobrarClienteByfecha(_cliente:number , _fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
     let datos = {
       "action": actions.resumenCuentaporCobrarCliente, 
       _fechaInicio , _fechaFin , _cliente

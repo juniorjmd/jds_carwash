@@ -3,14 +3,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { Usuarios } from 'src/app/interfaces/usuario.interface';
 import { loading } from 'src/app/models/app.loading';
 import { UsuarioModel } from 'src/app/models/usuario.model';
-import { usuarioService } from 'src/app/services/usuario.services';
-import { UsuarioDetalleComponent } from './usuario-detalle.component';
-import { UsuarioEditarComponent } from './usuario-editar.component';
-import { UsuarioNuevoComponent} from './usuario-nuevo.component';
-import { UsuarioPerfilComponent} from './usuario-perfil.component';
+import { usuarioService } from 'src/app/services/usuario.services'; 
 import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { tap } from 'rxjs';
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
+import { UsuarioNuevoComponent } from './nuevo/usuario-nuevo.component';
+import { UsuarioPerfilComponent } from './perfil/usuario-perfil.component';
+import { UsuarioDetalleComponent } from './detalle/usuario-detalle.component';
+import { UsuarioEditarComponent } from './editar/usuario-editar.component';
 
 @Component({
   selector: 'app-usuario',

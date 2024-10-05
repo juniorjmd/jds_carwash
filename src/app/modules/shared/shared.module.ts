@@ -36,6 +36,7 @@ import { productosVendidosDropdownComponent } from './components/productosVendid
 import { categoriasVendidasDropdownComponent } from './components/categoriasVendidas-dropdown/categoriasVendidas-dropdown.component';
 import { vendedoresDropdownComponent } from './components/vendedores-dropdown/vendedores-dropdown.component';
 import { usuarioDropdownComponent } from './components/usuario-dropdown/usuario-dropdown.component';  
+import { MenuItemLiCheckComponent } from './componentes/menu-item-li-check/menu-item-li-check.component';
 @NgModule({
   declarations: [
     FndClienteComponent,
@@ -54,7 +55,7 @@ import { usuarioDropdownComponent } from './components/usuario-dropdown/usuario-
     UlLinkComponent,
     DropdownFndComponent,
     NavbarComponent,
-    MenuItemLiComponent,
+    MenuItemLiComponent,MenuItemLiCheckComponent,
     DropdownComponent,
     DocumentosDropdownComponent,vendedoresDropdownComponent,
     EmpleadosDropdownComponent ,MarcasDropdownComponent, CategiasDropdownComponent , LineBreakPipe, categoriasVendidasDropdownComponent 
@@ -71,7 +72,7 @@ import { usuarioDropdownComponent } from './components/usuario-dropdown/usuario-
     MatButtonModule ,
     MatCheckboxModule ,
   ],
-  exports:[FndClienteComponent, 
+  exports:[FndClienteComponent, MenuItemLiComponent,MenuItemLiCheckComponent,
     LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,categoriasVendidasDropdownComponent ,
     TabComponent,usuarioDropdownComponent,
     TableComponent ,
@@ -91,7 +92,10 @@ import { usuarioDropdownComponent } from './components/usuario-dropdown/usuario-
     CommonModule,
     MatDialogModule ,
     MatButtonModule ,
-    MatCheckboxModule  ,MarcasDropdownComponent, CategiasDropdownComponent, productosVendidosDropdownComponent
+    MatCheckboxModule  ,
+    MarcasDropdownComponent,
+    CategiasDropdownComponent, 
+    productosVendidosDropdownComponent
   ]
 })
 export class SharedModule { }

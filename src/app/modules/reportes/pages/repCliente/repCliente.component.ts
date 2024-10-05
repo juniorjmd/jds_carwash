@@ -66,7 +66,7 @@ export class repClienteComponent  {
    
    let f1 = (this.filtrar)? this.fecha1 : '2000-01-01'; 
    let f2 =  (this.filtrar)?this.fecha2 : '9999-12-31' ; 
-   this.srvDocumentos.getCuentasXPagarProveedorByfecha(this.provedorID ,   f1, f2 ).subscribe({next:(value:CreditosResumenRequest)=>{
+   this.srvDocumentos.getCuentasXCobrarClienteByfecha(this.provedorID ,   f1, f2 ).subscribe({next:(value:CreditosResumenRequest)=>{
     
     console.log('getCuentasXCobrarByfecha',value.data); 
     if(value.error == 'ok' && ((value.numdata||0) > 0 ) ){ 

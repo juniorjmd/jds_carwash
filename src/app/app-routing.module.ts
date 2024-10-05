@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';  
 import { HomeComponent } from './components/home/home.component'; 
-import { InicioComponent } from './components/inicio/inicio.component';
-import { UsuarioComponent } from './modules/admin/modules/usuarios/pages/usuario.component'; 
+import { InicioComponent } from './components/inicio/inicio.component'; 
 import { CierresComponent } from './components/cierres/cierres.component'; 
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component';  
 import { EnviosComponent } from './components/envios/envios.component'; 
@@ -25,12 +24,11 @@ import { ParametrosComponent } from './components/parametros/parametros.componen
         { path: 'compras', loadChildren: () => import('./modules/compras/compras.module').then(m => m.ComprasModule) },
         { path : 'envios' , component : EnviosComponent},
         { path : 'cierres' ,      component: CierresComponent}, 
-        { path: 'reportes', loadChildren: () => import('./modules/reportes/reportes.module').then(m => m.ReportesModule) },
-        { path: 'usuarios', loadChildren: () => import('./modules/admin/modules/usuarios/usuarios.module').then(m => m.UsuariosModule) }, 
+        { path: 'reportes', loadChildren: () => import('./modules/reportes/reportes.module').then(m => m.ReportesModule) }, 
         { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
       ]
     },
-    { path: 'permisos', loadChildren: () => import('./modules/admin/modules/permisos/permisos.module').then(m => m.PermisosModule) }, 
+     
      { path : '**' , pathMatch:'full' , redirectTo : 'login'},
 ] ;
 

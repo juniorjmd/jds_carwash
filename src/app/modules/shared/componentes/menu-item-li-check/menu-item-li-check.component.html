@@ -1,0 +1,29 @@
+<li *ngIf="recurso.recursosHijos!.length === 0 && (recurso.direccion != undefined && recurso.direccion.length  > 0 &&  recurso.direccion[0] != '' )" 
+    class="nav-item item-drop-down-per">
+  <a class="nav-link" [routerLink]="recurso.direccion">
+     {{recurso.display_nombre}}
+  </a>
+</li>
+
+<li *ngIf="recurso.recursosHijos!.length > 0" class="nav-item dropdown item-drop-down-per" 
+  (mouseenter)="showDropdown()" 
+  (mouseleave)="hideDropdown()"
+  [ngClass]="{ 'show': isDropdownActive }">
+  <a class="nav-link dropdown-toggle"  
+      id="navbarDropdown{{recurso.id}}" role="button"
+      aria-expanded="false" 
+      data-toggle="dropdown"
+      aria-haspopup="true">
+      {{recurso.display_nombre}}
+  </a>
+  <div class="dropdown-menu" 
+      [ngClass]="{ 'show': isDropdownActive }">
+      <ul>
+          <ng-container *ngFor="let subRecurso of recurso.recursosHijos">
+              <li class="dropdown-item" *ngIf="(subRecurso.direccion != undefined && subRecurso.direccion.length  > 0 &&  subRecurso.direccion[0] != '' )">
+                  <shared-menu-item-li-check [recurso]="subRecurso"></shared-menu-item-li-check>
+              </li>
+          </ng-container>
+      </ul>
+  </div>
+</li>

@@ -6,10 +6,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';  
 import { HomeComponent } from './components/home/home.component';
 import { InicioComponent } from './components/inicio/inicio.component';
-import { AdminLayoutComponent } from './components/layouts/admin-layout/admin-layout.component';
-import { UsuarioComponent } from './modules/admin/modules/usuarios/pages/usuario.component'; 
-
-
+import { AdminLayoutComponent } from './components/layouts/admin-layout/admin-layout.component';  
 import { CierresComponent } from './components/cierres/cierres.component';
 import { MiUsuarioComponent } from './components/mi-usuario/mi-usuario.component'; 
 import { loading } from './models/app.loading';
@@ -34,8 +31,7 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     AppComponent, 
     HomeComponent,
     InicioComponent,
-    AdminLayoutComponent,
-    UsuarioComponent, 
+    AdminLayoutComponent, 
     CierresComponent,
     MiUsuarioComponent,    
     EnviosComponent, 
