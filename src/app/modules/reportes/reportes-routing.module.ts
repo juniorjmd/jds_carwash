@@ -20,6 +20,8 @@ import { EstadoDeResultadoComponent } from './pages/repFinanzas/estadoDeResultad
 import { flujoDeCajaComponent } from './pages/repFinanzas/flujoDeCaja/flujoDeCaja.component';
 import { movimientosCuentasComponent } from './pages/repFinanzas/movimientos/movimientos.component';
 import { movimientosGastosComponent } from './pages/repFinanzas/movimientosGastos/movimientosGastos.component';
+import { CuentasPorPagarComponent } from './pages/repFinanzas/cuentasPorPagar/cuentasPorPagar.component';
+import { CuentasPorCobrarComponent } from './pages/repFinanzas/cuentasPorCobrar/cuentasPorCobrar.component';
 
 const routes: Routes = [{ path: '', component: InicioReportesComponent ,   children:[
     {path : 'reportesMenu' , component:ReportesComponent}, 
@@ -32,7 +34,9 @@ const routes: Routes = [{ path: '', component: InicioReportesComponent ,   child
       {path : 'movimientos' , component:movimientosCuentasComponent},  
       {path : 'gastos' , component:movimientosGastosComponent} ,  
       {path : 'estado-resultados' , component:EstadoDeResultadoComponent}, 
-      {path : 'caja' , component:flujoDeCajaComponent},  
+      {path : 'caja' , component:flujoDeCajaComponent},    
+      {path : 'cuentasPorCobrar' , component:CuentasPorCobrarComponent}, 
+      {path : 'cuentasPorPagar' , component:CuentasPorPagarComponent},  
         { path : '**' , pathMatch:'full' , redirectTo : ''}
     ] } ,
     { path: 'reporteVentas', component: InicioRepVentasComponent ,   children:[ 

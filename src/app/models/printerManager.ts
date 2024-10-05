@@ -10,12 +10,14 @@ import { SoporteOperacion } from "../interface/soporte-operacion";
 import { DatePipe } from "@angular/common";
 import { ResumenVenta } from "../interfaces/resumenVenta.";
 import { MovimientoResumen, ReporteMovimientoCuentas } from "../interfaces/reporteMovimientoCuentas.";
+import { ResumenCreditos } from "../interfaces/resumenCuentas";
 @Injectable({
   providedIn: 'root',
 })
 export class PrinterManager {
   movimiento!:SoporteOperacion
   resumenVenta!:ResumenVenta
+  resumenCreditos!:ResumenCreditos
   resumenCuentas!:ReporteMovimientoCuentas
   private doc :DocumentosModel = new DocumentosModel() ; 
   private docDev :DevolucionModel = new DevolucionModel() ; 
@@ -284,7 +286,7 @@ private pagosCierre():string{
   maximumFractionDigits: 2 });
   let html = '';
   if(this.cierre.arrPagos != undefined && this.cierre.arrPagos.length > 0 ) {
-   html = '<div><hr><p>Pagos</p><table >'; 
+   html = `<div><hr><p>Pagos</p><table style='width: 100%;' >`; 
   this.cierre.arrPagos.forEach(pago=>{
      html += `<tr><td>${pago.nombrepago} </td><td>:</td> <td>${currencyFormatter.format(pago.total)}</td></tr> `
   })
@@ -394,7 +396,7 @@ private   infoRMCGeneral():string{
   maximumFractionDigits: 2 }); 
      receiptHTML += (this.tipoImpresora != 'POS')?
          `<div> 
-         <table>
+         <table style='width: 100%;'>
          <tr> 
               <th colspan="4">RESUMEN DE MOVIMIENTO EN CUENTAS CONTABLES</th>  
          </tr>
@@ -439,13 +441,27 @@ public printResumenVenta(impresoraPos = true , resumen:ResumenVenta) {
     const printContent = this.generateRVHTML();
     this.openPrintWindows(printContent);
 } 
-  
+public printResumenCredito(impresoraPos = true , resumen:ResumenCreditos) { 
+  this.establecimiento = this.establecimientos[0]
+    this.resumenCreditos =  resumen; 
+  this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ;   
+    const printContent = this.generateResumenCreditosHTML();
+    this.openPrintWindows(printContent);
+}   
 public exportResumenVentas(  resumen:ResumenVenta , nombre:string) { 
   this.establecimiento = this.establecimientos[0]
     this.resumenVenta =  resumen; 
   this.tipoImpresora =   'NO_POS' ;   
     const printContent = this.generateRVHTML();
     this.openExcelWindows(printContent , 'ResumenVentas'+nombre);
+} 
+
+public exportResumenCreditos(  resumen:ResumenCreditos , nombre:string) { 
+  this.establecimiento = this.establecimientos[0]
+    this.resumenCreditos =  resumen; 
+  this.tipoImpresora =   'NO_POS' ;   
+    const printContent = this.generateResumenCreditosHTML();
+    this.openExcelWindows(printContent , 'Resumen '+nombre);
 } 
   public printReceipt(impresoraPos = true) {
     this.tipoImpresora = (impresoraPos)?'POS' : 'NO_POS' ; 
@@ -487,14 +503,14 @@ public exportResumenVentas(  resumen:ResumenVenta , nombre:string) {
       cabecera += '</p> '; 
 
     }else{
-      cabecera = `<div><table><tr><td><h2>`;
+      cabecera = `<div><table style='width: 100%;'><tr><td><h2>`;
       if(PrinterManager.sucursal?.nombre_sucursal_sec.trim() != '')
         cabecera +=   PrinterManager.sucursal?.nombre_sucursal_sec + ' - ' ; 
 
       cabecera += `${this.establecimiento?.nombre}</h2></td> <td></td></tr><tr><td>`;  
       cabecera += `</td> <td></td></tr></div>`; 
 
-      cabecera = `<div >     <table><tr><td><h2  style=" margin: 0;">`;
+      cabecera = `<div >     <table style='width: 100%;'><tr><td><h2  style=" margin: 0;">`;
       if((PrinterManager.sucursal?.nombre_sucursal_sec||'').trim() != '')
         cabecera +=   PrinterManager.sucursal?.nombre_sucursal_sec + ' - ' ; 
 
@@ -515,7 +531,20 @@ public exportResumenVentas(  resumen:ResumenVenta , nombre:string) {
   } 
 
 /*********************************************************************************************** */
+generateResumenCreditosHTML(): string {
 
+  let receiptHTML = ''; 
+  receiptHTML = (this.tipoImpresora == 'POS')?`<div style="font-family: Arial, sans-serif; width: 219.24px;"> ` : 
+  `<div style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">`;
+  receiptHTML += this.generateCabecera() ;  
+  receiptHTML += this.infoRepCreditoGeneral(); 
+    receiptHTML += this.detalleRepCredito(); 
+    receiptHTML += this.footerRepCredito() ;  
+  receiptHTML += ` </div> 
+  <style>  body table td { font-size: xx-small !important } </style>`;
+
+  return receiptHTML;
+} 
 /*************************************************************************************************/
 generateRVHTML(): string {
 
@@ -904,10 +933,265 @@ receiptHTML += `</div>`
 
   return receiptHTML; 
 } 
+private detalleRepCredito():string{
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 });
+let receiptHTML  = ` <hr> 
+<div style="text-align: left;" name="detalle">
+<table  style="font-family: Arial, sans-serif; width: 100%;"><tr>`; 
+let cont = 0;
+receiptHTML  +=`<td>`  ;  
+if(this.resumenCreditos.creditos != undefined){
 
+receiptHTML +=`<h5>Listado de Creditos</h5>`;
+
+receiptHTML +=`<table  style="font-family: Arial, sans-serif; width: 100%;">`;
+  
+
+let cabecera =  (this.tipoImpresora == 'POS')?`<tr><th>V. inicial</th><th>Anticipo</th><th>Abonos</th><th>Saldo</th> </tr>`
+:`<tr><th>Persona</th><th>Fecha</th><th>V. inicial</th><th>Anticipo</th><th>Abonos</th><th>Saldo</th></tr>` ; 
+this.resumenCreditos.creditos.forEach(item=>{
+  receiptHTML += (this.tipoImpresora == 'POS')?`<tr><th colspan='4'>${item.terceroNombre}</th></tr> 
+						  <tr><th colspan='4'>${item.fecha_creacion}</th></tr>
+              ${cabecera}
+              <tr>
+                <td>${currencyFormatter.format(item.valorInicial) }</td> 
+                <td>${currencyFormatter.format(item.abonoInicial)}</td> 
+                <td>${currencyFormatter.format(item.totalAbonos)}</td> 
+                <td>${currencyFormatter.format(item.totalActual)}</td>   
+              </tr>` : ` ${cabecera}
+               <tr>
+                  <td>${item.terceroNombre}</td> 
+                  <td>${item.fecha_creacion}</td>
+                  <td>${currencyFormatter.format(item.valorInicial) }</td> 
+                  <td>${currencyFormatter.format(item.abonoInicial)}</td> 
+                  <td>${currencyFormatter.format(item.totalAbonos)}</td> 
+                  <td>${currencyFormatter.format(item.totalActual)}</td>   
+              </tr>`;
+       cabecera =  (this.tipoImpresora == 'POS')?cabecera:'';      
+
+}) 
+   receiptHTML += `</table>`  ;
+} 
+
+if(this.resumenCreditos.abonos != undefined){
+
+  receiptHTML +=`<h5>Listado de Abonos</h5>`;
+  
+  receiptHTML +=`<table  style="font-family: Arial, sans-serif; width: 100%;">`;
+    
+  
+  let cabecera =  (this.tipoImpresora == 'POS')?`<tr><th>Fecha</th><th>Abono</th><th>Cartera</th></tr>`
+  :`<tr><th>Persona</th><th>Fecha</th><th>Abono</th><th>Cartera</th></tr>` ; 
+  this.resumenCreditos.abonos.forEach(item=>{
+    receiptHTML += (this.tipoImpresora == 'POS')?`<tr><th colspan='4'>${item.descripcion}</th></tr>  
+                ${cabecera}
+                <tr>
+                  <th >${item.fecha_creacion}</th> 
+                  <td>${currencyFormatter.format(item.totalAbonos)}</td> 
+                  <td>${ item.id_cartera}</td>   
+                </tr>` : `${cabecera}
+                 <tr>
+                    <td>${item.descripcion}</td> 
+                    <td>${item.fecha_creacion}</td>
+                    <td>${currencyFormatter.format(item.totalAbonos) }</td>   
+                    <td>${item.id_cartera}</td> 
+                </tr>`;
+         cabecera =  (this.tipoImpresora == 'POS')?cabecera:'';      
+  
+  }) 
+     receiptHTML += `</table>`  ;
+  } 
+if(this.resumenCreditos.cuotas != undefined){
+
+    receiptHTML +=`<h5>Listado de cuotas</h5>`;
+    
+    receiptHTML +=`<table  style="font-family: Arial, sans-serif; width: 100%;">`;
+      
+    
+    let cabecera =  (this.tipoImpresora == 'POS')?`<tr><th>Valor</th><th>T. Pagado</th><th>Saldo</th><th>últ.Abono</th></tr>`
+    :`<tr><th>Fecha de pago</th><th>Cartera</th><th># Cuota</th><th>Valor</th><th>T. Pagado</th><th>Saldo</th><th>últ.Abono</th></tr>` ; 
+    this.resumenCreditos.cuotas.forEach(item=>{
+      receiptHTML += (this.tipoImpresora == 'POS')?`<tr><th colspan='4'>${item.fecha_max_pago} - credito # ${item.id_cartera} - cuota # ${item.numero_cuota}</th></tr>  
+                  ${cabecera}
+                  <tr>
+                    <td >${currencyFormatter.format(item.valorCuota) }</td> 
+                    <td>${currencyFormatter.format(item.totalPagado)}</td> 
+                    <td>${currencyFormatter.format(item.totalActual) }</td>  
+                    <td>${currencyFormatter.format(item.ultimoAbono) }</td>  
+                  </tr>` : `${cabecera}
+                   <tr>
+                    <td>${item.fecha_max_pago}</td> 
+                    <td>${item.id_cartera}</td> 
+                    <td>${item.numero_cuota}</td> 
+                    <td>${currencyFormatter.format(item.valorCuota) }</td> 
+                    <td>${currencyFormatter.format(item.totalPagado)}</td> 
+                    <td>${currencyFormatter.format(item.totalActual) }</td>  
+                    <td>${currencyFormatter.format(item.ultimoAbono) }</td>  
+                  </tr>`;
+           cabecera =  (this.tipoImpresora == 'POS')?cabecera:'';      
+    
+    }) 
+       receiptHTML += `</table>`  ;
+    } 
+if(this.resumenCreditos.cuotas_a_vencerce != undefined){
+
+  receiptHTML +=`<h5>Listado de cuotas a vencerce</h5>`;
+  
+  receiptHTML +=`<table  style="font-family: Arial, sans-serif; width: 100%;">`;
+    
+  
+  let cabecera =  (this.tipoImpresora == 'POS')?`<tr><th>Valor</th><th>T. Pagado</th><th>Saldo</th><th>últ.Abono</th></tr>`
+  :`<tr><th>Fecha de pago</th><th>Cartera</th><th># Cuota</th><th>Valor</th><th>T. Pagado</th><th>Saldo</th><th>últ.Abono</th></tr>` ; 
+  this.resumenCreditos.cuotas_a_vencerce.forEach(item=>{
+    receiptHTML += (this.tipoImpresora == 'POS')?`<tr><th colspan='4'>${item.fecha_max_pago} - credito # ${item.id_cartera} - cuota # ${item.numero_cuota}</th></tr>  
+                ${cabecera}
+                <tr>
+                  <td >${currencyFormatter.format(item.valorCuota) }</td> 
+                  <td>${currencyFormatter.format(item.totalPagado)}</td> 
+                  <td>${currencyFormatter.format(item.totalActual) }</td>  
+                  <td>${currencyFormatter.format(item.ultimoAbono) }</td>  
+                </tr>` : `${cabecera}
+                  <tr>
+                  <td>${item.fecha_max_pago}</td> 
+                  <td>${item.id_cartera}</td> 
+                  <td>${item.numero_cuota}</td> 
+                  <td>${currencyFormatter.format(item.valorCuota) }</td> 
+                  <td>${currencyFormatter.format(item.totalPagado)}</td> 
+                  <td>${currencyFormatter.format(item.totalActual) }</td>  
+                  <td>${currencyFormatter.format(item.ultimoAbono) }</td>  
+                </tr>`;
+          cabecera =  (this.tipoImpresora == 'POS')?cabecera:'';      
+  
+  }) 
+      receiptHTML += `</table>`  ;
+  } 
+if(this.resumenCreditos.cuotas_vencidas != undefined){
+
+    receiptHTML +=`<h5>Listado de cuotas vencidas</h5>`;
+    
+    receiptHTML +=`<table  style="font-family: Arial, sans-serif; width: 100%;">`;
+      
+    
+    let cabecera =  (this.tipoImpresora == 'POS')?`<tr><th>Valor</th><th>T. Pagado</th><th>Saldo</th><th>últ.Abono</th></tr>`
+    :`<tr><th>Fecha de pago</th><th>Cartera</th><th># Cuota</th><th>Valor</th><th>T. Pagado</th><th>Saldo</th><th>últ.Abono</th></tr>` ; 
+    this.resumenCreditos.cuotas_vencidas.forEach(item=>{
+      receiptHTML += (this.tipoImpresora == 'POS')?`<tr><th colspan='4'>${item.fecha_max_pago} - credito # ${item.id_cartera} - cuota # ${item.numero_cuota}</th></tr>  
+                  ${cabecera}
+                  <tr>
+                    <td >${currencyFormatter.format(item.valorCuota) }</td> 
+                    <td>${currencyFormatter.format(item.totalPagado)}</td> 
+                    <td>${currencyFormatter.format(item.totalActual) }</td>  
+                    <td>${currencyFormatter.format(item.ultimoAbono) }</td>  
+                  </tr>` : `${cabecera}
+                   <tr>
+                    <td>${item.fecha_max_pago}</td> 
+                    <td>${item.id_cartera}</td> 
+                    <td>${item.numero_cuota}</td> 
+                    <td>${currencyFormatter.format(item.valorCuota) }</td> 
+                    <td>${currencyFormatter.format(item.totalPagado)}</td> 
+                    <td>${currencyFormatter.format(item.totalActual) }</td>  
+                    <td>${currencyFormatter.format(item.ultimoAbono) }</td>  
+                  </tr>`;
+           cabecera =  (this.tipoImpresora == 'POS')?cabecera:'';      
+    
+    }) 
+       receiptHTML += `</table>`  ;
+    }    
+
+receiptHTML += `</td></tr></table>`
+
+
+
+receiptHTML += `</div>`
+
+  return receiptHTML; 
+} 
 private footerRV():string{
+  return  '<div style="font-size: 10px;margin: 10px;">Documento de soporte de creditos en un rango de fecha</div>' ; 
+}
+//////////////////////////////////////////////
+private footerRepCredito():string{
   return  '<div style="font-size: 10px;margin: 10px;">Documento de soporte de ventas en un rango de fecha</div>' ; 
 }
+private   infoRepCreditoGeneral():string{
+  let receiptHTML = ''; 
+  const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
+  currency: 'COP',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2 }); 
+     receiptHTML += (this.tipoImpresora != 'POS')?
+         `<div> 
+         <table style='width: 100%;'>
+         <tr> 
+              <th colspan="4">RESUMEN DE CREDITOS</th>  
+         </tr>
+          <tr> 
+              <th>Usuario </th><td> ${this.resumenCreditos.usuario_generador}</td> 
+              <th> </th><td>  </td> 
+         </tr>
+         <tr> <th colspan='4'>${this.resumenCreditos.descripcion} </th> </tr> 
+         <tr>
+         <th> Desde </th><td> ${this.resumenCreditos.fechaInicial}</td> <th> 
+        hasta</th><td>  ${this.resumenCreditos.fechaFinal}</td> 
+         </tr> 
+          <tr> <td colspan='4'> 
+          <table style='width: 100%;'>
+           <tr> <th> <span class="d-block font-weight-bold"># Créditos</span></th>
+                <th><span class="d-block font-weight-bold">Valor Actual</span></th> 
+                <th> <span class="d-block font-weight-bold">Valor inicial</span></th> 
+                <th> <span class="d-block font-weight-bold">Abono inicial</span></th> 
+                <th> <span class="d-block font-weight-bold">Abonos recibidos</span></th>
+            </tr>
+            <tr>
+              <th>  <span>${this.resumenCreditos?.numCreditos } </span> </th>
+              <th> <span>${currencyFormatter.format(this.resumenCreditos?.t_totalActual)} </span></th>
+              <th> <span>${currencyFormatter.format(this.resumenCreditos?.t_valorInicial)} </span> </th>
+              <th> <span>${currencyFormatter.format(this.resumenCreditos?.t_abonoInicial)}</span></th>
+              <th> <span>${currencyFormatter.format(this.resumenCreditos?.t_totalAbonos)}</span></th>
+            </tr>
+            <tr>
+             <th> <span class="d-block font-weight-bold"># cuotas vencidas</span></th>
+              <th> <span class="d-block font-weight-bold">Total vencido</span></th>
+            </tr>
+             <tr>
+                 <th> <span>${this.resumenCreditos?.t_numero_plazos_vencidos }</span></th>
+								 <th> <span>${currencyFormatter.format(this.resumenCreditos?.t_suma_plazos_vencidos)}</span> </th> 
+             </tr>
+            
+          </table>
+          </td> 
+          </tr> 
+        
+         </table></div> `:
+          `<div>
+           <p>Usuario: ${this.resumenCreditos.usuario_generador}</p> 
+           <p>Rango: desde el ${this.resumenCreditos.fechaInicial} hasta el  ${this.resumenCreditos.fechaFinal} </p>
+                          </div><hr>
+        <div>
+          <p>${this.resumenCreditos.descripcion}}</p> 
+           <p> <span class="d-block font-weight-bold"># Créditos</span>
+           <span>${this.resumenCreditos?.numCreditos }</span> </p>
+           <p><span class="d-block font-weight-bold">Valor Actual</span>
+            <span>${currencyFormatter.format(this.resumenCreditos?.t_totalActual)}</span></p> 
+            <p> <span class="d-block font-weight-bold">Valor inicial</span>
+            <span>${currencyFormatter.format(this.resumenCreditos?.t_valorInicial)}</span> </p> 
+            <p> <span class="d-block font-weight-bold">Abono inicial</span>
+            <span>${currencyFormatter.format(this.resumenCreditos?.t_abonoInicial)}</span></p> 
+            <p> <span class="d-block font-weight-bold">Abonos recibidos</span>
+            <span>${currencyFormatter.format(this.resumenCreditos?.t_totalAbonos)}</span></p> 
+            <p> <span class="d-block font-weight-bold"># cuotas vencidas</span>
+            <span>${this.resumenCreditos?.t_numero_plazos_vencidos }</span></p> 
+            <p> <span class="d-block font-weight-bold">Total vencido</span>
+            <span>${currencyFormatter.format(this.resumenCreditos?.t_suma_plazos_vencidos)}</span> </p>
+        </div>`
+        
+        ;
+        return receiptHTML;
+}
+//////////////////////////////////////////////
 private   infoRVGeneral():string{
   let receiptHTML = ''; 
   const currencyFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', 
@@ -916,7 +1200,7 @@ private   infoRVGeneral():string{
   maximumFractionDigits: 2 }); 
      receiptHTML += (this.tipoImpresora != 'POS')?
          `<div> 
-         <table>
+         <table style='width: 100%;'>
          <tr> 
               <th colspan="4">RESUMEN DE VENTA</th>  
          </tr>
@@ -955,8 +1239,7 @@ private   infoDevGeneral():string{
   minimumFractionDigits: 2,
   maximumFractionDigits: 2 }); 
      receiptHTML += (this.tipoImpresora != 'POS')?
-         `<div> 
-         <table>
+         `<div> <table style='width: 100%;'>
          <tr> 
               <th colspan="4">RESUMEN DE DEVOLUCIONES</th>  
          </tr>
@@ -1028,7 +1311,7 @@ private footerDev():string{
         cabecera += '</p> '; 
   
       }else{
-        cabecera = `<div >     <table><tr><td><h2  style=" margin: 0;">`;
+        cabecera = `<div >     <table style='width: 100%;'><tr><td><h2  style=" margin: 0;">`;
         if((PrinterManager.sucursal?.nombre_sucursal_sec||'').trim() != '')
           cabecera +=   PrinterManager.sucursal?.nombre_sucursal_sec + ' - ' ; 
   
@@ -1055,7 +1338,7 @@ private footerDev():string{
       
          receiptHTML += (this.tipoImpresora != 'POS')?
              `<div> 
-             <table>
+             <table style='width: 100%;'>
              <tr> 
                   <th>Operación #</th><td> ${this.movimiento.comprobante}</td> 
                   <th> </th><td> </td>  
@@ -1171,7 +1454,7 @@ private   infoGeneral():string{
      }
      receiptHTML += (this.tipoImpresora != 'POS')?
          `<div> 
-         <table>
+         <table style='width: 100%;'>
          <tr> <th>${nombreDocumento}</th><td> ${this.doc.idDocumentoFinal}</td>
          
          <th> Usuario Ingreso</th><td> ${this.doc.vendedorNombre}</td> 
@@ -1388,7 +1671,7 @@ private openExcelWindows(printContent:string , fileName:string){
         <meta charset="UTF-8">
       </head>
       <body>
-      <table>
+      <table style='width: 100%;'>
       <tr><td colspan='3' style="background-color: beige; height:25px"></td>       </tr>
       <tr><td colspan='3' style="background-color: beige; height:25px"></td>       </tr>
       <tr><td style="background-color: beige; width: 15px;"></td><td>

@@ -126,6 +126,8 @@
     'resumenVentaUsuarioCajero' :'GET_RESUMEN_VENTA_CAJERO' ,
     'resumenVentas' :'GET_RESUMEN_VENTAS' , 
     'resumenCuentas' :'GET_RESUMEN_MOVIMIENTOS_CUENTAS' , 
+    'resumenCuentaporCobra' :'GET_RESUMEN_CUENTAS_POR_COBRAR' , 
+    'resumenCuentaporPagar' :'GET_RESUMEN_CUENTAS_POR_PAGAR' , 
     'resumenDevolucion' :'GET_RESUMEN_DEVOLUCIONES' ,
     'MAESTROS_CLIENTES' :'GET_MAESTROS_CLIENTES',
     'actionBuscarPaisesOdoo' : 'BUSCAR_ODOO_PAIS',

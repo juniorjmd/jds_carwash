@@ -23,11 +23,11 @@ import { usuarioService } from 'src/app/services/usuario.services';
           </a>
           <a class="list-group-item list-group-item-action " routerLinkActive="active" [routerLink]="['movimientos']">
             <i class="bi bi-cash"></i>Movimientos en una o mas cuentas
-          </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['cuentas-pagar']">
+          </a> 
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['cuentasPorPagar']">
             <i class="bi bi-file-earmark-minus"></i> Cuentas por Pagar
           </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['cuentas-cobrar']">
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['cuentasPorCobrar']">
             <i class="bi bi-file-earmark-plus"></i> Cuentas por Cobrar
           </a>
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['inventario-valorizado']">

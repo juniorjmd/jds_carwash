@@ -7,7 +7,7 @@ import { vistas } from '../models/app.db.view';
 import { loading } from 'src/app/models/app.loading';
 import { cajaModel } from '../models/ventas/cajas.model';
 import { ValuesFormuGasto } from '../interfaces/valuesFormularios';
-import { CarteraRequest, DocumentoCierreRequest, DocumentoRequest } from '../interfaces/producto-request'; 
+import { CarteraRequest, CreditosResumenRequest, DocumentoCierreRequest, DocumentoRequest } from '../interfaces/producto-request'; 
 import { documentoDev, DocumentosModel } from '../models/ventas/documento.model';
 import { TABLA } from '../models/app.db.tables';
 import { EmpleadoModel } from '../models/empleados/empleados.module';
@@ -117,6 +117,23 @@ constructor(private http: HttpClient, private loading: loading) {
     return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
   }
 
+  getCuentasXCobrarByfecha(_fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
+    let datos = {
+      "action": actions.resumenCuentaporCobra, 
+      _fechaInicio , _fechaFin
+    };
+    console.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
+    return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
+  }
+getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
+    let datos = {
+      "action": actions.resumenCuentaporPagar, 
+      _fechaInicio , _fechaFin
+    };
+    console.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
+    return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
+  }
+
   getCuentasXCobrarByPersonaAbonos( idPersona :number): Observable<CarteraRequest> {
     let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona},
       {"columna": 'totalActual', "tipocomp": '>', "dato": 0}];
@@ -163,6 +180,21 @@ constructor(private http: HttpClient, private loading: loading) {
       "_where": where
     };
     console.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
+  
+  getDocumentosByOrden(orden:number): Observable<any> {
+    let where = [{"columna": 'orden', "tipocomp": '=', "dato": orden}];
+    let datos = {
+      "action": actions.actionSelect,
+      "_tabla": vistas.documento,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_columnaUsuario": 'usuario',
+      "_where": where
+    };
+    console.log('servicios de usuarios activo - getDocumentosByOrden', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());
   }
 
@@ -406,7 +438,23 @@ constructor(private http: HttpClient, private loading: loading) {
     return this.http.post(url.action, datos, httpOptions());
   }
 
-  
+  getVentasFinalizadasPorCarteraFecha( fecha1: string, fecha2: string): Observable<any> {
+    /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
+                 . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
+    let where = [
+      {"columna": 'fecha_creacion', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'fecha_creacion', "tipocomp": '<=', "dato": fecha2} ]
+    ;
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.ventasACreditoCerradas,
+      "_where": where
+    };
+    console.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
   getResumenCategoriaVentas(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 
     let datos = {
       "action": actions.resumenVentaCategoria, _idPrd,_fechaInicio,_fechaFin

@@ -23,6 +23,7 @@ import { establecimientoModel } from "../models/ventas/establecimientos.model";
 import { OperacionesComponent } from "../modules/admin/modules/cuentas-contables/pages/operaciones/operaciones.component";
 import { TrasladosCntComponent } from "../modules/admin/modules/traslados-cnt/traslados-cnt.component";
 import { ReporteMovimientoCuentas } from "./reporteMovimientoCuentas.";
+import { ResumenCreditos } from "./resumenCuentas";
 import { CntOperacionPrestablecidas } from "./traslados_cnt/cnt_operacion_prestablecidas.";
 import { CntOperacionPrestablecidasCuentas } from "./traslados_cnt/cnt_operacion_prestablecidas_cuentas.";
 
@@ -102,6 +103,12 @@ export interface CarteraRequest {
   error: string;
 } 
 
+export interface CreditosResumenRequest { 
+  data: ResumenCreditos;
+  query?: string;
+  numdata?: number;
+  error: string;
+} 
 
 export interface clienteRequest { 
   data: ClientesModel[];

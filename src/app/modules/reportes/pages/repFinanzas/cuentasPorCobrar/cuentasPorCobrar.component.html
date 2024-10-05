@@ -1,0 +1,268 @@
+<div class="card">
+    <div class="card-header text-center">
+        <h1>Cuentas por cobrar</h1>
+      </div>  
+
+      <div class="card-body">  
+
+        <div class="row">
+            <div class="col-sm-3">
+                Escoja el rango de fecha:
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input type="date" max="{{fecha2}}" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <small id="helpId" class="form-text text-muted">Fecha inicial del rango de búsqueda de factura</small>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input type="date" min="{{fecha1}}" [max]="maximo" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha2" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <small id="helpId" class="form-text text-muted">Fecha final del rango de búsqueda de factura</small>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" (click)="getDocumentosPorFecha()" class="btn btn-primary"><i class="bi bi-search"></i></button>
+            </div>
+        </div> 
+        <div class="row"  >
+            <div class="col-sm-3 centrado">
+              <div class="btn btn-primary" (click)="resumen=true">Resumen <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideR }"></i></div>
+             </div>
+             <div class="col-sm-3 centrado">
+                <div class="btn btn-primary" (click)="resumen=false">Listado de Ventas <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideF }"></i></div>
+             </div>  
+             <div class="col-sm-2 centrado"> 
+                <div class="btn btn-primary" (click)="imprimirResumen()">Imprimir reporte</div>
+             </div>
+             
+             <div class="col-sm-2 centrado"> 
+                <div class="btn btn-primary" (click)="ExportarResumen()">Excel</div>
+             </div>
+        </div>
+    
+        <div class="row" *ngIf="resumen" style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 5px;
+         border-radius: 10px; padding: 5px;">
+           <div  class="row" > 
+            <div class="col-sm-12 centrado">
+             <h4>Resumen cuentas por cobrar</h4>  
+            </div></div> 
+             
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12   "  >
+                        <div class="row mb-3">
+                            <div class="col-12 col-md-2 mb-3 mb-md-0">
+                                <div class="credit-card bg-light p-2 rounded">
+                                    <span class="d-block font-weight-bold"># Créditos</span>
+                                    <span>{{resumenCreditos?.numCreditos }}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2 mb-3 mb-md-0">
+                                <div class="credit-card bg-light p-2 rounded">
+                                    <span class="d-block font-weight-bold">Valor Actual</span>
+                                    <span>{{resumenCreditos?.t_totalActual|currency}}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2 mb-3 mb-md-0">
+                                <div class="credit-card bg-light p-2 rounded">
+                                    <span class="d-block font-weight-bold">Valor inicial</span>
+                                    <span>{{resumenCreditos?.t_valorInicial|currency}}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2 mb-3 mb-md-0">
+                                <div class="credit-card bg-light p-2 rounded">
+                                    <span class="d-block font-weight-bold">Abono inicial</span>
+                                    <span>{{resumenCreditos?.t_abonoInicial|currency}}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2 mb-3 mb-md-0">
+                                <div class="credit-card bg-light p-2 rounded">
+                                    <span class="d-block font-weight-bold">Abonos recibidos</span>
+                                    <span>{{resumenCreditos?.t_totalAbonos|currency}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12 col-md-2 mb-3 mb-md-0">
+                                <div class="credit-card bg-light p-2 rounded">
+                                    <span class="d-block font-weight-bold"># cuotas vencidas</span>
+                                    <span>{{resumenCreditos?.t_numero_plazos_vencidos }}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2 mb-3 mb-md-0">
+                                <div class="credit-card bg-light p-2 rounded">
+                                    <span class="d-block font-weight-bold">Total vencido</span>
+                                    <span>{{resumenCreditos?.t_suma_plazos_vencidos|currency}}</span>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div><hr></div>
+                    <div class="row">  
+                        <h5>Creditos</h5> 
+                      <div class="col-sm-12 col-lg-12" style="max-height: 400px; overflow-y: auto;" >
+                          <table class="table">
+                              <tr><th>Persona</th>
+                                  <th>Fecha</th>
+                                  <th>V. inicial</th>
+                                  <th>Anticipo</th>
+                                  <th>Abonos</th>
+                                  <th>Saldo</th>
+                                  <th>Comprobante</th>
+                              </tr>
+                              <tr  *ngFor="let item of resumenCreditos?.creditos" >
+                                  <td>{{item.terceroNombre}}</td> 
+                                  <td>{{item.fecha_creacion}}</td>
+                                  <td>{{item.valorInicial|currency }}</td> 
+                                  <td>{{item.abonoInicial|currency}}</td> 
+                                  <td>{{item.totalAbonos|currency}}</td> 
+                                  <td>{{item.totalActual|currency}}</td>  
+                                  <td style="cursor: pointer;"  [title]="'cartera : '+ item.id + ' comprobante '+ item.comprobante"><i class="bi bi-printer" (click)="buscarDocumento(item.comprobante)"></i></td> 
+                              </tr>
+                          </table>
+                      </div><hr>
+                       </div>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12   "  >
+                        <h5>abonos</h5> 
+                        <table class="table">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Abono</th>
+                                <th>Descripcion</th>
+                                <th>Cartera</th>
+                                <th>Comprobante</th>
+                            </tr>
+                            <tr *ngFor="let item of resumenCreditos?.abonos" >
+                                <td>{{item.fecha_creacion}}</td> 
+                                <td>{{item.totalAbonos|currency}}</td> 
+                                <td>{{item.descripcion}}</td> 
+                                <td>{{item.id_cartera}}</td> 
+                                <td style="cursor: pointer;" [title]="'cartera : '+ item.id_cartera + ' comprobante '+ item.comprobante"><i class="bi bi-printer" (click)="buscarDocumento(item.comprobante)"></i></td> 
+                            </tr>
+                        </table>
+                    </div> <hr>
+                </div>
+                <div class="row"> 
+                    <div class="col-sm-12 col-lg-12   "  >
+                        <h5>Cuotas</h5> 
+                        <table class="table">
+                            <tr>
+                                <th>Fecha de pago</th>
+                                <th>Cartera</th>
+                                <th># Cuota</th>
+                                <th>Valor</th> 
+                                <th>T. Pagado</th> 
+                                <th>Saldo</th> 
+                                <th>último Abono</th> 
+                            </tr>
+                            <tr *ngFor="let item of resumenCreditos?.cuotas" >
+                                <td>{{item.fecha_max_pago}}</td> 
+                                <td>{{item.id_cartera}}</td> 
+                                <td>{{item.numero_cuota}}</td> 
+                                <td>{{item.valorCuota|currency}}</td> 
+                                <td>{{item.totalPagado|currency}}</td> 
+                                <td>{{item.totalActual|currency}}</td> 
+                                <td>{{item.ultimoAbono|currency}}</td>   
+                            </tr>
+                        </table>
+                    </div> <hr>
+                </div>
+                <div class="row"> 
+                    <div class="col-sm-12 col-lg-12   "  >
+                        <h5>Cuotas a vencerse</h5> 
+                        <table class="table">
+                            <tr>
+                                <th>Fecha de pago</th>
+                                <th>Cartera</th>
+                                <th># Cuota</th>
+                                <th>Valor</th> 
+                                <th>T. Pagado</th> 
+                                <th>Saldo</th> 
+                                <th>último Abono</th> 
+                            </tr>
+                            <tr *ngFor="let item of resumenCreditos?.cuotas_a_vencerce" >
+                                <td>{{item.fecha_max_pago}}</td> 
+                                <td>{{item.id_cartera}}</td> 
+                                <td>{{item.numero_cuota}}</td> 
+                                <td>{{item.valorCuota|currency}}</td> 
+                                <td>{{item.totalPagado|currency}}</td> 
+                                <td>{{item.totalActual|currency}}</td> 
+                                <td>{{item.ultimoAbono|currency}}</td>   
+                            </tr>
+                        </table>
+                    </div> <hr>
+                </div>
+                 <div class="row">
+                <h5>Cuotas vencidas</h5> 
+                    <div class="col-sm-12 col-lg-12" style="max-height: 400px; overflow-y: auto;"  > 
+                        <table class="table">
+                            <tr>
+                                <th>Fecha de pago</th>
+                                <th>Cartera</th>
+                                <th># Cuota</th>
+                                <th>Valor</th> 
+                                <th>T. Pagado</th> 
+                                <th>Saldo</th> 
+                                <th>último Abono</th> 
+                            </tr>
+                            <tr *ngFor="let item of resumenCreditos?.cuotas_vencidas" >
+                                <td>{{item.fecha_max_pago}}</td> 
+                                <td>{{item.id_cartera}}</td> 
+                                <td>{{item.numero_cuota}}</td> 
+                                <td>{{item.valorCuota|currency}}</td> 
+                                <td>{{item.totalPagado|currency}}</td> 
+                                <td>{{item.totalActual|currency}}</td> 
+                                <td>{{item.ultimoAbono|currency}}</td>   
+                            </tr>
+                        </table>
+                    </div>
+                    <hr>
+                 </div>    
+               
+            
+              
+             
+        </div>
+    
+    
+        <div class="row" *ngIf="!resumen" style="font-family: Arial, sans-serif; border: 1px solid gray;margin: 10px; border-radius: 10px; padding: 15px;">
+        <div class="col-sm-12 centrado">
+            Listado de facturas
+        </div>
+    
+    <div class="row">
+        <div class="col-sm-12 contenedorTablas ">
+            <table class="table">
+                <tr>
+                    <td>Fecha</td>
+                    <td>Factura ID</td>
+                    <td>Cliente</td>
+                    <td>Cantidad</td>
+                    <td>Valor Parcial</td>
+                    <td>Descuento</td>
+                    <td>IVA</td>
+                    <td>Total</td>
+                    <td colspan="4">Opciones</td>
+                </tr>
+                <tr *ngFor="let venta of documentos">
+                    <td>{{venta.fecha}}</td>
+                    <td>{{venta.idDocumentoFinal}}</td>
+                    <td>{{venta.clienteNombre}}</td>
+                    <td>{{venta.cantidadVendida}}</td>
+                    <td>{{venta.valorParcial|currency:'USD'}}</td>
+                    <td>{{venta.descuento|currency:'USD'}}</td>
+                    <td>{{venta.valorIVA|currency:'USD'}}</td>
+                    <td>{{venta.valorTotal|currency:'USD'}}</td>
+                    <td><i class="bi bi-printer-fill boton_activo" (click)="imprimirFactura(venta)"></i> </td>
+                    <td> <i class="bi bi-list-ul boton_activo" (click)="VerFactura(venta)"></i></td>
+                    <td> </td>
+                </tr>
+            </table>
+            <hr>
+        </div>
+    </div> 
+        </div>
+
+</div>
+</div> 

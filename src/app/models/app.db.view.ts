@@ -39,6 +39,7 @@
    vw_obj_documentos_por_usuario:"vw_obj_documentos_por_usuario",
    vw_obj_documentos_por_cliente:"vw_obj_documentos_por_cliente",
    ventasCerradas : "vw_obj_ventas" ,
+   ventasACreditoCerradas : "vw_obj_ventas_credito" ,
    inv_descuentos : "vw_inv_descuentos" ,
 
    ciudades : "vw_mst_per_clientes_ciudades" ,

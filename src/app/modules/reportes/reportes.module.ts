@@ -21,6 +21,8 @@ import { EstadoDeResultadoComponent } from './pages/repFinanzas/estadoDeResultad
 import { flujoDeCajaComponent } from './pages/repFinanzas/flujoDeCaja/flujoDeCaja.component';
 import { movimientosCuentasComponent } from './pages/repFinanzas/movimientos/movimientos.component';
 import { movimientosGastosComponent } from './pages/repFinanzas/movimientosGastos/movimientosGastos.component';
+import { CuentasPorPagarComponent } from './pages/repFinanzas/cuentasPorPagar/cuentasPorPagar.component';
+import { CuentasPorCobrarComponent } from './pages/repFinanzas/cuentasPorCobrar/cuentasPorCobrar.component';
 
 
 @NgModule({
@@ -30,7 +32,7 @@ import { movimientosGastosComponent } from './pages/repFinanzas/movimientosGasto
     InicioReportesComponent,ventasPorCategoriaComponent,
      VerFacturasClienteComponent, ventasPorProductoComponent,ventasPorVendedorComponent,ventasDiariaHoraComponent,
        BienvenidaRPComponent,ventasDiariaComponent, MovimientosCuentaComponent, InicioRepVentasComponent, devolucionesRepoComponent
-       ,BienvenidaRFComponent,InicioRepFinansasComponent, EstadoDeResultadoComponent
+       ,BienvenidaRFComponent,InicioRepFinansasComponent, EstadoDeResultadoComponent, CuentasPorPagarComponent,CuentasPorCobrarComponent
   ],
   imports: [
     CommonModule,
