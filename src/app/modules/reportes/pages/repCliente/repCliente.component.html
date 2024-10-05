@@ -1,30 +1,42 @@
 <div class="card">
     <div class="card-header text-center">
-        <h1>Cuentas por cobrar</h1>
+        <h1>Resumen Cliente</h1>
       </div>  
 
       <div class="card-body">  
 
         <div class="row">
-            <div class="col-sm-3">
-                Escoja el rango de fecha:
+            <div class="col-sm-2"> Cliente
+                <select class="form-control" [(ngModel)] = "provedorID"  (change)="cambiarFecha();getDocumentosPorFecha()">
+                    <option *ngFor="let item of proveedoresFiltrados" [value]="item.idTercero">{{item.terceroNombre}}</option>
+                </select>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-6"> Escoja el rango de fecha: <div class="form-check form-switch">
+                <input class="form-check-input"  [(ngModel)] = "filtrar"   type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">filtrar con fechas</label>
+              </div>
+            <div class="row"> 
+            <div class="col-sm-12 col-lg-6">
+               
+            
                 <div class="form-group">
-                    <input type="date" max="{{fecha2}}" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <input type="date" min="{{min}}" max="{{fecha2}}" [disabled]="!filtrar" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha1" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
                     <small id="helpId" class="form-text text-muted">Fecha inicial del rango de búsqueda de factura</small>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-12 col-lg-6">
                 <div class="form-group">
-                    <input type="date" min="{{fecha1}}" [max]="maximo" (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha2" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    <input type="date" min="{{fecha1}}" [max]="maximo" [disabled]="!filtrar"  (keyup.enter)="getDocumentosPorFecha()" [(ngModel)]="fecha2" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
                     <small id="helpId" class="form-text text-muted">Fecha final del rango de búsqueda de factura</small>
                 </div>
-            </div>
+            </div> </div></div>
             <div class="col-sm-2">
                 <button type="button" (click)="getDocumentosPorFecha()" class="btn btn-primary"><i class="bi bi-search"></i></button>
             </div>
-        </div> 
+        </div>
+ 
+
+    
         <div class="row"  >
             <div class="col-sm-3 centrado">
               <div class="btn btn-primary" (click)="resumen=true">Resumen <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideR }"></i></div>
@@ -33,7 +45,7 @@
                 <div class="btn btn-primary" (click)="resumen=false">Listado de Ventas <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideF }"></i></div>
              </div>  
              <div class="col-sm-2 centrado"> 
-                <div class="btn btn-success" (click)="imprimirResumen()">Imprimir reporte</div>
+                <div class="btn btn-success" (click)="imprimirResumen()">Imprimir reporte </div>
              </div>
              
              <div class="col-sm-2 centrado"> 

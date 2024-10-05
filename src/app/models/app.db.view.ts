@@ -40,6 +40,7 @@
    vw_obj_documentos_por_cliente:"vw_obj_documentos_por_cliente",
    ventasCerradas : "vw_obj_ventas" ,
    ventasACreditoCerradas : "vw_obj_ventas_credito" ,
+   comprasACreditoCerradas : "vw_obj_compras_credito" ,
    inv_descuentos : "vw_inv_descuentos" ,
 
    ciudades : "vw_mst_per_clientes_ciudades" ,
@@ -73,6 +74,8 @@
     vw_mst_per_clientes : 'vw_mst_per_clientes' ,
     vw_proveedor : 'vw_mst_per_proveedores' ,
 
+    vw_proveedorHist : 'vw_proveedor_con_fecha_historico' ,
+    vw_clienteHist : 'vw_cliente_con_fecha_historico' ,
     vw_cnt_clase: 'vw_cnt_clase',
 vw_cnt_grupos: 'vw_cnt_grupos',
 vw_cnt_scuentas: 'vw_cnt_scuentas',

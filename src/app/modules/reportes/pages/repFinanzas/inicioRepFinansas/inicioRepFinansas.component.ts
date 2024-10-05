@@ -11,32 +11,23 @@ import { usuarioService } from 'src/app/services/usuario.services';
   <div class="row">
       <!-- Menú lateral -->
       <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
-          <div class="list-group">
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['estado-resultados']">
-            <i class="bi bi-file-earmark-text"></i> Estado de Resultados
+          <div class="list-group"> 
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['caja']">
+            <i class="bi bi-wallet2"></i> Movimientos de Caja
           </a>
-          <a class="list-group-item list-group-item-action " routerLinkActive="active" [routerLink]="['caja']">
-            <i class="bi bi-cash"></i>Movimientos de Caja
-          </a> 
-          <a class="list-group-item list-group-item-action " routerLinkActive="active" [routerLink]="['gastos']">
-            <i class="bi bi-cash"></i>Movimientos de Gastos
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['gastos']">
+              <i class="bi bi-cash-stack"></i> Movimientos de Gastos
           </a>
-          <a class="list-group-item list-group-item-action " routerLinkActive="active" [routerLink]="['movimientos']">
-            <i class="bi bi-cash"></i>Movimientos en una o mas cuentas
-          </a> 
+          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['movimientos']">
+              <i class="bi bi-arrow-left-right"></i> Movimientos en una o más cuentas
+          </a>
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['cuentasPorPagar']">
-            <i class="bi bi-file-earmark-minus"></i> Cuentas por Pagar
+              <i class="bi bi-file-earmark-minus"></i> Cuentas por Pagar
           </a>
           <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['cuentasPorCobrar']">
-            <i class="bi bi-file-earmark-plus"></i> Cuentas por Cobrar
+              <i class="bi bi-file-earmark-plus"></i> Cuentas por Cobrar
           </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['inventario-valorizado']">
-            <i class="bi bi-box-seam"></i> Inventario Valorizado
-          </a>
-          <a class="list-group-item list-group-item-action" routerLinkActive="active" [routerLink]="['ratios-financieros']">
-            <i class="bi bi-bar-chart"></i> Ratios Financieros
-          </a>
- 
+
         </div>
       </div>
       <!-- Contenido principal -->

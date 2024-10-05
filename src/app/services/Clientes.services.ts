@@ -6,7 +6,7 @@ import { vistas } from '../models/app.db.view';
 import { DocumentosModel } from '../models/ventas/documento.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ClientesModel } from '../models/clientes/clientes.module';
-import { clienteRequest } from '../interfaces/producto-request';
+import { clienteRequest, proveedorHistoricoRequest } from '../interfaces/producto-request';
 import { TABLA } from '../models/app.db.tables';
 
 @Injectable({
@@ -91,6 +91,25 @@ constructor(private http: HttpClient ,
         "action": actions.actionSelect , "_tabla" : vistas.vw_proveedor, _limit: 300 }
         console.log('getClientes  ' ,url.action , datos, httpOptions());
         return this.http.post<clienteRequest>(url.action , datos, httpOptions()) ;
+    }
+ getProveedor(  ):Observable<clienteRequest>{
+        let datos = { 
+        "action": actions.actionSelect , "_tabla" : vistas.vw_proveedor, _limit: 300 }
+        console.log('getClientes  ' ,url.action , datos, httpOptions());
+        return this.http.post<clienteRequest>(url.action , datos, httpOptions()) ;
+    }
+    getProveedorParaHistorico(  ):Observable<proveedorHistoricoRequest>{
+        let datos = { 
+        "action": actions.actionSelect , "_tabla" : vistas.vw_proveedorHist, _limit: 300 }
+        console.log('getClientes  ' ,url.action , datos, httpOptions());
+        return this.http.post<proveedorHistoricoRequest>(url.action , datos, httpOptions()) ;
+    }
+
+    getClienteParaHistorico(  ):Observable<proveedorHistoricoRequest>{
+        let datos = { 
+        "action": actions.actionSelect , "_tabla" : vistas.vw_clienteHist, _limit: 300 }
+        console.log('getClientes  ' ,url.action , datos, httpOptions());
+        return this.http.post<proveedorHistoricoRequest>(url.action , datos, httpOptions()) ;
     }
     getMaestroClientes():Observable<any>{
         let datos = {"action": actions.MAESTROS_CLIENTES  }

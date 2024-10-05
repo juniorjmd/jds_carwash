@@ -23,12 +23,14 @@ import { movimientosCuentasComponent } from './pages/repFinanzas/movimientos/mov
 import { movimientosGastosComponent } from './pages/repFinanzas/movimientosGastos/movimientosGastos.component';
 import { CuentasPorPagarComponent } from './pages/repFinanzas/cuentasPorPagar/cuentasPorPagar.component';
 import { CuentasPorCobrarComponent } from './pages/repFinanzas/cuentasPorCobrar/cuentasPorCobrar.component';
+import { repClienteComponent } from './pages/repCliente/repCliente.component';
+import { repProveedorComponent } from './pages/repProveedor/repProveedor.component';
 
 
 @NgModule({
   declarations: [
     ReportesComponent, flujoDeCajaComponent,movimientosCuentasComponent,movimientosGastosComponent,
-    ReimpimirFacturasComponent,
+    ReimpimirFacturasComponent,repProveedorComponent,repClienteComponent,
     InicioReportesComponent,ventasPorCategoriaComponent,
      VerFacturasClienteComponent, ventasPorProductoComponent,ventasPorVendedorComponent,ventasDiariaHoraComponent,
        BienvenidaRPComponent,ventasDiariaComponent, MovimientosCuentaComponent, InicioRepVentasComponent, devolucionesRepoComponent

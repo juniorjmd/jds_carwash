@@ -132,8 +132,24 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
     };
     console.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
     return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
+  } 
+  
+  getCuentasXCobrarClienteByfecha(_proveedor:number , _fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
+    let datos = {
+      "action": actions.resumenCuentaporPagarProveedor, 
+      _fechaInicio , _fechaFin , _proveedor
+    };
+    console.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
+    return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
   }
-
+  getCuentasXPagarProveedorByfecha(_cliente:number , _fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
+    let datos = {
+      "action": actions.resumenCuentaporCobrarCliente, 
+      _fechaInicio , _fechaFin , _cliente
+    };
+    console.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
+    return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
+  }
   getCuentasXCobrarByPersonaAbonos( idPersona :number): Observable<CarteraRequest> {
     let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona},
       {"columna": 'totalActual', "tipocomp": '>', "dato": 0}];
@@ -442,8 +458,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
     /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
                  . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
     let where = [
-      {"columna": 'fecha_creacion', "tipocomp": '>=', "dato": fecha1},
-      {"columna": 'fecha_creacion', "tipocomp": '<=', "dato": fecha2} ]
+      {"columna": 'date(fecha_creacion)', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'date(fecha_creacion)', "tipocomp": '<=', "dato": fecha2} ]
     ;
     let datos = {
       "action": actions.actionSelect,
@@ -453,6 +469,63 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_where": where
     };
     console.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
+  
+  getVentasFinalizadasPorCarteraFechaPorCliente( id:number ,   fecha1: string, fecha2: string): Observable<any> {
+    /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
+                 . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
+    let where = [
+      {"columna": 'date(fecha_creacion)', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'date(fecha_creacion)', "tipocomp": '<=', "dato": fecha2} , 
+      {"columna": 'cliente', "tipocomp": '=', "dato": id} ]
+    ;
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.ventasACreditoCerradas,
+      "_where": where
+    };
+    console.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+
+  getComprasFinalizadasPorCreditoFechaPorProveedor( id:number ,  fecha1: string, fecha2: string): Observable<any> {
+    /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
+                 . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
+    let where = [
+      {"columna": 'date(fecha_creacion)', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'date(fecha_creacion)', "tipocomp": '<=', "dato": fecha2} ,
+      {"columna": 'cliente', "tipocomp": '=', "dato": id} ]
+    ;
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.comprasACreditoCerradas,
+      "_where": where
+    };
+    console.log('servicios de documentos - getComprasFinalizadasPorCreditoFecha', url.action, datos, httpOptions());
+    return this.http.post(url.action, datos, httpOptions());
+  }
+  
+  getComprasFinalizadasPorCreditoFecha( fecha1: string, fecha2: string): Observable<any> {
+    /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
+                 . " {$valor['dato']['colValidacion']} =  {$valor['dato']['datoValidacion']} )"; */
+    let where = [
+      {"columna": 'date(fecha_creacion)', "tipocomp": '>=', "dato": fecha1},
+      {"columna": 'date(fecha_creacion)', "tipocomp": '<=', "dato": fecha2} ]
+    ;
+    let datos = {
+      "action": actions.actionSelect,
+      "_columnas": ['objeto'],
+      "_obj": ['objeto'],
+      "_tabla": vistas.comprasACreditoCerradas,
+      "_where": where
+    };
+    console.log('servicios de documentos - getComprasFinalizadasPorCreditoFecha', url.action, datos, httpOptions());
     return this.http.post(url.action, datos, httpOptions());
   }
   getResumenCategoriaVentas(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 

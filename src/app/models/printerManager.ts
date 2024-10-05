@@ -1110,11 +1110,11 @@ receiptHTML += `</div>`
   return receiptHTML; 
 } 
 private footerRV():string{
-  return  '<div style="font-size: 10px;margin: 10px;">Documento de soporte de creditos en un rango de fecha</div>' ; 
+  return  '<div style="font-size: 10px;margin: 10px;">Documento de soporte de ventas en un rango de fecha</div>' ; 
 }
 //////////////////////////////////////////////
 private footerRepCredito():string{
-  return  '<div style="font-size: 10px;margin: 10px;">Documento de soporte de ventas en un rango de fecha</div>' ; 
+  return  '<div style="font-size: 10px;margin: 10px;">Documento de soporte de creditos en un rango de fecha</div>' ; 
 }
 private   infoRepCreditoGeneral():string{
   let receiptHTML = ''; 

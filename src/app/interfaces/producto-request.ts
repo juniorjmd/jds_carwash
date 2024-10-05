@@ -116,6 +116,17 @@ export interface clienteRequest {
   numdata: number;
   error: string;
 }
+export interface proveedorHistorico {idTercero : number
+  terceroNombre : string
+  fin : Date
+  inicio :Date
+}
+export interface proveedorHistoricoRequest { 
+  data: proveedorHistorico[];
+  query: string;
+  numdata: number;
+  error: string;
+}
 export interface cajaRequest { 
   data: cajaModel[];
   query: string;

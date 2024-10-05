@@ -128,6 +128,8 @@
     'resumenCuentas' :'GET_RESUMEN_MOVIMIENTOS_CUENTAS' , 
     'resumenCuentaporCobra' :'GET_RESUMEN_CUENTAS_POR_COBRAR' , 
     'resumenCuentaporPagar' :'GET_RESUMEN_CUENTAS_POR_PAGAR' , 
+    'resumenCuentaporPagarProveedor' :'GET_RESUMEN_CUENTAS_POR_PAGAR_POR_PROVEEDOR' , 
+    'resumenCuentaporCobrarCliente' :'GET_RESUMEN_CUENTAS_POR_COBRAR_POR_CLIENTE' , 
     'resumenDevolucion' :'GET_RESUMEN_DEVOLUCIONES' ,
     'MAESTROS_CLIENTES' :'GET_MAESTROS_CLIENTES',
     'actionBuscarPaisesOdoo' : 'BUSCAR_ODOO_PAIS',

@@ -22,13 +22,16 @@ import { movimientosCuentasComponent } from './pages/repFinanzas/movimientos/mov
 import { movimientosGastosComponent } from './pages/repFinanzas/movimientosGastos/movimientosGastos.component';
 import { CuentasPorPagarComponent } from './pages/repFinanzas/cuentasPorPagar/cuentasPorPagar.component';
 import { CuentasPorCobrarComponent } from './pages/repFinanzas/cuentasPorCobrar/cuentasPorCobrar.component';
+import { repClienteComponent } from './pages/repCliente/repCliente.component';
+import { repProveedorComponent } from './pages/repProveedor/repProveedor.component';
 
 const routes: Routes = [{ path: '', component: InicioReportesComponent ,   children:[
     {path : 'reportesMenu' , component:ReportesComponent}, 
    
     {path : 'movimientosCuentas' , component: MovimientosCuentaComponent},
-    {path : 'productosVendidos' , component: productosVendidosComponent}, 
-
+    {path : 'productosVendidos' , component: productosVendidosComponent},  
+    {path : 'cliente' , component: repClienteComponent},
+    {path : 'proveedor' , component: repProveedorComponent}, 
     { path: 'reporteFinanciero', component: InicioRepFinansasComponent ,   children:[ 
       {path : '' , component:BienvenidaRFComponent}, 
       {path : 'movimientos' , component:movimientosCuentasComponent},  
@@ -50,9 +53,7 @@ const routes: Routes = [{ path: '', component: InicioReportesComponent ,   child
       {path : 'horas' , component: ventasDiariaHoraComponent} ,
       {path : 'devoluciones' , component: devolucionesRepoComponent} ,
       { path : '**' , pathMatch:'full' , redirectTo : ''}
-    ] } ,
-
-
+    ] } , 
     { path : '**' , pathMatch:'full' , redirectTo : 'reportesMenu'}, ]
  
 
