@@ -1,5 +1,6 @@
 export interface Recurso {
     id: number;
+    idPadre:number[];
     nombre_recurso: string;
     display_nombre: string;
     img: string;

@@ -120,6 +120,8 @@
     'actionSelect' :actionSelect ,
     'actionSelects' :actionSelects ,
     'getAllRecursosArr' :'GET_ALL_RECURSOS' ,
+    'getAllRecursosArrByPerfil' :'GET_ALL_RECURSOS_BY_PERFIL' ,
+    'setAllRecursosArr' :'SET_PERFIL_RECURSO' ,
     'resumenVentaCliente' :'GET_RESUMEN_VENTA_CLIENTE' ,
     'resumenVentaProducto' :'GET_RESUMEN_VENTA_PRODUCTOS' ,
     'resumenVentaCategoria' :'GET_RESUMEN_VENTA_CATEGORIAS' ,

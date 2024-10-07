@@ -62,6 +62,19 @@ export interface recursoRequest {
   query: string;
   numdata: number;
   error: string;
+}
+ export interface perfil { 
+
+  id?:number;
+  Perf_Nombre:string;
+  estado:number;
+  nombreEStado?:string;
+ }
+ export interface perfilRequest { 
+  data:    perfil[];
+  query: string;
+  numdata: number;
+  error: string;
 } 
 export interface ProductosVendidosRequest { 
   data:  {idProducto:string, firstDate:Date, lastDate:Date, nombre:string, nombre2:string, nombre3:string} [];

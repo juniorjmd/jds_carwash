@@ -1,8 +1,9 @@
-<li *ngIf="recurso.recursosHijos!.length === 0 && (recurso.direccion != undefined && recurso.direccion.length  > 0 &&  recurso.direccion[0] != '' )" 
+<li *ngIf="recurso.recursosHijos!.length === 0 && (recurso.direccion != undefined && recurso.direccion.length  > 0 && 
+ recurso.direccion[0] != '' )" 
     class="nav-item item-drop-down-per">
-    <div class="form-check form-switch d-flex align-items-center"> 
+    <div class="form-check form-switch d-flex align-items-center" style="padding: 0%;"> 
   <div class="form-check form-switch">
-    <input class="form-check-input"  [(ngModel)] = "recurso.seleccionado"   type="checkbox" id="flexSwitchCheckDefault"> 
+    <input class="form-check-input" (change)="toggleSeleccionado()" [(ngModel)] = "recurso.seleccionado"   type="checkbox" id="flexSwitchCheckDefault"> 
   </div>
   <a class="nav-link" >
      {{recurso.display_nombre}}
@@ -11,8 +12,8 @@
 
 <li *ngIf="recurso.recursosHijos!.length > 0" class="nav-item dropdown item-drop-down-per"  
   [ngClass]="{ 'show': isDropdownActive }"><div class="form-check form-switch d-flex align-items-center">
-  <div class="form-check form-switch">
-    <input class="form-check-input"  [(ngModel)] = "recurso.seleccionado"   type="checkbox" id="flexSwitchCheckDefault"> 
+  <div class="form-check form-switch" style="padding: 0%;">
+    <input class="form-check-input"  [(ngModel)] = "recurso.seleccionado" (change)="toggleSeleccionado()"  type="checkbox" id="flexSwitchCheckDefault"> 
   </div>
   <a class="nav-link dropdown-toggle"  (click)="showDropdown()"  
       id="navbarDropdown{{recurso.id}}" role="button"
@@ -21,12 +22,12 @@
       aria-haspopup="true">
       {{recurso.display_nombre}}
   </a></div>
-  <div class="dropdown-menu" 
+  <div class="dropdown-menu"   
       [ngClass]="{ 'show': isDropdownActive }">
-      <ul>
+      <ul style="padding: 0%;">
           <ng-container *ngFor="let subRecurso of recurso.recursosHijos">
-              <li class="dropdown-item" *ngIf="(subRecurso.direccion != undefined && subRecurso.direccion.length  > 0 &&  subRecurso.direccion[0] != '' )">
-                  <shared-menu-item-li-check [recurso]="subRecurso"></shared-menu-item-li-check>
+              <li class="dropdown-item"  style="list-style: none;" *ngIf="(subRecurso.direccion != undefined && subRecurso.direccion.length  > 0 &&  subRecurso.direccion[0] != '' )">
+                  <shared-menu-item-li-check [recurso]="subRecurso" [idPerfil] = "idPerfil" ></shared-menu-item-li-check>
               </li>
           </ng-container>
       </ul>
