@@ -4,6 +4,7 @@ import { UsuarioModel } from 'src/app/models/usuario.model';
 import { loading } from 'src/app/models/app.loading';
 import { Perfil } from 'src/app/interfaces/usuario.interface';
 import { usuarioService } from 'src/app/services/usuario.services'; 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuario-perfil',
@@ -84,7 +85,7 @@ export class UsuarioPerfilComponent implements OnInit {
      
     this.loading.show(); 
     this.userService.guardarUsuarioPerfil(this.usuarioActual , this.perfilUsuario).subscribe(
-     (respuesta:any)=>{console.log(respuesta)
+     (respuesta:any)=>{//console.log(respuesta)
       
      if (respuesta.error === 'ok'){
        alert('datos ingresados con exito');   
@@ -100,7 +101,7 @@ export class UsuarioPerfilComponent implements OnInit {
     this.loading.show()
     this.userService.getPerfiles().subscribe(
       (datos:any )=>{
-         console.log(datos);
+         //console.log(datos);
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:Perfil , index : number )=>{
@@ -108,7 +109,7 @@ export class UsuarioPerfilComponent implements OnInit {
         if ( this.perfilUsuario  == dato.id) {dato.select = true;}
         this.perfiles[index] =  dato ;
       }) 
-      console.log('perfiles',this.perfiles , this.perfiles.length);
+      //console.log('perfiles',this.perfiles , this.perfiles.length);
     }else{
       this.perfiles = [];
     }
@@ -116,8 +117,8 @@ export class UsuarioPerfilComponent implements OnInit {
         this.loading.hide()
       } ,
       error => {this.loading.hide();
-        console.log(error)
-        alert( error.error.error);
+        //console.log(error)
+        Swal.fire(JSON.stringify(error));
       }
       );
   }

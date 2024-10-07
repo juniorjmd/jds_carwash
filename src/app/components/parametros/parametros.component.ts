@@ -23,7 +23,7 @@ export class ParametrosComponent implements OnInit {
      this.loading.show()
      this.parServices.getParametros().subscribe(
        (datos:any )=>{
-          console.log(datos);
+          //console.log(datos);
           
      if (datos.numdata > 0 ){ 
       this.parametros = datos.data  
@@ -39,7 +39,7 @@ export class ParametrosComponent implements OnInit {
         }
     )
   }else if(parametro.tip_parametro.trim() === 'booleano' ){
-    console.log('parametro booleano' ,    parametro.par_boolean , this.parametros[index].par_boolean); 
+    //console.log('parametro booleano' ,    parametro.par_boolean , this.parametros[index].par_boolean); 
             this.parametros[index].datosTabla=  [
               { id:1 , nombre : 'Verdadero' }, 
               { id:0 , nombre : 'Falso' }]

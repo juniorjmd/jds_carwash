@@ -72,13 +72,13 @@ export class CntGruposComponent implements OnInit {
   ngOnInit() {  
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.clases = (value != undefined)? [...value]:[] ;
-      console.log(this.clases) 
+      //console.log(this.clases) 
     },error : (e:any)=>console.error(e.error.error)})
 
     this.cntService.currentCntGrupo.subscribe({next:(value:CntGruposModel[] | null)=>{
       this.Grupos = (value != undefined)? [...value]:[] ;
       this.auxGrupos = this.Grupos;
-      console.log('Grupos =>',this.Grupos) 
+      //console.log('Grupos =>',this.Grupos) 
     },error : (e:any)=>console.error(e.error.error)})
   }
   }

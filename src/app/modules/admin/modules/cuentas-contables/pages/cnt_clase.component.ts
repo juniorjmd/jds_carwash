@@ -49,7 +49,7 @@ export class CntClaseComponent implements OnInit {
     
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.Clases = (value != undefined)? [...value]:[] ;
-      console.log(this.Clases) 
+      //console.log(this.Clases) 
     },error : (e:any)=>console.error(e.error.error)})
    }
 

@@ -51,7 +51,7 @@ export class ModalCrearInventarioComponent  implements OnInit {
 
 this.inventarioService.setInventarios(this.formData).subscribe({
   next:(request)=>{
-    console.log('request inventario' , request);
+    //console.log('request inventario' , request);
     
     this.executeService.optenerListadoInventarios$.next(true);
     this.modalService.hide();

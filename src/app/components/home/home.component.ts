@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
     this.inicioService.getDatosIniSucursal().subscribe({next :  (data:any)=>{
        data;
       this.inicioService.chageSucursal(data[0])
-      console.log('sucursal',data[0]);
+      //console.log('sucursal',data[0]);
     } ,
     error: error => {
       console.error(JSON.stringify(error))
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit {
     
      
       this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
-        console.log('getCuentasContablesEstablecimientoUsuario' , value) 
+        //console.log('getCuentasContablesEstablecimientoUsuario' , value) 
 
           this.inicioService.validarCuentasContablesEstablecimiento(value.data[0] )  
           
@@ -83,41 +83,41 @@ export class HomeComponent implements OnInit {
    }, error : (e)=>console.error(JSON.stringify(e))})
     
     this.cntService.getCntCuentasMayores().subscribe({next:(value:cntCuentaMayorRequest)=>{  
-      console.log("getCntCuentasMayores",value )
+      //console.log("getCntCuentasMayores",value )
       this.cntService.changeCuentasM(value.data); 
     },error : (e)=>console.error(JSON.stringify(e))})
     
     this.cntService.getCntGrupos().subscribe({
       next:(value:cntGrupoRequest)=>{ 
       this.cntService.changeGrupo(value.data); 
-      console.log("getCntGrupos",value.data )
+      //console.log("getCntGrupos",value.data )
 
     },error : (e)=>console.error(JSON.stringify(e))})
 
     this.cntService.getCntCuentas().subscribe({
       next:(value:cntSubCuentaRequest)=>{ 
       this.cntService.changeSubCuenta(value.data); 
-      console.log("getCntCuentas",value.data )
+      //console.log("getCntCuentas",value.data )
 
     },error : (e)=>console.error(JSON.stringify(e))})
 
 
     this.cntService.getCntClases().subscribe({next:(value:cntClaseRequest)=>{ 
       this.cntService.changeClase(value.data); 
-      console.log("getCntClases",value.data )
+      //console.log("getCntClases",value.data )
 
     },error : (e)=>console.error(JSON.stringify(e))})
 
 
     this.cntService.getCntClases().subscribe({next:(value:cntClaseRequest)=>{ 
       this.cntService.changeClase(value.data); 
-      console.log("getCntClases",value.data )
+      //console.log("getCntClases",value.data )
 
     },error : (e)=>console.error(JSON.stringify(e))})
 
     this.serviceCaja.getEstablecimientos()
     .subscribe({next: (datos:establecimientosRequest)=>{
-        console.log('datos establecimientosRequest',datos); 
+        //console.log('datos establecimientosRequest',datos); 
        if (datos.numdata > 0 ){ 
         this.serviceCaja.asignarEstablecimientos( datos.data??null);  
        } 

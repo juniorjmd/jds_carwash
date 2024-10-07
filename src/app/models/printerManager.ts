@@ -34,7 +34,7 @@ export class PrinterManager {
 
   constructor(private serviceCaja: cajasServices ) { 
     this.serviceCaja.currentArrEsta.subscribe({next:(value=>{
-      console.log('establecimiento ',value);
+      //console.log('establecimiento ',value);
       
       if(value) this.establecimientos = value 
     })
@@ -124,7 +124,7 @@ private detalleBono():string{
    
 let receiptHTML  = ` <hr> 
 <div style="text-align: left;" name="detalleBono"><table  style="font-family: Arial, sans-serif; width: 100%;">`
-console.log('listado',this.docDev.listado);
+//console.log('listado',this.docDev.listado);
     this.docDev.listado?.forEach((lista) => {
       const presioVenta = typeof lista.presioVenta === 'number' ? lista.presioVenta : parseFloat(lista.presioVenta??'0');
       const cantidadVendida = typeof lista.cantidadVendida === 'number' ? lista.cantidadVendida : parseFloat(lista.cantidadVendida??'0');
@@ -221,7 +221,7 @@ private pagosBono():string{
 public printClose( cierre:cajasResumenModel){
   this.cierre =  cierre
   const printContent = this.generateCierreHTML();
-  console.log(printContent);
+  //console.log(printContent);
   this.openPrintWindows(printContent);
   }
     generateCierreHTML(): string {
@@ -702,7 +702,7 @@ let contPRD = 0;
         arrayStrPrd.push(htmlPrd); 
         cont = 0 ;  }   
     }
-    console.log('arrayStrPrd',arrayStrPrd);
+    //console.log('arrayStrPrd',arrayStrPrd);
 
     this.resumenVenta.resumen?.forEach((lista , index) => {  
       if(cont==0){
@@ -882,7 +882,7 @@ let contPRD = 0;
         arrayStrPrd.push(htmlPrd); 
         cont = 0 ;  }   
     }
-    console.log('arrayStrPrd',arrayStrPrd);
+    //console.log('arrayStrPrd',arrayStrPrd);
 
     this.resumenVenta.resumen?.forEach((lista , index) => {  
       if(cont==0){
@@ -1292,7 +1292,7 @@ private footerDev():string{
     return receiptHTML;
   } 
   private generateSoporteCabecera(){
-    console.log('documento a imprimir' ,this.doc);
+    //console.log('documento a imprimir' ,this.doc);
     
       let cabecera = '';
       if (this.tipoImpresora == 'POS'){
@@ -1383,7 +1383,7 @@ private footerDev():string{
     receiptHTML += (this.tipoImpresora != 'POS')?
     `<tr><th>Cuenta </th><th>Nombre</th><th>Débito</th> <th>Crédito</th></tr>` : 
     '';
-    console.log('listado',this.doc.listado);
+    //console.log('listado',this.doc.listado);
     
         this.movimiento.movimientos?.forEach((lista) => {
           const debito =  lista.debito ;
@@ -1488,7 +1488,7 @@ let receiptHTML  = ` <hr> <div style="text-align: left;" name="detalle"><table  
  
 receiptHTML += (this.tipoImpresora != 'POS' && this.doc.listado.length > 0)?`<tr><th>Producto </th><th>Precio uni. </th><th>Descuento</th> <th>IVA</th> <th>Precio Venta</th> <th>Cantidad</th><th>Total </th></tr>` : 
 '';
-console.log('listado',this.doc.listado);
+//console.log('listado',this.doc.listado);
 
     this.doc.listado?.forEach((lista) => {
       const precioSinIVA = typeof lista.presioSinIVa === 'number' ? lista.presioSinIVa : parseFloat(lista.presioSinIVa??'0');
@@ -1635,10 +1635,10 @@ private pagos():string{
 
 
 private openPrintWindows(printContent:string){
-  console.log("html a imprimir" , printContent)
+  //console.log("html a imprimir" , printContent)
     const WindowPrt = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0')!;  
     if (WindowPrt) {
-      console.log('entro a print', WindowPrt);
+      //console.log('entro a print', WindowPrt);
       
       WindowPrt.document.write(printContent);
       WindowPrt.document.close();
@@ -1649,7 +1649,7 @@ private openPrintWindows(printContent:string){
   }
 }
 private openExcelWindows(printContent:string , fileName:string){
-  console.log("html a imprimir" , printContent)
+  //console.log("html a imprimir" , printContent)
   printContent =  this.htmlEntities(printContent) ; 
     const WindowPrt = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0')!;  
     if (WindowPrt) {
@@ -1660,7 +1660,7 @@ private openExcelWindows(printContent:string , fileName:string){
     const expires = "0";
     printContent = printContent.replace(/\s?\$\s/g, '');
  
-      console.log('printContent' ,  printContent);
+      //console.log('printContent' ,  printContent);
     const html = `
       <html>
       <head>

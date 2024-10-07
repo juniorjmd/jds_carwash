@@ -25,7 +25,7 @@ export class AppComponent  implements OnInit {
     // Cargar la configuración una vez al iniciar la aplicación
     await loadConfig(this.http); 
     // Ahora la configuración está disponible para el resto de la aplicación
-    console.log("Configuración cargada:", url , printer);
+   // console.log("Configuración cargada:", url , printer);
   }
  
 }

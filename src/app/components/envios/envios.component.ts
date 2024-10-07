@@ -32,7 +32,7 @@ export class EnviosComponent implements OnInit {
                 this.getDomicilios();
               }
   MostrarDetalle(pedidos:DocumentosModel){
-    console.log(pedidos);
+    //console.log(pedidos);
     
    let pagosHtml:string =  `
    <table class='table' style='font-size:12px'>  
@@ -61,7 +61,7 @@ export class EnviosComponent implements OnInit {
   }
   generarPago( envio:DocumentosModel){ 
     
-      console.log('envio generado',envio);
+      //console.log('envio generado',envio);
       this.newAbrirDialog.open(PagosVentaComponent ,{data:envio })
        .afterClosed()
        .subscribe((confirmado:  {rep:boolean,credito:boolean})=>{
@@ -78,7 +78,7 @@ export class EnviosComponent implements OnInit {
   this.documentoService.cerrarDocumento(idDocumento).subscribe(
     (respuesta:any)=>{
       let cont = 0;
-       console.log('cerrarDocumento',respuesta); 
+       //console.log('cerrarDocumento',respuesta); 
        if (respuesta.error === 'ok'){
         this.documentoRetorno = respuesta.data.documentoFinal;
         this.printer_factura_final()         
@@ -97,7 +97,7 @@ export class EnviosComponent implements OnInit {
      
     this.loading.show();
     this.serviceDomicilio.getListadosDomicilios().subscribe(
-      (respuesta:any)=>{console.log(respuesta)
+      (respuesta:any)=>{//console.log(respuesta)
        
       if (respuesta.error === 'ok'){
          this.listadoDePedidos = respuesta.data;

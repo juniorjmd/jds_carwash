@@ -104,13 +104,13 @@ export class CntCuentasMComponent {
     }   )
     this.cntService.currentCntcuentaM.subscribe( CuentasMayores  => { this.CuentasMayores = (CuentasMayores!= undefined)? [...CuentasMayores!]:[]  ;
       this.auxCuentasMayores = this.CuentasMayores;
-      console.log('cuentasMayores => ' ,this.CuentasMayores )
+      //console.log('cuentasMayores => ' ,this.CuentasMayores )
     } )
   }
 
   onSubmit() {
     // Aquí puedes manejar la lógica de envío del formulario
-    console.log(this.newCntCuenta);
+    //console.log(this.newCntCuenta);
   }
 
 

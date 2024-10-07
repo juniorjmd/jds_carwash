@@ -921,7 +921,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       
       return;
     }
-    if (this.documentoActivo!.cliente === 0) {
+    if (typeof(this.documentoActivo!.cliente) === 'undefined' || this.documentoActivo!.clienteNombre == "CLIENTE GENERICO") {
       this.newAbrirDialog.open(FndClienteComponent, { data: { docActivo : this.documentoActivo , invoker:'ventas' }})
         .afterClosed()
         .pipe(

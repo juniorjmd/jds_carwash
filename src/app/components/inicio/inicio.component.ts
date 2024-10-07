@@ -24,9 +24,9 @@ export class InicioComponent implements OnInit {
 
   async getUsuarioLogeado(){
     try {
-     console.log('usuario recibido' , this.usuario)
+     //console.log('usuario recibido' , this.usuario)
       this.menusUsuario = this.getMenuImage(this.usuario!) ;
-     console.log('estoy en getUsuarioLogeado',this.menusUsuario);
+     //console.log('estoy en getUsuarioLogeado',this.menusUsuario);
 
   } catch (error : any) {
       throw new Error(`Error al leer maestros : ${error}`);
@@ -48,10 +48,10 @@ export class InicioComponent implements OnInit {
     let menuCard:RecursoDetalle[] = [];
     let menu = usuario.permisos;
     let margin = 0;
-    console.log(usuario, menu);
+    //console.log(usuario, menu);
     
     menu!.forEach((recurso , index ) => {
-       console.log('recorrido',index ,recurso ); 
+       //console.log('recorrido',index ,recurso ); 
         if(recurso.tipo === 'card'){
 
           menuCard[margin]=  recurso ;

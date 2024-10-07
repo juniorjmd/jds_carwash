@@ -26,7 +26,7 @@ export class CierresComponent implements OnInit {
   this._serviceCierre.getCierresTotalesYparciales().subscribe({next:
     (respuesta:any)=>{
       let cont = 0;
-       console.log('getCierresTotalesYparciales',respuesta); 
+       //console.log('getCierresTotalesYparciales',respuesta); 
        if (respuesta.error !== undefined){
         console.error(respuesta.error)
         this.loading.hide();
@@ -66,11 +66,11 @@ mostrarProductosVendidosPorCierre(cierreActual:CortesDeCajaModule){
   this._serviceCierre.getProductosPorCierres(cierreActual.id).subscribe(
     (respuesta:any)=>{
       let cont = 0;
-       console.log('getCierresTotalesYparciales',respuesta); 
+       ////console.log('getCierresTotalesYparciales',respuesta); 
        if (respuesta.error === 'ok' ){ 
          if (respuesta.numdata > 0)
          {//respuesta.data[0]; 
-        console.log('datos cierres',respuesta.data);
+        ////console.log('datos cierres',respuesta.data);
 
  
         let pagosHtml:string =  `<h1>Cierre de caja # ${cierreActual.id} <br>de la caja ${cierreActual.nombreCajaCierre}</h1>

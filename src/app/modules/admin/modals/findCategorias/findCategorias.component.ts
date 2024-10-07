@@ -20,12 +20,12 @@ export class FindCategoriasComponent {
   ngOnInit(): void { 
     this.actividadService.arrayCategorias.subscribe({next:(prd)=>{
       this.categorias = [...prd??[]]; 
-      console.log('oninit filtroname',this.filtroName); 
+      //console.log('oninit filtroname',this.filtroName); 
       if(this.filtroName == '') {this.categoriasFiltrados = [...this.categorias];}  
           }})
   } 
   enviarProducto(item:CategoriasModel){
-    console.log(item); 
+    //console.log(item); 
     let id:number = (typeof( item.id ) == 'string')? parseInt(item.id!) :item.id! ;  
     if(!item.selected){
       this.actividadService.setCategoria(id).subscribe({next:val=>{
@@ -85,17 +85,17 @@ export class FindCategoriasComponent {
       this.actividadService.
       getCategoriasDisponiblesByName(this.filtroName)
       .subscribe({next:(value)=>{ 
-        console.log('resultado busqueda' , value);
+        //console.log('resultado busqueda' , value);
         
         if(value.numdata > 0) { 
-          console.log('termina la busqueda');
+          //console.log('termina la busqueda');
           
           this.categoriasFiltrados = value.data;
           const nuevosProductos = value.data.filter((nuevoProducto: CategoriasModel) => 
             !this.categorias.some(producto => producto.id === nuevoProducto.id)
           ); 
           this.actividadService.setArrayCategorias( [...this.categorias, ...nuevosProductos] );
-          console.log('busqueda categorias',this.categoriasFiltrados);
+          //console.log('busqueda categorias',this.categoriasFiltrados);
           
         }
       }})

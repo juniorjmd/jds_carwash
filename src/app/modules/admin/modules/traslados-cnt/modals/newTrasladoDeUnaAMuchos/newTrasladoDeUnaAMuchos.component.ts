@@ -53,16 +53,13 @@ this.newAbrirDialog.open(ModalCntSubCuentasComponent, { data:  null })
         'DESTINO'
       ))
       this.nombreCuentaDestino = response.datoDevolucion.nombre_scuenta!;
-      this.idCuentaDestino = response.datoDevolucion.id_scuenta!;   
-      console.log('buscarCuentasContablesGastos',response , this.nombreCuentaDestino , response.datoDevolucion.nombre_scuenta!,
-      this.idCuentaDestino , response.datoDevolucion.id_scuenta!   ) ;
+      this.idCuentaDestino = response.datoDevolucion.id_scuenta!;  
       
     }  
   })
 ).subscribe({
   next: () => {},
-  error: (error) => console.error('Error:', error),
-  complete: () => console.log('buscarCuentasContables completo')
+  error: (error) => console.error('Error:', error) 
 }); 
   
 }

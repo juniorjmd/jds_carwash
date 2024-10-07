@@ -46,12 +46,12 @@ export class ModalCntGruposComponent implements OnInit {
     
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.clases = value??[] ;
-      console.log(this.clases) 
+      //console.log(this.clases) 
     },error : (e:any)=>console.error(e.error.error)})
   }
 
   onSubmit() {
     // Aquí puedes manejar la lógica de envío del formulario
-    console.log(this.newCntGrupos);
+    //console.log(this.newCntGrupos);
   }
  }

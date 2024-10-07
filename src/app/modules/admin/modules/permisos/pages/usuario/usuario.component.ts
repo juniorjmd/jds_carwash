@@ -47,8 +47,8 @@ export class UsuarioComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
-      complete: () => console.log('buscarCliente completo')
+      error: (error) => console.error('Error:', error)
+      
     });  
 
 
@@ -76,13 +76,13 @@ export class UsuarioComponent implements OnInit {
     this.userService.getUsuarios().subscribe(
 
       {next: (datos:any)=>{
-          console.log(datos);
+          //console.log(datos);
           
      if (datos.numdata > 0 ){ 
        datos.data!.forEach((dato:Usuarios , index:number )=>{
          this.usuarios[index] = new UsuarioModel( dato );
        }) 
-       console.log(this.usuarios);
+       //console.log(this.usuarios);
      }else{
        this.usuarios = [];
      }
@@ -90,7 +90,7 @@ export class UsuarioComponent implements OnInit {
          this.loading.hide()
        } ,
        error : (error : any) => {this.loading.hide();
-         console.log(error)
+         //console.log(error)
          alert( error.error.error);
        }
       

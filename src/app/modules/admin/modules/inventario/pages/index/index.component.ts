@@ -31,13 +31,13 @@ export class IndexComponent  implements OnInit {
         this._userService.currentUsuario.subscribe((usuario:Usuario) => { 
           if(usuario){
           this.usuario = usuario ; 
-          console.log('usuario cargado',usuario);
+          ////console.log('usuario cargado',usuario);
           
           let permisosAdmin:RecursoDetalle  = usuario.permisos.filter((x)=> x.nombre_recurso == "Admin")[0]
           let userPermisos:RecursoDetalle|undefined  = permisosAdmin.recursosHijos?.filter((x)=> x.nombre_recurso == "inventarios")[0]
           //let userPermisos:RecursoDetalle  = permisosInventario.recursosHijos?.filter((x)=> x.nombre_recurso == "inventarios")[0]
           this.listado = this.getMenuImage(userPermisos!.recursosHijos??[]);
-          console.log('estoy en getUsuarioLogeado generales', this.usuario , this.listado);
+          //console.log('estoy en getUsuarioLogeado generales', this.usuario , this.listado);
           }
         });
       }

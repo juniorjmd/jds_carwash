@@ -94,7 +94,7 @@ export class UsuarioEditarComponent implements OnInit {
   guardarUsuario()
   {
     
-    console.log('nueva caja',this.newUsuario.Nombre1)
+    //console.log('nueva caja',this.newUsuario.Nombre1)
     this.newUsuario.usr_registro =  parseInt(localStorage.getItem('#2@56YH7H82BF')!); 
     if (typeof(this.newUsuario.Nombre1) === 'undefined'){
      this.loading.hide();
@@ -117,7 +117,7 @@ export class UsuarioEditarComponent implements OnInit {
     
     this.loading.show(); 
     this.userService.updateUsuarios(this.newUsuario).subscribe(
-     (respuesta:any)=>{console.log(respuesta)
+     (respuesta:any)=>{//console.log(respuesta)
       
      if (respuesta.error === 'ok'){
        alert('datos ingresados con exito');  

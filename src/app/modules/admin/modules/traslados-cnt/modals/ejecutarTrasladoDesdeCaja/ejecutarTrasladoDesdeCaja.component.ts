@@ -48,7 +48,7 @@ export class ejecutarTrasladoDesdeCajaComponent {
 };
 
         this.cajas =[{...cajasel}  , ...value.data.filter(x=>(x.cuentaContableEfectivo||0) > 0)]  
-        console.log('cajaas' , this.cajas);
+        //console.log('cajaas' , this.cajas);
         
       }
     }, error: e=>Swal.fire('error',e.error.error,'error')})
@@ -58,20 +58,20 @@ export class ejecutarTrasladoDesdeCajaComponent {
      DE_UNA_A_MUCHOS
      DE_MUCHOS_A_UNA
     */ 
-   console.log(this.dataIngreso);
+   //console.log(this.dataIngreso);
    
    if(this.dataIngreso != undefined){
     this.dataProceso  = this.dataProceso.createTraslado( dataIngreso );  
     this.cntService.getCuentasTrasladosPreeEjecucion(this.dataIngreso.id!).subscribe({next:(value)=>{ 
           this.dataProceso!.cuentas =  value.data;
-          console.log('cuentas' , value.data);
+          //console.log('cuentas' , value.data);
           
     },error:e=> console.error(e.error.error) })
 
   }
   }
   ejecutar(){
-      console.log('cajaSeleccionada',this.cajaSeleccionada);
+      //console.log('cajaSeleccionada',this.cajaSeleccionada);
       
       if(this.cajaSeleccionada == 0){
         Swal.fire('error','Debe seleccionar el origen del traslado')
@@ -98,7 +98,7 @@ export class ejecutarTrasladoDesdeCajaComponent {
 
   
   async printer_soporte_final(soporte:SoporteOperacion) {   
-   // console.log('documento retorno',doc,'sucursal ', this.sucursal); 
+   // //console.log('documento retorno',doc,'sucursal ', this.sucursal); 
     let printM =  new PrinterManager(this.cajasService);  
     printM.printSoporteMovimiento(false,soporte);
     this.dialogo.close(true);

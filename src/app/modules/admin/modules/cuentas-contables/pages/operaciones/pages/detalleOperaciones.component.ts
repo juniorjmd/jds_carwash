@@ -29,7 +29,7 @@ export class DetalleOperacionesComponent implements OnInit {
     this.cntService.bucarSoporteMovimiento(this.operacion?.id!).subscribe({
       next:async (value:soporteMovimientoCntRequest)=>{
       
-        console.log('printer_soporte_final',value); 
+        //console.log('printer_soporte_final',value); 
        let printM =  new PrinterManager(this.cajasService);  
       await printM.printSoporteMovimiento(false,value.data[0].obj); 
     },
@@ -43,12 +43,12 @@ export class DetalleOperacionesComponent implements OnInit {
       
     this.cntService.currentoperacion.subscribe({next:(value:CntOperacionesModel | null )=>{
       this.operacion = value?? undefined ; 
-      console.log(this.operacion)
+      //console.log(this.operacion)
       if(this.operacion !== undefined){
         this.cntService.getCntTransacciones(this.operacion?.id!).subscribe(
           {next:(result:cntTransaccionesRequest)=>{
            this.transacciones= result.data;
-           console.log(this.transacciones)
+           //console.log(this.transacciones)
           },error:(e)=>console.error(e.error.error)}
         )
       }

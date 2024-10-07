@@ -32,17 +32,17 @@ constructor(private cntService:CntContablesService,
   public dialogo: MatDialogRef<ModalCntSubCuentasComponent>, 
 ){
     this.getAllSubcuentas();
-    console.log('datos ingresos busqueda cuenta' , this.dataIngreso);
+    //console.log('datos ingresos busqueda cuenta' , this.dataIngreso);
     
 }
 filtrarPorNombre( ) {
   this.Subcuentas =  [...this.auxSubCuentas]
-  console.log('codigo cuenta',this.newSubcuenta.cod_cuenta);
+  //console.log('codigo cuenta',this.newSubcuenta.cod_cuenta);
   if(this.newSubcuenta.nombre_scuenta  !== undefined  && this.newSubcuenta.nombre_scuenta!.trim() != '') { 
         this.cntService.getCntCuentasByName(this.newSubcuenta.nombre_scuenta).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
-          console.log('getCntCuentasByName',value)
+          //console.log('getCntCuentasByName',value)
           this.Subcuentas = value.data;  
-          console.log('Subcuentas' , this.Subcuentas) 
+          //console.log('Subcuentas' , this.Subcuentas) 
          },
         error: (e:any)=>console.error(e.error.error)})
       } 
@@ -61,10 +61,10 @@ cancelar(){
 filtrarSubCuentas(){
   if(this.newSubcuenta.cod_cuenta != undefined){ 
   this.cntService.getCntCuentasByIdCM(this.newSubcuenta.cod_cuenta).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
-    console.log('getCntCuentasByIdCM',value)
+    //console.log('getCntCuentasByIdCM',value)
     this.Subcuentas = value.data; 
     this.auxSubCuentas=value.data;
-    console.log('Subcuentas' , this.Subcuentas) 
+    //console.log('Subcuentas' , this.Subcuentas) 
    },
   error: (e:any)=>console.error(e.error.error)})
 }else{this.getAllSubcuentas()}
@@ -74,10 +74,10 @@ filtrarSubCuentasPorGrupo(){
   if(this.codGrupo != undefined && this.codGrupo > 0 ){ 
     this.cuentas = this.AuxCuentas?.filter(x=>x.cod_grupo == this.codGrupo)??[];
   this.cntService.getCntCuentasByIdGrupo(this.codGrupo).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
-    console.log('getCntCuentasByIdCM',value)
+    //console.log('getCntCuentasByIdCM',value)
     this.Subcuentas = value.data; 
     this.auxSubCuentas=value.data;
-    console.log('Subcuentas' , this.Subcuentas) 
+    //console.log('Subcuentas' , this.Subcuentas) 
    },
   error: (e:any)=>console.error(e.error.error)})
 }else{this.getAllSubcuentas()
@@ -88,10 +88,10 @@ filtrarSubCuentasPorClase(){
   if(this.codClase != undefined && this.codClase > 0 ){ 
     this.grupos = this.AuxGrupos.filter(x=>x.cod_clase == this.codClase) ;
   this.cntService.getCntCuentasByIdClase(this.codClase).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
-    console.log('getCntCuentasByIdCM',value)
+    //console.log('getCntCuentasByIdCM',value)
     this.Subcuentas = value.data; 
     this.auxSubCuentas=value.data;
-    console.log('Subcuentas' , this.Subcuentas) 
+    //console.log('Subcuentas' , this.Subcuentas) 
    },
   error: (e:any)=>console.error(e.error.error)})
 }else{this.getAllSubcuentas() 
@@ -100,7 +100,7 @@ filtrarSubCuentasPorClase(){
 }
 
 revisarIngreso(){
-  console.log('revisar ingreso ==> ' , this.dataIngreso);
+  //console.log('revisar ingreso ==> ' , this.dataIngreso);
   
   if(this.dataIngreso != undefined){
     if(this.clases.length > 0 && this.dataIngreso.clase>0 ){
@@ -123,20 +123,20 @@ revisarIngreso(){
       if(this.newSubcuenta.cod_cuenta > 0 ){
          
             this.cntService.getCntCuentasByIdCM(this.newSubcuenta.cod_cuenta).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
-              console.log('getCntCuentasByIdCM',value)
+              //console.log('getCntCuentasByIdCM',value)
               this.Subcuentas = value.data; 
               this.auxSubCuentas=value.data;
-              console.log('Subcuentas' , this.Subcuentas) 
+              //console.log('Subcuentas' , this.Subcuentas) 
             },
             error: (e:any)=>console.error(e.error.error)})
 
       } else { if(this.codGrupo > 0 ){
 	
         this.cntService.getCntCuentasByIdGrupo(this.codGrupo).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
-          console.log('getCntCuentasByIdCM',value)
+          //console.log('getCntCuentasByIdCM',value)
           this.Subcuentas = value.data; 
           this.auxSubCuentas=value.data;
-          console.log('Subcuentas' , this.Subcuentas) 
+          //console.log('Subcuentas' , this.Subcuentas) 
          },
         error: (e:any)=>console.error(e.error.error)})
 
@@ -153,7 +153,7 @@ console.clear();
      
     this.clases = value??[] ;
     this.revisarIngreso();
-    console.log('currentCntClase',this.clases) 
+    //console.log('currentCntClase',this.clases) 
   },error : (e:any)=>console.error(e.error.error)})
 
 
@@ -162,19 +162,19 @@ console.clear();
     this.grupos = value??[] ;
     this.AuxGrupos = this.grupos; 
     this.revisarIngreso();
-    console.log('currentCntGrupo',this.grupos) 
+    //console.log('currentCntGrupo',this.grupos) 
   },error : (e:any)=>console.error(e.error.error)})
 
 
   this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[]| null)=>{
     
-    console.log('currentCntcuentaM  - - value',value) 
+    //console.log('currentCntcuentaM  - - value',value) 
     this.cuentas = value??[] ;
     
-    console.log('currentCntcuentaM ---- >>',this.cuentas) 
+    //console.log('currentCntcuentaM ---- >>',this.cuentas) 
     this.AuxCuentas = this.cuentas; 
     this.revisarIngreso();
-    console.log('currentCntcuentaM',this.cuentas) 
+    //console.log('currentCntcuentaM',this.cuentas) 
   },error : (e:any)=>console.error(e.error.error)})
   // Aquí deberías cargar los datos de `cnt_cuenta` desde el servicio correspondiente
   
@@ -186,7 +186,7 @@ getAllSubcuentas(){
   this.cntService.getCntCuentas().subscribe( {next:(value:cntSubCuentaRequest)=>{   
     this.Subcuentas = value.data; 
     this.auxSubCuentas=value.data;
-    console.log('Subcuentas' , this.Subcuentas) 
+    //console.log('Subcuentas' , this.Subcuentas) 
    },
   error: (e:any)=>console.error(e.error.error)})
 
@@ -196,7 +196,7 @@ getAllSubcuentas(){
 enviarNewRegistro() {
 
   // Aquí puedes manejar la lógica de envío del formulario
-  console.log('nueva subcuenta' , this.newSubcuenta);
+  //console.log('nueva subcuenta' , this.newSubcuenta);
   
   this.cntService.setNewSubCuenta(this.newSubcuenta).subscribe( {next:(respuesta:any)=>{  
 
@@ -215,7 +215,7 @@ enviarNewRegistro() {
 retornarRegistroBusqueda(subCuentaSel:CntSubCuentaModel) {
    this.SubcuentaDevolucion= {...subCuentaSel};
   // Aquí puedes manejar la lógica de envío del formulario
-  console.log('nueva subcuenta' , this.newSubcuenta, subCuentaSel); 
+  //console.log('nueva subcuenta' , this.newSubcuenta, subCuentaSel); 
   this.cerrarok()  
 }
 cerrarok(){

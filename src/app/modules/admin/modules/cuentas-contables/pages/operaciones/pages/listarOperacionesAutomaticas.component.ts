@@ -49,7 +49,7 @@ export class ListarOperacionesAutomaticasComponent implements OnInit {
      
   this.cntService.getCntOperacionesAutoIdDocumento(this.selIdDocumento).subscribe({next:(value:cntOperacionesRequest )=>{ 
      this.operaciones =  value.data; 
-    console.log('getDocumentosOperacionesAuto' , value);
+    //console.log('getDocumentosOperacionesAuto' , value);
     
   },error : (e:any)=>console.error(e.error.error)}) ; 
   }
@@ -58,7 +58,7 @@ export class ListarOperacionesAutomaticasComponent implements OnInit {
     if(this.selTipoDocuemto <=  0 ) return ;      
   this.cntService.getCntOperacionesAutoTipoDocumento(this.selTipoDocuemto).subscribe({next:(value:cntOperacionesRequest )=>{ 
     this.operaciones =  value.data; 
-   console.log('getDocumentosOperacionesAuto' , value);
+   //console.log('getDocumentosOperacionesAuto' , value);
    
  },error : (e:any)=>console.error(e.error.error)}) ; 
 
