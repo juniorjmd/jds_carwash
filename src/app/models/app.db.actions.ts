@@ -29,6 +29,7 @@
  const cambioContrasena = '52444d9072f7ec12a26cb2879ebb4ab0bf5aa553';
  const datosInicialesSucursal = 'GET_SUCURSAL_PRINCIPAL_DATA'
  const validarLlave = '16770d92a6a82ee846f7ff23b4c8ad05b69fba03';
+ const getUsuarioLogeado = '16770d92a6a82ee8464f678f5f223b4c8ad05b69fba03';
  const actionResumenCaja = 'OBTENER_RESUMEN_CAJA';
  const actionInsertPerfilUsuario = 'INSERT_PERFIL_USUARIO'; 
 
@@ -148,6 +149,8 @@
     'actionSelectPorUsuario' :actionSelectPorUsuario,
     'actionlogin' :actionlogin ,
     'actionValidarKeylogin' :validarLlave,
+    'actionGetUsuarioActual' :getUsuarioLogeado,
+    'actionSetPass' :'HIJODELAGRANCHINGADA',
     'actionSelCajaXuser' :actionSelectCajasPorUsuario, 
     'actionCambioCajaDocumento' :actionCambioCajaDocumento, 
     'actionConfirmar' :actionConfirmar ,

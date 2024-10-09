@@ -9,6 +9,36 @@ export interface Usuario{
     permisos : RecursoDetalle[]
 }
 
+export interface UsuarioLogeado {
+    _result: string;
+    llave_session: string;
+    ID: number;
+    Login: string;
+    mail: string;
+    Nombre1: string;
+    Nombre2: string;
+    Apellido1: string;
+    Apellido2: string;
+    nombreCompleto: string;
+    estado: string;
+    usr_registro: number;
+    Fecha_Registro: string;
+    Usr_Modif: number;
+    Fecha_Modif: string;
+    pass: string;
+    change_pass: number;
+    ultimo_ingreso: string;
+    libranza: number;
+    id_perfil: number;
+    Perf_Nombre: string;
+    descripcion: string;
+    empleado: number;
+    img: string;
+    idPersona: number;
+    permisos : RecursoDetalle[]
+  }
+  
+
 export interface Perfil{
     id:number,
     Perf_Nombre:string,

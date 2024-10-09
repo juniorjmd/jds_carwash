@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogoConfirmacionComponent } from 'src/app/modules/shared/componentes/dialogo-confirmacion/dialogo-confirmacion.component';
+import { DialogoConfirmacionComponent } from 'src/app/modules/shared/components/dialogo-confirmacion/dialogo-confirmacion.component';
 import { select } from 'src/app/interfaces/generales.interface';
 import { departamento } from 'src/app/interfaces/maestros.interface'; 
 import { loading } from 'src/app/models/app.loading';

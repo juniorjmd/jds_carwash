@@ -1,9 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { error } from 'jquery';
-import { DocumentoRequest, perfil, perfilRequest, recursoRequest } from 'src/app/interfaces/producto-request';
-import { Recurso } from 'src/app/interfaces/recurso';
-import { Perfil } from 'src/app/interfaces/usuario.interface';
+ 
+import {   Component, OnInit } from '@angular/core'; 
+import { perfil, perfilRequest, recursoRequest } from 'src/app/interfaces/producto-request';
+import { Recurso } from 'src/app/interfaces/recurso'; 
 import { usuarioService } from 'src/app/services/usuario.services';
 import Swal from 'sweetalert2';
 

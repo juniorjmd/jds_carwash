@@ -4,7 +4,7 @@ import { DatosInicialesService } from 'src/app/services/DatosIniciales.services'
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
-import { Modal1Component } from 'src/app/modules/shared/componentes/modal1/modal1.component'
+import { Modal1Component } from 'src/app/modules/shared/components/modal1/modal1.component'
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { Form, NgForm } from '@angular/forms';
 import { select } from 'src/app/interfaces/generales.interface';

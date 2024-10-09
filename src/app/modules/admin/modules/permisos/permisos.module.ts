@@ -12,7 +12,7 @@ import { UsuarioPerfilComponent } from './pages/usuario/perfil/usuario-perfil.co
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/modules/shared/shared.module'; 
 import { UsuarioComponent } from './pages/usuario/usuario.component';
-import { MenuItemLiComponent } from 'src/app/modules/shared/componentes/menu-item-li/menu-item-li.component';
+import { MenuItemLiComponent } from 'src/app/modules/shared/components/menu-item-li/menu-item-li.component';
 
 
 @NgModule({

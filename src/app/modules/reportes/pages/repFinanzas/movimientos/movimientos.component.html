@@ -50,10 +50,11 @@
                 <div class="col-sm-12 col-lg-2 mb-2">
                     <strong>Total Movimientos:</strong> {{resumenVenta.cantidadMovimientos}}
                 </div>
-                <div class="col-sm-12 col-lg-2 mb-2">
-                     <div class="btn btn-success" (click)="imprimirResumen()">Imprimir reporte</div>
+                <div class="col-sm-12 col-lg-2 d-grid  mb-2">
+                     <button class="btn btn-success" (click)="imprimirResumen()">Imprimir reporte</button>
                 </div>
-                <div class="col-sm-12 col-lg-2 mb-2"><div class="btn btn-success" (click)="ExportarResumen()">Excel</div></div>
+                <div class="col-sm-12 col-lg-2 d-grid  mb-2"><button class="btn btn-success" 
+                    (click)="ExportarResumen()">Excel</button></div>
 
             </div>
             <hr>

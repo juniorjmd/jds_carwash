@@ -5,7 +5,7 @@ import { PaisModel } from 'src/app/models/maestros.model';
 import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services';
 
 import { MatDialog } from "@angular/material/dialog";
-import { DialogoConfirmacionComponent } from "src/app/modules/shared/componentes/dialogo-confirmacion/dialogo-confirmacion.component";
+import { DialogoConfirmacionComponent } from "src/app/modules/shared/components/dialogo-confirmacion/dialogo-confirmacion.component";
 import { NewPaisComponent } from './new-pais.component';
 import { loading } from 'src/app/models/app.loading';
 @Component({

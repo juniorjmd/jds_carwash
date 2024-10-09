@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
+import { PrinterManager } from 'src/app/models/printerManager';
+import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
+import { usuarioService } from 'src/app/services/usuario.services';
 
 @Component({
   selector: 'app-bienvenida-rp', 
@@ -16,20 +20,44 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       <p class="card-text text-center">
         En este módulo, podrás encontrar diversos reportes detallados sobre las ventas realizadas en tu negocio. Los reportes disponibles incluyen:
       </p>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><i class="bi bi-calendar3"></i> Resumen de Ventas Diarias</li>
-        <li class="list-group-item"><i class="bi bi-tags"></i> Resumen de Ventas por Producto</li>
-        <li class="list-group-item"><i class="bi bi-box-seam"></i> Ventas por Categoría</li>
-        <li class="list-group-item"><i class="bi bi-person-lines-fill"></i> Ventas por Vendedor/Cajero</li>
-        <li class="list-group-item"><i class="bi bi-clock"></i> Ventas por Hora/Día de la Semana</li>
-        <li class="list-group-item"><i class="bi bi-arrow-counterclockwise"></i> Reportes de Devoluciones</li>
-      </ul>
-      <div class="text-center mt-4">
-        <a  [routerLink]="['productos']" class="btn btn-primary">Ir a los Reportes de Ventas</a>
-      </div><hr>
+      <ul class="list-group list-group-flush">    <li class="list-group-item" *ngFor="let item of menusUsuario">
+          
+        <a class="list-group-item list-group-item-action" routerLinkActive="active" 
+          
+          [routerLink]="item.direccion"><span [innerHTML] = "item.img"></span> {{item.display_nombre}}
+          </a> 
+
+
+        </li>
+       
+
+
+      
+      </ul> <hr>
     </div>
   </div>
 </div>`,
   styleUrls: ['./bienvenidaRP.component.css'], 
 })
-export class BienvenidaRPComponent { }
+export class BienvenidaRPComponent { 
+  private _datosInicialesService = inject( DatosInicialesService );
+  private usuarioService = inject( usuarioService );
+  
+  menusUsuario: RecursoDetalle[] = [];
+  usuario?: Usuario;
+  ngOnInit(): void {
+    this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ; 
+      console.log('InicioRepVentasComponent - usuarioLogueado' , this.usuario);
+      
+      let recursos =  this.usuario?.permisos.find(x=> x.nombre_recurso  == "reportes")?.recursosHijos ; 
+
+      this.menusUsuario =  recursos?.find(x=> x.nombre_recurso  == "ventas")?.recursosHijos||[] ; 
+
+      console.log('InicioRepVentasComponent - permisos ' , this.menusUsuario  );
+      
+    });
+    this._datosInicialesService.currentSucursal.subscribe({next:(suc)=>{   
+       PrinterManager.setSucursal(suc!);   
+    }})}
+}
+

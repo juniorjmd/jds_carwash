@@ -1,9 +1,63 @@
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12 centrado">
-            <figure class="figure centrado">
-                <img src="../../../../../assets/img/en-construccion.jpg" style="max-height: 500px;" class="figure-img img-fluid rounded" alt="">
-            </figure>
+    <div class="row justify-content-center  mt-5">
+        <div class="col-sm-12 col-lg-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Mi Usuario</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">
+                            Usuario:
+                        </div>
+                        <div class="col-sm-8">
+                            {{ usuario?.Login }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">
+                            Nombre:
+                        </div>
+                        <div class="col-sm-8">
+                            {{ usuario?.nombreCompleto }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">
+                            Último ingreso:
+                        </div>
+                        <div class="col-sm-8">
+                            {{ usuario?.ultimo_ingreso }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">
+                            Nueva contraseña:
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="password" [(ngModel)]="newPassword" class="form-control" placeholder="Ingrese nueva contraseña" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 font-weight-bold">
+                            Confirmar contraseña:
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="password" [(ngModel)]="confirmPassword" class="form-control" placeholder="Confirme nueva contraseña" />
+                        </div>
+                    </div>
+                    <div class="row mb-3 text-danger" *ngIf="passwordError">
+                        <div class="col-sm-12 text-center">
+                            {{ passwordError }}
+                        </div>
+                    </div>
+                    <div class="row mb-3 text-center">
+                        <div class="col-sm-12">
+                            <button class="btn btn-primary" (click)="changePassword()">Cambiar contraseña</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
