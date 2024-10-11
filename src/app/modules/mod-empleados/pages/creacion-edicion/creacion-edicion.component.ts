@@ -44,7 +44,7 @@ export class CreacionEdicionComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify( error)),
       complete: () => console.log('buscarCliente completo')
     });   
   }

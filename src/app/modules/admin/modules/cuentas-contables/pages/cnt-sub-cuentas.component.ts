@@ -3,6 +3,7 @@ import { cntCuentaMayorRequest, cntSubCuentaRequest } from 'src/app/interfaces/p
 import { CntCuentaMModel } from 'src/app/models/cnt-cuenta-m/cnt-cuenta-m.module';
 import { vwCntSubCuentaModel } from 'src/app/models/cnt-sub-cuenta/cnt-sub-cuenta.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cnt-sub-cuentas',
@@ -30,7 +31,7 @@ filtrarPorNombre( ) {
           this.Subcuentas = value.data;  
           //console.log('Subcuentas' , this.Subcuentas) 
          },
-        error: (e:any)=>console.error(e.error.error)})
+        error: (e:any)=>Swal.fire(e.error.error)})
       } 
   } 
 }
@@ -48,7 +49,7 @@ filtrarSubCuentas(){
     this.auxSubCuentas=value.data;
     //console.log('Subcuentas' , this.Subcuentas) 
    },
-  error: (e:any)=>console.error(e.error.error)})
+  error: (e:any)=>Swal.fire(e.error.error)})
 }else{this.getAllSubcuentas()}
 }
 ngOnInit() {
@@ -57,7 +58,7 @@ ngOnInit() {
     //console.log('currentCntcuentaM - value',value) 
     this.cuentas = value??[] ;
     //console.log('currentCntcuentaM',this.cuentas) 
-  },error : (e:any)=>console.error(e.error.error)})
+  },error : (e:any)=>Swal.fire(e.error.error)})
   // Aquí deberías cargar los datos de `cnt_cuenta` desde el servicio correspondiente
   
 }
@@ -70,7 +71,7 @@ getAllSubcuentas(){
     this.auxSubCuentas=value.data;
     //console.log('Subcuentas' , this.Subcuentas) 
    },
-  error: (e:any)=>console.error(e.error.error)})
+  error: (e:any)=>Swal.fire(e.error.error)})
 
 
 
@@ -83,6 +84,6 @@ enviarNewRegistro() {
     //console.log('Subcuentas' ,value) 
     this.filtrarSubCuentas()
    },
-  error: (e:any)=>console.error(e.error.error)})  
+  error: (e:any)=>Swal.fire(e.error.error)})  
 }
 }

@@ -10,6 +10,7 @@ import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { ModalCntSubCuentasComponent } from '../../modals/cuentasContables/cnt-sub-cuentas.component';
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-medios-de-pago',
@@ -51,7 +52,7 @@ MedioP:MediosDePago[] = [] ;
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire('Error:', error),
       complete: () => console.log('buscarCuentasContables completo')
     }); 
   }

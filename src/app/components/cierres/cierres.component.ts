@@ -28,7 +28,7 @@ export class CierresComponent implements OnInit {
       let cont = 0;
        //console.log('getCierresTotalesYparciales',respuesta); 
        if (respuesta.error !== undefined){
-        console.error(respuesta.error)
+        Swal.fire(respuesta.error)
         this.loading.hide();
         return;
        }
@@ -47,7 +47,7 @@ export class CierresComponent implements OnInit {
                 break; 
           }
         }else{
-          console.error(resp.error)
+          Swal.fire(resp.error)
         }
        })
         
@@ -55,7 +55,7 @@ export class CierresComponent implements OnInit {
         
        this.loading.hide();
        
-  }, error:(error)=>{console.error(error.error.error);this.loading.hide();}
+  }, error:(error)=>{Swal.fire(error.error.error);this.loading.hide();}
 }) 
 
   }

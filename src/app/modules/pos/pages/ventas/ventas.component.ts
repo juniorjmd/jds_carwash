@@ -80,20 +80,21 @@ export class VentasComponent implements AfterViewInit, OnInit {
       
   }
 
-  ngOnInit(): void {  
-    this.getMediosP();
-    this.getAsyncDocumentos();
+  ngOnInit(): void {   
     this.dInicialServ.getParametroValidarExistencia().subscribe({next:value=>{
       console.log('validar existencia en venta', value ); 
       this.dInicialServ.setParametroExistencia(value.data[0]);
     }});
     this.dInicialServ.currentVendedores.subscribe({next:value=>{
       this.empleados = value??[];
-    }});
-    
+    }}); 
     this.dInicialServ.continueVenta.subscribe({next:(value)=>{
       this.continuar = value;
       console.log('continuar',this.continuar);
+      if ( this.continuar ){
+      this.getMediosP();
+      this.getAsyncDocumentos();
+      }
       
     }})
     this.dInicialServ.currentSucursal.subscribe({next:(suc)=>{ 
@@ -125,7 +126,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         next:(request) => {
           this.getMenuImage(request.data.usuario)
         } ,
-        error: error=>{console.error('Error getUsuarioLogeado', error);} 
+        error: error=>{Swal.fire('Error getUsuarioLogeado', JSON.stringify(error) ) ;} 
       }
     )
   }
@@ -194,7 +195,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         }
         this.loading.hide();
       },
-      error: (error) =>{ console.error('getAsyncDocumentos - Error:', error);  this.loading.hide();},
+      error: (error) =>{ Swal.fire('getAsyncDocumentos - Error:', JSON.stringify(error) ) ;  this.loading.hide();},
       complete: () =>this.loading.hide()
     });
   }
@@ -233,7 +234,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         }
         
       },
-      error: (error) => {console.error('getDocumentos - Error:', error);
+      error: (error) => {Swal.fire('getDocumentos - Error:', JSON.stringify(error) ) ;
         this.loading.hide();},
       complete: () =>
         this.loading.hide() 
@@ -311,7 +312,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
       complete: () => console.log('crearDocumento completo')
     });
   }
@@ -351,7 +352,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
                            })
                          ).subscribe({
                            next: () => {},
-                           error: (error) => console.error('Error:', error),
+                           error: (error) => Swal.fire( JSON.stringify(error) ) ,
                            complete: () => console.log('moverDocumentoCaja completo')
                          }); 
 
@@ -363,7 +364,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
                     })
                   ).subscribe({
                     next: () => {},
-                    error: (error) => console.error('Error:', error),
+                    error: (error) => Swal.fire( JSON.stringify(error) ) ,
                     complete: () => console.log('busquedaAuxiliarProducto completo')
                   });
      
@@ -382,7 +383,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
              })
            ).subscribe({
              next: () => {},
-             error: (error) => console.error('Error:', error),
+             error: (error) => Swal.fire( JSON.stringify(error) ) ,
              complete: () => console.log('moverDocumentoCaja completo')
            }); 
           } 
@@ -390,7 +391,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
           Swal.fire('No existen datos con el codigo ' + this.codigoProducto )
         }
       },
-      error:error=>console.error(error),complete:()=>
+      error:error=>Swal.fire(error),complete:()=>
         this.loading.hide() 
       })
      
@@ -408,7 +409,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire( JSON.stringify(error) ) ,
         complete: () => console.log('moverDocumentoCaja completo')
       });
   }
@@ -424,7 +425,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire( JSON.stringify(error) ) ,
         complete: () => console.log('editar linea completo')
       });
   }
@@ -457,7 +458,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
       complete: () => console.log('eliminarLinea completo')
     });
   }
@@ -508,7 +509,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire( JSON.stringify(error) ) ,
         complete: () => console.log('asignarPagosAVenta completo')
       });
   }
@@ -549,7 +550,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire( JSON.stringify(error) ) ,
         complete: () => console.log('asignarPagosAVenta completo')
       });
   }
@@ -574,13 +575,13 @@ export class VentasComponent implements AfterViewInit, OnInit {
               })
             ).subscribe({
               next: () => {},
-              error: (error) => console.error('Error:', error),
+              error: (error) => Swal.fire( JSON.stringify(error) ) ,
               complete: () => console.log('AbonosCuentasXCobrarComponent completo')
             });
         }
       })      ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire( JSON.stringify(error) ) ,
         complete: () => console.log('buscarCliente completo')
       });   
      
@@ -615,7 +616,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire( JSON.stringify(error) ) ,
         complete: () => console.log('asignarPagosAVenta completo')
       });
   }
@@ -648,7 +649,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire( JSON.stringify(error) ) ,
         complete: () => console.log('asignarPagosAVenta completo')
       });
   }
@@ -818,7 +819,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
           try {
             this.asignarMediosDePagoValoresIniciales();
           } catch (error: any) {
-            console.error('Error setting pagos', error);
+            Swal.fire('Error setting pagos', JSON.stringify(error) ) ;
           }
         }
         this.loading.hide();
@@ -835,7 +836,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
       complete: () => console.log('cambiarDocumentoActivo completo')
     });
   }
@@ -868,7 +869,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
       complete: () => console.log('cancelarDocumento completo')
     });
   }
@@ -906,7 +907,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
       complete: () => console.log('cancelarDocumento completo')
     });
   }
@@ -931,7 +932,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
           })
         ).subscribe({
           next: () => {},
-          error: (error) => console.error('Error:', error),
+          error: (error) => Swal.fire( JSON.stringify(error) ) ,
           complete: () => console.log('generarEnvio completo')
         });   
     } else {
@@ -971,7 +972,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
       complete: () => console.log('generarDomicilio completo')
     });
   }
@@ -1001,7 +1002,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
       complete: () => console.log('getMediosP completo')
     });
   }
@@ -1020,7 +1021,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         }})
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
       complete: () => console.log('busquedaAuxiliarProducto completo')
     });
   }
@@ -1049,7 +1050,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
               })
             ).subscribe({
               next: () => {},
-              error: (error) => console.error('Error:', error),
+              error: (error) => Swal.fire( JSON.stringify(error) ) ,
               complete: () => console.log('moverDocumentoCaja completo')
             });  
           } else { 
@@ -1059,7 +1060,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire( JSON.stringify(error) ) ,
         complete: () => console.log('busquedaAuxiliarProducto completo')
       });
   }
@@ -1080,7 +1081,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
       complete: () => console.log('buscarCliente completo')
     });   
   }

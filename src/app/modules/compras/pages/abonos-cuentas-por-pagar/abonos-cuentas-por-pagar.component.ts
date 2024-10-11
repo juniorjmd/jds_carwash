@@ -65,7 +65,7 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire('Error:', JSON.stringify( error)),
       complete: () => console.log('buscarCliente completo')
     });   
   }
@@ -109,7 +109,7 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
         
         console.log('cartera' ,  this.lisCartera)
       }
-    } , error:error=>{Swal.fire(error,error.error.error, 'error')}
+    } , error:error=>{Swal.fire( JSON.stringify(error))}
   })
   }  
 
@@ -205,7 +205,7 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire('Error:', error),
       complete: () => console.log('buscarCliente completo')
     });   
       console.log('crearDocumentoAbono',value); 

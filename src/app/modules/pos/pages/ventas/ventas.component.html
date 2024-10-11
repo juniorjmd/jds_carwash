@@ -150,45 +150,46 @@
     </div> 
     <div class="row">
         <div class="col-sm-12 col-lg-5"> 
-        <div class="row"><hr class="division">
-            <div class="col-sm-12 col-lg-3"></div>
-            <div class="col-sm-2 col-lg-2">
-                <span>subTotal : </span>
-                <span class="text-end">{{documentoActivo!.valorParcial | currency}}</span>
+            <div class="row">
+                <hr class="division"> 
+                <div class="col-sm-2 col-lg-2">
+                    <span>subTotal : </span>
+                    <span class="text-end">{{documentoActivo!.valorParcial | currency}}</span>
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <span>Descuento : </span>
+                    <span class="text-end">{{documentoActivo!.descuento | currency}}</span>
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <span>Iva    : </span>
+                    <span class="text-end">{{documentoActivo!.valorIVA | currency}}</span>
+                </div>
+                <div class="col-sm-4 col-lg-3">
+                    <span>Otros impuestos : </span>
+                    <span class="text-end">{{'0' | currency}}</span>
+                </div>
             </div>
-            <div class="col-sm-2 col-lg-2">
-                <span>Descuento : </span>
-                <span class="text-end">{{documentoActivo!.descuento | currency}}</span>
+        </div>
+        <div class="col-sm-12 col-lg-5"> 
+        <div class="row"> 
+            <hr class="division">
+            <div class="col-sm-4 col-lg-2">
+                <span>Total : </span>
+                <span class="text-end">{{documentoActivo!.valorTotal | currency}}</span>
             </div>
-            <div class="col-sm-2 col-lg-2">
-                <span>Iva    : </span>
-                <span class="text-end">{{documentoActivo!.valorIVA | currency}}</span>
+            <div class="col-sm-4 col-lg-2">
+                <span>Ajuste : </span>
+                <span class="text-end">{{documentoActivo!.ajusteAlpeso | currency}}</span>
             </div>
             <div class="col-sm-4 col-lg-3">
-                <span>Otros impuestos : </span>
-                <span class="text-end">{{'0' | currency}}</span>
-            </div>
+                <span>Total Factura : </span>
+                <span class="text-end">{{documentoActivo!.totalFactura | currency}}</span>
+            </div> 
         </div>
-    </div>
-       <div class="col-sm-12 col-lg-5"> 
-       
-        <div class="row"> <hr class="division">
-        <div class="col-sm-4 col-lg-2">
-            <span>Total : </span>
-            <span class="text-end">{{documentoActivo!.valorTotal | currency}}</span>
+        </div>  
+        <div class="col-sm-12 col-lg-2">
         </div>
-        <div class="col-sm-4 col-lg-2">
-            <span>Ajuste : </span>
-            <span class="text-end">{{documentoActivo!.ajusteAlpeso | currency}}</span>
-        </div>
-        <div class="col-sm-4 col-lg-2">
-            <span>Total Factura : </span>
-            <span class="text-end">{{documentoActivo!.totalFactura | currency}}</span>
-        </div> 
-    </div>
-</div>  </div>
-   
-  
+</div> 
 </div>
 </div>
 

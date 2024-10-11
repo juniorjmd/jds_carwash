@@ -4,6 +4,7 @@ import { cntClaseRequest } from 'src/app/interfaces/producto-request';
 import { CntClasesModel } from 'src/app/models/cnt-clases/cnt-clases.module';
 import { CntGruposModel } from 'src/app/models/cnt-grupos/cnt-grupos.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cnt-grupos',  
@@ -73,13 +74,13 @@ export class CntGruposComponent implements OnInit {
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.clases = (value != undefined)? [...value]:[] ;
       //console.log(this.clases) 
-    },error : (e:any)=>console.error(e.error.error)})
+    },error : (e:any)=>Swal.fire(e.error.error)})
 
     this.cntService.currentCntGrupo.subscribe({next:(value:CntGruposModel[] | null)=>{
       this.Grupos = (value != undefined)? [...value]:[] ;
       this.auxGrupos = this.Grupos;
       //console.log('Grupos =>',this.Grupos) 
-    },error : (e:any)=>console.error(e.error.error)})
+    },error : (e:any)=>Swal.fire(e.error.error)})
   }
   }
   

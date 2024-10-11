@@ -39,7 +39,7 @@ export class MiUsuarioComponent implements OnInit {
           console.log(val);
           if(val.error == 'ok'){ Swal.fire('Contraseña cambiada exitosamente')}else{Swal.fire(val.error)}
           
-        },error: e=> console.error(JSON.stringify(e))
+        },error: e=> Swal.fire(JSON.stringify(e))
         
       }
     ) 

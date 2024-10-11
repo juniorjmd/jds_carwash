@@ -54,7 +54,7 @@ export class CajasNuevaComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire('Error:', error),
       complete: () => console.log('buscarCuentasContables completo')
     }); 
   }
@@ -72,7 +72,7 @@ export class CajasNuevaComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire('Error:', error),
       complete: () => console.log('buscarCuentasContables completo')
     }); 
   }

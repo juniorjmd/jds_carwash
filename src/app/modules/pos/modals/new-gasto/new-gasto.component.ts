@@ -52,7 +52,7 @@ export class NewGastoComponent {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire('Error:', JSON.stringify(error)),
       complete: () => console.log('buscarCliente completo')
     });   
   }
@@ -91,7 +91,7 @@ export class NewGastoComponent {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('crearDocumento completo')
     });}
   }

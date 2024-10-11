@@ -9,6 +9,7 @@ import { categoriaRequest, ProductoRequest } from 'src/app/interfaces/producto-r
 import { MatDialog } from '@angular/material/dialog';
 import { AdminCategoriasComponent } from '../../modals/admin-categorias/admin-categorias.component';
 import { tap } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-categorias',
@@ -35,7 +36,7 @@ private newAbrirDialog =  inject(MatDialog)
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire('Error:', error),
       complete: () => console.log('buscarCuentasContables completo')
     }); 
   }

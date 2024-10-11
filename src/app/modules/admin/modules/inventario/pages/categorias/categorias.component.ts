@@ -5,6 +5,7 @@ import { colTablaCnfg } from 'src/app/modules/shared/shared.module';
 import { CategoriasService } from 'src/app/services/nServices/categorias.service';
 import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
 import { Categoria } from 'src/app/interfaces/nInterfaces/categoria';
+import Swal from 'sweetalert2';
 
 @Component({
   templateUrl: './categorias.component.html',
@@ -31,7 +32,7 @@ ngOnInit() {
       this.datos = value.categorias;
       console.log('CategoriasComponent - getCategorias' , value , this.datos); 
     },
-    error:error=>console.error(error)
+    error:error=>Swal.fire(JSON.stringify(error))
   }
   )
 }

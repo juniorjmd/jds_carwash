@@ -26,19 +26,19 @@
             </div>
         </div> 
         <div class="row"  >
-            <div class="col-sm-3 centrado">
+            <div class="col-sm-3 d-grid  centrado">
               <button class="btn btn-primary" (click)="resumen=true">Resumen 
                 <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideR }"></i></button>
              </div>
-             <div class="col-sm-3 centrado">
+             <div class="col-sm-3 d-grid  centrado">
                 <button class="btn btn-primary" (click)="resumen=false">Listado de Ventas 
                     <i class="bi bi-arrow-repeat spinner-icon"  [ngClass]="{ 'd-none': hideF }"></i></button>
              </div>  
-             <div class="col-sm-2 centrado"> 
+             <div class="col-sm-2 d-grid  centrado"> 
                 <button class="btn btn-success" (click)="imprimirResumen()">Imprimir reporte</button>
              </div>
              
-             <div class="col-sm-2 centrado"> 
+             <div class="col-sm-2 d-grid  centrado"> 
                 <button class="btn btn-success" (click)="ExportarResumen()">Excel</button>
              </div>
         </div>

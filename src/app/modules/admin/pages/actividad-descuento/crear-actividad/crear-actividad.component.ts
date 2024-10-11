@@ -114,7 +114,7 @@ export class CrearActividadComponent  implements OnInit{
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire('Error:',JSON.stringify( error)),
         complete: () =>{ console.log('FindProductosComponent completo'); 
           this.iniciaDescuentos();
           this.getTmpProductos();
@@ -129,7 +129,7 @@ export class CrearActividadComponent  implements OnInit{
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire('Error:', error),
         complete: () =>{ console.log('FindCategoriasComponent completo'); 
           this.iniciaDescuentos();
           this.getTmpCategorias();
@@ -145,7 +145,7 @@ export class CrearActividadComponent  implements OnInit{
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire('Error:', error),
         complete: () => { console.log('FindCategoriasComponent completo'); 
           this.iniciaDescuentos();
           this.getTmpMarcas();
@@ -161,7 +161,7 @@ export class CrearActividadComponent  implements OnInit{
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire('Error:', JSON.stringify(error)),
         complete: () => { console.log('FindCategoriasComponent completo'); 
           this.iniciaDescuentos();
           this.getTmpClientes();
@@ -230,7 +230,7 @@ onSubmitActividad() {
         if( this.showcat ) this.getTmpCategorias()
         if( this.showmar  ) this.getTmpMarcas()
         if( this.showcli ) this.getTmpClientes() 
-      } },error:error=>console.error(error.error.error) }   );
+      } },error:error=>Swal.fire(error.error.error) }   );
   }
 }
 

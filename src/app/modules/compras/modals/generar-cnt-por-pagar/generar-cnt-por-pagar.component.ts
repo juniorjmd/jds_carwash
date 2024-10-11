@@ -7,6 +7,7 @@ import { cajasServices } from 'src/app/services/Cajas.services';
 import { loading } from 'src/app/models/app.loading'; 
 import { DocumentoCierreRequest,  plazoRequest } from 'src/app/interfaces/producto-request';
 import { DocumentoService } from 'src/app/services/documento.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'modal-generar-cnt-por-pagar',
@@ -39,7 +40,7 @@ export class GenerarCntPorPagarComponent implements OnInit {
             console.log('plazos y cuota ', value); 
             this.pagoPorCredito.aux1 =  value.data[0].cuotas ; 
             this.pagoPorCredito.aux2 = value.data[0].plazos;
-          },error:(e)=>console.error(e.error.error), 
+          },error:(e)=>Swal.fire(e.error.error), 
 
           })
         }
@@ -62,7 +63,7 @@ export class GenerarCntPorPagarComponent implements OnInit {
           this.dialogo.close(this.retorno);
         } ,
         error: error  => {this.loading.hide();
-          console.error('finalizarOk', error.error.error);
+          Swal.fire('finalizarOk', error.error.error);
         } } 
         );
     }else{
@@ -77,7 +78,7 @@ export class GenerarCntPorPagarComponent implements OnInit {
           this.dialogo.close(this.retorno);
         } ,
         error: error  => {this.loading.hide();
-          console.error('finalizarOk', error.error.error);
+          Swal.fire('finalizarOk', error.error.error);
         } } 
         );
     }

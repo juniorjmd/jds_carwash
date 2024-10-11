@@ -64,7 +64,7 @@ export class PagosVentaComponent implements OnInit {
         this.dialogo.close({rep:true,credito:false});
       } ,
       error: error  => {this.loading.hide();
-        console.error('finalizarOk', error.error.error);
+        Swal.fire('finalizarOk', error.error.error);
       } } 
       );
   }
@@ -79,7 +79,7 @@ export class PagosVentaComponent implements OnInit {
         this.dialogo.close({rep:true,credito:true});
       } ,
       error: error  => {this.loading.hide();
-        console.error('finalizarOk', error.error.error);
+        Swal.fire('finalizarOk', error.error.error);
       } } 
       );
   }

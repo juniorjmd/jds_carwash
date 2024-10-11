@@ -35,8 +35,8 @@ export class ModalUpdateProductoCompraComponent {
     this.service.editarLineaDocumento(this.item).subscribe({next:value=>{
       if (value.error == 'ok'){
         this.dialogo.close(true)   
-         }else{console.error(value.error);this.disable = true}
-    }, error:e=>{console.error(e.error.error);
+         }else{Swal.fire(value.error);this.disable = true}
+    }, error:e=>{Swal.fire(e.error.error);
                 this.disable = true}})
 
     

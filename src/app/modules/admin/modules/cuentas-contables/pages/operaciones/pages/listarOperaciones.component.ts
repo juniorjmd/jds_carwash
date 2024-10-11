@@ -9,6 +9,7 @@ import { CntOperacionesModel } from 'src/app/models/cnt-operaciones/cnt-operacio
 import { CntSubCuentaModel, vwCntSubCuentaModel } from 'src/app/models/cnt-sub-cuenta/cnt-sub-cuenta.module';
 import { TransaccionesModel } from 'src/app/models/transacciones/transacciones.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'listar-operaciones',
@@ -30,7 +31,7 @@ export class ListarOperacionesComponent implements OnInit {
       
     this.cntService.getCntOperacionesManuales().subscribe({next:(value:cntOperacionesRequest )=>{
       this.operaciones =  value.data; 
-    },error : (e:any)=>console.error(e.error.error)}) 
+    },error : (e:any)=>Swal.fire(e.error.error)}) 
     
 
 

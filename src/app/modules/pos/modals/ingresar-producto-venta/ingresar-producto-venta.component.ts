@@ -62,7 +62,7 @@ export class IngresarProductoVentaComponent implements OnInit {
         this.precioVenta.valor_iva = 0;
       }else{ this.enabledBtnIngreso(); }
       
-    }, error:e=>{console.error(e.error.error) ; this.loading.hide();  
+    }, error:e=>{Swal.fire(e.error.error) ; this.loading.hide();  
     }})
   }
 
@@ -80,7 +80,7 @@ export class IngresarProductoVentaComponent implements OnInit {
         this.existencia = this.arrayDocPrd.producto?.existencias?.filter(x => x.id_bodega == idBodegaStock)[0] || this.existencia;
       }  
     } catch (error) {
-      console.error(error)
+      Swal.fire(JSON.stringify(error))
     }
      console.log("enabledBtnIngreso - existencia" , this.arrayDocPrd.producto?.existencias ,  this.existencia ) 
     if(this.validarExistencia){

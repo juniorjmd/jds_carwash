@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CntClasesModel } from 'src/app/models/cnt-clases/cnt-clases.module';
 import { CntGruposModel } from 'src/app/models/cnt-grupos/cnt-grupos.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'modal-cnt-grupos',  
@@ -47,7 +48,7 @@ export class ModalCntGruposComponent implements OnInit {
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.clases = value??[] ;
       //console.log(this.clases) 
-    },error : (e:any)=>console.error(e.error.error)})
+    },error : (e:any)=>Swal.fire(e.error.error)})
   }
 
   onSubmit() {

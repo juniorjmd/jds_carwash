@@ -6,6 +6,7 @@ import { DocpagosModel } from 'src/app/models/ventas/pagos.model';
 import { cajasServices } from 'src/app/services/Cajas.services'; 
 import { loading } from 'src/app/models/app.loading'; 
 import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'modal-generar-cnt-por-cobrar',
@@ -50,7 +51,7 @@ export class GenerarCntPorCobrarComponent implements OnInit {
         this.dialogo.close(this.retorno);
       } ,
       error: error  => {this.loading.hide();
-        console.error('finalizarOk', error.error.error);
+        Swal.fire('finalizarOk', error.error.error);
       } } 
       );
   }

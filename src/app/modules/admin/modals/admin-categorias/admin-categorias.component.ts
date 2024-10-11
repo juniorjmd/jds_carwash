@@ -80,7 +80,7 @@ filtrarPadre3(){
     })
   ).subscribe({
     next: () => {},
-    error: (error) => console.error('Error:', error),
+    error: (error) => Swal.fire('Error:', error),
     complete: () =>  console.log('buscarCuentasContables completo')
   }); 
 }
@@ -112,7 +112,7 @@ filtrarPadre3(){
       this.prdService.setCategorias(this.newCateg).subscribe({next:(value:any)=>{ 
         //console.log(value)
         this.dialogo.close(true); 
-      },error:error=>console.error(error)})
+      },error:error=>Swal.fire(error)})
     } 
   }
   getAllCategorias(){ 

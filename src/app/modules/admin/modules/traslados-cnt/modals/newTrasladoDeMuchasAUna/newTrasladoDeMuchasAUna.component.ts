@@ -34,7 +34,7 @@ DE_MUCHOS_A_UNA
     this.dataProceso  = this.dataProceso.createTraslado( dataIngreso );  
     this.cntService.getCuentasTrasladosPree(this.dataIngreso.id!).subscribe({next:(value)=>{
           this.dataProceso!.cuentas =  value.data;
-    },error:e=> console.error(e.error.error) })
+    },error:e=> Swal.fire(e.error.error) })
 
   }
   }
@@ -59,7 +59,7 @@ this.newAbrirDialog.open(ModalCntSubCuentasComponent, { data:  null })
   })
 ).subscribe({
   next: () => {},
-  error: (error) => console.error('Error:', error) 
+  error: (error) => Swal.fire('Error:', error) 
 }); 
   
 }
@@ -87,7 +87,7 @@ buscarCuentaContableOrigen(){
    })
  ).subscribe({
    next: () => {},
-   error: (error) => console.error('Error:', error) 
+   error: (error) => Swal.fire('Error:', error) 
  }); 
    
  }
@@ -117,7 +117,7 @@ this.cntService.setTraslado(this.dataProceso).subscribe({next:(value)=>{
   if(value.error=='ok') this.dialogo.close(true)
 
 
-},error:e=>console.error(e.error.error)
+},error:e=>Swal.fire(e.error.error)
     })
 }
 }

@@ -139,7 +139,7 @@ export class AbrirCajaComponent implements OnInit {
     this.loading.show()
     this.serviceCaja.getCajasUsuario()
        .subscribe( {next:
-        (datos:cajaRequest)=>{
+        (datos:cajaRequest)=>{        
           let cont = 0;
            console.log('getCajasUsuario',datos);
            this.cajaAbiertaFlag = false;   

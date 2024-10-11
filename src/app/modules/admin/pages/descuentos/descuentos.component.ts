@@ -30,7 +30,7 @@ export class DescuentosComponent {
           } else{
             Swal.fire('error','error en la generacion del descuento','error')
           }
-        },error:error=>console.error(error.error.error)
+        },error:error=>Swal.fire(error.error.error)
         })
 
    }

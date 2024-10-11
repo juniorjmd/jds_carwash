@@ -4,6 +4,7 @@ import { error } from 'jquery';
 import { CategoriasModel } from 'src/app/models/categorias.model';
 import { ProductoModel } from 'src/app/models/producto/producto.module';
 import { ActiDescuentoService } from 'src/app/services/actiDescuento.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-find-categorias',  
@@ -36,7 +37,7 @@ export class FindCategoriasComponent {
       this.actividadService.deleteCategoria(id) .subscribe({next:val=>{  
         item.selected= false; 
         this.marcarCategoriaYDescendientes(item, false);
-      },error:error=>console.error(error.error.error)
+      },error:error=>Swal.fire(error.error.error)
       })
    
   }
@@ -52,14 +53,14 @@ export class FindCategoriasComponent {
         next: () => {
           this.marcarCategoriaYDescendientes(hijo, true);
         },
-        error: (error) => console.error(error.error.error),
+        error: (error) => Swal.fire(error.error.error),
       });
     } else {
       this.actividadService.deleteCategoria(id).subscribe({
         next: () => {
           this.marcarCategoriaYDescendientes(hijo, false);
         },
-        error: (error) => console.error(error.error.error),
+        error: (error) => Swal.fire(error.error.error),
       });
     }
   });

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { cntDocOperacionesRequest, cntOperacionesRequest,  cntTipDocOperacionesRequest } from 'src/app/interfaces/producto-request'; 
 import { CntOperacionesModel } from 'src/app/models/cnt-operaciones/cnt-operaciones.module'; 
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'listar-operaciones',
@@ -29,16 +30,16 @@ export class ListarOperacionesAutomaticasComponent implements OnInit {
       
     this.cntService.getCntOperacionesAuto().subscribe({next:(value:cntOperacionesRequest )=>{
       this.operaciones =  value.data; 
-    },error : (e:any)=>console.error(e.error.error)}) 
+    },error : (e:any)=>Swal.fire(e.error.error)}) 
     
   this.cntService.getDocumentosOperacionesAuto().subscribe({next:(value:cntDocOperacionesRequest )=>{
     this.docOperaciones =  value.data; 
-  },error : (e:any)=>console.error(e.error.error)}) 
+  },error : (e:any)=>Swal.fire(e.error.error)}) 
 
 
   this.cntService.getTipDocOperacionesAuto().subscribe({next:(value:cntTipDocOperacionesRequest )=>{
     this.tipDocOperaciones =  value.data; 
-  },error : (e:any)=>console.error(e.error.error)}) 
+  },error : (e:any)=>Swal.fire(e.error.error)}) 
 
 
 
@@ -51,7 +52,7 @@ export class ListarOperacionesAutomaticasComponent implements OnInit {
      this.operaciones =  value.data; 
     //console.log('getDocumentosOperacionesAuto' , value);
     
-  },error : (e:any)=>console.error(e.error.error)}) ; 
+  },error : (e:any)=>Swal.fire(e.error.error)}) ; 
   }
 
   buscarPorTipoDocumento( ){
@@ -60,7 +61,7 @@ export class ListarOperacionesAutomaticasComponent implements OnInit {
     this.operaciones =  value.data; 
    //console.log('getDocumentosOperacionesAuto' , value);
    
- },error : (e:any)=>console.error(e.error.error)}) ; 
+ },error : (e:any)=>Swal.fire(e.error.error)}) ; 
 
   }
  

@@ -2,6 +2,7 @@
 import {   Component, inject } from '@angular/core'; 
 import { MarcasModel } from 'src/app/models/marcas/marcas.module';
 import { ActiDescuentoService } from 'src/app/services/actiDescuento.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-find-marcas', 
@@ -34,7 +35,7 @@ export class FindMarcasComponent {
     }else{ 
       this.actividadService.deleteItemDescuentoTmp(id ,'BRD' ) .subscribe({next:val=>{  
         item.selected= false;  
-      },error:error=>console.error(error.error.error)
+      },error:error=>Swal.fire(error.error.error)
       })
    
   }

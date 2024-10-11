@@ -64,7 +64,7 @@ printDocumento(doc:DocumentosModel){
         console.log('retorno' , retorno , this.docAbono);
        
       }
-    } , error:error=>{Swal.fire(error,error.error.error, 'error')}
+    } , error:error=>{Swal.fire(JSON.stringify(error))}
   })
   }
   recalcular(indice:number){
@@ -114,7 +114,7 @@ printDocumento(doc:DocumentosModel){
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire('Error:', JSON.stringify(error)),
         complete: () => console.log('asignarPagosAVenta completo')
       });
       return
@@ -126,7 +126,7 @@ printDocumento(doc:DocumentosModel){
       this.buscarDocumento();
      this.printDocumento(value.data.documentoFinal )
 
-     },error:error=>Swal.fire(error.error.error)})
+     },error:error=>Swal.fire(error)})
   }
   cancelar(){
     this.docAbono.listado.forEach(x=> x.presioVenta = 0)

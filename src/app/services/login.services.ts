@@ -77,7 +77,7 @@ constructor(private http: HttpClient){
           _llaveSession: localStorage.getItem('sis41254#2@'),
           _invoker: invoker
         };
-        //console.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
+      console.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
         return  this.http.post(url.login, datos, httpOptions()) ;
       } 
       

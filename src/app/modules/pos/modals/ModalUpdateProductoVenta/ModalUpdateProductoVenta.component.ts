@@ -42,7 +42,7 @@ export class ModalUpdateProductoVentaComponent implements OnInit {
       if (value.error == 'ok'){
         this.dialogo.close(true)   
          }
-    }, error:e=>console.error(e.error.error)})
+    }, error:e=>Swal.fire(e.error.error)})
 
     
   } 
@@ -63,7 +63,7 @@ export class ModalUpdateProductoVentaComponent implements OnInit {
             this.editar();
           }
 
-        }, error:e=>{console.error(e.error.error) ; this.loading.hide();  
+        }, error:e=>{Swal.fire(e.error.error) ; this.loading.hide();  
         }})
       
     }else{

@@ -6,6 +6,7 @@ import { ProductoRequest } from 'src/app/interfaces/producto-request';
 import { ActividadesDescuentoModel } from 'src/app/models/actividadesDescuentoModel';
 import { ProductoModel } from 'src/app/models/producto/producto.module';
 import { ActiDescuentoService } from 'src/app/services/actiDescuento.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'modal-inout-detalle-actividad', 
@@ -26,7 +27,7 @@ export class ModalInOutDetalleActividad  {
         
         this.productos = [...value.data??[]];  
         this.productosFiltrados = [...this.productos]; 
-      },error:error=>console.error(error.error.error)
+      },error:error=>Swal.fire(error.error.error)
       })
     }
 

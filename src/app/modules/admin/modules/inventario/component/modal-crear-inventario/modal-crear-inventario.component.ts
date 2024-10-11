@@ -56,9 +56,7 @@ this.inventarioService.setInventarios(this.formData).subscribe({
     this.executeService.optenerListadoInventarios$.next(true);
     this.modalService.hide();
   } , 
-  error:(error)=>{
-    console.error(error);
-    
+  error:(error)=>{     
     Swal.fire({title:'Error al crear el inventario' , text: error.error.message, icon : 'error'});
   }
 
@@ -78,21 +76,18 @@ this.inventarioService.setInventarios(this.formData).subscribe({
   onCategoriaSeleccionada(id:any){
     this.formData.id_categoria = id; 
     this.formData.id_marca = 0; 
-    this.formData.id_proveedor = 0; 
-      console.error('esto es lo que se recibe del componente hijo categoria', id); 
+    this.formData.id_proveedor = 0;  
   } 
 
   onMarcaSeleccionada(id:any){
     this.formData.id_categoria = 0; 
     this.formData.id_marca = id; 
-    this.formData.id_proveedor = 0; 
-      console.error('esto es lo que se recibe del componente hijo marca', id); 
+    this.formData.id_proveedor = 0;  
   } 
   onProveedorSeleccionado(id:any){
     this.formData.id_categoria = 0; 
     this.formData.id_marca = 0; 
-    this.formData.id_proveedor = id; 
-      console.error('esto es lo que se recibe del componente hijo proveedor', id); 
+    this.formData.id_proveedor = id;  
   } 
   getCategorias(){
     this._CategoriaService.getCategorias().subscribe(

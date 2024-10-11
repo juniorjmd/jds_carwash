@@ -11,6 +11,7 @@ import { UsuarioNuevoComponent } from './nuevo/usuario-nuevo.component';
 import { UsuarioPerfilComponent } from './perfil/usuario-perfil.component';
 import { UsuarioDetalleComponent } from './detalle/usuario-detalle.component';
 import { UsuarioEditarComponent } from './editar/usuario-editar.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuario',
@@ -47,7 +48,7 @@ export class UsuarioComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error)
+      error: (error) => Swal.fire('Error:',JSON.stringify( error) ) 
       
     });  
 

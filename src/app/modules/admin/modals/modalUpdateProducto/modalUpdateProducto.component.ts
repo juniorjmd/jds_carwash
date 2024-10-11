@@ -75,7 +75,7 @@ private dialogo= inject(MatDialogRef<ModalUpdateProductoComponent>);
           this.loading.hide()
         } ,
         error:(error : any) => {this.loading.hide();
-          console.error('getCategorias_marcas',error) 
+          Swal.fire('getCategorias_marcas',error) 
           try {
             Swal.fire( error.error.error, '', 'error');
           } catch (error) {
@@ -162,7 +162,7 @@ private dialogo= inject(MatDialogRef<ModalUpdateProductoComponent>);
         
          }
          , error: error =>  {Swal.fire(JSON.stringify(error), '', 'error')  ;
-          console.error("enviar producto" ,  error)
+          Swal.fire("enviar producto" ,  error)
          }
          , complete: () =>  {this.loading.hide();} }
         ) 

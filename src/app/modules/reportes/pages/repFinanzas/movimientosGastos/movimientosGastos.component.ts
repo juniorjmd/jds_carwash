@@ -45,7 +45,7 @@ export class movimientosGastosComponent  {
         this.cuenta = [...this.cuentaIni ,  ...value.data];
       }else{Swal.fire('warning','no existen cajas asignadas para realizar el reporte','warning')}
     },error:e=>
-    console.error(JSON.stringify(e.error))
+    Swal.fire(JSON.stringify(e.error))
     
     })
     this.codFactura = ''; 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FndClienteComponent } from '../../../shared/modals/fnd-cliente/fnd-cliente.component';
 import { tap } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-clientes',
@@ -31,7 +32,7 @@ export class ClientesComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('buscarCliente completo')
     });   
   }
@@ -46,7 +47,7 @@ export class ClientesComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('buscarCliente completo')
     });   
   }

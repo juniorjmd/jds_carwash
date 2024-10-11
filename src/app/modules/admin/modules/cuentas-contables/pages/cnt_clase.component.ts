@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
 import { CntClasesModel } from 'src/app/models/cnt-clases/cnt-clases.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cnt-clase',  
@@ -50,7 +51,7 @@ export class CntClaseComponent implements OnInit {
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.Clases = (value != undefined)? [...value]:[] ;
       //console.log(this.Clases) 
-    },error : (e:any)=>console.error(e.error.error)})
+    },error : (e:any)=>Swal.fire(e.error.error)})
    }
 
 }

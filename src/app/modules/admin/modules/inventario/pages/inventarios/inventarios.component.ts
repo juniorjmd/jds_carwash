@@ -6,6 +6,7 @@ import { Inventario } from 'src/app/interfaces/nInterfaces/inventario';
 import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
 import { InventarioService } from 'src/app/services/nServices/inventario.service';
 import { ExecuteService } from 'src/app/services/nServices/execute.service';
+import Swal from 'sweetalert2';
  
 
 @Component({
@@ -32,7 +33,7 @@ getInventarios(){
       console.log(value);
       this.datos = value;
        },
-      error:(error)=>{console.error(error);
+      error:(error)=>{Swal.fire(JSON.stringify(error));
       }}
   );
 }

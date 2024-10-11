@@ -7,6 +7,7 @@ import { CntCuentaMModel } from 'src/app/models/cnt-cuenta-m/cnt-cuenta-m.module
 import { CntGruposModel } from 'src/app/models/cnt-grupos/cnt-grupos.module';
 import { CntSubCuentaModel, subCuenta, vwCntSubCuentaModel } from 'src/app/models/cnt-sub-cuenta/cnt-sub-cuenta.module';
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'modal-cnt-sub-cuentas',
@@ -44,7 +45,7 @@ filtrarPorNombre( ) {
           this.Subcuentas = value.data;  
           //console.log('Subcuentas' , this.Subcuentas) 
          },
-        error: (e:any)=>console.error(e.error.error)})
+        error: (e:any)=>Swal.fire(e.error.error)})
       } 
   
 }
@@ -66,7 +67,7 @@ filtrarSubCuentas(){
     this.auxSubCuentas=value.data;
     //console.log('Subcuentas' , this.Subcuentas) 
    },
-  error: (e:any)=>console.error(e.error.error)})
+  error: (e:any)=>Swal.fire(e.error.error)})
 }else{this.getAllSubcuentas()}
 }
 
@@ -79,7 +80,7 @@ filtrarSubCuentasPorGrupo(){
     this.auxSubCuentas=value.data;
     //console.log('Subcuentas' , this.Subcuentas) 
    },
-  error: (e:any)=>console.error(e.error.error)})
+  error: (e:any)=>Swal.fire(e.error.error)})
 }else{this.getAllSubcuentas()
   this.cuentas = [...this.AuxCuentas!];
 }
@@ -93,7 +94,7 @@ filtrarSubCuentasPorClase(){
     this.auxSubCuentas=value.data;
     //console.log('Subcuentas' , this.Subcuentas) 
    },
-  error: (e:any)=>console.error(e.error.error)})
+  error: (e:any)=>Swal.fire(e.error.error)})
 }else{this.getAllSubcuentas() 
   this.grupos =[...this.AuxGrupos];
 }
@@ -128,7 +129,7 @@ revisarIngreso(){
               this.auxSubCuentas=value.data;
               //console.log('Subcuentas' , this.Subcuentas) 
             },
-            error: (e:any)=>console.error(e.error.error)})
+            error: (e:any)=>Swal.fire(e.error.error)})
 
       } else { if(this.codGrupo > 0 ){
 	
@@ -138,7 +139,7 @@ revisarIngreso(){
           this.auxSubCuentas=value.data;
           //console.log('Subcuentas' , this.Subcuentas) 
          },
-        error: (e:any)=>console.error(e.error.error)})
+        error: (e:any)=>Swal.fire(e.error.error)})
 
       } }
     }
@@ -154,7 +155,7 @@ console.clear();
     this.clases = value??[] ;
     this.revisarIngreso();
     //console.log('currentCntClase',this.clases) 
-  },error : (e:any)=>console.error(e.error.error)})
+  },error : (e:any)=>Swal.fire(e.error.error)})
 
 
   
@@ -163,7 +164,7 @@ console.clear();
     this.AuxGrupos = this.grupos; 
     this.revisarIngreso();
     //console.log('currentCntGrupo',this.grupos) 
-  },error : (e:any)=>console.error(e.error.error)})
+  },error : (e:any)=>Swal.fire(e.error.error)})
 
 
   this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[]| null)=>{
@@ -175,7 +176,7 @@ console.clear();
     this.AuxCuentas = this.cuentas; 
     this.revisarIngreso();
     //console.log('currentCntcuentaM',this.cuentas) 
-  },error : (e:any)=>console.error(e.error.error)})
+  },error : (e:any)=>Swal.fire(e.error.error)})
   // Aquí deberías cargar los datos de `cnt_cuenta` desde el servicio correspondiente
   
 }
@@ -188,7 +189,7 @@ getAllSubcuentas(){
     this.auxSubCuentas=value.data;
     //console.log('Subcuentas' , this.Subcuentas) 
    },
-  error: (e:any)=>console.error(e.error.error)})
+  error: (e:any)=>Swal.fire(e.error.error)})
 
 
 
@@ -209,7 +210,7 @@ enviarNewRegistro() {
       this.cerrarok()  
     } 
    },
-  error: (e:any)=>console.error(e.error.error)})  
+  error: (e:any)=>Swal.fire(e.error.error)})  
 }
 
 retornarRegistroBusqueda(subCuentaSel:CntSubCuentaModel) {

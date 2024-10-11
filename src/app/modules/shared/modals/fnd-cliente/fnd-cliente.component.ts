@@ -215,7 +215,7 @@ export class FndClienteComponent implements OnInit {
                 this.busqueda =  false
               }
               }
-            },error:(error)=>console.error(error)
+            },error:(error)=>Swal.fire(JSON.stringify(error))
           ,complete:()=>this.loading.hide()})
           }
       }
@@ -239,7 +239,7 @@ export class FndClienteComponent implements OnInit {
                 this.getDepartamento() 
                 this.getCiudad()
                 this.busqueda =  false 
-            }},error:(error)=>console.error(error.error.error)
+            }},error:(error)=>Swal.fire(error.error.error)
           ,complete:()=>this.loading.hide()})
 
           }else{
@@ -273,7 +273,7 @@ export class FndClienteComponent implements OnInit {
                     this.busqueda =  false
                   }
                   }
-                },error:(error)=>console.error(error)
+                },error:(error)=>Swal.fire(JSON.stringify(error))
               ,complete:()=>this.loading.hide()})
           }
 
@@ -328,7 +328,7 @@ export class FndClienteComponent implements OnInit {
                       }
                     }
                   }
-                },error:(error)=>console.error(error)
+                },error:(error)=>Swal.fire(JSON.stringify(error))
               ,complete:()=>this.loading.hide()})
               }
           }    
@@ -362,7 +362,7 @@ this.clientesService.setClienteOdoo(this.NwCliente ).subscribe({next:
      this.loading.hide();
 },error:e=>{
   this.loading.hide();
-  console.error(e.error.error);
+  Swal.fire(e.error.error);
 }})
 }
      
@@ -427,7 +427,7 @@ asignarDefaults(){
         this.maestro = value.datos; 
         console.log(value);
         this.asignarDefaults();
-      }, error:(error: any)=>console.error(error),complete:()=>this.loading.hide() }
+      }, error:(error: any)=>Swal.fire(JSON.stringify(error)),complete:()=>this.loading.hide() }
     )
    let result = await this.MaestroClienteServices.getMaestrosClientes();
     console.log('termino el trabajo');

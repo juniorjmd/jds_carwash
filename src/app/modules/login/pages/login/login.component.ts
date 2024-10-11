@@ -48,8 +48,7 @@ export class LoginComponent implements OnInit {
     this._loginService.getLogin(this.usuario.Login , this.usuario.pass).subscribe(
       async (datos:any)=>{ 
         if(datos.data.usuario.length === 0){
-          
-          console.log('getLogin * sin datos',datos.data.usuario); 
+           
           alert('error de usuario')
         }else{
           console.log('getLogin',datos.data.usuario);  
@@ -90,8 +89,8 @@ export class LoginComponent implements OnInit {
 
 ngOnInit(): void {
   this.usuario =  new UsuarioModel( undefined);
-  this.usuario.Login = 'abdefault1';
-  this.usuario.pass = 'aguabendita2022'; 
+  this.usuario.Login = 'admin';
+  this.usuario.pass = 'prom2001josdom'; 
 
     
   } 

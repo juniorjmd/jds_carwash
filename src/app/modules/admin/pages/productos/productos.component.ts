@@ -199,10 +199,9 @@ export class ProductosComponent implements OnInit {
           }else{
             this.bodegas   = [this.auxBodega];   }
             } , error:
-        error => {this.loading.hide();
-          console.error('getbodegas',error) 
+        error => {this.loading.hide(); 
           try {
-            Swal.fire( error , 'error');
+            Swal.fire( JSON.stringify(error));
           } catch (error) {
             Swal.fire( 'error interno, validar con el administrador del sitio', '' , 'error');
           }
@@ -268,8 +267,7 @@ export class ProductosComponent implements OnInit {
          
          }
          },error: error => 
-          { Swal.fire(JSON.stringify(error.error) , '', 'error') 
-                   console.error(error.error)       
+          { Swal.fire(JSON.stringify(error)  )     
                      }  , complete:()=>
           this.loading.hide()
         }
@@ -328,7 +326,7 @@ export class ProductosComponent implements OnInit {
         this.AuxIngresoInventarioModule = [];      }
         } ,
         error:error => {this.loading.hide();
-          console.error('getPrecarguePorBodega',error) 
+          Swal.fire('getPrecarguePorBodega',error) 
           try {
             Swal.fire( error.error.error, '', 'error');
           } catch (error) {
@@ -471,7 +469,7 @@ export class ProductosComponent implements OnInit {
           this.loading.hide()
         } , error:
         error => {this.loading.hide();
-          console.error('getProductosExistencia',error) 
+          Swal.fire('getProductosExistencia',error) 
           try {
             Swal.fire( error.error.error, '', 'error');
           } catch (error) {
@@ -508,7 +506,7 @@ export class ProductosComponent implements OnInit {
         this.loading.hide()
       } ,
       error:(error : any) => {this.loading.hide();
-        console.error('getCategorias_marcas',error) 
+        Swal.fire('getCategorias_marcas',error) 
         try {
           Swal.fire( error.error.error, '', 'error');
         } catch (error) {
@@ -606,7 +604,7 @@ export class ProductosComponent implements OnInit {
       
        }
        , error: error =>  {Swal.fire(JSON.stringify(error), '', 'error')  ;
-        console.error("enviar producto" ,  error)
+        Swal.fire("enviar producto" ,  error)
        }
        , complete: () =>  {this.loading.hide();} }
       ) 
@@ -631,7 +629,7 @@ export class ProductosComponent implements OnInit {
 
         this.loading.hide()
       } , error:    error => {this.loading.hide();
-        console.error('getProductosGeneral',error) 
+        Swal.fire('getProductosGeneral',error) 
         try {
           Swal.fire( error.error.error, '', 'error');
         } catch (error) {

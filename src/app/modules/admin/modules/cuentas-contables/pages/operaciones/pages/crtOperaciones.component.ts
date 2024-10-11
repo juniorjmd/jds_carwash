@@ -59,7 +59,7 @@ export class CrearOperacionesComponent implements OnInit {
       //console.log('cancelarOperacion' , value); 
       this.operCntTransacciones = [];
       this.limpiarMovimiento();
-    },error:error=>console.error(error.error.error), complete: () =>  this.load.hide()})
+    },error:error=>Swal.fire(error.error.error), complete: () =>  this.load.hide()})
   }
   buscarTerceroGasto (){
 
@@ -74,7 +74,7 @@ export class CrearOperacionesComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error) 
+      error: (error) => Swal.fire('Error:', error) 
     });   
   }
   buscarCuentasContables( ){ 
@@ -99,14 +99,14 @@ export class CrearOperacionesComponent implements OnInit {
               this.cuentas  = this.Mcuentas.filter(x=>x.cod_cuenta == this.selectedCuentaMayor);
             }
     
-          }, error:error=>console.error(error.error.error), complete: () =>  this.load.hide()
+          }, error:error=>Swal.fire(error.error.error), complete: () =>  this.load.hide()
           })
 
         }  
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire('Error:', error),
       complete: () =>  this.load.hide()
     }); 
   }
@@ -116,7 +116,7 @@ export class CrearOperacionesComponent implements OnInit {
     this.load.show()
     this.cntService.deleteItemListadoOprTmp(dato.cod_transaccion).
     subscribe({next:(value:any)=>{ if(value.error == 'ok'){this.getTransaccionesTemporales();}else{Swal.fire('error',value.error,'error')} },
-    error:error=>console.error(error.error.error), complete: () =>  this.load.hide()
+    error:error=>Swal.fire(error.error.error), complete: () =>  this.load.hide()
     })
   }
   editar(dato:vwTransaccionesModel){
@@ -133,7 +133,7 @@ export class CrearOperacionesComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error) 
+      error: (error) => Swal.fire('Error:', error) 
     });  
   }
 
@@ -154,7 +154,7 @@ export class CrearOperacionesComponent implements OnInit {
         this.limpiarMovimiento();
         this.getTransaccionesTemporales();
       }
-    },error : (e:any)=>console.error(e.error.error), complete: () =>  this.load.hide()})
+    },error : (e:any)=>Swal.fire(e.error.error), complete: () =>  this.load.hide()})
     
   }
   ngOnInit(): void {
@@ -164,18 +164,18 @@ export class CrearOperacionesComponent implements OnInit {
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.clases = value??[] ;
       //console.log(this.clases) 
-    },error : (e:any)=>console.error(e.error.error), complete: () =>  this.load.hide()})
+    },error : (e:any)=>Swal.fire(e.error.error), complete: () =>  this.load.hide()})
     
     this.cntService.currentCntGrupo.subscribe({next:(value:CntGruposModel[] | null)=>{
       this.Mgrupos = value??[] ;
       //console.log(this.clases) 
-    },error : (e:any)=>console.error(e.error.error), complete: () =>  this.load.hide()})
+    },error : (e:any)=>Swal.fire(e.error.error), complete: () =>  this.load.hide()})
  
     this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[] | null)=>{
       this.McuentasMayores = value??[] ;
       //console.log(this.clases) 
       
-    },error : (e:any)=>console.error(e.error.error)})
+    },error : (e:any)=>Swal.fire(e.error.error)})
     this.cntService.currentsubcuenta.subscribe({next:(value:vwCntSubCuentaModel[] | null)=>{
       this.Mcuentas = value??[] ;
       //console.log(this.clases) 
@@ -183,7 +183,7 @@ export class CrearOperacionesComponent implements OnInit {
         this.onCuentaMayorChange() 
        this.newCntTransacciones.id_cuenta= this.subCuentaCreacion;
       }
-    },error : (e:any)=>console.error(e.error.error), complete: () =>  this.load.hide()})
+    },error : (e:any)=>Swal.fire(e.error.error), complete: () =>  this.load.hide()})
     
 
 
@@ -220,7 +220,7 @@ export class CrearOperacionesComponent implements OnInit {
           this.cuentas  = this.Mcuentas.filter(x=>x.cod_cuenta == this.selectedCuentaMayor);
         }
 
-      }, error:error=>console.error(error.error.error), complete: () =>  this.load.hide()
+      }, error:error=>Swal.fire(error.error.error), complete: () =>  this.load.hide()
       })
     }
   }
@@ -260,7 +260,7 @@ export class CrearOperacionesComponent implements OnInit {
           
           
     }
-    }, error:error=>console.error(error.error.error),  complete: () =>  this.load.hide()})
+    }, error:error=>Swal.fire(error.error.error),  complete: () =>  this.load.hide()})
   }
   onSubmit() {
     // Aquí puedes manejar la lógica de envío del formulario
@@ -275,7 +275,7 @@ export class CrearOperacionesComponent implements OnInit {
     this.cntService.setCntTransaccionesTmp(this.newCntTransacciones).subscribe({next:(value:any)=>{ 
       this.getTransaccionesTemporales();
       this.limpiarMovimiento();
-      this.operacion = new CntOperacionesModel();    }, error:error=>console.error(error.error.error),  complete: () =>  this.load.hide()})
+      this.operacion = new CntOperacionesModel();    }, error:error=>Swal.fire(error.error.error),  complete: () =>  this.load.hide()})
    
 
   }

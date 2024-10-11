@@ -7,6 +7,7 @@ import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { FndClienteComponent } from '../../../shared/modals/fnd-cliente/fnd-cliente.component';
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-cliente-inicio',
   templateUrl: './cliente-inicio.component.html',
@@ -34,7 +35,7 @@ export class ClienteInicioComponent implements OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify( error )),
       complete: () => console.log('buscarCliente completo')
     }); 
   }
@@ -53,6 +54,6 @@ export class ClienteInicioComponent implements OnInit {
        }else{
          alert(respuesta.error);
        }
-},error:error=>{console.error(error)} ,complete:()=> this.loading.hide()} )
+},error:error=>{Swal.fire(JSON.stringify(error))} ,complete:()=> this.loading.hide()} )
   }
 }

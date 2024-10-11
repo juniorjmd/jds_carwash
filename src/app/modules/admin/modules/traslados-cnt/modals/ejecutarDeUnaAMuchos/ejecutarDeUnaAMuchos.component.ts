@@ -94,7 +94,7 @@ export class ejecutarDeUnaAMuchosComponent  {
            this.dataProceso!.cuentas =  value.data;
            //console.log('cuentas' , value.data);
            
-     },error:e=> console.error(e.error.error) })
+     },error:e=> Swal.fire(e.error.error) })
  
    }
    }
@@ -110,7 +110,7 @@ export class ejecutarDeUnaAMuchosComponent  {
       
        this.cntService.ejecutarTrasladosCuentas(this.dataProceso!).subscribe({next:(val:ejecucionTrasladosRequest)=>{
          this.printer_soporte_final(val.objeto);
-       },error:e=>console.error('error' , e.error.error)
+       },error:e=>Swal.fire('error' , e.error.error)
        })
        
    }

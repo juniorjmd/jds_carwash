@@ -46,7 +46,7 @@ console.log((act.estado! == 1 ) );
             this.actividades = value.data;
           }})
         }
-      }, error:error=>console.error(error.error.error)       })
+      }, error:error=>Swal.fire(error.error.error)       })
     }
     editarFecha(actividad:ActividadesDescuentoModel){
       this.newAbrirDialog.open(ModalChangeFechaActividadComponent, { data:  {...actividad} })
@@ -59,7 +59,7 @@ console.log((act.estado! == 1 ) );
         }})
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire('Error:', error),
         complete: () =>{ console.log('FindProductosComponent completo');}
       });  
     }
@@ -70,7 +70,7 @@ console.log((act.estado! == 1 ) );
       this.newAbrirDialog.open(ModalInOutDetalleActividad , { data:  detalle })
       .afterClosed().subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire('Error:', error),
         complete: () => console.log('ModalInOutDetalleActividad completo')
       });  
     }

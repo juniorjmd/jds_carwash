@@ -7,6 +7,7 @@ import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
 import { ModalService } from 'src/app/modal.service';
 import { Location } from '@angular/common';
 import { usuarioService } from 'src/app/services/usuario.services';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -34,9 +35,9 @@ export class NavbarComponent {
     this._datosInicialesService.getDatosIniSucursal().subscribe({
       next: (data: any) => {
         this.sucursal = data;
-        console.log(this.sucursal);
+        console.log('getDatosIniSucursal',this.sucursal);
       },
-      error: (error) => console.error(JSON.stringify(error)),
+      error: (error) => Swal.fire('getDatosIniSucursal error ',JSON.stringify(error)),
     });
   }
   goBack(): void {

@@ -127,7 +127,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
           
           this.getMenuImage(request.data.usuario)
         } ,
-        error: error=>{console.error('Error getUsuarioLogeado', error);} 
+        error: error=>{Swal.fire(JSON.stringify(error));} 
       }
     )
   }
@@ -197,12 +197,12 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
         
       }),
       catchError((error: any) => {
-        console.error('error', error );
+        Swal.fire(JSON.stringify(error));
         return of(null); // Devuelve un observable vacío en caso de error
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('getDocumentos completo')
     });
   }
@@ -236,12 +236,12 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
         
       }),
       catchError((error: any) => {
-        console.error('error', error );
+        Swal.fire('error', error );
         return of(null); // Devuelve un observable vacío en caso de error
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('getDocumentos completo')
     });
   }
@@ -275,14 +275,14 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('crearDocumento completo')
     });
   }
   cambiarEstablecimientoDocumento(){
     this.productoService.updateDocumento(this.documentoActivo).subscribe({next:(value:DocumentoRequest)=>{
       if(value.error!= 'ok') {Swal.fire('error',value.error,'error')}
-    },error:error=>console.error(error.error.error)
+    },error:error=>Swal.fire(JSON.stringify(error))
     })
   }
   buscarProducto() { 
@@ -325,7 +325,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
                   })
                 ).subscribe({
                   next: () => {},
-                  error: (error) => console.error('Error:', error),
+                  error: (error) => Swal.fire(JSON.stringify(error)),
                   complete: () => console.log('busquedaAuxiliarProducto completo')
                 });
    
@@ -350,7 +350,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
             this.editar(linea); 
           }
         },
-      error:error=>console.error(error),complete:()=>
+      error:error=>Swal.fire(JSON.stringify(error)),complete:()=>
         this.loading.hide() 
       })
      
@@ -375,7 +375,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire(JSON.stringify(error)),
         complete: () => console.log('editar linea completo')
       });
   }
@@ -408,7 +408,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('eliminarLinea completo')
     });
   }
@@ -458,7 +458,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire(JSON.stringify(error)),
         complete: () => console.log('asignarPagosAVenta completo')
       });
   }
@@ -499,7 +499,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire(JSON.stringify(error)),
         complete: () => console.log('asignarPagosAVenta completo')
       });
   }
@@ -524,13 +524,13 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
               })
             ).subscribe({
               next: () => {},
-              error: (error) => console.error('Error:', error),
+              error: (error) => Swal.fire(JSON.stringify(error)),
               complete: () => console.log('AbonosCuentasXCobrarComponent completo')
             });
         }
       })      ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire(JSON.stringify(error)),
         complete: () => console.log('buscarCliente completo')
       });   
      
@@ -565,7 +565,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire(JSON.stringify(error)),
         complete: () => console.log('asignarPagosAVenta completo')
       });
   }
@@ -598,7 +598,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire(JSON.stringify(error)),
         complete: () => console.log('asignarPagosAVenta completo')
       });
   }
@@ -766,7 +766,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
           try {
             
           } catch (error: any) {
-            console.error('Error setting pagos', error);
+            Swal.fire('Error setting pagos', error);
           }
         }
         this.loading.hide();
@@ -783,7 +783,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('cambiarDocumentoActivo completo')
     });
   }
@@ -816,7 +816,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('cancelarDocumento completo')
     });
   }
@@ -854,7 +854,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('cancelarDocumento completo')
     });
   }
@@ -879,7 +879,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
           })
         ).subscribe({
           next: () => {},
-          error: (error) => console.error('Error:', error),
+          error: (error) => Swal.fire(JSON.stringify(error)),
           complete: () => console.log('generarEnvio completo')
         });   
     } else {
@@ -919,7 +919,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('generarDomicilio completo')
     });
   }
@@ -939,7 +939,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
         }})
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('busquedaAuxiliarProducto completo')
     });
   }
@@ -979,7 +979,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
         })
       ).subscribe({
         next: () => {},
-        error: (error) => console.error('Error:', error),
+        error: (error) => Swal.fire(JSON.stringify(error)),
         complete: () => console.log('busquedaAuxiliarProducto completo')
       });
   }
@@ -1000,7 +1000,7 @@ export class CreateComprasComponent implements AfterViewInit, OnInit {
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire(JSON.stringify(error)),
       complete: () => console.log('buscarCliente completo')
     });   
   }

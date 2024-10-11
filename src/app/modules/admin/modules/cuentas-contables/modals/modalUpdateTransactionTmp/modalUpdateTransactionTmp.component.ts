@@ -13,6 +13,7 @@ import { TransaccionesModel, vwTransaccionesModel } from "src/app/models/transac
 import { ModalCntSubCuentasComponent } from "src/app/modules/admin/modals/cuentasContables/cnt-sub-cuentas.component";
 import { IngresarProductoVentaComponent } from "src/app/modules/pos/modals/ingresar-producto-venta/ingresar-producto-venta.component";
 import { CntContablesService } from "src/app/services/cntContables.service";
+import Swal from "sweetalert2";
  
 
 @Component({
@@ -57,7 +58,7 @@ export class ModalUpdateTransactionTmpComponent implements OnInit{
       this.Mcuentas = value??[] ;
 
       //console.log(this.Mcuentas)  
-    },error : (e:any)=>console.error(e.error.error), complete: () =>  this.load.hide()})
+    },error : (e:any)=>Swal.fire(e.error.error), complete: () =>  this.load.hide()})
   }
 
 
@@ -66,17 +67,15 @@ export class ModalUpdateTransactionTmpComponent implements OnInit{
     // Aquí puedes manejar la lógica de envío del formulario
     this.load.show(); 
     //console.log(this.newCntTransacciones);
-    if((this.newCntTransacciones.id_cuenta||0) <= 0){ console.error('id_cuenta' ,this.newCntTransacciones.id_cuenta , ((this.newCntTransacciones.id_cuenta||0) <= 0) );
-     return ;}
+    if((this.newCntTransacciones.id_cuenta||0) <= 0){  return ;}
     
     if(((this.newCntTransacciones.valor_debito||0) <= 0 ) && ((this.newCntTransacciones.valor_credito||0) <= 0)){  
-      console.error('debito y credito ' ,this.newCntTransacciones.valor_debito ,  this.newCntTransacciones.valor_credito); 
-      return ;}
+       return ;}
 
     this.cntService.setCntTransaccionesTmp(this.newCntTransacciones).subscribe({next:(value:any)=>{  
       this.load.hide(); 
       this.dialogo.close(true);
-    }, error:error=>console.error(error.error.error),  complete: () =>  this.load.hide()})
+    }, error:error=>Swal.fire(error.error.error),  complete: () =>  this.load.hide()})
    
 
   }
@@ -102,7 +101,7 @@ export class ModalUpdateTransactionTmpComponent implements OnInit{
             }  
             this.abrirModal(data);
     
-          }, error:error=>console.error(error.error.error), complete: () =>  this.load.hide()
+          }, error:error=>Swal.fire(error.error.error), complete: () =>  this.load.hide()
           })
 
     }else{  
@@ -137,14 +136,14 @@ export class ModalUpdateTransactionTmpComponent implements OnInit{
               this.Mcuentas = [...this.Mcuentas , ...value.data  ]; 
             }
     
-          }, error:error=>console.error(error.error.error), complete: () =>  this.load.hide()
+          }, error:error=>Swal.fire(error.error.error), complete: () =>  this.load.hide()
           })
         }
         }  
       })
     ).subscribe({
       next: () => {},
-      error: (error) => console.error('Error:', error),
+      error: (error) => Swal.fire('Error:', error),
       complete: () =>  this.load.hide()
     }); 
   }

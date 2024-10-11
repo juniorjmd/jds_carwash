@@ -12,6 +12,7 @@ import { PrinterManager } from 'src/app/models/printerManager';
 import { TransaccionesModel, vwTransaccionesModel } from 'src/app/models/transacciones/transacciones.module';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { CntContablesService } from 'src/app/services/cntContables.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'listar-operaciones',
@@ -34,7 +35,7 @@ export class DetalleOperacionesComponent implements OnInit {
       await printM.printSoporteMovimiento(false,value.data[0].obj); 
     },
     error:
-  e=> console.error(e.error.error)
+  e=> Swal.fire(e.error.error)
    
   })
    
@@ -49,11 +50,11 @@ export class DetalleOperacionesComponent implements OnInit {
           {next:(result:cntTransaccionesRequest)=>{
            this.transacciones= result.data;
            //console.log(this.transacciones)
-          },error:(e)=>console.error(e.error.error)}
+          },error:(e)=>Swal.fire(e.error.error)}
         )
       }
 
-    },error : (e:any)=>console.error(e.error.error)}) 
+    },error : (e:any)=>Swal.fire(e.error.error)}) 
     
 
 

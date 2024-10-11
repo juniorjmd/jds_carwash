@@ -75,12 +75,12 @@ enviarDatoNuevo(indexDatosTabla:number , indexItem:number , origen:string){
       
     } , 
   
-     error:(error)=>{console.error(error)}}
+     error:(error)=>{Swal.fire(JSON.stringify(error))}}
   )
 
 }
 eliminarElemento(elementoEliminar:any , index:number){
-  console.error('elemento a eliminar' , elementoEliminar);
+  Swal.fire('elemento a eliminar' , elementoEliminar);
   Swal.fire({
     title: '¿Realmente desea eliminar este item?',
     showCancelButton: true,
@@ -97,8 +97,7 @@ eliminarElemento(elementoEliminar:any , index:number){
     if (this.dataTable) this.dataTable.DataTable().destroy();
     this.dataTable.DataTable(); 
   } , 
-   error:(error)=>{console.error(error)
-    Swal.fire('error', error , 'error');
+   error:(error)=>{Swal.fire(JSON.stringify(error)) 
   }}
 )
 }})

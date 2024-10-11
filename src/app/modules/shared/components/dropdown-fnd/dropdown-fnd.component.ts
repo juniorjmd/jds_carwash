@@ -29,15 +29,13 @@ export class DropdownFndComponent implements AfterViewInit  {
       })
     );
 
-  onSelectOption(id: number) {
-    console.error("el id emitido sera ",id);
+  onSelectOption(id: number) { 
     this.optionSelected.emit(id);
   }
    ngAfterViewInit() { 
 
     }
-    onSelectItem(item: any) { // Utilizamos el método para manejar el evento (selectItem)
-    console.error("el id emitido sera ",item);
+    onSelectItem(item: any) { // Utilizamos el método para manejar el evento (selectItem) 
     const selectedOption = this.options.find(option => option[this.OptionField] === item.item);
     if (selectedOption) {
       this.onSelectOption(selectedOption.id); 

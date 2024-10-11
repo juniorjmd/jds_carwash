@@ -11,6 +11,7 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
 import { CntOperacionPrestablecidas } from 'src/app/interfaces/traslados_cnt/cnt_operacion_prestablecidas.';
 import { newTrasladoDeUnaAMuchosComponent } from '../../modals/newTrasladoDeUnaAMuchos/newTrasladoDeUnaAMuchos.component';
 import { ejecutarDeUnaAMuchosComponent } from '../../modals/ejecutarDeUnaAMuchos/ejecutarDeUnaAMuchos.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-traslado-de-una-a-muchas',
@@ -39,7 +40,7 @@ constructor(){
 eliminar(item:CntOperacionPrestablecidas){
   this.cntService.deleteItemListadoOprPre(item.id).subscribe({next:(value)=>{ 
    this.ngAfterViewInit(); 
-  },error:e=>console.error(e.error.error)})
+  },error:e=>Swal.fire(e.error.error)})
 }
 editar(item:CntOperacionPrestablecidas){
   this.newAbrirDialog.open(newTrasladoDeUnaAMuchosComponent, { data:  item })
@@ -55,7 +56,7 @@ editar(item:CntOperacionPrestablecidas){
   })
 ).subscribe({
   next: () => {},
-  error: (error) => console.error('Error:', error),
+  error: (error) => Swal.fire('Error:', error),
   complete: () => console.log('buscarCuentasContables completo')
 }); 
 
@@ -72,7 +73,7 @@ ejecutarPerforma(item:CntOperacionPrestablecidas){
       this.datos = value.data;
       console.log('Datos recibidos',this.datos);
       
-    },error:e=>console.error(e.error.error)})
+    },error:e=>Swal.fire(e.error.error)})
   }
 openModal() {  
 this.newAbrirDialog.open(newTrasladoDeUnaAMuchosComponent, { data:  null })
@@ -87,7 +88,7 @@ this.newAbrirDialog.open(newTrasladoDeUnaAMuchosComponent, { data:  null })
   })
 ).subscribe({
   next: () => {},
-  error: (error) => console.error('Error:', error),
+  error: (error) => Swal.fire('Error:', error),
   complete: () => console.log('buscarCuentasContables completo')
 }); 
 
