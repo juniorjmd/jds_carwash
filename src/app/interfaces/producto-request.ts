@@ -12,6 +12,7 @@ import { DescuentoModule } from "../models/descuento/descuento.model";
 import { EmpleadoModel, VendedorModel } from "../models/empleados/empleados.module";
 import { MarcasModel } from "../models/marcas/marcas.module";
 import { ParametrosModel } from "../models/parametros/parametros.model";
+import { PrdExistenciasModule } from "../models/prd-existencias/prd-existencias.module";
 import { PresentacionPrdModel } from "../models/presentacionPrdModel";
 import { ProductoModel } from "../models/producto/producto.module";
 import { TransaccionesModel, vwTransaccionesModel } from "../models/transacciones/transacciones.module";
@@ -38,6 +39,13 @@ export interface ProductoRequest {
 
 export interface ProductoExitenciaRequest { 
   data: {nombreBodega:string, idProducto:any , existencia:number , idBodega:number};  
+  query: string;
+  numdata: number;
+  error: string;
+}
+
+export interface ProductoExitenciasRequest { 
+  data: PrdExistenciasModule[];  
   query: string;
   numdata: number;
   error: string;

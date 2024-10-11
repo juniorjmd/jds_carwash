@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BuscarProdDirectoComponent } from 'src/app/modules/pos/modals/buscar-prod-directo/buscar-prod-directo.component';
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import Swal from 'sweetalert2';
-import { categoriaRequest, marcaRequest, presentacionPrdRequest } from 'src/app/interfaces/producto-request';
+import { categoriaRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciasRequest } from 'src/app/interfaces/producto-request';
 import { ModalUpdateProductoComponent } from '../../modals/modalUpdateProducto/modalUpdateProducto.component';
 import { PresentacionPrdModel } from 'src/app/models/presentacionPrdModel';
 import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module';
@@ -356,56 +356,74 @@ export class ProductosComponent implements OnInit {
 
 
      existencias(prd:ProductoModel){
-      if (prd.existencias.length > 0 ){ 
-        this.existenciasPrd = prd.existencias; 
-        console.log(this.existenciasPrd);
-        let pagosHtml:string =  `<h1>Producto : <br>${this.existenciasPrd[0].nombre_producto}</h1>
-        <table class='table' style='font-size:12px'> 
-        <tr><td colspan='10' > <h1>Existentencias y Movimientos</h1><td></tr> 
-        <tr>
-        <td>Bodega</td>
-        <td>ultimo mov.</td>
-        <td>fecha</td>
-        <td>usuario</td>
-        <td>cnt. inicial</td>
-        <td>cnt. actual</td>
-        <td>ventas</td>
-        <td>compras</td>
-        <td>devoluciones</td>
-        <td>remisionada</td> 
-        </tr>
-       `;
-       // cantInicial, cantActual, compras, ventas, devoluciones, stock, remisionada,
-       
-       this.existenciasPrd!.forEach(pago=>{
-         pagosHtml +=`<tr> `;
-         pagosHtml +=`<td>${pago.nombreBodega}</td> `;
-         pagosHtml +=`<td nowrap>${pago.ult_mov}</td> `;
-         pagosHtml +=`<td nowrap>${pago.fecha_ultimo_cambio}</td> `;
-         pagosHtml +=`<td nowrap>${pago.nombreUsuario_ult_mov}</td> `;
-         pagosHtml +=`<td nowrap>${pago.cant_inicial}</td> `;
-         pagosHtml +=`<td nowrap>${pago.cant_actual}</td> `;
-         pagosHtml +=`<td nowrap>${pago.ventas}</td> `;
-         pagosHtml +=`<td nowrap>${pago.compras}</td> `;
-         pagosHtml +=`<td nowrap>${pago.devoluciones}</td> `;
-         pagosHtml +=`<td nowrap>${pago.remisiones}</td> `;
-         pagosHtml +=`</tr> `;
-       })
-   
-   
-       pagosHtml += '</table>'
-   
-   
-   
-       Swal.fire({html:pagosHtml, width: '900px'});
-
-
-
-
-      }else{
-        this.existenciasPrd = [];
-        Swal.fire( 'el producto ' + prd.nombre+ ' no posee existencias en ninguna bodega!!', '', 'error');
-      }
+      this.productoService.getProductosExistencia(prd).subscribe({
+        next:(value:ProductoExitenciasRequest )=>{
+           console.log('producto existencia' , value)
+           if(value.error == 'ok'){
+            if(value.numdata> 0 ){
+              prd.existencias = value.data;
+              if (prd.existencias.length > 0 ){ 
+                this.existenciasPrd = prd.existencias; 
+                console.log(this.existenciasPrd);
+                let pagosHtml:string =  `<h1>Producto : <br>${prd.nombre}</h1>
+                <table class='table' style='font-size:12px'> 
+                <tr><td colspan='10' > <h1>Existentencias y Movimientos</h1><td></tr> 
+                <tr>
+                <td>Bodega</td>
+                <td>ultimo mov.</td>
+                <td>fecha</td>
+                <td>usuario</td>
+                <td>cnt. inicial</td>
+                <td>cnt. actual</td>
+                <td>ventas</td>
+                <td>compras</td>
+                <td>devoluciones</td>
+                <td>remisionada</td> 
+                </tr>
+               `;
+               // cantInicial, cantActual, compras, ventas, devoluciones, stock, remisionada,
+               
+               this.existenciasPrd!.forEach(pago=>{
+                 pagosHtml +=`<tr> `;
+                 pagosHtml +=`<td>${pago.nombreBodega}</td> `;
+                 pagosHtml +=`<td nowrap>${pago.ult_mov}</td> `;
+                 pagosHtml +=`<td nowrap>${pago.fecha_ultimo_cambio}</td> `;
+                 pagosHtml +=`<td nowrap>${pago.nombreUsuario_ult_mov}</td> `;
+                 pagosHtml +=`<td nowrap>${pago.cant_inicial}</td> `;
+                 pagosHtml +=`<td nowrap>${pago.cant_actual}</td> `;
+                 pagosHtml +=`<td nowrap>${pago.ventas}</td> `;
+                 pagosHtml +=`<td nowrap>${pago.compras}</td> `;
+                 pagosHtml +=`<td nowrap>${pago.devoluciones}</td> `;
+                 pagosHtml +=`<td nowrap>${pago.remisiones}</td> `;
+                 pagosHtml +=`</tr> `;
+               })
+           
+           
+               pagosHtml += '</table>'
+           
+           
+           
+               Swal.fire({html:pagosHtml, width: '900px'});
+        
+        
+        
+        
+              }
+              else{
+                this.existenciasPrd = [];
+                Swal.fire( 'el producto ' + prd.nombre+ ' no posee existencias en ninguna bodega!!', '', 'error');
+              } 
+            }else{
+              Swal.fire( 'el producto ' + prd.nombre+ ' no posee existencias en ninguna bodega!!', '', 'error');
+            }
+           }else{
+            Swal.fire(value.error)
+           }
+        },
+        error:(e)=> Swal.fire(JSON.stringify(e))
+      })
+    
+    
      }
      existencias_old(prd:ProductoModel){
       this.loading.show()

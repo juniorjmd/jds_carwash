@@ -1645,7 +1645,7 @@ private openPrintWindows(printContent:string){
       WindowPrt.addEventListener('afterprint', () => {
             WindowPrt.close();
         });  
-      //   WindowPrt.print();
+         WindowPrt.print();
   }
 }
 private openExcelWindows(printContent:string , fileName:string){

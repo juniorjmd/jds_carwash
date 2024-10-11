@@ -13,7 +13,7 @@ import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModel } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { categoriaRequest, categoriaVendidosRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciaRequest, ProductoRequest } from '../interfaces/producto-request';
+import { categoriaRequest, categoriaVendidosRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciaRequest, ProductoExitenciasRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
@@ -119,12 +119,12 @@ setCategorias(CATEGORIA:CategoriasModel){
 
 // #region Métodos con selects genericos en el codigo
 
-getProductosExistencia(codPrd:ProductoModel){
-  let where = [{"columna" : "idProducto" , "tipocomp" : '=' , "dato" : codPrd.id    } ]
+getProductosExistencia(codPrd:ProductoModel):Observable<ProductoExitenciasRequest>{
+  let where = [{"columna" : "id_producto" , "tipocomp" : '=' , "dato" : codPrd.id    } ]
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.prd_inventario,  "_where" : where  
               };
   console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
-  return this.http.post(this.baseUrl, datos, httpOptions()) ;
+  return this.http.post<ProductoExitenciasRequest>(this.baseUrl, datos, httpOptions()) ;
 } 
 
 get_producto_simple(){ 
@@ -450,6 +450,7 @@ getProductoExtistenciaDocById(idprd:any , orden:number):Observable<ProductoExite
   console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
   return this.http.post<Observable<ProductoExitenciaRequest|any>>(this.urlInventario, datos, httpOptions()) ;
 }
+ 
 getProductoByIdOrCodBarra(idprd:any):Observable<ProductoRequest|any>{ 
   
   let  datos = {"action": actions.buscarProductoCodBarras ,
