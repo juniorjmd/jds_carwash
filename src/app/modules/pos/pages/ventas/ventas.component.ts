@@ -32,6 +32,7 @@ import { AbonosCuentasXCobrarComponent } from '../../modals/abonos-cuentas-xcobr
 import { GenerarCntPorCobrarComponent } from '../../modals/generar-cnt-por-cobrar/generar-cnt-por-cobrar.component';
 import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { ModalUpdateProductoVentaComponent } from '../../modals/ModalUpdateProductoVenta/ModalUpdateProductoVenta.component';
+import { IngresoServicioVehiculoComponent } from '../../modals/ingreso_servicio_vehiculos/ingreso.component';
 
 @Component({
   selector: 'app-ventas',
@@ -46,6 +47,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   planSepare = false;
   CrtGasto = false;
   domicilio = false;
+  ingresoServicio = false;
   pagos: pagosModel[] = []; 
   indexEfectivo!: number;
   focus!: boolean;
@@ -155,6 +157,9 @@ export class VentasComponent implements AfterViewInit, OnInit {
             break;
           case 'domicilio':
             this.domicilio = true;
+            break; 
+         case 'ingresoServicio':
+            this.ingresoServicio = true;
             break; 
           case 'crearGastoPV':
             this.CrtGasto = true;
@@ -1086,6 +1091,25 @@ export class VentasComponent implements AfterViewInit, OnInit {
     });   
   }
 
+  ingresarServicio(){ 
+    console.log('documentoActivo- ingresarServicio' ,  this.documentoActivo);
+    
+    this.newAbrirDialog.open(IngresoServicioVehiculoComponent,{ data: this.documentoActivo?.caja})
+    .afterClosed()
+    .pipe(
+      tap((confirmado: Boolean)=>{
+        if (confirmado) { 
+          this.getDocumentos();  
+          this.codigoProducto = '';
+          this.irbuscarProducto();
+          this.buscarClose = true;}
+      })
+    ).subscribe({
+      next: () => {},
+      error: (error) => Swal.fire( JSON.stringify(error) ) ,
+      complete: () => console.log('buscarCliente completo')
+    });   
+  }
 
 
   async printer_factura_final() {

@@ -123,7 +123,9 @@
           <div class="row">
             <div class="col-sm-12 col-lg-12" style="padding: 0px;"> 
                     <div class="btn-group" role="group"  style="width: 100%; margin-top: 5px;margin-bottom: 5px;"  aria-label="Basic example">
-                    
+                        <button *ngIf="ingresoServicio" (click)="ingresarServicio()"   type="button" class="btn btn-primary">
+                            <i class="bi bi-car-front-fill"></i> <i class="bi bi-wrench"></i>  
+                          </button>
                         <button *ngIf="domicilio" type="button" class="btn" (click)="generarEnvio()" style="background-color: rgb(41, 39, 39);" title="Guardar como Envio"><img src="assets/img/img_menu_interno/deliveri_truck.png" style="width:30px;height:30px" /></button>
                         <button *ngIf="libranza" type="button" class="btn btn-success" (click)="generarLibranza()" title="Libranza"><i class="bi bi-hand-index-thumb"></i> Libranza</button>
                         

@@ -19,6 +19,7 @@ import { NewGastoComponent } from './modals/new-gasto/new-gasto.component';
 import { AbonosCuentasXCobrarComponent } from './modals/abonos-cuentas-xcobrar/abonos-cuentas-xcobrar.component';
 import { GenerarCntPorCobrarComponent } from './modals/generar-cnt-por-cobrar/generar-cnt-por-cobrar.component'; 
 import { ModalUpdateProductoVentaComponent } from './modals/ModalUpdateProductoVenta/ModalUpdateProductoVenta.component';
+import { IngresoServicioVehiculoComponent } from './modals/ingreso_servicio_vehiculos/ingreso.component';
  
 @NgModule({
   declarations: [  
@@ -36,7 +37,8 @@ import { ModalUpdateProductoVentaComponent } from './modals/ModalUpdateProductoV
     NewGastoComponent,
     AbonosCuentasXCobrarComponent,
     GenerarCntPorCobrarComponent,
-    ModalUpdateProductoVentaComponent
+    ModalUpdateProductoVentaComponent, 
+    IngresoServicioVehiculoComponent
 
   ],
   imports: [

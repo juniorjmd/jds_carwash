@@ -200,6 +200,14 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
         console.log('servicios cajas - get vw_tipo_establecimiento ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
+    getCaja(id:number):Observable<cajaRequest>{
+        let datos = {"action": actions.actionSelect ,
+                     "_tabla" : vistas.cajas , 
+                     "_where" : [{columna : 'id' , tipocomp : '=' , dato : id}]
+                    };
+                    console.log('servicios de cajas activo - get caja by id ' ,url.action , datos, httpOptions());
+                    return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+    }
     getCajas():Observable<cajaRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.cajas
