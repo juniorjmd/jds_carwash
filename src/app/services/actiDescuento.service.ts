@@ -12,6 +12,7 @@ import { ProductoModel } from '../models/producto/producto.module';
 import { ActividadesDescuentoModel } from '../models/actividadesDescuentoModel';
 import { TABLA } from '../models/app.db.tables';
 import { configService } from './config.service';
+import { CustomConsole } from '../models/CustomConsole';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ constructor(private http: HttpClient){}
       estado:    actividad.estado , 
       usuario_edicion   : 'USUARIO_LOGUEADO'  }; 
      let datos = {"action": actions.actionUpdate , "_tabla" : TABLA.actividad_descuento, _where ,  _arraydatos };
-     console.log('updateActividad',datos); 
+     CustomConsole.log('updateActividad',datos); 
    return this.http.post(url.action , datos, httpOptions()) ;
   }
 
@@ -55,7 +56,7 @@ constructor(private http: HttpClient){}
             "_tabla" : TABLA.actividad_det_producto_excluido,
             "_arraydatos" : arraydatos
            };  
-       console.log(datos); 
+       CustomConsole.log(datos); 
         return this.http.post(url.action , datos, httpOptions()) ;
         
   }
@@ -67,7 +68,7 @@ constructor(private http: HttpClient){}
     "_tabla" : TABLA.actividad_det_producto_excluido,
     "_where" : where  
    };
-   console.log(datos); 
+   CustomConsole.log(datos); 
     return this.http.post(url.action , datos, httpOptions()) ;
 }
     setProducto(idProducto:string){
@@ -77,7 +78,7 @@ constructor(private http: HttpClient){}
             "_tabla" : TABLA.actividad_det_tmp,
             "_arraydatos" : arraydatos
            };  
-       console.log(datos); 
+       CustomConsole.log(datos); 
         return this.http.post(url.action , datos, httpOptions()) ;
         
   }
@@ -139,7 +140,7 @@ ingresarItemDescuentoTmp(idProducto:any , tipo:string){
         "_tabla" : TABLA.actividad_det_tmp,
         "_arraydatos" : arraydatos
        };  
-   console.log(datos); 
+   CustomConsole.log(datos); 
   return this.http.post(url.action , datos, httpOptions()) ;
 }
 
@@ -151,7 +152,7 @@ setCategoria(idProducto:number){
           "_tabla" : TABLA.actividad_det_tmp,
           "_arraydatos" : arraydatos
          };  
-     console.log(datos); 
+     CustomConsole.log(datos); 
       return this.http.post(url.action , datos, httpOptions()) ;
       
 }
@@ -162,7 +163,7 @@ deleteCategoria(idProducto:number){
   "_tabla" : TABLA.actividad_det_tmp,
   "_where" : where  
  };
- console.log(datos); 
+ CustomConsole.log(datos); 
   return this.http.post(url.action , datos, httpOptions()) ;
 }
 
@@ -175,7 +176,7 @@ setMarca(idProducto:number){
           "_tabla" : TABLA.actividad_det_tmp,
           "_arraydatos" : arraydatos
          };  
-     console.log(datos); 
+     CustomConsole.log(datos); 
       return this.http.post(url.action , datos, httpOptions()) ;
       
 }
@@ -186,7 +187,7 @@ deleteMarca(idProducto:number){
   "_tabla" : TABLA.actividad_det_tmp,
   "_where" : where  
  };
- console.log(datos); 
+ CustomConsole.log(datos); 
   return this.http.post(url.action , datos, httpOptions()) ;
 }
 
@@ -213,7 +214,7 @@ createDescuentoActividad(_datosInsert:ActividadesDescuentoModel){
   let datos = {"action": actions.set_actividad_descuento , 
               _datosInsert
    };  
-   console.log('createDescuentoActividad', datos);
+   CustomConsole.log('createDescuentoActividad', datos);
    
 return this.http.post(url.inventario , datos, httpOptions()) ;
 }
@@ -321,7 +322,7 @@ getActividades(){
     "_tabla" : vistas.vw_inv_descuentos_actividad,
 
    };
-console.log('abrirCaja activo ' ,url.action , datos, httpOptions());
+CustomConsole.log('abrirCaja activo ' ,url.action , datos, httpOptions());
 return this.http.post<actividadesRequest>(url.action , datos, httpOptions()) ;
 }
 
@@ -348,7 +349,7 @@ getDetalleActividad(detalle:ActividadesDescuentoModel){
       {columna : 'id_actividad' , tipocomp : '=' , dato : detalle.id  }]
 
    };
-console.log('getDetalleActividad ' ,url.action , datos, httpOptions());
+CustomConsole.log('getDetalleActividad ' ,url.action , datos, httpOptions());
 return this.http.post<actividadesDetalleRequest>(url.action , datos, httpOptions()) ;
 }
 

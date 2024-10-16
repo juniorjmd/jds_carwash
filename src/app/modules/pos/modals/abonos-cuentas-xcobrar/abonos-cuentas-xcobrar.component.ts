@@ -4,6 +4,7 @@ import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { CarteraRequest } from 'src/app/interfaces/producto-request';
 import { CarteraModel } from 'src/app/models/cartera/cartera.model';
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { PersonasModule } from 'src/app/modules/personas/personas.module';
 import { DocumentoService } from 'src/app/services/documento.service';
@@ -55,7 +56,7 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
           
         })??[];
         
-        console.log('cartera' ,  this.lisCartera)
+        CustomConsole.log('cartera' ,  this.lisCartera)
       }
     } , error:error=>{Swal.fire(error,error.error.error, 'error')}
   })
@@ -70,13 +71,13 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
     {this.docAbono.listado[indice].presioVenta = 0 ; }
    else{
     this.docAbono.valorParcial =  this.docAbono.listado.reduce((acc, item) => acc + parseFloat(item.presioVenta.toString()), 0);
-    console.log('documento a enviar',this.docAbono);}
+    CustomConsole.log('documento a enviar',this.docAbono);}
   
   }
   pagarTodo(){
     this.docAbono.listado.forEach(x=> x.presioVenta = x.valorTotal)
     this.docAbono.valorParcial =  this.docAbono.listado.reduce((acc, item) => acc + parseFloat(item.presioVenta.toString()), 0);
-    console.log('documento a enviar',this.docAbono);
+    CustomConsole.log('documento a enviar',this.docAbono);
   
   }
 
@@ -84,16 +85,16 @@ export class AbonosCuentasXCobrarComponent implements OnInit {
     if(this.docAbono.valorParcial <= 0){
       Swal.fire('Error en el envio' , 'debe ingresar minimo un abono' , 'error')
     }
-     console.log('documento a enviar',this.docAbono);
+     CustomConsole.log('documento a enviar',this.docAbono);
      this.docService.crearDocumentoAbono(this.docAbono).subscribe({next:value=>{
-      console.log('crearDocumentoAbono',value);
+      CustomConsole.log('crearDocumentoAbono',value);
       this.dialogo.close(true);
      }})
   }
   cancelar(){
     this.docAbono.listado.forEach(x=> x.presioVenta = 0)
     this.docAbono.valorParcial =  this.docAbono.listado.reduce((acc, item) => acc + parseFloat(item.presioVenta.toString()), 0);
-    console.log('documento a enviar',this.docAbono);
+    CustomConsole.log('documento a enviar',this.docAbono);
   
   }
 }

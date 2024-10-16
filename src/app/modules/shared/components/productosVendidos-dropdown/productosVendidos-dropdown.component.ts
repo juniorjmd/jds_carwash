@@ -1,6 +1,7 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { ProductoVendido } from 'src/app/interfaces/productoVendido.';
 import { CategoriasModel } from 'src/app/models/categorias.model';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { ProductoService } from 'src/app/services/producto.service';
@@ -20,13 +21,13 @@ export class productosVendidosDropdownComponent implements OnInit{
   private inicioService= inject(DatosInicialesService) ;
   
   ngOnInit(): void { 
-    console.log('opciones : ',this.options); 
+    CustomConsole.log('opciones : ',this.options); 
     this.inicioService.getProductosVendidos().subscribe({next:value=>{
-      console.log(value);
+      CustomConsole.log(value);
       let prod =   {idProducto:'0', firstDate: new Date(), lastDate: new Date(), nombre:'Seleccione un Producto para filtrar', nombre2:'', nombre3:''}
       this.options = [prod,  ...value.data]
       this.filteredOptions = [prod,  ...value.data]
-      console.log('productos vendidos',this.options);
+      CustomConsole.log('productos vendidos',this.options);
       
   }})
    
@@ -53,7 +54,7 @@ export class productosVendidosDropdownComponent implements OnInit{
   showDropdown() {
     const dropdownButton = document.querySelector('.ddMarcas') as HTMLElement;
     const dropdownFiltro = document.querySelector('.ddMarcasFiltro') as HTMLElement;
-    console.log(dropdownButton);
+    CustomConsole.log(dropdownButton);
     
     if (dropdownButton && dropdownButton.getAttribute('aria-expanded') === 'false') {
       dropdownButton.ariaExpanded

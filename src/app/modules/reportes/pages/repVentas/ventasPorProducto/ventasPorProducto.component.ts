@@ -8,6 +8,7 @@ import { cajasServices } from 'src/app/services/Cajas.services';
 import { ProductoVendido } from 'src/app/interfaces/productoVendido.';
 import Swal from 'sweetalert2';
 import { ResumenVenta } from 'src/app/interfaces/resumenVenta.';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-ventasPorProducto',
@@ -51,7 +52,7 @@ const day = date.getDate(); // */
        printerManager.exportResumenVentas( this.resumenVenta , 'VentaPorProducto');
      } }
      getVentasPorProducto(prd:ProductoVendido){
-      console.log('productos seleccionado' , this.productosVendidoc);
+      CustomConsole.log('productos seleccionado' , this.productosVendidoc);
       this.productosVendidoc = prd;
       if(this.productosVendidoc?.idProducto != '0'){
         //Swal.fire('producto seleccionado ' +this.productosVendidoc?.idProducto + ' - ' +this.productosVendidoc?.nombre )
@@ -70,7 +71,7 @@ const day = date.getDate(); // */
            
         if (datos.numdata > 0 ){
           this.resumenVenta = datos.data  ;
-          console.log('getResumenProductosVentas',this.resumenVenta);
+          CustomConsole.log('getResumenProductosVentas',this.resumenVenta);
        } else{
         Swal.fire('No existen datos relacionados con la busqueda')
        } 
@@ -85,8 +86,8 @@ const day = date.getDate(); // */
           (datos:any)=>{
             let cont = 0; 
              this.documentos = []; 
-             console.log('getDocumentos', datos.numdata);
-             console.log('getDocumentos_recuest', datos );
+             CustomConsole.log('getDocumentos', datos.numdata);
+             CustomConsole.log('getDocumentos_recuest', datos );
              
         if (datos.numdata > 0 ){ 
           datos.data!.forEach((dato:any , index : number  )=>{  
@@ -191,7 +192,7 @@ const day = date.getDate(); // */
   pagosHtml += '</td></tr></table>'
 
    Swal.fire({html:pagosHtml, width: '800px' , showCancelButton:true , cancelButtonText:'imprimir'}).then(value=>{
-    console.log(value);
+    CustomConsole.log(value);
     if(value.isDismissed){
       this.imprimirFactura(venta);
     }
@@ -199,7 +200,7 @@ const day = date.getDate(); // */
    });
   }
   async imprimirFactura(factura:DocumentosModel)
-  { console.log(factura); 
+  { CustomConsole.log(factura); 
    let printerManager =  new PrinterManager(this.serviceCaja);;
    printerManager.setDocumento(factura);
    printerManager.printReceipt();
@@ -209,7 +210,7 @@ const day = date.getDate(); // */
 
   getDocumentosPorFecha(){
     //this.printer_factura_final(); 
-    console.log('productosVendidoc' , this.productosVendidoc);
+    CustomConsole.log('productosVendidoc' , this.productosVendidoc);
     
     if(this.productosVendidoc?.idProducto == '0'){  
       Swal.fire('Es necesario escoger el producto a filtrar','error','error');
@@ -229,7 +230,7 @@ const day = date.getDate(); // */
     (this.productosVendidoc?.idProducto!,this.fecha1.trim(),this.fecha2.trim() ).subscribe({next:
       (datos:any)=>{ 
     if (datos.numdata > 0 ){   this.resumenVenta = datos.data  ;
-      console.log('getResumenProductosVentas',this.resumenVenta);
+      CustomConsole.log('getResumenProductosVentas',this.resumenVenta);
       
    } else{
     Swal.fire('No existen datos relacionados con la busqueda')
@@ -248,7 +249,7 @@ const day = date.getDate(); // */
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
-         console.log('getDocumentos', datos.numdata , datos );
+         CustomConsole.log('getDocumentos', datos.numdata , datos );
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:any , index : number  )=>{  

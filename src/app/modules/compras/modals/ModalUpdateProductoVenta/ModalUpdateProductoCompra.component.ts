@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { error } from 'jquery';
 import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { loading } from 'src/app/models/app.loading';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { DocumentoService } from 'src/app/services/documento.service';
 import Swal from 'sweetalert2';
 
@@ -27,7 +28,7 @@ export class ModalUpdateProductoCompraComponent {
 
   editar(){
     this.disable = true
-    console.log('ModalUpdateProductoVentaComponent' ,this.item );
+    CustomConsole.log('ModalUpdateProductoVentaComponent' ,this.item );
     if(this.item.cant_real_descontada <= 0 ){
       Swal.fire('Debe ingresar la cantidad a comprar');
       return;

@@ -88,7 +88,7 @@ export class ClienteNuevoComponent implements OnInit {
   //     title: '',
   //     l10n_latam_identification_type_id: this.tipo_identificacionA,
   //   };
-  //   console.log('tipo iden auxili', this.tipo_identificacionA);
+  //   CustomConsole.log('tipo iden auxili', this.tipo_identificacionA);
   // }
 
   cancelar() {
@@ -97,11 +97,11 @@ export class ClienteNuevoComponent implements OnInit {
   // async setMaestros() {
   //   this.loading.show();
   //   let result = await this.MaestroClienteServices.getMaestrosClientes();
-  //   console.log('termino el trabajo');
+  //   CustomConsole.log('termino el trabajo');
 
   //   this.tipo_direccion =
   //     this.MaestroClienteServices.getMaestroClientes('tipo_direccion');
-  //   console.log(this.tipo_direccion);
+  //   CustomConsole.log(this.tipo_direccion);
 
   //   this.companias = [];
   //   this.Provincias =
@@ -115,7 +115,7 @@ export class ClienteNuevoComponent implements OnInit {
   //   this.getCategorias();
 
   //   //  this.tipo_identificacion =   this.MaestroClienteServices.getMaestroClientes('tipo_identificacion');
-  //   console.log('tipo_direccion', this.tipo_direccion);
+  //   CustomConsole.log('tipo_direccion', this.tipo_direccion);
   //   this.cancelar();
   //   this.getPaises();
   //   this.getTitulos();
@@ -123,7 +123,7 @@ export class ClienteNuevoComponent implements OnInit {
   // }
   // getEmpresas() {
   //   this.MaestroClienteServices.setEmpresas().subscribe((datos: any) => {
-  //     // console.log('EMPRESAS ODDO' , JSON.stringify(datos));
+  //     // CustomConsole.log('EMPRESAS ODDO' , JSON.stringify(datos));
 
   //     datos.data!.forEach((value: any) => {
   //       this.companias.push({
@@ -135,7 +135,7 @@ export class ClienteNuevoComponent implements OnInit {
   // }
   // getTitulos() {
   //   this.MaestroClienteServices.setTitulos().subscribe((datos: any) => {
-  //     // console.log('EMPRESAS ODDO' , JSON.stringify(datos));
+  //     // CustomConsole.log('EMPRESAS ODDO' , JSON.stringify(datos));
 
   //     datos.data!.forEach((value: any) => {
   //       this.titulos.push({
@@ -148,7 +148,7 @@ export class ClienteNuevoComponent implements OnInit {
 
   // getCategorias() {
   //   this.MaestroClienteServices.setCategorias().subscribe((datos: any) => {
-  //     console.log('setCategorias ODDO', JSON.stringify(datos));
+  //     CustomConsole.log('setCategorias ODDO', JSON.stringify(datos));
   //     this.loading.show();
   //     datos.data!.forEach((value: any) => {
   //       this.categorias.push({
@@ -178,7 +178,7 @@ export class ClienteNuevoComponent implements OnInit {
   //       }
   //     });
 
-  //     console.log('tipo de identificacion final', this.tipo_identificacion);
+  //     CustomConsole.log('tipo de identificacion final', this.tipo_identificacion);
   //     this.NwCliente.l10n_latam_identification_type_id =
   //       this.tipo_identificacionA;
   //     this.loading.hide();
@@ -186,7 +186,7 @@ export class ClienteNuevoComponent implements OnInit {
   // }
 
   // muestraCliente() {
-  //   console.log('change nuevo cliente<', this.NwCliente);
+  //   CustomConsole.log('change nuevo cliente<', this.NwCliente);
   // }
   // getCiudad(departameto: number) {
   //   this.loading.show();
@@ -224,7 +224,7 @@ export class ClienteNuevoComponent implements OnInit {
   //         selPais = value.id;
   //       }
   //     });
-  //     console.log(this.paises);
+  //     CustomConsole.log(this.paises);
 
   //     this.NwCliente.country_id = selPais;
 
@@ -239,7 +239,7 @@ export class ClienteNuevoComponent implements OnInit {
   // }
   // getDepartamento(pais: number) {
   //   this.loading.show();
-  //   console.log(pais);
+  //   CustomConsole.log(pais);
   //   let selDEP = 0;
   //   this.Provincias = [];
   //   this.Ciudades = [];
@@ -283,7 +283,7 @@ export class ClienteNuevoComponent implements OnInit {
   //   this.loading.show();
   //   this.VehiculosService.guardarServicios(this.newServicioAVehiculo).subscribe(
   //     (respuesta: any) => {
-  //       console.log(respuesta);
+  //       CustomConsole.log(respuesta);
 
   //       if (respuesta.error === 'ok') {
   //         Swal.fire('datos ingresados con exito');

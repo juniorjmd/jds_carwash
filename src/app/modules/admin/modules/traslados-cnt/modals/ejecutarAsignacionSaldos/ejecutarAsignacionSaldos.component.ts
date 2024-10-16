@@ -78,7 +78,7 @@ export class EjecutarAsignacionSaldosComponent  {
         };
 
         this.establecimientos =(value.length>0)?[{...cajasel}  , ...value ] : [...value] ;
-        //console.log('cajaas' , this.establecimientos);
+        //CustomConsole.log('cajaas' , this.establecimientos);
         
       }
     }, error: e=>Swal.fire('error',e.error.error,'error')})
@@ -88,13 +88,13 @@ export class EjecutarAsignacionSaldosComponent  {
       DE_UNA_A_MUCHOS
       DE_MUCHOS_A_UNA
      */ 
-    //console.log(this.dataIngreso);
+    //CustomConsole.log(this.dataIngreso);
     
     if(this.dataIngreso != undefined){
      this.dataProceso  = this.dataProceso.createTraslado( dataIngreso );  
      this.cntService.getCuentasTrasladosPreeEjecucion(this.dataIngreso.id!).subscribe({next:(value)=>{ 
            this.dataProceso!.cuentas =  value.data;
-           //console.log('cuentas' , value.data);
+           //CustomConsole.log('cuentas' , value.data);
            
      },error:e=> Swal.fire(e.error.error) })
  
@@ -103,10 +103,10 @@ export class EjecutarAsignacionSaldosComponent  {
    calcularValorTraslado(){
     let valorSaldo:number =  this.saldofinal||0 ; 
     let origen =  this.dataProceso?.cuentas.find(x=> x.tipo == 'ORIGEN')
-    //console.log('origen' , origen);
+    //CustomConsole.log('origen' , origen);
     
     let valorSaldoActual:number = ( parseFloat(origen!.saldo.toString())||0) ; 
-    //console.log('valorSaldoActual' , valorSaldoActual);
+    //CustomConsole.log('valorSaldoActual' , valorSaldoActual);
     
     if (valorSaldoActual == 0 ){
       this.valorTraslado = valorSaldo * -1
@@ -116,7 +116,7 @@ export class EjecutarAsignacionSaldosComponent  {
             {  this.valorTraslado =    valorSaldoActual - valorSaldo }
    }
    ejecutar(){
-       //console.log('cajaSeleccionada',this.cajaSeleccionada);
+       //CustomConsole.log('cajaSeleccionada',this.cajaSeleccionada);
        
        if(this.cajaSeleccionada == 0){
          Swal.fire('error','Debe seleccionar el origen del traslado')
@@ -135,7 +135,7 @@ export class EjecutarAsignacionSaldosComponent  {
  
    
    async printer_soporte_final(soporte:SoporteOperacion) {   
-    // //console.log('documento retorno',doc,'sucursal ', this.sucursal); 
+    // //CustomConsole.log('documento retorno',doc,'sucursal ', this.sucursal); 
      let printM =  new PrinterManager(this.cajasService);  
      printM.printSoporteMovimiento(false,soporte);
      this.dialogo.close(true);

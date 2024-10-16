@@ -5,6 +5,7 @@ import { actions } from '../models/app.db.actions';
 import { httpOptions, url } from '../models/app.db.url';
 import { Observable, firstValueFrom } from 'rxjs';
 import { UsuarioResponseInterface } from '../interfaces/UsuarioResponse.Interface';
+import { CustomConsole } from '../models/CustomConsole';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class LoginService {
 
     // private _configService = inject(configService); 
 constructor(private http: HttpClient){ 
-        //console.log('servicios loguin inicializado');        
+        CustomConsole.log('servicios loguin inicializado');        
     }
 
     async digestMessage(message:any) {
@@ -35,7 +36,7 @@ constructor(private http: HttpClient){
                     "_password" : L_contraseña,
                     "_usuario" : L_usuario
                 };
-        //console.log('servicios datos iniciales inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
+        CustomConsole.log('servicios datos iniciales inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
         return this.http.post(url.login , datos, url.httpOptionsSinAutorizacion) ;
     } 
 
@@ -50,7 +51,7 @@ constructor(private http: HttpClient){
         let datos = {"action": actions.actionValidarKeylogin ,
                     "_llaveSession" : localStorage.getItem('sis41254#2@')
                 };
-        //console.log('validar llave de session inicializado ' ,url.login , datos,         url.httpOptionsSinAutorizacion);
+        CustomConsole.log('validar llave de session inicializado ' ,url.login , datos,         url.httpOptionsSinAutorizacion);
         return this.http.post<UsuarioResponseInterface>(url.login , datos, httpOptions()) ;
     }
     
@@ -60,7 +61,7 @@ constructor(private http: HttpClient){
           "_llaveSession": localStorage.getItem('sis41254#2@'),
           "_invoker": invoker
         };
-        //console.log('validar llave de session <observable> inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
+        CustomConsole.log('validar llave de session <observable> inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
         return this.http.post(url.login, datos, httpOptions());
       }
 
@@ -68,7 +69,7 @@ constructor(private http: HttpClient){
     // {       
     //     let datos = {"action": actions.actionValidarKeylogin ,
     //     "_llaveSession" : localStorage.getItem('sis41254#2@')  ,"_invoker": invoker };
-    //     //console.log('validar llave de session inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
+    //     CustomConsole.log('validar llave de session inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
     //     return await   this.http.post(url.login , datos, httpOptions()).toPromise() ; 
     // }
      getUsuarioLogeadoAsync(invoker: string = ''): Observable<any> {
@@ -77,7 +78,7 @@ constructor(private http: HttpClient){
           _llaveSession: localStorage.getItem('sis41254#2@'),
           _invoker: invoker
         };
-      console.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
+      CustomConsole.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
         return  this.http.post(url.login, datos, httpOptions()) ;
       } 
       
@@ -85,7 +86,7 @@ constructor(private http: HttpClient){
         let datos = {
           action: actions.actionSetPass, _id_usuario, _pass
         };
-       //  console.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
+       //  CustomConsole.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
         return  this.http.post(url.login, datos, httpOptions()) ;
       }
   getDatosUsuarioLogeado(invoker: string = ''): Observable<any> {
@@ -94,7 +95,7 @@ constructor(private http: HttpClient){
           _llaveSession: localStorage.getItem('sis41254#2@'),
           _invoker: invoker
         };
-        //console.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
+        CustomConsole.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
         return  this.http.post(url.login, datos, httpOptions()) ;
       }
     }

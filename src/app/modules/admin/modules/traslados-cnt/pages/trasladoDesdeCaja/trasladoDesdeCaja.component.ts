@@ -12,6 +12,7 @@ import { CntContablesService } from 'src/app/services/cntContables.service';
 import { CntOperacionPrestablecidas } from 'src/app/interfaces/traslados_cnt/cnt_operacion_prestablecidas.';
 import { ejecutarTrasladoDesdeCajaComponent } from '../../modals/ejecutarTrasladoDesdeCaja/ejecutarTrasladoDesdeCaja.component';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-traslado-desde-caja',
@@ -47,7 +48,7 @@ editar(item:CntOperacionPrestablecidas){
 .afterClosed() 
 .pipe(
   tap((response: responseSubC) => {
-    console.log('buscarCuentasContablesGastos',response);
+    CustomConsole.log('buscarCuentasContablesGastos',response);
     if(response != undefined){ 
       if (response  ) {    
         this.ngAfterViewInit()
@@ -57,7 +58,7 @@ editar(item:CntOperacionPrestablecidas){
 ).subscribe({
   next: () => {},
   error: (error) => Swal.fire('Error:', error),
-  complete: () => console.log('buscarCuentasContables completo')
+  complete: () => CustomConsole.log('buscarCuentasContables completo')
 }); 
 
 
@@ -71,7 +72,7 @@ ejecutarPerforma(item:CntOperacionPrestablecidas){
   ngAfterViewInit(): void {
     this.cntService.getTrasladoByType('DESDE_CAJA').subscribe({next:(value)=>{
       this.datos = value.data;
-      console.log('Datos recibidos',this.datos);
+      CustomConsole.log('Datos recibidos',this.datos);
       
     },error:e=>Swal.fire(e.error.error)})
   }
@@ -89,7 +90,7 @@ this.newAbrirDialog.open(NewTrasladoDesdeCajaComponent, { data:  null })
 ).subscribe({
   next: () => {},
   error: (error) => Swal.fire('Error:', error),
-  complete: () => console.log('buscarCuentasContables completo')
+  complete: () => CustomConsole.log('buscarCuentasContables completo')
 }); 
 
 }

@@ -6,6 +6,7 @@ import { TiposServiciosModule } from 'src/app/models/tipos-servicios/tipos-servi
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import Swal from 'sweetalert2'; 
 import { loading } from 'src/app/models/app.loading';   
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-servicioscostos',
@@ -44,7 +45,7 @@ Swal.fire({
   preConfirm: (valor) => {
     costo.valor = valor;
     this.VehiculosService.guardarCostoServicio(costo).subscribe(
-      (respuesta:any)=>{console.log(respuesta)
+      (respuesta:any)=>{CustomConsole.log(respuesta)
        
       if (respuesta.error === 'ok'){
        Swal.fire('datos ingresados con exito');  
@@ -78,7 +79,7 @@ Swal.fire({
       if (result.isConfirmed) {
         
         this.VehiculosService.eliminarCostosServicios(costo).subscribe(
-          (respuesta:any)=>{console.log(respuesta)
+          (respuesta:any)=>{CustomConsole.log(respuesta)
             if (respuesta.error === 'ok'){
               this.getTiposVehiculos();
               this.getCostosServiciosVehiculos();
@@ -111,17 +112,17 @@ Swal.fire({
     this.loading.show()
     this.VehiculosService.getTiposServicios().subscribe({next:
       (datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          
     if (datos.numdata > 0 ){ 
       this.tiposServicio = datos.data!.map((x:any)=>x.obj) ; 
-      console.log(this.tiposServicio);
+      CustomConsole.log(this.tiposServicio);
     }else{
       this.tiposServicio = [];
     }
 
       } , error:   error => {this.loading.hide();
-        console.log(error)
+        CustomConsole.log(error)
         Swal.fire( error.error.error, '', 'error');
       }, complete:()=>    this.loading.hide() }
       );
@@ -135,10 +136,10 @@ Swal.fire({
     this.loading.show()
     this.VehiculosService.getServiciosPorTipo(this.tipo_servicio).subscribe(
       (datos:any)=>{
-         console.log(datos); 
+         CustomConsole.log(datos); 
     if (datos.numdata > 0 ){ 
       this.serviciosAVehiculos = datos.data!.map((x:any)=>x.obj) ;
-      console.log(this.serviciosAVehiculos);
+      CustomConsole.log(this.serviciosAVehiculos);
     }else{
       this.serviciosAVehiculos = [];
     }
@@ -146,7 +147,7 @@ Swal.fire({
         this.loading.hide()
       } ,
       error => {this.loading.hide();
-        console.log(error)
+        CustomConsole.log(error)
         Swal.fire( error.error.error, '', 'error');
       }
       );
@@ -173,11 +174,11 @@ Swal.fire({
     this.loading.show()
     this.VehiculosService.getVehiculoNoAsignadoAServicios(this.servicioSelecionado).subscribe(
       (datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          
     if (datos.numdata > 0 ){
       this.tiposVehiculo = datos.datos! 
-      console.log('getVehiculoNoAsignadoAServicios',this.tiposVehiculo);
+      CustomConsole.log('getVehiculoNoAsignadoAServicios',this.tiposVehiculo);
     }else{
       this.tiposVehiculo = [];
     }
@@ -185,7 +186,7 @@ Swal.fire({
         this.loading.hide()
       } ,
       error => {this.loading.hide();
-        console.log(error)
+        CustomConsole.log(error)
         Swal.fire( error.error.error, '', 'error');
       }
       );
@@ -212,7 +213,7 @@ this.loading.show();
 // newServiciosCostos:ServiciosCostosModule = new ServiciosCostosModule(0,0,0,0);
 this.newServiciosCostos = new ServiciosCostosModule(this.servicioSelecionado, this.tipoVehiculo ,this.precio );
 this.VehiculosService.guardarCostoServicio(this.newServiciosCostos).subscribe(
- (respuesta:any)=>{console.log(respuesta)
+ (respuesta:any)=>{CustomConsole.log(respuesta)
   
  if (respuesta.error === 'ok'){
   Swal.fire('datos ingresados con exito');  
@@ -235,13 +236,13 @@ this.VehiculosService.guardarCostoServicio(this.newServiciosCostos).subscribe(
   this.loading.show()
   this.VehiculosService.getCostosServicios(this.servicioSelecionado).subscribe(
     (datos:any)=>{
-       console.log(datos);
+       CustomConsole.log(datos);
        
   if (datos.numdata > 0 ){ 
     
     this.arrServiciosCostos = datos.data!; 
    
-    console.log(this.arrServiciosCostos);
+    CustomConsole.log(this.arrServiciosCostos);
   }else{
     this.arrServiciosCostos = [];
   }
@@ -249,7 +250,7 @@ this.VehiculosService.guardarCostoServicio(this.newServiciosCostos).subscribe(
       this.loading.hide()
     } ,
     error => {this.loading.hide();
-      console.log(error)
+      CustomConsole.log(error)
       Swal.fire( error.error.error, '', 'error');
     }
     );

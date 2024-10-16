@@ -9,6 +9,7 @@ import { DepartamentoModel } from 'src/app/models/maestros.model';
 import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services';
 import { loading } from 'src/app/models/app.loading'; 
 import { select } from 'src/app/interfaces/generales.interface';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-new-ciudad',
@@ -46,9 +47,9 @@ export class NewCiudadComponent implements OnInit {
     } 
     this.loading.show();
     let codDep:number;
-    console.log("ciudad enviada"+ JSON.stringify(this.cityN));
+    CustomConsole.log("ciudad enviada"+ JSON.stringify(this.cityN));
     this.dep!.forEach(departamentos =>{
-      console.log(this.cityN.cod_departamento, departamentos.id);
+      CustomConsole.log(this.cityN.cod_departamento, departamentos.id);
      if ( this.cityN.cod_departamento === departamentos.id){
       codDep =departamentos.id;
      }
@@ -56,7 +57,7 @@ export class NewCiudadComponent implements OnInit {
     this.cityN.cod_dane = ( codDep! * 1000) +  this.cityN.cod_ciudad ;
     if(this.cityN.id > 0 ){
         this.maestroServicio.actualizarCiudades(this.cityN).subscribe(
-          (respuesta:any)=>{console.log(respuesta)
+          (respuesta:any)=>{CustomConsole.log(respuesta)
             this.loading.hide();
             if (respuesta.error === 'ok'){
               alert('datos ingresados con exito'); 
@@ -66,7 +67,7 @@ export class NewCiudadComponent implements OnInit {
         );
     }else{
       this.maestroServicio.setCiudades(this.cityN).subscribe(
-        (respuesta:any)=>{console.log(respuesta)
+        (respuesta:any)=>{CustomConsole.log(respuesta)
           this.loading.hide();
         if (respuesta.error === 'ok'){
           alert('datos ingresados con exito'); 
@@ -74,7 +75,7 @@ export class NewCiudadComponent implements OnInit {
         } 
         });
     }
-    console.log('nuevo pais',this.cityN)
+    CustomConsole.log('nuevo pais',this.cityN)
   }
 
   limpiarForm(){ 
@@ -102,7 +103,7 @@ export class NewCiudadComponent implements OnInit {
       
     }
         
-        console.log(this.paises);
+        CustomConsole.log(this.paises);
         this.loading.hide() 
       } ,
       error => {this.loading.hide();
@@ -116,7 +117,7 @@ export class NewCiudadComponent implements OnInit {
     this.maestroServicio.getDepartamentosPorPais(id).subscribe(
       (datos:any)=>{ 
     this.numdep = datos.numdata;
-    console.log(datos );
+    CustomConsole.log(datos );
     
     if (datos.numdata > 0 ){
 
@@ -126,7 +127,7 @@ export class NewCiudadComponent implements OnInit {
       alert('no existen Departamentos Para el pais seleccionado'); 
     }
         
-        console.log(this.dep);
+        CustomConsole.log(this.dep);
         this.loading.hide() 
       } ,
       error => {this.loading.hide();
@@ -147,7 +148,7 @@ export class NewCiudadComponent implements OnInit {
       this.cerrarDialogo();
     }
         
-        console.log(this.paises);
+        CustomConsole.log(this.paises);
         this.loading.hide() 
       } ,
       error => {this.loading.hide();

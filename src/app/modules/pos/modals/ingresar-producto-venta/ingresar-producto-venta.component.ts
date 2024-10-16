@@ -10,6 +10,7 @@ import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module'
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { ProductoRequest } from 'src/app/interfaces/producto-request';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'pos-ingresar-producto-venta',
@@ -35,8 +36,8 @@ export class IngresarProductoVentaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public arrayDocPrd:DtoDocumentoProducto,
       
     public loading : loading) { // console.clear(); 
-      console.log('arrayDocPrd' , this.arrayDocPrd); 
-      console.log('validarExistenciaProducto' , this.validarExistencia);  
+      CustomConsole.log('arrayDocPrd' , this.arrayDocPrd); 
+      CustomConsole.log('validarExistenciaProducto' , this.validarExistencia);  
     }
   ngOnInit(): void { 
     this.loading.show()
@@ -49,7 +50,7 @@ export class IngresarProductoVentaComponent implements OnInit {
   getProducto(){
     this.loading.show()
     this.prdService.getProductoById(this.arrayDocPrd.producto?.id!).subscribe({next:(value:ProductoRequest)=>{
-      console.log('producto completo', value); 
+      CustomConsole.log('producto completo', value); 
       this.loading.hide()
       this.arrayDocPrd.producto= value.producto  
       if (value.producto.tipo_producto == 2){
@@ -82,11 +83,11 @@ export class IngresarProductoVentaComponent implements OnInit {
     } catch (error) {
       Swal.fire(JSON.stringify(error))
     }
-     console.log("enabledBtnIngreso - existencia" , this.arrayDocPrd.producto?.existencias ,  this.existencia ) 
+     CustomConsole.log("enabledBtnIngreso - existencia" , this.arrayDocPrd.producto?.existencias ,  this.existencia ) 
     if(this.validarExistencia){
      if(this.existencia != undefined  ){
      
-    console.log('menor o igual a 10' , typeof(this.existencia.cant_actual ) , this.existencia.cant_actual )
+    CustomConsole.log('menor o igual a 10' , typeof(this.existencia.cant_actual ) , this.existencia.cant_actual )
      switch (this.existencia.cant_actual){
       case 0 : 
         this.disabled = [true, true, true, true, true, true, true, true, true, true];
@@ -137,7 +138,7 @@ export class IngresarProductoVentaComponent implements OnInit {
       this.enviarCnt(10);
     }else{
     this.cantidadPrd += cnt ;
-   // console.log('existencia actual',this.existencia, (this.existencia?.cant_actual!   < this.cantidadPrd)); 
+   // CustomConsole.log('existencia actual',this.existencia, (this.existencia?.cant_actual!   < this.cantidadPrd)); 
     
    if ( this.validarExistencia && (this.existencia?.cant_actual!    < this.cantidadPrd)){
        this.cantidadPrd =  this.existencia?.cant_actual ?? 0 ;
@@ -154,9 +155,9 @@ export class IngresarProductoVentaComponent implements OnInit {
     }
     this.disabled = [true, true, true, true, true, true, true, true, true, true];
     this.cantidadPrd  += cnt ;
-    console.log( 'enviarCnt' ,this.arrayDocPrd.producto  )
-      console.log( 'enviarCnt' , this.cantidadPrd   )
-        console.log( 'enviarCnt' ,      this.existencia?.cant_actual??0 )
+    CustomConsole.log( 'enviarCnt' ,this.arrayDocPrd.producto  )
+      CustomConsole.log( 'enviarCnt' , this.cantidadPrd   )
+        CustomConsole.log( 'enviarCnt' ,      this.existencia?.cant_actual??0 )
 
     if (this.arrayDocPrd.producto !== undefined && this.cantidadPrd > 0 )
     {
@@ -170,15 +171,15 @@ export class IngresarProductoVentaComponent implements OnInit {
               (respuesta:any)=>{
                 if (respuesta.error !== 'ok'){
                     alert(respuesta.error);
-                    console.log(JSON.stringify(respuesta));
+                    CustomConsole.log(JSON.stringify(respuesta));
                     this.dialogo.close(false); 
                   }
                   else{ this.dialogo.close(true); 
-                    console.log('productoVendido',JSON.stringify(respuesta));}
+                    CustomConsole.log('productoVendido',JSON.stringify(respuesta));}
                   this.loading.hide()  
                 },
                 (error:errorOdoo) =>{
-                  console.log(JSON.stringify( error) ); 
+                  CustomConsole.log(JSON.stringify( error) ); 
                   alert(error.error.error +"\n" + error.error.msg); 
                   this.dialogo.close(false); 
                   this.loading.hide() 

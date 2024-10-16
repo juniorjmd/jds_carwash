@@ -7,6 +7,7 @@ import { cajasServices } from 'src/app/services/Cajas.services';
 import { loading } from 'src/app/models/app.loading'; 
 import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'modal-generar-cnt-por-cobrar',
@@ -43,8 +44,8 @@ export class GenerarCntPorCobrarComponent implements OnInit {
     this.serviceCaja.setPagoDocumentoCredito(this.inData.origen ,this.inData.Documento.orden ,this.pagos , 
       this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2)
      .subscribe({next: (datos:DocumentoCierreRequest)=>{
-        console.log(datos); 
-        console.log('pagos realizados' , this.pagos ); 
+        CustomConsole.log(datos); 
+        CustomConsole.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.retorno.result = true;
         this.retorno.documento = datos.data.documentoFinal;
@@ -72,7 +73,7 @@ export class GenerarCntPorCobrarComponent implements OnInit {
       } 
     
       let totalMedios:number =  this.pagos.reduce((acc:number, current) => acc + current.valorPagado, 0);
-        console.log('totalMedios', totalMedios);
+        CustomConsole.log('totalMedios', totalMedios);
         
       this.pagoPorCredito!.valorPagado =  totalFactura -  totalMedios;
    
@@ -89,12 +90,12 @@ setVueltos(index:number){
 }
 getMediosP(){ 
   console.clear();
-  console.log('DocumentoActivo',this.inData.Documento)
+  CustomConsole.log('DocumentoActivo',this.inData.Documento)
   this.listo = false;
   this.loading.show()
   this.serviceCaja.getMediosCajaActiva()
      .subscribe( {next:(datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
         
     if (datos.numdata > 0 ){ 
       let  index : number = this.inData.Documento.pagos.length; 
@@ -117,7 +118,7 @@ getMediosP(){
             return;}// O puedes devolver un valor específico que indique que no debe incluirse en la lista de pagos
           
       }).filter((pago): pago is DocpagosModel => pago !== undefined);
-    console.log('pagos recibidos' , this.pagos);
+    CustomConsole.log('pagos recibidos' , this.pagos);
         }
       datos.data!.forEach((dato:MediosDePago )=>{  
        let pago = new DocpagosModel();  
@@ -134,7 +135,7 @@ getMediosP(){
     }else{
       this.pagos = [];
     } 
-    console.log('pagos realizados' , this.pagos ); 
+    CustomConsole.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
       } ,

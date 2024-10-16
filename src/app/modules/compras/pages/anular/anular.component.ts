@@ -10,6 +10,7 @@ import { pagosSaldoNotasDebitoComponent } from '../../modals/pagos-saldo-notas-d
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
 import { cajasServices } from 'src/app/services/Cajas.services';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-anular',
@@ -44,7 +45,7 @@ export class AnularComprasComponent implements OnInit {
     }})
   }
 printDocumento(doc:DocumentosModel){
-  console.log('documento a imprimir',doc);
+  CustomConsole.log('documento a imprimir',doc);
   
   if(doc  != undefined  && doc.orden != undefined ){
     let printerManager:PrinterManager =  new PrinterManager(this.serviceCaja);;;
@@ -61,14 +62,14 @@ printDocumento(doc:DocumentosModel){
         this.docAbono =  docs[0];
         this.docEnvio.idDocF = this.docAbono.idDocumentoFinal;
         this.docEnvio.idEsta = this.docAbono.establecimiento;
-        console.log('retorno' , retorno , this.docAbono);
+        CustomConsole.log('retorno' , retorno , this.docAbono);
        
       }
     } , error:error=>{Swal.fire(JSON.stringify(error))}
   })
   }
   recalcular(indice:number){
-    console.log('validar cantidad' ,   this.docAbono.listado[indice].cant_real_descontada,this.docAbono.listado[indice].cant_devuelta ,
+    CustomConsole.log('validar cantidad' ,   this.docAbono.listado[indice].cant_real_descontada,this.docAbono.listado[indice].cant_devuelta ,
       ( this.docAbono.listado[indice].cant_real_descontada < this.docAbono.listado[indice].cant_devuelta! )
 
     );
@@ -77,13 +78,13 @@ printDocumento(doc:DocumentosModel){
     {this.docAbono.listado[indice].cant_devuelta = 0 ; }
    else{
     this.docAbono.campo_auxiliar_2 =  this.docAbono.listado.reduce((acc, item) => acc + ( parseFloat(item.presioVenta.toString()) *  item.cant_devuelta! ), 0);
-    console.log('documento a enviar',this.docAbono);}
+    CustomConsole.log('documento a enviar',this.docAbono);}
   
   }
   pagarTodo(){
     this.docAbono.listado.forEach(x=> x.cant_devuelta = (x.estado_linea_venta =='A')? x.cant_real_descontada:0 )
     this.docAbono.campo_auxiliar_2 =  this.docAbono.listado.reduce((acc, item) => acc + ( parseFloat(item.presioVenta.toString()) *  item.cant_devuelta! ), 0);
-     console.log('documento a enviar',this.docAbono);
+     CustomConsole.log('documento a enviar',this.docAbono);
   
   }
 
@@ -98,7 +99,7 @@ printDocumento(doc:DocumentosModel){
           } ; 
           return prd;}).filter(x=> x.cnt > 0 ) ;  
   
-     console.log('documento a enviar',this.docAbono , this.docEnvio);
+     CustomConsole.log('documento a enviar',this.docAbono , this.docEnvio);
 
       
      if ((this.docAbono.campo_auxiliar_2 > (this.docAbono.cuentaPorPagar?.totalActual||0 ))&&  ( (this.docAbono.cuentaPorPagar?.totalPagado||0 ) > 0 )){
@@ -115,13 +116,13 @@ printDocumento(doc:DocumentosModel){
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire('Error:', JSON.stringify(error)),
-        complete: () => console.log('asignarPagosAVenta completo')
+        complete: () => CustomConsole.log('asignarPagosAVenta completo')
       });
       return
      }
      
      this.docService.crearNotaDebito(this.docEnvio).subscribe({next:(value:DocumentoCierreRequest)=>{
-      console.log('crearDocumentoAbono',value); 
+      CustomConsole.log('crearDocumentoAbono',value); 
       
       this.buscarDocumento();
      this.printDocumento(value.data.documentoFinal )
@@ -131,7 +132,7 @@ printDocumento(doc:DocumentosModel){
   cancelar(){
     this.docAbono.listado.forEach(x=> x.presioVenta = 0)
     this.docAbono.campo_auxiliar_2 =  0 ;
-    console.log('documento a enviar',this.docAbono);
+    CustomConsole.log('documento a enviar',this.docAbono);
   
   }
 }

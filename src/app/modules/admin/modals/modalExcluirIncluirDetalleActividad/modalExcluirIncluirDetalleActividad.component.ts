@@ -23,7 +23,7 @@ export class ModalInOutDetalleActividad  {
   constructor(
     @Inject(MAT_DIALOG_DATA) public actividad:ActividadesDescuentoModel ){
       this.actividadService.getProductosActividad(actividad.id).subscribe({next:(value:ProductoRequest)=>{ 
-        //console.log(value);
+        //CustomConsole.log(value);
         
         this.productos = [...value.data??[]];  
         this.productosFiltrados = [...this.productos]; 

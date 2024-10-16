@@ -6,6 +6,7 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaisModel } from 'src/app/models/maestros.model';
 import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services';
 import { loading } from 'src/app/models/app.loading';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class NewPaisComponent implements OnInit {
     if(this.pais.id > 0 ){
         this.maestroServicio.actualizarPaises(this.pais).subscribe(
 
-          (respuesta:any)=>{console.log(respuesta)
+          (respuesta:any)=>{CustomConsole.log(respuesta)
             this.loading.hide();
             if (respuesta.error === 'ok'){
               alert('datos ingresados con exito'); 
@@ -49,7 +50,7 @@ export class NewPaisComponent implements OnInit {
         );
     }else{
       this.maestroServicio.setPaises(this.pais).subscribe(
-        (respuesta:any)=>{console.log(respuesta)
+        (respuesta:any)=>{CustomConsole.log(respuesta)
           this.loading.hide();
         if (respuesta.error === 'ok'){
           alert('datos ingresados con exito'); 
@@ -60,7 +61,7 @@ export class NewPaisComponent implements OnInit {
       
       );
     }
-    console.log('nuevo pais',this.pais)
+    CustomConsole.log('nuevo pais',this.pais)
   }
 
   ngOnInit(): void {

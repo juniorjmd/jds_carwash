@@ -30,6 +30,7 @@ import { ModalUpdateProductoCompraComponent } from '../../modals/ModalUpdateProd
 import { GenerarCntPorPagarComponent } from '../../modals/generar-cnt-por-pagar/generar-cnt-por-pagar.component';
 import { ClientesService } from 'src/app/services/Clientes.services';
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-editarCompra',
@@ -88,13 +89,13 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
        
      this.documentoService.getDocumentosCompraById(this.idCompraEditar).pipe(
       tap((datos: any) => {
-        console.log('getDocumentosCompraBlanco', datos); 
+        CustomConsole.log('getDocumentosCompraBlanco', datos); 
         this.documentos = [];
         let documentoSeleccionado: DocumentosModel[] ; 
 
         if (datos.numdata > 0) {
           this.documentos = datos.data.map((x:any)=>x.objeto) ;     
-          console.log('CC1-35' , this.documentos, this.documentos.length);
+          CustomConsole.log('CC1-35' , this.documentos, this.documentos.length);
           
           if (this.documentos.length === 1) {
             this.documentoActivo = this.documentos[0];
@@ -123,7 +124,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('getDocumentos completo')
+      complete: () => CustomConsole.log('getDocumentos completo')
     });
   } 
   buscarProveedor(){ 
@@ -139,7 +140,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
   }
   ngOnInit(): void {    
@@ -149,7 +150,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     
     this.dInicialServ.continueVenta.subscribe({next:(value)=>{
       this.continuar = value;
-      console.log('continuar',this.continuar);
+      CustomConsole.log('continuar',this.continuar);
       
     }})
     this.dInicialServ.currentSucursal.subscribe({next:(suc)=>{ 
@@ -163,7 +164,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
 
   getDatosContables(){
     this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
-      console.log('getCuentasContablesEstablecimientoUsuario' , value)
+      CustomConsole.log('getCuentasContablesEstablecimientoUsuario' , value)
       this.dInicialServ.validarCuentasContablesEstablecimiento(value.data[0] ) 
     }})
   }
@@ -180,7 +181,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     this._ServLogin.getUsuarioLogeado().subscribe(
       {
         next:(request) => {
-          console.log('usuario logeado' , request);
+          CustomConsole.log('usuario logeado' , request);
           
           this.getMenuImage(request.data.usuario)
         } ,
@@ -192,10 +193,10 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
   getMenuImage(usuario: Usuario) {
     let menuCard: RecursoDetalle[] = [];
     let menu = usuario.permisos; 
-    console.log( 'permisos usuario' , usuario, menu);
+    CustomConsole.log( 'permisos usuario' , usuario, menu);
 
     let menuDetalleBtn =  usuario.permisos.filter(x=> x.nombre_recurso === "Punto de Venta" )
-    console.log( 'permisos usuario',  menuDetalleBtn[0].recursosHijos);
+    CustomConsole.log( 'permisos usuario',  menuDetalleBtn[0].recursosHijos);
     menuDetalleBtn[0].recursosHijos!.forEach((recurso ) => { 
 
         switch (recurso.nombre_recurso.trim()) {
@@ -235,7 +236,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     }
      this.documentoService.getDocumentosCompra(idCliente).pipe(
       tap((datos: any) => {
-        console.log('getDocumentosCompraBlanco', datos); 
+        CustomConsole.log('getDocumentosCompraBlanco', datos); 
         this.documentos = [];
         let documentoSeleccionado: DocumentosModel[] ; 
 
@@ -284,7 +285,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
           ).subscribe({
             next: () => {},
             error: (error) => Swal.fire(JSON.stringify(error)),
-            complete: () => console.log('getDocumentos completo')
+            complete: () => CustomConsole.log('getDocumentos completo')
           });
 
         }
@@ -297,7 +298,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('getDocumentos completo')
+      complete: () => CustomConsole.log('getDocumentos completo')
     });
   }
  
@@ -306,7 +307,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     this.loading.show();
     this.documentoService.crearDocumentoCompraEnBlanco(this.documentoActivo.establecimiento).pipe(
       tap((respuesta: any) => {
-        console.log('crearDocumento', respuesta); 
+        CustomConsole.log('crearDocumento', respuesta); 
         if (respuesta.error === 'ok') {
           this.getDocumentos();
         } else {
@@ -331,7 +332,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('crearDocumento completo')
+      complete: () => CustomConsole.log('crearDocumento completo')
     });
   }
   cambiarEstablecimientoDocumento(){
@@ -341,12 +342,12 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     })
   }
   buscarProducto() { 
-    console.log('buscarProducto', this.codigoProducto); 
+    CustomConsole.log('buscarProducto', this.codigoProducto); 
     if (this.codigoProducto.trim() !== '' ) {
       
       this.loading.show();
       this.productoService.getProductoByIdOrCodBarra(this.codigoProducto).subscribe({
-        next:(value:ProductoRequest)=>{console.log(value)
+        next:(value:ProductoRequest)=>{CustomConsole.log(value)
         if(value.numdata > 1 ){
           this.buscarClose = false;
           this.newAbrirDialog.open(BuscarProdDirectoComponent, { data: value.data })
@@ -381,7 +382,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
                 ).subscribe({
                   next: () => {},
                   error: (error) => Swal.fire(JSON.stringify(error)),
-                  complete: () => console.log('busquedaAuxiliarProducto completo')
+                  complete: () => CustomConsole.log('busquedaAuxiliarProducto completo')
                 });
    
           }else{
@@ -432,15 +433,15 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire(JSON.stringify(error)),
-        complete: () => console.log('editar linea completo')
+        complete: () => CustomConsole.log('editar linea completo')
       });
   }
   eliminarLinea(linea: DocumentoListado) {
-    console.log(linea);
+    CustomConsole.log(linea);
     this.loading.show();
     this.productoService.devolverPrdCompra(linea).pipe(
       tap((respuesta: any) => {
-        console.log(JSON.stringify(respuesta));
+        CustomConsole.log(JSON.stringify(respuesta));
         if (respuesta.error !== 'ok') { 
           try {
             Swal.fire(respuesta.error, '', 'error');
@@ -453,7 +454,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
         this.loading.hide();
       }),
       catchError((error: errorOdoo) => {
-        console.log(JSON.stringify(error)); 
+        CustomConsole.log(JSON.stringify(error)); 
         try {
           Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
@@ -465,13 +466,13 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('eliminarLinea completo')
+      complete: () => CustomConsole.log('eliminarLinea completo')
     });
   }
 
   irbuscarProducto() {
     let activeTextarea = document.activeElement!.tagName; 
-    console.log('elemento==>',activeTextarea);
+    CustomConsole.log('elemento==>',activeTextarea);
     if (activeTextarea.toUpperCase().indexOf('SELECT') < 0) {
        this.codProdlement.nativeElement.focus();
     }
@@ -497,7 +498,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
              // this.documentoActivo 
 
              this.documentoService.getDocumentoActivo().subscribe({next:(value:DocumentoRequest)=>{
-              console.log('docuemento activo actual',value.data[0].objeto)
+              CustomConsole.log('docuemento activo actual',value.data[0].objeto)
               this.documentoActivo = value.data[0].objeto
               this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
               if(this.empleadoActivo.id == undefined){
@@ -515,7 +516,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire(JSON.stringify(error)),
-        complete: () => console.log('asignarPagosAVenta completo')
+        complete: () => CustomConsole.log('asignarPagosAVenta completo')
       });
   }
 
@@ -538,7 +539,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
              // this.documentoActivo 
 
              this.documentoService.getDocumentoActivo().subscribe({next:(value:DocumentoRequest)=>{
-              console.log('docuemento activo actual',value.data[0].objeto)
+              CustomConsole.log('docuemento activo actual',value.data[0].objeto)
               this.documentoActivo = value.data[0].objeto
               this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
               if(this.empleadoActivo.id == undefined){
@@ -556,7 +557,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire(JSON.stringify(error)),
-        complete: () => console.log('asignarPagosAVenta completo')
+        complete: () => CustomConsole.log('asignarPagosAVenta completo')
       });
   }
 
@@ -581,13 +582,13 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
             ).subscribe({
               next: () => {},
               error: (error) => Swal.fire(JSON.stringify(error)),
-              complete: () => console.log('AbonosCuentasXCobrarComponent completo')
+              complete: () => CustomConsole.log('AbonosCuentasXCobrarComponent completo')
             });
         }
       })      ).subscribe({
         next: () => {},
         error: (error) => Swal.fire(JSON.stringify(error)),
-        complete: () => console.log('buscarCliente completo')
+        complete: () => CustomConsole.log('buscarCliente completo')
       });   
      
   
@@ -614,14 +615,14 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
         tap((confirmado:  {result : boolean , documento :  DocumentosModel }) => {
           if (confirmado.result) { 
           this.documentoRetorno = Object.assign(new DocumentosModel(), confirmado.documento); 
-          console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+          CustomConsole.log('facturarDocumento =>>>>>', this.documentoRetorno);
           this.printer_factura_final(); 
           }
         })
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire(JSON.stringify(error)),
-        complete: () => console.log('asignarPagosAVenta completo')
+        complete: () => CustomConsole.log('asignarPagosAVenta completo')
       });
   }
  asignarPagosACuentaPorCobrarRemision() {
@@ -646,7 +647,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
         tap((confirmado:  {result : boolean , documento :  DocumentosModel }) => {
           if (confirmado.result) { 
           this.documentoRetorno = Object.assign(new DocumentosModel(), confirmado.documento); 
-          console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+          CustomConsole.log('facturarDocumento =>>>>>', this.documentoRetorno);
           this.printer_factura_final();
           this.crearDocumento();
           }
@@ -654,7 +655,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire(JSON.stringify(error)),
-        complete: () => console.log('asignarPagosAVenta completo')
+        complete: () => CustomConsole.log('asignarPagosAVenta completo')
       });
   }
 
@@ -674,7 +675,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
         this.documentoActivo!.pagos[0].valorPagado = this.documentoActivo!.valorTotal;
       }
     } else {
-      console.log(this.documentoActivo!.pagos);
+      CustomConsole.log(this.documentoActivo!.pagos);
     }
     if (this.documentoActivo!.listado!.length === 0) {
       let error = 'Debe ingresar los productos a facturar' ; 
@@ -696,10 +697,10 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
 
     this.loading.show();
     this.documentoService.cerrarDocumento(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => { 
-      console.log("respuesta cierre documento =>" , respuesta)
+      CustomConsole.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
         this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
-        console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+        CustomConsole.log('facturarDocumento =>>>>>', this.documentoRetorno);
         this.printer_factura_final();
         this.crearDocumento();
       } else {
@@ -718,7 +719,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
           Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
-         }},complete:()=>{console.log('facturarDocumento completo');
+         }},complete:()=>{CustomConsole.log('facturarDocumento completo');
             this.loading.hide()
          }
     })
@@ -739,7 +740,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
         this.documentoActivo!.pagos[0].valorPagado = this.documentoActivo!.valorTotal;
       }
     } else {
-      console.log(this.documentoActivo!.pagos);
+      CustomConsole.log(this.documentoActivo!.pagos);
     }
     if (this.documentoActivo!.listado!.length === 0) {
       let error = 'Debe ingresar los productos a facturar' ; 
@@ -761,10 +762,10 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
 
     this.loading.show();
     this.documentoService.cerrarDocumentoRemision(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => { 
-      console.log("respuesta cierre documento =>" , respuesta)
+      CustomConsole.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
         this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
-        console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+        CustomConsole.log('facturarDocumento =>>>>>', this.documentoRetorno);
         this.printer_factura_final();
         this.crearDocumento();
       } else {
@@ -783,7 +784,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
           Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
-         }},complete:()=>{console.log('facturarDocumento completo');
+         }},complete:()=>{CustomConsole.log('facturarDocumento completo');
             this.loading.hide()
          }
     })
@@ -793,7 +794,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     this.documentoActivo!.cod_vendedor = (typeof(ven.id)== 'string' ) ? parseInt(ven.id): ven.id??0 ;
     this.documentoActivo!.vendedorNombre = ven.nombreCompleto??0 ;
     this.documentoService.cambiarVendedorDocumento(this.documentoActivo!.orden , ven).subscribe({next:value=>{
-      console.log('cambio empleado',value)
+      CustomConsole.log('cambio empleado',value)
     }})
   }
   }
@@ -839,7 +840,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('cambiarDocumentoActivo completo')
+      complete: () => CustomConsole.log('cambiarDocumentoActivo completo')
     });
   }
 
@@ -872,7 +873,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('cancelarDocumento completo')
+      complete: () => CustomConsole.log('cancelarDocumento completo')
     });
   }
   crearCotizacion() {
@@ -884,7 +885,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       tap((respuesta: DocumentoCierreRequest) => {
         if (respuesta.error === 'ok') {
           this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
-          console.log('facturarCotizacion =>>>>>', this.documentoRetorno);
+          CustomConsole.log('facturarCotizacion =>>>>>', this.documentoRetorno);
           this.printer_factura_final();
           this.crearDocumento();
         } else {
@@ -910,7 +911,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('cancelarDocumento completo')
+      complete: () => CustomConsole.log('cancelarDocumento completo')
     });
   } 
   
@@ -951,7 +952,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire(JSON.stringify(error)),
-        complete: () => console.log('busquedaAuxiliarProducto completo')
+        complete: () => CustomConsole.log('busquedaAuxiliarProducto completo')
       });
   }
 
@@ -972,7 +973,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });    
   }
 
@@ -982,7 +983,7 @@ export class EditarComprasComponent implements AfterViewInit, OnInit {
     let doc = new DocumentosModel();
     doc = this.documentoRetorno;
 
-    console.log('documento retorno',doc,'sucursal ', this.sucursal); 
+    CustomConsole.log('documento retorno',doc,'sucursal ', this.sucursal); 
     let printM =  new PrinterManager(this.serviceCaja);;;
     printM.setDocumento(this.documentoRetorno);
     printM.printReceipt(false);

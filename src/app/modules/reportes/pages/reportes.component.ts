@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';  
 import { RecursoDetalle, Usuario, Usuarios } from 'src/app/interfaces/usuario.interface';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { LoginService } from 'src/app/services/login.services';
@@ -33,12 +34,12 @@ export class ReportesComponent implements OnInit {
     
     
     this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ;  
-      console.log('estoy en getUsuarioLogeado reportes+6', this.usuario  );
+      CustomConsole.log('estoy en getUsuarioLogeado reportes+6', this.usuario  );
       if(this.usuario ){
 
          let userPermisos:RecursoDetalle  = this.usuario.permisos.find((x:RecursoDetalle)=> x.nombre_recurso == "reportes")!
       this.listado = this.getMenuImage(userPermisos.recursosHijos??[]);
-      console.log('estoy en getUsuarioLogeado reportes', this.usuario , this.listado);
+      CustomConsole.log('estoy en getUsuarioLogeado reportes', this.usuario , this.listado);
       }
      
     });

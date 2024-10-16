@@ -6,6 +6,7 @@ import { TABLA } from '../models/app.db.tables';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { EmpleadoModel } from '../models/empleados/empleados.module';
+import { CustomConsole } from '../models/CustomConsole';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ constructor(private http: HttpClient ) { }
     let datos = {"action": actions.actionSelect ,
                  "_tabla" : vistas.empleados_tipo ,   
                 };
-    console.log('servicios de empleados - getTiposEmpleados' ,url.action , datos, httpOptions());
+    CustomConsole.log('servicios de empleados - getTiposEmpleados' ,url.action , datos, httpOptions());
     return this.http.post(url.action , datos, httpOptions()) ;
 } 
 
@@ -29,7 +30,7 @@ getEmpleados(){
                "_columnas" : ['objeto']   ,
                "_obj" : ['objeto'],             
               };
-  console.log('servicios de empleados - getEmpleados' ,url.action , datos, httpOptions());
+  CustomConsole.log('servicios de empleados - getEmpleados' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
 }
 
@@ -45,7 +46,7 @@ getEmpleadosLavador(){
                "_columnas" : ['objeto']   ,
                "_obj" : ['objeto'],             
               };
-  console.log('servicios de empleados - getEmpleados' ,url.action , datos, httpOptions());
+  CustomConsole.log('servicios de empleados - getEmpleados' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
 } 
 
@@ -61,7 +62,7 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
                "_where" : where , 
                "_obj" : ['obj'],             
               };
-  console.log('servicios de empleados - getEmpleadosAcumulados' ,url.action , datos, httpOptions());
+  CustomConsole.log('servicios de empleados - getEmpleadosAcumulados' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
 } 
 
@@ -91,7 +92,7 @@ guardarAnticipoEmpleado(nuevoTipo:EmpleadoModel , valor:any , descripcion:string
     "_where":null
    }; 
   
-  console.log('servicios de creacion anticipos empleados' ,url.action , datos, httpOptions());
+  CustomConsole.log('servicios de creacion anticipos empleados' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
  }
 
@@ -117,7 +118,7 @@ guardarEmpleado(nuevoTipo:EmpleadoModel){
     datos.action = actions.actionUpdate
   }
   
-  console.log('servicios de creacion servicios de vehiculos activo' ,url.action , datos, httpOptions());
+  CustomConsole.log('servicios de creacion servicios de vehiculos activo' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
  }
 
@@ -144,7 +145,7 @@ guardarEmpleado(nuevoTipo:EmpleadoModel){
    };
   
   
-  console.log('servicios de creacion de pagos a empleados' ,url.action , datos, httpOptions());
+  CustomConsole.log('servicios de creacion de pagos a empleados' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
  }
 

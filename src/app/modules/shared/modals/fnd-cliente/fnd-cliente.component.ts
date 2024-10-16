@@ -10,6 +10,7 @@ import { MaestroCliente, fndCliente } from 'src/app/interfaces/maestro-cliente';
 import { clienteRequest } from 'src/app/interfaces/producto-request';
 import Swal from 'sweetalert2'; 
 import { BusquedaPersona } from 'src/app/interfaces/busqueda-persona';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-fnd-cliente',
@@ -53,7 +54,7 @@ export class FndClienteComponent implements OnInit {
         persona :null,    
         empleado :null
       } ;
-     // console.log('datos de ingreso ' ,  this.dataIngreso)
+     // CustomConsole.log('datos de ingreso ' ,  this.dataIngreso)
       this.documentoActivo = this.dataIngreso.docActivo! ; 
       this.NwCliente = this.dataIngreso.clienteIngreso?? new ClientesModel() ; 
       if(this.dataIngreso.invoker == 'clienteListado'){
@@ -130,7 +131,7 @@ export class FndClienteComponent implements OnInit {
      { this.loading.show();
           this.clientesService.asignarClienteAlDocumento(this.documentoActivo.orden , parseInt(this.NwCliente.id.toString()) ).subscribe(
             {next:(value)=>{
-              console.log(value)
+              CustomConsole.log(value)
               if(value.error == 'ok'){
                 if (this.asignarEmpleado || this.devolverPersona){
                   this.pasarComoEmpleado();
@@ -165,7 +166,7 @@ export class FndClienteComponent implements OnInit {
      { this.loading.show();
     this.clientesService.asignarClienteAlDocumento(this.documentoActivo.orden , parseInt(this.NwCliente.id.toString()) ).subscribe(
       {next:(value)=>{
-         console.log(value)
+         CustomConsole.log(value)
         if(value.error == 'ok'){this.dialogo.close(true)}else{Swal.fire("error" , value.error , "error")}
         
       },error:(error)=>Swal.fire("error" , JSON.stringify(error) , "error")
@@ -175,15 +176,15 @@ export class FndClienteComponent implements OnInit {
   getDepartamento(){
     this.Ciudades = [];
     
-   console.log('departamentos a filtrar',this.maestro?.departamentos , this.NwCliente.pais)
+   CustomConsole.log('departamentos a filtrar',this.maestro?.departamentos , this.NwCliente.pais)
    this.departamentos = this.maestro?.departamentos.filter(x=> x.cod_pais == this.NwCliente.pais)?? [] ;
-   console.log('getDepartamento' , this.departamentos)
+   CustomConsole.log('getDepartamento' , this.departamentos)
   }
   getCiudad(){
-   console.log('ciudades a filtrar',this.maestro?.ciudades , this.NwCliente.departamento)
+   CustomConsole.log('ciudades a filtrar',this.maestro?.ciudades , this.NwCliente.departamento)
    let ciuArr = (this.maestro)?[...this.maestro.ciudades]:[] ; 
     this.Ciudades =  ciuArr.filter(x=> x.cod_departamento == this.NwCliente.departamento)?? [] ; 
-    console.log(this.Ciudades)
+    CustomConsole.log(this.Ciudades)
   }
   buscarCliente(){
     if (this.NwCliente.numIdentificacion !== undefined && this.NwCliente.tipoIdentificacion!== undefined ){
@@ -191,7 +192,7 @@ export class FndClienteComponent implements OnInit {
             this.clientesService.getClientesByNumAndTipId(
               this.NwCliente.numIdentificacion , this.NwCliente.tipoIdentificacion
             ).subscribe({next:(value:clienteRequest)=>{
-              console.log(value)
+              CustomConsole.log(value)
               if(value.numdata== 0){
                 Swal.fire( {title:'Persona no encontrada',
                    text:'Desea crearla e ingresarla a la venta?',
@@ -209,7 +210,7 @@ export class FndClienteComponent implements OnInit {
                 if(this.dataIngreso.invoker == 'cuentasPorCobrarVentas'){
                   this.pasarComoEmpleado();
                 }else{
-                console.log('cliente encontrado' , this.NwCliente)
+                CustomConsole.log('cliente encontrado' , this.NwCliente)
                 this.getDepartamento() 
                 this.getCiudad()
                 this.busqueda =  false
@@ -229,13 +230,13 @@ export class FndClienteComponent implements OnInit {
             this.clientesService.getProveedorByNombre(
               this.NwCliente.nombreCompleto  
             ).subscribe({next:(value:clienteRequest)=>{
-              console.log(value)
+              CustomConsole.log(value)
               if(value.numdata== 0){
                 Swal.fire('no se encuentra el proveedor','','info')
               }else{
                 this.NwCliente =  value.data[0] 
                 this.ClientesResult = value.data; 
-                console.log('cliente encontrado' , this.NwCliente)
+                CustomConsole.log('cliente encontrado' , this.NwCliente)
                 this.getDepartamento() 
                 this.getCiudad()
                 this.busqueda =  false 
@@ -246,7 +247,7 @@ export class FndClienteComponent implements OnInit {
                 this.clientesService.getClientesByNombre(
                   this.NwCliente.nombreCompleto  
                 ).subscribe({next:(value:clienteRequest)=>{
-                  console.log(value)
+                  CustomConsole.log(value)
                   if(value.numdata== 0){
                     Swal.fire( {title:'Persona no encontrada',
                        text:'Desea crearla e ingresarla a la venta?',
@@ -267,7 +268,7 @@ export class FndClienteComponent implements OnInit {
                     if(this.dataIngreso.invoker == 'cuentasPorCobrarVentas'){
                       this.pasarComoEmpleado();
                     }else{
-                    console.log('cliente encontrado' , this.NwCliente)
+                    CustomConsole.log('cliente encontrado' , this.NwCliente)
                     this.getDepartamento() 
                     this.getCiudad()
                     this.busqueda =  false
@@ -290,7 +291,7 @@ export class FndClienteComponent implements OnInit {
                 this.clientesService.getClientesByNumAndTipId(
                   this.NwCliente.numIdentificacion , this.NwCliente.tipoIdentificacion
                 ).subscribe({next:(value:clienteRequest)=>{
-                  console.log(value)
+                  CustomConsole.log(value)
                   if(value.numdata== 0){
 
                    if (this.crear ){
@@ -334,13 +335,13 @@ export class FndClienteComponent implements OnInit {
           }    
      
 crearCliente(){ 
-  console.log('crearCliente' , this.NwCliente);
+  CustomConsole.log('crearCliente' , this.NwCliente);
  // return 
   this.loading.show() 
 this.clientesService.setClienteOdoo(this.NwCliente ).subscribe({next:
   (respuesta:any)=>{
     let cont = 0;
-     console.log('setClienteOdoo',respuesta); 
+     CustomConsole.log('setClienteOdoo',respuesta); 
      if (respuesta.error === 'ok'){
        alert('Datos creados con exito!!')
        if(respuesta.idGenerado){
@@ -373,7 +374,7 @@ crearPersonaYDevolverla(){
 this.clientesService.setClienteOdoo(this.NwCliente ).subscribe(
   (respuesta:any)=>{
     let cont = 0;
-     console.log('setClienteOdoo',respuesta); 
+     CustomConsole.log('setClienteOdoo',respuesta); 
      if (respuesta.error === 'ok'){
        alert('Datos creados con exito!!')
        if(respuesta.idGenerado){
@@ -417,7 +418,7 @@ asignarDefaults(){
   this.getCiudad()
   this.NwCliente.ciudad = this.maestro?.parametros.ID_CIUDAD_DEFAULT; 
   this.asignarDefaultTipoId();
-  console.log(this.NwCliente)
+  CustomConsole.log(this.NwCliente)
 }
  
   async setMaestros(){
@@ -425,15 +426,15 @@ asignarDefaults(){
     this.clientesService.getMaestroClientes().subscribe(
       {next:(value: any)=>{ 
         this.maestro = value.datos; 
-        console.log(value);
+        CustomConsole.log(value);
         this.asignarDefaults();
       }, error:(error: any)=>Swal.fire(JSON.stringify(error)),complete:()=>this.loading.hide() }
     )
    let result = await this.MaestroClienteServices.getMaestrosClientes();
-    console.log('termino el trabajo');
+    CustomConsole.log('termino el trabajo');
      
     this.tipo_direccion = this.MaestroClienteServices.getMaestroClientes('tipo_direccion'); 
-    console.log(this.tipo_direccion); 
+    CustomConsole.log(this.tipo_direccion); 
     this.Provincias =  this.MaestroClienteServices.getMaestroClientes('provincias');
     this.titulos =  this.MaestroClienteServices.getMaestroClientes('titulos');
     this.categorias =  this.MaestroClienteServices.getMaestroClientes('categorias');   

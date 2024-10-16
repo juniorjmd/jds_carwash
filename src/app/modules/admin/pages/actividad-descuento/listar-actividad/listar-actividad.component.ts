@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { ModalInOutDetalleActividad } from '../../../modals/modalExcluirIncluirDetalleActividad/modalExcluirIncluirDetalleActividad.component';
 import { ModalChangeFechaActividadComponent } from '../../../modals/modalChangeFechaActividad/modalChangeFechaActividad.component';
 import { tap } from 'rxjs';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-listar-actividad',
@@ -29,7 +30,7 @@ export class ListarActividadComponent {
 
     private serviceAct = inject(ActiDescuentoService)
     constructor(    private newAbrirDialog: MatDialog,){
-      console.log('entro primero aqui en ListarActividadComponent');
+      CustomConsole.log('entro primero aqui en ListarActividadComponent');
       
       this.serviceAct.getActividades().subscribe({next:(value:actividadesRequest)=>{
         this.actividades = value.data;
@@ -37,7 +38,7 @@ export class ListarActividadComponent {
     }
     activarDesactivarActividad(actividad:ActividadesDescuentoModel){
       let act = {...actividad } 
-console.log((act.estado! == 1 ) );
+CustomConsole.log((act.estado! == 1 ) );
       act.estado = (act.estado! == 1 )?  2 : 1 ;
 
       this.serviceAct.updateActividad(act).subscribe({next:(value:any)=>{
@@ -60,7 +61,7 @@ console.log((act.estado! == 1 ) );
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire('Error:', error),
-        complete: () =>{ console.log('FindProductosComponent completo');}
+        complete: () =>{ CustomConsole.log('FindProductosComponent completo');}
       });  
     }
 
@@ -71,14 +72,14 @@ console.log((act.estado! == 1 ) );
       .afterClosed().subscribe({
         next: () => {},
         error: (error) => Swal.fire('Error:', error),
-        complete: () => console.log('ModalInOutDetalleActividad completo')
+        complete: () => CustomConsole.log('ModalInOutDetalleActividad completo')
       });  
     }
     verDetalle(detalle:ActividadesDescuentoModel){
-      console.log(detalle);
+      CustomConsole.log(detalle);
       this.serviceAct.getDetalleActividad(detalle).subscribe({next:(value:actividadesDetalleRequest)=>{ 
 
-        console.log('data response detalle' , value.data);
+        CustomConsole.log('data response detalle' , value.data);
         let html = '<table class ="table" >';
       if(value.numdata > 0 ){
         switch(detalle.tipo){

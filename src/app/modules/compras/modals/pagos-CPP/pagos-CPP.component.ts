@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
 import { DocumentoRequest } from 'src/app/interfaces/producto-request';
 import { loading } from 'src/app/models/app.loading'; 
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocpagosModel, pagosModel } from 'src/app/models/ventas/pagos.model';
 import { cajasServices } from 'src/app/services/Cajas.services'; 
@@ -42,7 +43,7 @@ export class PagosCPPComponent implements OnInit {
       if(retorno.numdata!> 0){
         let docs:DocumentosModel[] = retorno.data.map(x=>x.objeto); 
         let docAbono:DocumentosModel =  docs[0];
-        console.log('bono encontrado ==>' , retorno , docAbono); 
+        CustomConsole.log('bono encontrado ==>' , retorno , docAbono); 
         let valPago = docAbono.valorTotal - docAbono.campo_auxiliar_6;
         this.pagos[pago].valorPagado = (valPago > this.pagos[this.indexEfectivo].valorPagado)? this.pagos[this.indexEfectivo].valorPagado : valPago ;
 
@@ -57,8 +58,8 @@ export class PagosCPPComponent implements OnInit {
     //documentos_pagos
     this.serviceCaja.setPagoDocumento(this.Documento.orden ,this.pagos )
      .subscribe({next: (datos:any)=>{
-         console.log(datos); 
-    console.log('pagos realizados' , this.pagos ); 
+         CustomConsole.log(datos); 
+    CustomConsole.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
         this.dialogo.close(true);
@@ -72,8 +73,8 @@ export class PagosCPPComponent implements OnInit {
     //documentos_pagos
     this.serviceCaja.setPagoDocumento(this.Documento.orden ,this.pagos )
      .subscribe({next: (datos:any)=>{
-         console.log(datos); 
-    console.log('pagos realizados' , this.pagos ); 
+         CustomConsole.log(datos); 
+    CustomConsole.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
         this.dialogo.close({rep:true,credito:true});
@@ -115,16 +116,16 @@ setVueltos(index:number){
 }
 
 getMediosP(){ 
-  console.log('DocumentoActivo',this.Documento)
+  CustomConsole.log('DocumentoActivo',this.Documento)
   this.listo = false;
   this.loading.show()
   this.serviceCaja.getMediosByEstablecimiento(this.Documento.establecimiento)
      .subscribe( {next:(datos:any)=>{
-         console.log('getMediosCajaActiva',datos);
+         CustomConsole.log('getMediosCajaActiva',datos);
       if (datos.numdata > 0 ){ 
         this.pagos = []; 
          
-      console.log('pagos recibidos' , this.pagos);
+      CustomConsole.log('pagos recibidos' , this.pagos);
       
         datos.data!.forEach((dato:MediosDePago )=>{  
          let pago = new DocpagosModel();  
@@ -142,7 +143,7 @@ getMediosP(){
     }else{
       this.pagos = [];
     } 
-    console.log('pagos realizados' , this.pagos ); 
+    CustomConsole.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
       } ,

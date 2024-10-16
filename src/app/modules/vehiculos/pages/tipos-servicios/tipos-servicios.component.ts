@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { loading } from 'src/app/models/app.loading';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { select } from 'src/app/interfaces/generales.interface';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({
   selector: 'app-tipos-servicios',
   templateUrl: './tipos-servicios.component.html',
@@ -35,7 +36,7 @@ export class TiposServiciosComponent implements OnInit {
       if (result.isConfirmed) {
         this.VehiculosService.eliminarTiposServicios(tipo).subscribe(
           (respuesta: any) => {
-            console.log(respuesta);
+            CustomConsole.log(respuesta);
             if (respuesta.error === 'ok') {
               this.getTiposServicios();
               Swal.fire('Elemento eliminado con exito!', '', 'success');
@@ -51,12 +52,12 @@ export class TiposServiciosComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.getTiposServicios().subscribe({
       next: (datos: any) => {
-        console.log(datos);
+        CustomConsole.log(datos);
         if (datos.numdata > 0) { 
           
           this.tiposServicio = datos.data!.map((x:any)=> x.obj);
           
-          console.log(this.tiposServicio);
+          CustomConsole.log(this.tiposServicio);
         } else {
           this.tiposServicio = [];
         }
@@ -65,7 +66,7 @@ export class TiposServiciosComponent implements OnInit {
       },
       error: (error: any) => {
         this.loading.hide();
-        console.log(error);
+        CustomConsole.log(error);
         Swal.fire(error.error.error, '', 'error');
       },
     });
@@ -84,7 +85,7 @@ export class TiposServiciosComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.guardarTiposServicios(this.newTipoServicio).subscribe(
       (respuesta: any) => {
-        console.log(respuesta);
+        CustomConsole.log(respuesta);
 
         if (respuesta.error === 'ok') {
           Swal.fire('datos ingresados con exito');

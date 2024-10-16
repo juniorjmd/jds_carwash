@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Categoria } from 'src/app/interfaces/nInterfaces/categoria';
 import { actions } from 'src/app/models/app.db.actions';
 import { httpOptions } from 'src/app/models/app.db.url';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { ambiente } from 'src/app/modules/shared/shared.module';
 
 @Injectable({
@@ -16,7 +17,7 @@ export class CategoriasService {
   URL = ambiente.urlBaseBack + 'inventario/'; 
 
   constructor(private http: HttpClient) { 
-    console.log('clientes service inicializado');
+    CustomConsole.log('clientes service inicializado');
     
   }
 
@@ -25,7 +26,7 @@ export class CategoriasService {
       let datos = { 
               "action": actions.get_categorias  
             }
-            console.log('servicios de categorias - getCategorias', this.URL, datos, httpOptions());
+            CustomConsole.log('servicios de categorias - getCategorias', this.URL, datos, httpOptions());
    
         return this.http.post<any>(this.URL, datos, httpOptions());
     
@@ -33,7 +34,7 @@ export class CategoriasService {
   }
 
   editarElementoLinea( linea:any  , id:number){
-   console.log("lineaModificada" , linea , "idLineaCambiada" , id);
+   CustomConsole.log("lineaModificada" , linea , "idLineaCambiada" , id);
    
   }
 

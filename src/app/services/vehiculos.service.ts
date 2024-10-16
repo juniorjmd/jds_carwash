@@ -14,6 +14,7 @@ import { ServiciosModule } from '../models/servicios/servicios.module';
 import { procedure } from '../models/app.db.procedure';
 import { ServiciosCostosModule } from '../models/servicios-costos/servicios-costos.module';
 import { VehiculosIngresoServicioModule } from '../models/vehiculos-ingreso-servicio/vehiculos-ingreso-servicio.module';
+import { CustomConsole } from '../models/CustomConsole';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class VehiculosService {
   
   // private _configService = inject(configService); 
 constructor(private http: HttpClient, private loading: loading) {
-    console.log('servicios usuarios inicializado');
+    CustomConsole.log('servicios usuarios inicializado');
   }
   //---------------------------------------------------------------------------
   //servicios de costos de servicios
@@ -37,7 +38,7 @@ constructor(private http: HttpClient, private loading: loading) {
       _tabla: vistas.vehiculos_servicios_costos,
       _where: where,
     };
-    console.log(
+    CustomConsole.log(
       'vehiculo service  - getCostosServicios',
       url.action,
       datos,
@@ -77,7 +78,7 @@ constructor(private http: HttpClient, private loading: loading) {
       _where: null,
     };
 
-    console.log(
+    CustomConsole.log(
       'servicios de creacion servicios de vehiculos activo',
       url.action,
       datos,
@@ -108,7 +109,7 @@ constructor(private http: HttpClient, private loading: loading) {
       _where: null,
     };
 
-    console.log(
+    CustomConsole.log(
       ' servicios de vehiculos activo guardarNuevoIngresoServicio',
       this.urlVehiculo,
       datos,
@@ -118,7 +119,7 @@ constructor(private http: HttpClient, private loading: loading) {
   }
   //-----------------------
   guardarCostoServicio(nuevoTipo: ServiciosCostosModule) {
-    console.log('costo a guardar', nuevoTipo);
+    CustomConsole.log('costo a guardar', nuevoTipo);
     let arrayDatos: any = new Object();
     let where: any[] = [];
     //id, cod_servicio, cod_tipo_vehiculo, valor, estado
@@ -157,7 +158,7 @@ constructor(private http: HttpClient, private loading: loading) {
       datos.action = actions.actionUpdate;
     }
 
-    console.log(
+    CustomConsole.log(
       'servicios de creacion servicios de vehiculos activo',
       url.action,
       datos,
@@ -177,7 +178,7 @@ constructor(private http: HttpClient, private loading: loading) {
       "_columnas": ['obj'],
     "_obj": ['obj'],
     };
-    console.log(
+    CustomConsole.log(
       'servicios de usuarios activo - getUsuarios',
       url.action,
       datos,
@@ -195,7 +196,7 @@ constructor(private http: HttpClient, private loading: loading) {
       _procedure: procedure.getTiposVehiculosNoAsignadoAservicio,
       _arraydatos: arraydatos,
     };
-    console.log(
+    CustomConsole.log(
       'vehiculo service - getVehiculoNoAsignadoAServicios',
       url.action,
       datos,
@@ -213,7 +214,7 @@ constructor(private http: HttpClient, private loading: loading) {
       "_columnas": ['obj'],
       "_obj": ['obj'],
     };
-    console.log(
+    CustomConsole.log(
       'vehiculoService - getServiciosPorTipo',
       url.action,
       datos,
@@ -231,7 +232,7 @@ constructor(private http: HttpClient, private loading: loading) {
       "_columnas": ['obj'],
       "_obj": ['obj'],
     };
-    console.log(
+    CustomConsole.log(
       'servicios de usuarios activo - getUsuarios',
       url.action,
       datos,
@@ -247,7 +248,7 @@ constructor(private http: HttpClient, private loading: loading) {
       _tabla: vistas.vehiculos_propietario,
       _where: where, 
     };
-    console.log(
+    CustomConsole.log(
       'servicios de VEHICULOS activo - getVehiculos_propietario',
       url.action,
       datos,
@@ -286,7 +287,7 @@ constructor(private http: HttpClient, private loading: loading) {
       datos.action = actions.actionUpdate;
     }
 
-    console.log(
+    CustomConsole.log(
       'servicios de creacion servicios de vehiculos activo',
       url.action,
       datos,
@@ -306,7 +307,7 @@ constructor(private http: HttpClient, private loading: loading) {
       "_columnas": ['obj'],
     "_obj": ['obj'],
     };
-    console.log(
+    CustomConsole.log(
       'servicios de usuarios activo - getUsuarios',
       url.action,
       datos,
@@ -344,7 +345,7 @@ constructor(private http: HttpClient, private loading: loading) {
       datos.action = actions.actionUpdate;
     }
 
-    console.log(
+    CustomConsole.log(
       'servicios de creacion tipo de vehiculo activo',
       url.action,
       datos,
@@ -361,7 +362,7 @@ constructor(private http: HttpClient, private loading: loading) {
       action: actions.actionSelect,
       _tabla: vistas.vehiculos_tipos,
     };
-    console.log(
+    CustomConsole.log(
       'servicios de servicios vehiculos activo - geTiposVehiculos',
       url.action,
       datos,
@@ -400,7 +401,7 @@ constructor(private http: HttpClient, private loading: loading) {
       datos.action = actions.actionUpdate;
     }
 
-    console.log(
+    CustomConsole.log(
       'servicios de creacion tipo de vehiculo activo',
       url.action,
       datos,

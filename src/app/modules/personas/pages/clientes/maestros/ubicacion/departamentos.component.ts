@@ -7,6 +7,7 @@ import { loading } from 'src/app/models/app.loading';
 import { DepartamentoModel } from 'src/app/models/maestros.model';
 import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services';
 import { NewDepartamentoComponent } from './new-departamento.component';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-departamentos',
@@ -36,7 +37,7 @@ export class DepartamentosComponent implements OnInit {
       this.departamentos = [];
     }
         
-        console.log(this.departamentos);
+        CustomConsole.log(this.departamentos);
         this.loading.hide();
       } ,
       error:(error : any) => { this.loading.hide();
@@ -51,7 +52,7 @@ export class DepartamentosComponent implements OnInit {
     .subscribe((confirmado: Boolean)=>{
       if (confirmado){
         this.maestroCliente.eliminarDepartamento(dep).subscribe(
-          (respuesta:any)=>{console.log(respuesta)
+          (respuesta:any)=>{CustomConsole.log(respuesta)
             if (respuesta.error === 'ok'){
               alert('datos eliminados con exito');     
               this.listarDepartamentos();
@@ -67,7 +68,7 @@ export class DepartamentosComponent implements OnInit {
     .subscribe((confirmado: Boolean)=>{
       if (confirmado){
       this.listarDepartamentos() 
-      console.log('se listo');
+      CustomConsole.log('se listo');
       
     }
     })

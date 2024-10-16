@@ -33,6 +33,7 @@ import { GenerarCntPorCobrarComponent } from '../../modals/generar-cnt-por-cobra
 import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { ModalUpdateProductoVentaComponent } from '../../modals/ModalUpdateProductoVenta/ModalUpdateProductoVenta.component';
 import { IngresoServicioVehiculoComponent } from '../../modals/ingreso_servicio_vehiculos/ingreso.component';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-ventas',
@@ -84,7 +85,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {   
     this.dInicialServ.getParametroValidarExistencia().subscribe({next:value=>{
-      console.log('validar existencia en venta', value ); 
+      CustomConsole.log('validar existencia en venta', value ); 
       this.dInicialServ.setParametroExistencia(value.data[0]);
     }});
     this.dInicialServ.currentVendedores.subscribe({next:value=>{
@@ -92,7 +93,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     }}); 
     this.dInicialServ.continueVenta.subscribe({next:(value)=>{
       this.continuar = value;
-      console.log('continuar',this.continuar);
+      CustomConsole.log('continuar',this.continuar);
       if ( this.continuar ){
       this.getMediosP();
       this.getAsyncDocumentos();
@@ -109,7 +110,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
 
   getDatosContables(){
     this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
-      console.log('getCuentasContablesEstablecimientoUsuario' , value)
+      CustomConsole.log('getCuentasContablesEstablecimientoUsuario' , value)
       this.dInicialServ.validarCuentasContablesEstablecimiento(value.data[0] ) 
     }})
   }
@@ -136,10 +137,10 @@ export class VentasComponent implements AfterViewInit, OnInit {
   getMenuImage(usuario: Usuario) {
     let menuCard: RecursoDetalle[] = [];
     let menu = usuario.permisos; 
-    console.log( 'permisos usuario' , usuario, menu);
+    CustomConsole.log( 'permisos usuario' , usuario, menu);
 
     let menuDetalleBtn =  usuario.permisos.filter(x=> x.nombre_recurso === "Punto de Venta" )
-    console.log( 'permisos usuario',  menuDetalleBtn[0].recursosHijos);
+    CustomConsole.log( 'permisos usuario',  menuDetalleBtn[0].recursosHijos);
     menuDetalleBtn[0].recursosHijos!.forEach((recurso ) => { 
 
         switch (recurso.nombre_recurso.trim()) {
@@ -177,15 +178,15 @@ export class VentasComponent implements AfterViewInit, OnInit {
       next:(datos: any) => {
         this.documentos = [];
         let documentoSeleccionado: DocumentosModel[] ;
-        console.log('getDocumentos', datos.numdata); 
+        CustomConsole.log('getDocumentos', datos.numdata); 
         if (datos.numdata > 0) {
           this.documentos = datos.data ; 
-          console.log('getDocumentos_recuest', this.documentos);
+          CustomConsole.log('getDocumentos_recuest', this.documentos);
           if (datos.numdata === 1) {
             this.documentoActivo = datos.data[0];
           } else {
             documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ; 
-          console.log('documentoSeleccionado' , documentoSeleccionado);
+          CustomConsole.log('documentoSeleccionado' , documentoSeleccionado);
             this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
           }  
           this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0])??[] 
@@ -213,17 +214,17 @@ export class VentasComponent implements AfterViewInit, OnInit {
         {
         this.documentos = [];
         let documentoSeleccionado: DocumentosModel[] ;
-        console.log('getDocumentos', datos.numdata);
-        console.log('getDocumentos_recuest', datos);
+        CustomConsole.log('getDocumentos', datos.numdata);
+        CustomConsole.log('getDocumentos_recuest', datos);
 
         if (datos.numdata > 0) {
           this.documentos = datos.data ; 
-          console.log('getDocumentos_recuest', this.documentos);
+          CustomConsole.log('getDocumentos_recuest', this.documentos);
           if (datos.numdata === 1) {
             this.documentoActivo = datos.data[0];
           } else {
             documentoSeleccionado = this.documentos.filter((x: DocumentosModel) => x.estado == 1) ; 
-          console.log('documentoSeleccionado' , documentoSeleccionado);
+          CustomConsole.log('documentoSeleccionado' , documentoSeleccionado);
             this.documentoActivo = (documentoSeleccionado.length > 0) ?  documentoSeleccionado[0] :  this.documentos[0]; 
           }
           this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
@@ -249,7 +250,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
   asignarMediosDePagoValoresIniciales(){
 
     this.MedioP = this.MedioPInicial.map(x=>x);
-    console.log('documentoActivo' , this.documentoActivo); 
+    CustomConsole.log('documentoActivo' , this.documentoActivo); 
           if (this.documentoActivo!.pagos === undefined ){
             this.documentoActivo!.pagos = this.MedioP.map((value: any , index) => {
               let valorPago = 0;
@@ -270,19 +271,19 @@ export class VentasComponent implements AfterViewInit, OnInit {
             })
           } 
            let docPagos:DocpagosModel[]  = (this.documentoActivo!.pagos !== undefined )?[...this.documentoActivo!.pagos] : [] ; 
-                      console.log("asignar pagos" , docPagos)
+                      CustomConsole.log("asignar pagos" , docPagos)
            this.MedioP.forEach(medio => {
-           console.log(medio.id);
+           CustomConsole.log(medio.id);
             const pago:DocpagosModel[] = docPagos.filter((p: DocpagosModel) => p.idMedioDePago == medio.id)!;
             let sum = pago ? pago.reduce((total, p) => total + p.valorPagado, 0) : 0;
-            console.log('get pagos iteracion ' , pago )
+            CustomConsole.log('get pagos iteracion ' , pago )
            
               medio.valor_aux = sum ;
             
           }); 
 
             this.pagos = this.documentoActivo!.pagos!;
-            console.log('pagos factura', this.pagos,'medios de pagos ', this.MedioP);
+            CustomConsole.log('pagos factura', this.pagos,'medios de pagos ', this.MedioP);
 
 
 
@@ -293,7 +294,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     this.loading.show();
     this.documentoService.crearDocumento().pipe(
       tap((respuesta: any) => {
-        console.log('crearDocumento', respuesta); 
+        CustomConsole.log('crearDocumento', respuesta); 
         if (respuesta.error === 'ok') {
           this.getDocumentos();
         } else {
@@ -318,12 +319,12 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('crearDocumento completo')
+      complete: () => CustomConsole.log('crearDocumento completo')
     });
   }
 
   buscarProducto() { 
-    console.log('buscarProducto', this.codigoProducto);
+    CustomConsole.log('buscarProducto', this.codigoProducto);
     let dataAuxEnvio: productoDocumento = {
       'idproducto': this.codigoProducto,
       'documento': this.documentoActivo!
@@ -332,7 +333,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       
       this.loading.show();
       this.productoService.getProductoByIdOrCodBarra(this.codigoProducto).subscribe({
-        next:(value)=>{console.log(value)
+        next:(value)=>{CustomConsole.log(value)
           if(value.numdata > 0 ){
           if(value.numdata > 1 ){
             this.buscarClose = false;
@@ -358,7 +359,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
                          ).subscribe({
                            next: () => {},
                            error: (error) => Swal.fire( JSON.stringify(error) ) ,
-                           complete: () => console.log('moverDocumentoCaja completo')
+                           complete: () => CustomConsole.log('moverDocumentoCaja completo')
                          }); 
 
             
@@ -370,7 +371,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
                   ).subscribe({
                     next: () => {},
                     error: (error) => Swal.fire( JSON.stringify(error) ) ,
-                    complete: () => console.log('busquedaAuxiliarProducto completo')
+                    complete: () => CustomConsole.log('busquedaAuxiliarProducto completo')
                   });
      
             }else{
@@ -389,7 +390,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
            ).subscribe({
              next: () => {},
              error: (error) => Swal.fire( JSON.stringify(error) ) ,
-             complete: () => console.log('moverDocumentoCaja completo')
+             complete: () => CustomConsole.log('moverDocumentoCaja completo')
            }); 
           } 
         }else{
@@ -415,7 +416,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire( JSON.stringify(error) ) ,
-        complete: () => console.log('moverDocumentoCaja completo')
+        complete: () => CustomConsole.log('moverDocumentoCaja completo')
       });
   }
   editar(linea: DocumentoListado){
@@ -431,15 +432,15 @@ export class VentasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire( JSON.stringify(error) ) ,
-        complete: () => console.log('editar linea completo')
+        complete: () => CustomConsole.log('editar linea completo')
       });
   }
   eliminarLinea(linea: DocumentoListado) {
-    console.log(linea);
+    CustomConsole.log(linea);
     this.loading.show();
     this.productoService.devolverPrdCompra(linea).pipe(
       tap((respuesta: any) => {
-        console.log(JSON.stringify(respuesta));
+        CustomConsole.log(JSON.stringify(respuesta));
         if (respuesta.error !== 'ok') { 
           try {
             Swal.fire(respuesta.error, '', 'error');
@@ -452,7 +453,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         this.loading.hide();
       }),
       catchError((error: errorOdoo) => {
-        console.log(JSON.stringify(error)); 
+        CustomConsole.log(JSON.stringify(error)); 
         try {
           Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
@@ -464,13 +465,13 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('eliminarLinea completo')
+      complete: () => CustomConsole.log('eliminarLinea completo')
     });
   }
 
   irbuscarProducto() {
     let activeTextarea = document.activeElement!.tagName; 
-    console.log('elemento==>',activeTextarea);
+    CustomConsole.log('elemento==>',activeTextarea);
     if (activeTextarea.toUpperCase().indexOf('SELECT') < 0) {
        this.codProdlement.nativeElement.focus();
        
@@ -497,7 +498,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
              // this.documentoActivo 
 
              this.documentoService.getDocumentoActivo().subscribe({next:(value:DocumentoRequest)=>{
-              console.log('docuemento activo actual',value.data[0].objeto)
+              CustomConsole.log('docuemento activo actual',value.data[0].objeto)
               this.documentoActivo = value.data[0].objeto
               this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
               if(this.empleadoActivo.id == undefined){
@@ -515,7 +516,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire( JSON.stringify(error) ) ,
-        complete: () => console.log('asignarPagosAVenta completo')
+        complete: () => CustomConsole.log('asignarPagosAVenta completo')
       });
   }
 
@@ -538,7 +539,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
              // this.documentoActivo 
 
              this.documentoService.getDocumentoActivo().subscribe({next:(value:DocumentoRequest)=>{
-              console.log('docuemento activo actual',value.data[0].objeto)
+              CustomConsole.log('docuemento activo actual',value.data[0].objeto)
               this.documentoActivo = value.data[0].objeto
               this.empleadoActivo = (this.empleados.filter(x=> x.id == this.documentoActivo?.cod_vendedor )[0] )??[]
               if(this.empleadoActivo.id == undefined){
@@ -556,7 +557,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire( JSON.stringify(error) ) ,
-        complete: () => console.log('asignarPagosAVenta completo')
+        complete: () => CustomConsole.log('asignarPagosAVenta completo')
       });
   }
 
@@ -581,13 +582,13 @@ export class VentasComponent implements AfterViewInit, OnInit {
             ).subscribe({
               next: () => {},
               error: (error) => Swal.fire( JSON.stringify(error) ) ,
-              complete: () => console.log('AbonosCuentasXCobrarComponent completo')
+              complete: () => CustomConsole.log('AbonosCuentasXCobrarComponent completo')
             });
         }
       })      ).subscribe({
         next: () => {},
         error: (error) => Swal.fire( JSON.stringify(error) ) ,
-        complete: () => console.log('buscarCliente completo')
+        complete: () => CustomConsole.log('buscarCliente completo')
       });   
      
   
@@ -614,7 +615,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         tap((confirmado:  {result : boolean , documento :  DocumentosModel }) => {
           if (confirmado.result) { 
           this.documentoRetorno = Object.assign(new DocumentosModel(), confirmado.documento); 
-          console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+          CustomConsole.log('facturarDocumento =>>>>>', this.documentoRetorno);
           this.printer_factura_final();
           this.crearDocumento();
           }
@@ -622,7 +623,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire( JSON.stringify(error) ) ,
-        complete: () => console.log('asignarPagosAVenta completo')
+        complete: () => CustomConsole.log('asignarPagosAVenta completo')
       });
   }
  asignarPagosACuentaPorCobrarRemision() {
@@ -647,7 +648,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         tap((confirmado:  {result : boolean , documento :  DocumentosModel }) => {
           if (confirmado.result) { 
           this.documentoRetorno = Object.assign(new DocumentosModel(), confirmado.documento); 
-          console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+          CustomConsole.log('facturarDocumento =>>>>>', this.documentoRetorno);
           this.printer_factura_final();
           this.crearDocumento();
           }
@@ -655,7 +656,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire( JSON.stringify(error) ) ,
-        complete: () => console.log('asignarPagosAVenta completo')
+        complete: () => CustomConsole.log('asignarPagosAVenta completo')
       });
   }
 
@@ -675,7 +676,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         this.documentoActivo!.pagos[0].valorPagado = this.documentoActivo!.valorTotal;
       }
     } else {
-      console.log(this.documentoActivo!.pagos);
+      CustomConsole.log(this.documentoActivo!.pagos);
     }
     if (this.documentoActivo!.listado!.length === 0) {
       let error = 'Debe ingresar los productos a facturar' ; 
@@ -698,10 +699,10 @@ export class VentasComponent implements AfterViewInit, OnInit {
     this.loading.show();
     this.documentoService.cerrarDocumento(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
       console.clear();
-      console.log("respuesta cierre documento =>" , respuesta)
+      CustomConsole.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
         this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
-        console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+        CustomConsole.log('facturarDocumento =>>>>>', this.documentoRetorno);
         this.printer_factura_final();
         this.crearDocumento();
       } else {
@@ -720,7 +721,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
           Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
-         }},complete:()=>{console.log('facturarDocumento completo');
+         }},complete:()=>{CustomConsole.log('facturarDocumento completo');
             this.loading.hide()
          }
     })
@@ -741,7 +742,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         this.documentoActivo!.pagos[0].valorPagado = this.documentoActivo!.valorTotal;
       }
     } else {
-      console.log(this.documentoActivo!.pagos);
+      CustomConsole.log(this.documentoActivo!.pagos);
     }
     if (this.documentoActivo!.listado!.length === 0) {
       let error = 'Debe ingresar los productos a facturar' ; 
@@ -764,10 +765,10 @@ export class VentasComponent implements AfterViewInit, OnInit {
     this.loading.show();
     this.documentoService.cerrarDocumentoRemision(this.documentoActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
       //console.clear();
-      console.log("respuesta cierre documento =>" , respuesta)
+      CustomConsole.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
         this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
-        console.log('facturarDocumento =>>>>>', this.documentoRetorno);
+        CustomConsole.log('facturarDocumento =>>>>>', this.documentoRetorno);
         this.printer_factura_final();
         this.crearDocumento();
       } else {
@@ -786,7 +787,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
           Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
-         }},complete:()=>{console.log('facturarDocumento completo');
+         }},complete:()=>{CustomConsole.log('facturarDocumento completo');
             this.loading.hide()
          }
     })
@@ -796,7 +797,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     this.documentoActivo!.cod_vendedor = (typeof(ven.id)== 'string' ) ? parseInt(ven.id): ven.id??0 ;
     this.documentoActivo!.vendedorNombre = ven.nombreCompleto??0 ;
     this.documentoService.cambiarVendedorDocumento(this.documentoActivo!.orden , ven).subscribe({next:value=>{
-      console.log('cambio empleado',value)
+      CustomConsole.log('cambio empleado',value)
     }})
   }
   }
@@ -842,7 +843,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('cambiarDocumentoActivo completo')
+      complete: () => CustomConsole.log('cambiarDocumentoActivo completo')
     });
   }
 
@@ -875,7 +876,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('cancelarDocumento completo')
+      complete: () => CustomConsole.log('cancelarDocumento completo')
     });
   }
   crearCotizacion() {
@@ -887,7 +888,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       tap((respuesta: DocumentoCierreRequest) => {
         if (respuesta.error === 'ok') {
           this.documentoRetorno = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
-          console.log('facturarCotizacion =>>>>>', this.documentoRetorno);
+          CustomConsole.log('facturarCotizacion =>>>>>', this.documentoRetorno);
           this.printer_factura_final();
           this.crearDocumento();
         } else {
@@ -913,7 +914,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('cancelarDocumento completo')
+      complete: () => CustomConsole.log('cancelarDocumento completo')
     });
   }
 //generar factura domicilio
@@ -938,7 +939,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
         ).subscribe({
           next: () => {},
           error: (error) => Swal.fire( JSON.stringify(error) ) ,
-          complete: () => console.log('generarEnvio completo')
+          complete: () => CustomConsole.log('generarEnvio completo')
         });   
     } else {
       this.generarDomicilio();
@@ -978,7 +979,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('generarDomicilio completo')
+      complete: () => CustomConsole.log('generarDomicilio completo')
     });
   }
 
@@ -1008,7 +1009,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('getMediosP completo')
+      complete: () => CustomConsole.log('getMediosP completo')
     });
   }
   generarGasto(){
@@ -1027,7 +1028,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('busquedaAuxiliarProducto completo')
+      complete: () => CustomConsole.log('busquedaAuxiliarProducto completo')
     });
   }
   busquedaAuxiliarProducto() { 
@@ -1056,7 +1057,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
             ).subscribe({
               next: () => {},
               error: (error) => Swal.fire( JSON.stringify(error) ) ,
-              complete: () => console.log('moverDocumentoCaja completo')
+              complete: () => CustomConsole.log('moverDocumentoCaja completo')
             });  
           } else { 
             this.codigoProducto = '';
@@ -1066,7 +1067,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire( JSON.stringify(error) ) ,
-        complete: () => console.log('busquedaAuxiliarProducto completo')
+        complete: () => CustomConsole.log('busquedaAuxiliarProducto completo')
       });
   }
 
@@ -1087,12 +1088,12 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
   }
 
   ingresarServicio(){ 
-    console.log('documentoActivo- ingresarServicio' ,  this.documentoActivo);
+    CustomConsole.log('documentoActivo- ingresarServicio' ,  this.documentoActivo);
     
     this.newAbrirDialog.open(IngresoServicioVehiculoComponent,{ data: this.documentoActivo?.caja})
     .afterClosed()
@@ -1107,7 +1108,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire( JSON.stringify(error) ) ,
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
   }
 
@@ -1116,7 +1117,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     let doc = new DocumentosModel();
     doc = this.documentoRetorno;
 
-    console.log('documento retorno',doc,'sucursal ', this.sucursal); 
+    CustomConsole.log('documento retorno',doc,'sucursal ', this.sucursal); 
     let printM =  new PrinterManager(this.serviceCaja);;;
     printM.setDocumento(this.documentoRetorno);
     printM.printReceipt();

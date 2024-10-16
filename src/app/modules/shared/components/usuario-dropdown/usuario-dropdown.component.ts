@@ -1,4 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'; 
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { UsuarioConVentaModel } from 'src/app/models/usuario.model';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 
@@ -18,13 +19,13 @@ export class usuarioDropdownComponent implements OnInit{
   private inicioService= inject(DatosInicialesService) ;
   
   ngOnInit(): void { 
-    console.log('opciones : ',this.options);
+    CustomConsole.log('opciones : ',this.options);
    
    if(!this.conVentas){
     this.inicioService.getUsuarios().subscribe(vendedores => {
       if (vendedores.numdata > 0) {
         // Aquí puedes trabajar con el array de vendedores
-        console.log('Vendedores actualizados:', vendedores);
+        CustomConsole.log('Vendedores actualizados:', vendedores);
         this.options = vendedores.data;
       }
     });
@@ -34,7 +35,7 @@ export class usuarioDropdownComponent implements OnInit{
       this.inicioService.getUsuariosConVentas().subscribe(vendedores => {
         if (vendedores.numdata > 0) {
           // Aquí puedes trabajar con el array de vendedores
-          console.log('Vendedores actualizados:', vendedores);
+          CustomConsole.log('Vendedores actualizados:', vendedores);
           this.options = vendedores.data;
         }
       });

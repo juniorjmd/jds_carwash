@@ -8,6 +8,7 @@ import { ModalService } from 'src/app/modal.service';
 import { Location } from '@angular/common';
 import { usuarioService } from 'src/app/services/usuario.services';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -35,7 +36,7 @@ export class NavbarComponent {
     this._datosInicialesService.getDatosIniSucursal().subscribe({
       next: (data: any) => {
         this.sucursal = data;
-        console.log('getDatosIniSucursal',this.sucursal);
+        CustomConsole.log('getDatosIniSucursal',this.sucursal);
       },
       error: (error) => Swal.fire('getDatosIniSucursal error ',JSON.stringify(error)),
     });
@@ -45,7 +46,7 @@ export class NavbarComponent {
   }
   ngOnInit() {
     this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ; 
-      console.log('usuarioLogueado' , this.usuario);
+      CustomConsole.log('usuarioLogueado' , this.usuario);
       
     });
   }
@@ -67,7 +68,7 @@ export class NavbarComponent {
       if (result) {
         this._Router.navigate(['/']);
       } else {
-        console.log('Cancelado');
+        CustomConsole.log('Cancelado');
       }
     });
   }

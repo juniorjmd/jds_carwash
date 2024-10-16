@@ -8,6 +8,7 @@ import { FndClienteComponent } from '../../../shared/modals/fnd-cliente/fnd-clie
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({
   selector: 'app-cliente-inicio',
   templateUrl: './cliente-inicio.component.html',
@@ -23,7 +24,7 @@ export class ClienteInicioComponent implements OnInit {
 
   }
   mostrarCliente(cliente:ClientesModel){
-    console.log('cliente enviado a editar' , cliente);
+    CustomConsole.log('cliente enviado a editar' , cliente);
     
     this.newAbrirDialog.open(FndClienteComponent,{data: { clienteIngreso : cliente , invoker:'clienteListado' } })
     .afterClosed()
@@ -36,7 +37,7 @@ export class ClienteInicioComponent implements OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify( error )),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     }); 
   }
   ngOnInit(): void {
@@ -47,9 +48,9 @@ export class ClienteInicioComponent implements OnInit {
   getClientesOdoo(){
     this.loading.show();
     this.ClienteService.getClientes().subscribe( {next:(respuesta:any)=>{ 
-      //  console.log('cerrarDocumento',respuesta); 
+      //  CustomConsole.log('cerrarDocumento',respuesta); 
        if (respuesta.error === 'ok'){ 
-        console.log(respuesta);
+        CustomConsole.log(respuesta);
         this.clientes = respuesta.data ;  
        }else{
          alert(respuesta.error);

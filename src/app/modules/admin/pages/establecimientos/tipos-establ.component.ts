@@ -3,6 +3,7 @@ import { select } from 'src/app/interfaces/generales.interface';
 import { TiposEstablecimientosModel } from 'src/app/models/ventas/tipos-establecimientos.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { loading } from 'src/app/models/app.loading';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({
   selector: 'app-tipos-establ',
   templateUrl: './tipos-establ.component.html',
@@ -25,14 +26,14 @@ export class TiposEstablComponent implements OnInit {
   getTiposEstablecimiento(){ 
     this.serviceCaja.getAllTiposEstablecimientos()
          .subscribe({next: (datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          this.tiposEsta = [];   
     if (datos.numdata > 0 ){ 
       
       datos.data!.forEach((dato:TiposEstablecimientosModel , index:number )=>{
         this.tiposEsta[index] = new TiposEstablecimientosModel( dato );
       }) 
-      console.log(this.tiposEsta);
+      CustomConsole.log(this.tiposEsta);
     }
 
         this.loading.hide()
@@ -47,14 +48,14 @@ export class TiposEstablComponent implements OnInit {
 
   setActualizaCaja(estaActualiza : TiposEstablecimientosModel){
     this.newTipEstabl = estaActualiza ; 
-    console.log('setActualizaCaja',this.newTipEstabl, estaActualiza);
+    CustomConsole.log('setActualizaCaja',this.newTipEstabl, estaActualiza);
   }
  
 
   ngOnInit(): void {
   }
   guardarCaja(){
-   console.log('nueva caja',this.newTipEstabl.nombre)
+   CustomConsole.log('nueva caja',this.newTipEstabl.nombre)
    if (typeof(this.newTipEstabl.nombre) === 'undefined'){
     this.loading.hide();
     alert('Debe ingresar el Nombre de la caja');
@@ -70,7 +71,7 @@ export class TiposEstablComponent implements OnInit {
    
    this.loading.show(); 
    this.serviceCaja.setTipoEstablecimiento(this.newTipEstabl).subscribe(
-    (respuesta:any)=>{console.log(respuesta)
+    (respuesta:any)=>{CustomConsole.log(respuesta)
      
     if (respuesta.error === 'ok'){
       alert('datos ingresados con exito');  

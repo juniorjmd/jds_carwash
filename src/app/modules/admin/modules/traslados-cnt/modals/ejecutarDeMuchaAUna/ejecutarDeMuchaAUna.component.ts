@@ -74,7 +74,7 @@ export class ejecutarDeMuchaAUnaComponent   {
          };
  
          this.establecimientos =(value.length>0)?[{...cajasel}  , ...value ] : [...value] ;
-         //console.log('cajaas' , this.establecimientos);
+         //CustomConsole.log('cajaas' , this.establecimientos);
          
        }
      }, error: e=>Swal.fire('error',e.error.error,'error')})
@@ -84,20 +84,20 @@ export class ejecutarDeMuchaAUnaComponent   {
       DE_UNA_A_MUCHOS
       DE_MUCHOS_A_UNA
      */ 
-    //console.log(this.dataIngreso);
+    //CustomConsole.log(this.dataIngreso);
     
     if(this.dataIngreso != undefined){
      this.dataProceso  = this.dataProceso.createTraslado( dataIngreso );  
      this.cntService.getCuentasTrasladosPreeEjecucion(this.dataIngreso.id!).subscribe({next:(value)=>{ 
            this.dataProceso!.cuentas =  value.data;
-           //console.log('cuentas' , value.data);
+           //CustomConsole.log('cuentas' , value.data);
            
      },error:e=> Swal.fire(e.error.error) })
  
    }
    }
    ejecutar(){
-       //console.log('cajaSeleccionada',this.cajaSeleccionada); 
+       //CustomConsole.log('cajaSeleccionada',this.cajaSeleccionada); 
       if( this.establecimientos[this.cajaSeleccionada].id! == 0){
          Swal.fire('error','Debe escoger un establecimiento valido')
        }

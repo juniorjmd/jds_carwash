@@ -12,6 +12,7 @@ import { CurrencyPipe } from '@angular/common';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { cajasServices } from 'src/app/services/Cajas.services';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-reimpimir-facturas',
@@ -90,7 +91,7 @@ export class ReimpimirFacturasComponent implements OnInit {
   pagosHtml += '</td></tr></table>'
 
    Swal.fire({html:pagosHtml, width: '800px' ,showDenyButton:true ,denyButtonText:'imprimir'}).then(value=>{
-    console.log(value);
+    CustomConsole.log(value);
     if(value.isDenied){
       this.imprimirFactura(venta);
     }
@@ -98,7 +99,7 @@ export class ReimpimirFacturasComponent implements OnInit {
    });
   }
   async imprimirFactura(factura:DocumentosModel)
-  { console.log(factura); 
+  { CustomConsole.log(factura); 
    let printerManager =  new PrinterManager(this.serviceCaja);;
    printerManager.setDocumento(factura)
    printerManager.printReceipt() ;
@@ -114,8 +115,8 @@ export class ReimpimirFacturasComponent implements OnInit {
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
-         console.log('getDocumentos', datos.numdata);
-         console.log('getDocumentos_recuest', datos );
+         CustomConsole.log('getDocumentos', datos.numdata);
+         CustomConsole.log('getDocumentos_recuest', datos );
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:any , index :number )=>{  

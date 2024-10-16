@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 
 @Component({
@@ -15,7 +16,7 @@ export class DocumentosDropdownComponent implements OnInit{
   vueltas :boolean =  false;
   
   ngOnInit(): void { 
-    console.log('opciones : ',this.options);
+    CustomConsole.log('opciones : ',this.options);
   } 
 
   selectOption(option: DocumentosModel) {

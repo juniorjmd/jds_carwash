@@ -31,11 +31,11 @@ export class PerfilComponent implements OnInit  {
     });
 this.usuarioService.getArrayRecursos().subscribe({next:(value:recursoRequest)=>{ 
    for(let i= 0 ; i< value.numdata ; i++ )  {
-    //console.log('recursos ' + i , value.data[i])  
+    //CustomConsole.log('recursos ' + i , value.data[i])  
     this.recursosAux.push(value.data[i]) 
    } 
    this.usuarioService.updateRecursos([...this.recursosAux]) ;
-   //console.log('recursos' , this.recursos , Array.isArray(this.recursos));
+   //CustomConsole.log('recursos' , this.recursos , Array.isArray(this.recursos));
     
 }, error:e=>Swal.fire(JSON.stringify(e))
 }
@@ -46,7 +46,7 @@ getPerfiles(){
     if(p.error=='ok'){
       if(p.numdata > 0){ 
         this.perfiles = p.data
-        //console.log('perfiles' , p.data);
+        //CustomConsole.log('perfiles' , p.data);
         
       }else{Swal.fire(p.error)}
     }else{Swal.fire(p.error)}
@@ -54,7 +54,7 @@ getPerfiles(){
 }
 
   guardarPerfil(){
-    //console.log('recursos' , this.recursos);
+    //CustomConsole.log('recursos' , this.recursos);
     this.usuarioService.setPerfil(this.Perfil).subscribe(
       {
         next:(val:any)=>{
@@ -66,7 +66,7 @@ getPerfiles(){
     )
   }
   buscarRecursos(i:perfil){
-    //console.log('buscarRecursos',i); 
+    //CustomConsole.log('buscarRecursos',i); 
    this.usuarioService.updateRecursos([...this.recursosAux]) ;
     this.Perfil = {...i};
     this.usuarioService.getArrayRecursosByPerfil(i.id!).subscribe({next:(val:recursoRequest)=>{

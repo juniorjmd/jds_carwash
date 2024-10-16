@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ambiente } from 'src/app/modules/shared/shared.module';
 
 import { httpOptions } from 'src/app/models/app.db.url';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +15,7 @@ export class UpdateLineService {
   optHeader = httpOptions()
 
   constructor(private http: HttpClient) { 
-    console.log('clientes actualizar linea tabla inicializado'); 
+    CustomConsole.log('clientes actualizar linea tabla inicializado'); 
     
   } 
   

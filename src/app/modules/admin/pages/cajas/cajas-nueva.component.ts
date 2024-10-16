@@ -14,6 +14,7 @@ import { ModalCntSubCuentasComponent } from '../../modals/cuentasContables/cnt-s
 import { tap } from 'rxjs';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { cajaRequest } from 'src/app/interfaces/producto-request';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-cajas-nueva',
@@ -45,7 +46,7 @@ export class CajasNuevaComponent implements OnInit {
     .afterClosed() 
     .pipe(
       tap((response: responseSubC) => {
-        console.log('buscarCuentasContablesGastos',response);
+        CustomConsole.log('buscarCuentasContablesGastos',response);
         if (response.confirmado && response.datoDevolucion !== undefined ) {  
           this.newCaja.nombre_scuenta_gastos = response.datoDevolucion.nombre_scuenta;
           this.newCaja.cod_cuenta_gastos = response.datoDevolucion.id_scuenta;
@@ -55,7 +56,7 @@ export class CajasNuevaComponent implements OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire('Error:', error),
-      complete: () => console.log('buscarCuentasContables completo')
+      complete: () => CustomConsole.log('buscarCuentasContables completo')
     }); 
   }
 
@@ -73,7 +74,7 @@ export class CajasNuevaComponent implements OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire('Error:', error),
-      complete: () => console.log('buscarCuentasContables completo')
+      complete: () => CustomConsole.log('buscarCuentasContables completo')
     }); 
   }
   getParametros(){ 
@@ -81,11 +82,11 @@ export class CajasNuevaComponent implements OnInit {
      this.loading.show()
      this.parServices.getParametros().subscribe(
        (datos:any)=>{
-          console.log(datos);
+          CustomConsole.log(datos);
           
      if (datos.numdata > 0 ){ 
       this.parametros = datos.data 
-       console.log('parametros',this.parametros);
+       CustomConsole.log('parametros',this.parametros);
      }else{
        this.parametros = [];
      }
@@ -99,7 +100,7 @@ export class CajasNuevaComponent implements OnInit {
          this.loading.hide();
        } ,
        error => {this.loading.hide();
-         console.log(error)
+         CustomConsole.log(error)
          Swal.fire( error.error.error, '', 'error');
        }
        );
@@ -109,14 +110,14 @@ export class CajasNuevaComponent implements OnInit {
     this.serviceCaja.getEstablecimientos()
      .subscribe(
       (datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          this.esta = [];   
     if (datos.numdata > 0 ){ 
       
       datos.data!.forEach((dato:Establecimientos , index:number )=>{
         this.esta[index] = new establecimientoModel( dato );
       }) 
-      console.log(this.esta);
+      CustomConsole.log(this.esta);
     }
 
         this.loading.hide()
@@ -130,7 +131,7 @@ export class CajasNuevaComponent implements OnInit {
   }
   setActualizaCaja(cajaActualizar : cajaModel){
     this.newCaja = {...cajaActualizar} ; 
-    console.log('setActualizaCaja',this.newCaja)
+    CustomConsole.log('setActualizaCaja',this.newCaja)
   }
 getCajas(){
   this.cajas[0] = this.newCaja ;
@@ -138,11 +139,11 @@ getCajas(){
   this.loading.show()
   this.serviceCaja.getCajas()
      .subscribe({next:  (datos:cajaRequest)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          
     if (datos.numdata > 0 ){  
         this.cajas = datos.data
-      console.log(this.cajas);
+      CustomConsole.log(this.cajas);
     }else{
       this.cajas = [];
     }
@@ -158,7 +159,7 @@ getCajas(){
   ngOnInit(): void {
   }
   guardarCaja(){
-   console.log('nueva caja',this.newCaja.nombre)
+   CustomConsole.log('nueva caja',this.newCaja.nombre)
    if (typeof(this.newCaja.nombre) === 'undefined'){
     this.loading.hide();
     alert('Debe ingresar el Nombre de la caja');
@@ -194,7 +195,7 @@ getCajas(){
 
    this.loading.show(); 
    this.serviceCaja.setCaja(this.newCaja).subscribe(
-    (respuesta:any)=>{console.log(respuesta)
+    (respuesta:any)=>{CustomConsole.log(respuesta)
      
     if (respuesta.error === 'ok'){
       alert('datos ingresados con exito');  

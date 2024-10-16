@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { error } from 'jquery';
 import {   CreditosResumenRequest } from 'src/app/interfaces/producto-request'; 
 import { ResumenCreditos } from 'src/app/interfaces/resumenCuentas';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
@@ -34,9 +35,9 @@ export class CuentasPorCobrarComponent {
   getDocumentosPorFecha(){
    this.srvDocumentos.getCuentasXCobrarByfecha(this.fecha1, this.fecha2 ).subscribe({next:(value:CreditosResumenRequest)=>{
     
-    console.log('getCuentasXCobrarByfecha',value.data); 
+    CustomConsole.log('getCuentasXCobrarByfecha',value.data); 
     if(value.error == 'ok' && ((value.numdata||0) > 0 ) ){ 
-      console.log('getCuentasXCobrarByfecha',value.data); 
+      CustomConsole.log('getCuentasXCobrarByfecha',value.data); 
       this.resumenCreditos = value.data;
     }
    }})
@@ -45,8 +46,8 @@ export class CuentasPorCobrarComponent {
    .subscribe({next: (datos:any)=>{
     let cont = 0; 
      this.documentos = []; 
-     console.log('getDocumentos', datos.numdata);
-     console.log('getDocumentos_recuest', datos );
+     CustomConsole.log('getDocumentos', datos.numdata);
+     CustomConsole.log('getDocumentos_recuest', datos );
      
 if (datos.numdata > 0 ){  
   this.documentos =  datos.data.map((x:any)=> x.objeto)
@@ -144,7 +145,7 @@ if (venta.listado.length > 0 )  pagosHtml +=` <tr>  <td>Producto</td>    <td>có
   pagosHtml += '</td></tr></table>'
 
    Swal.fire({html:pagosHtml, width: '800px' , showCancelButton:true , cancelButtonText:'imprimir'}).then(value=>{
-    console.log(value);
+    CustomConsole.log(value);
     if(value.isDismissed){
       this.imprimirFactura(venta);
     }
@@ -152,7 +153,7 @@ if (venta.listado.length > 0 )  pagosHtml +=` <tr>  <td>Producto</td>    <td>có
    });
   }
   async imprimirFactura(factura:DocumentosModel)
-  { console.log(factura); 
+  { CustomConsole.log(factura); 
    let printerManager =  new PrinterManager(this.serviceCaja);;
    printerManager.setDocumento(factura);
    printerManager.printReceipt();

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { categoriaRequest, categoriaVendidosRequest } from 'src/app/interfaces/producto-request';
 import { CategoriasVendidasModel } from 'src/app/models/categorias.model';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { ProductoService } from 'src/app/services/producto.service';
@@ -21,7 +22,7 @@ export class categoriasVendidasDropdownComponent implements OnInit{
   
   ngOnInit(): void { 
     this.getAllCategorias();
-    console.log('opciones : ',this.options);
+    CustomConsole.log('opciones : ',this.options);
   /*  this.prdService.currentCategorias.subscribe((value:CategoriasVendidasModel[]|null)=>{
       if(value != undefined){
         this.options = value;  
@@ -33,7 +34,7 @@ export class categoriasVendidasDropdownComponent implements OnInit{
   getAllCategorias(){  
     this.prdService.getCategoriasVendidas().subscribe({
        next :(datos:categoriaVendidosRequest)=>{
-         console.log('getAllCategorias',datos);
+         CustomConsole.log('getAllCategorias',datos);
       let opt:CategoriasVendidasModel = new CategoriasVendidasModel(null);
        opt.id = 0;
        opt.nombre = 'Seleccione una categoria para filtrar'; 
@@ -47,7 +48,7 @@ export class categoriasVendidasDropdownComponent implements OnInit{
        
       } ,
       error: error => { 
-        console.log(JSON.stringify(error) ) 
+        CustomConsole.log(JSON.stringify(error) ) 
       }}
       );
   }
@@ -70,7 +71,7 @@ export class categoriasVendidasDropdownComponent implements OnInit{
   showDropdown() {
     const dropdownButton = document.querySelector('.ddMarcas') as HTMLElement;
     const dropdownFiltro = document.querySelector('.ddMarcasFiltro') as HTMLElement;
-    console.log(dropdownButton);
+    CustomConsole.log(dropdownButton);
     
     if (dropdownButton && dropdownButton.getAttribute('aria-expanded') === 'false') {
       dropdownButton.ariaExpanded

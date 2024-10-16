@@ -15,27 +15,27 @@ export class CuentasCntComponent  implements OnInit {
   ngOnInit() {
     this.cntService.getCntCuentasMayores().subscribe({next:(value:cntCuentaMayorRequest)=>{ 
       this.cntService.changeCuentasM(value.data); 
-      //console.log("getCntCuentasMayores",value.data )
+      //CustomConsole.log("getCntCuentasMayores",value.data )
     },error : (e)=>Swal.fire(e.error.error)})
     
     this.cntService.getCntGrupos().subscribe({
       next:(value:cntGrupoRequest)=>{ 
       this.cntService.changeGrupo(value.data); 
-      //console.log("getCntGrupos",value.data )
+      //CustomConsole.log("getCntGrupos",value.data )
 
     },error : (e)=>Swal.fire(e.error.error)})
 
     this.cntService.getCntCuentas().subscribe({
       next:(value:cntSubCuentaRequest)=>{ 
       this.cntService.changeSubCuenta(value.data); 
-      //console.log("getCntCuentas",value.data )
+      //CustomConsole.log("getCntCuentas",value.data )
 
     },error : (e)=>Swal.fire(e.error.error)})
 
 
     this.cntService.getCntClases().subscribe({next:(value:cntClaseRequest)=>{ 
       this.cntService.changeClase(value.data); 
-      //console.log("getCntClases",value.data )
+      //CustomConsole.log("getCntClases",value.data )
 
     },error : (e)=>Swal.fire(e.error.error)})
     // Aquí deberías cargar los datos de `cnt_cuenta` desde el servicio correspondiente

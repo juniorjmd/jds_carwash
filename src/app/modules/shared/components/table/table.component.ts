@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Input, OnInit } from '
  
 import 'datatables.net-bs5'; 
 import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { UpdateLineService } from 'src/app/services/nServices/update-line.service';
 import Swal from 'sweetalert2';
 declare var $: any;
@@ -25,12 +26,12 @@ export class TableComponent implements OnInit , AfterViewInit {
   showEditCol :any[][] = [] ;
 
   constructor( private updLinea : UpdateLineService){
-   console.log('tableComponent' , this.datosTabla);
+   CustomConsole.log('tableComponent' , this.datosTabla);
   }
   ngOnInit() {
   this.cerrarEdicionAll();
-   console.log('inicio tabla')
-    console.log(this.datosTabla);
+   CustomConsole.log('inicio tabla')
+    CustomConsole.log(this.datosTabla);
     $(this.table.nativeElement).DataTable(); 
   }
 cerrarEdicionAll(){
@@ -63,14 +64,14 @@ ngOnDestroy() {
 
 enviarDatoNuevo(indexDatosTabla:number , indexItem:number , origen:string){
   this.showEditCol[indexDatosTabla][indexItem].readOnly = true;
-  console.log('enviarDatoNuevo', this.datosTabla[indexDatosTabla] , 
+  CustomConsole.log('enviarDatoNuevo', this.datosTabla[indexDatosTabla] , 
   this.columnasTabla[indexItem] , origen  , this.datoNuevo);
   var datolinea = this.datosTabla[indexDatosTabla];
   var nombreCambio:string = this.columnasTabla[indexItem].name;
   datolinea[nombreCambio] =  this.datoNuevo;
   this.updLinea.editRegistro(datolinea.id , datolinea , origen).subscribe(
     { next:(response)=>{
-      console.log('editar linea respuesta',response);
+      CustomConsole.log('editar linea respuesta',response);
       this.showEditCol[indexDatosTabla][indexItem].showEdit = false;
       
     } , 
@@ -91,7 +92,7 @@ eliminarElemento(elementoEliminar:any , index:number){
     if (result.isConfirmed) {
 
   this.updLinea.deleteRegistro(elementoEliminar.id,this.origen).subscribe( { next:(response:any)=>{
-    console.log('eliminar linea respuesta',response); 
+    CustomConsole.log('eliminar linea respuesta',response); 
     Swal.fire('Eliminar Registro',response.message, 'success');
     this.datosTabla.splice(index, 1); 
     if (this.dataTable) this.dataTable.DataTable().destroy();
@@ -106,19 +107,19 @@ eliminarElemento(elementoEliminar:any , index:number){
   editarItem(indexDatosTabla:number , indexItem:number , origen:string){
     this.cerrarEdicionAll();
     this.datoNuevo = '';
-    console.log('datos de entrada ' , indexDatosTabla,indexItem, origen );
+    CustomConsole.log('datos de entrada ' , indexDatosTabla,indexItem, origen );
     
-  console.log('editarItem' , this.columnasTabla[indexItem]);
+  CustomConsole.log('editarItem' , this.columnasTabla[indexItem]);
 
     if(origen){
-      console.log('origen',origen);
+      CustomConsole.log('origen',origen);
       
       if(this.columnasTabla[indexItem].editabe){ 
         
         this.showEditCol[indexDatosTabla][indexItem].showEdit = true;
         this.showEditCol[indexDatosTabla][indexItem].readOnly = false;
         this.datoNuevo =  this.datosTabla[indexDatosTabla][this.columnasTabla[indexItem].name]
-        console.log('this.showEditCol',this.showEditCol);
+        CustomConsole.log('this.showEditCol',this.showEditCol);
       }
     }
   }

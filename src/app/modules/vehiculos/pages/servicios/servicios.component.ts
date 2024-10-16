@@ -5,6 +5,7 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
 import Swal from 'sweetalert2';
 import { loading } from 'src/app/models/app.loading';
 import { TiposServiciosModule } from 'src/app/models/tipos-servicios/tipos-servicios.module';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({
   selector: 'app-servicios',
   templateUrl: './servicios.component.html',
@@ -32,7 +33,7 @@ export class ServiciosComponent implements OnInit {
     let cont = 0;
     //newServicioAVehiculo.tipo_servicio
     this.serviciosAVehiculos!.forEach((servicioAsignado: ServiciosModule) => {
-      console.log(servicioAsignado);
+      CustomConsole.log(servicioAsignado);
 
       if (
         servicioAsignado.tipo_servicio.toString() ===
@@ -49,17 +50,17 @@ export class ServiciosComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.getTiposServicios().subscribe({next:
       (datos: any) => {
-        console.log(datos);
+        CustomConsole.log(datos);
 
         if (datos.numdata > 0) {
           this.tiposServicio = datos.data!.map((x:any)=> x.obj);
-          console.log(this.tiposServicio);
+          CustomConsole.log(this.tiposServicio);
         } else {
           this.tiposServicio = [];
         } 
       }, error: (error) => {
         this.loading.hide();
-        console.log(error);
+        CustomConsole.log(error);
         Swal.fire(error.error.error, '', 'error');
       },complete:()=>  this.loading.hide() }
     );
@@ -77,7 +78,7 @@ export class ServiciosComponent implements OnInit {
       if (result.isConfirmed) {
         this.VehiculosService.eliminarServicios(tipo).subscribe(
           (respuesta: any) => {
-            console.log(respuesta);
+            CustomConsole.log(respuesta);
             if (respuesta.error === 'ok') {
               this.getServiciosVehiculos();
               Swal.fire('Elemento eliminado con exito!', '', 'success');
@@ -92,10 +93,10 @@ export class ServiciosComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.getServicios().subscribe({next:
       (datos: any) => {
-        console.log(datos);
+        CustomConsole.log(datos);
         if (datos.numdata > 0) {
           this.serviciosAVehiculos = datos.data!.map((x:any)=>x.obj);
-          console.log(this.serviciosAVehiculos);
+          CustomConsole.log(this.serviciosAVehiculos);
         } else {
           this.serviciosAVehiculos = [];
         }
@@ -104,7 +105,7 @@ export class ServiciosComponent implements OnInit {
       },
       error:  (error) => {
         this.loading.hide();
-        console.log(error);
+        CustomConsole.log(error);
         Swal.fire(error.error.error, '', 'error');
       }
 
@@ -128,7 +129,7 @@ export class ServiciosComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.guardarServicios(this.newServicioAVehiculo).subscribe(
       (respuesta: any) => {
-        console.log(respuesta);
+        CustomConsole.log(respuesta);
 
         if (respuesta.error === 'ok') {
           Swal.fire('datos ingresados con exito');

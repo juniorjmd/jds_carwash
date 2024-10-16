@@ -12,6 +12,8 @@
     },
     "printer": {
       "namePrinterGenerico": "impresora_punto_de_venta"
-    }
+    }, 
+    "enviroment":   "dev"
+     
   }
   

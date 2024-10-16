@@ -47,7 +47,7 @@ export class ModalCntCuentasMComponent {
 
   onSubmit() {
     // Aquí puedes manejar la lógica de envío del formulario
-    //console.log(this.newCntCuenta);
+    //CustomConsole.log(this.newCntCuenta);
   }
 
 

@@ -9,6 +9,7 @@ import { ProductoModel } from 'src/app/models/producto/producto.module';
 import Swal from 'sweetalert2';
 import { CategoriasModel } from 'src/app/models/categorias.model';
 import { MarcasModel } from 'src/app/models/marcas/marcas.module';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({ 
   selector: 'app-buscar-prod-directo',
   templateUrl: './buscar-prod-directo.component.html',
@@ -41,7 +42,7 @@ export class BuscarProdDirectoComponent implements OnInit  {
     this.marcaSeleccionada.id = 0;
     this.categoriaSeleccionada.nombre = 'Filtre por Categoria';
     this.categoriaSeleccionada.id = 0;
-    console.log('productos ingresados en el llamados',this.producto);
+    CustomConsole.log('productos ingresados en el llamados',this.producto);
     if (this.producto != undefined){
       this.listPrdBusqueda =  this.producto;
     }else{
@@ -82,7 +83,7 @@ export class BuscarProdDirectoComponent implements OnInit  {
     })
   }
    getProductosPorFiltro(){
-    console.log('busqueda productos inicial' ); 
+    CustomConsole.log('busqueda productos inicial' ); 
      this.loading.show() 
      this.listPrdBusqueda = [];
      this.prdService.get_producto_simple_by_nombre( this.textFindProductos  )
@@ -96,7 +97,7 @@ export class BuscarProdDirectoComponent implements OnInit  {
          }else{
            Swal.fire(  "error", respuesta.error);
          } 
-         console.log('buscarPorCategoria',JSON.stringify(respuesta));
+         CustomConsole.log('buscarPorCategoria',JSON.stringify(respuesta));
          this.loading.hide();
         
          }, error:
@@ -110,12 +111,12 @@ export class BuscarProdDirectoComponent implements OnInit  {
      this.listPrdBusqueda = [];
      this.prdService.get_producto_simple().subscribe({
       next :  (respuesta:any)=>{
-        console.log('busqueda productos inicial'  , respuesta);
+        CustomConsole.log('busqueda productos inicial'  , respuesta);
         
          if (respuesta.error === 'ok'){
             if (respuesta.numdata > 0 ){ 
               const productos = respuesta.data; 
-              console.log('producto general ===>>>' , productos)
+              CustomConsole.log('producto general ===>>>' , productos)
               this.listPrdBusqueda = productos   
             }else{Swal.fire(  "error", 'la busqueda no genero ningun resultado') 
                } 
@@ -146,7 +147,7 @@ export class BuscarProdDirectoComponent implements OnInit  {
            }else{
              Swal.fire(  "error", respuesta.error);
            } 
-           console.log('buscarPorCategoria',JSON.stringify(respuesta));
+           CustomConsole.log('buscarPorCategoria',JSON.stringify(respuesta));
            this.loading.hide();
           
            }, error:
@@ -164,7 +165,7 @@ export class BuscarProdDirectoComponent implements OnInit  {
    buscarPorMarcaDB(marca:MarcasModel){
      
     this.listPrdBusqueda = [];
-    console.log('marca' , marca);
+    CustomConsole.log('marca' , marca);
     this.loading.show() 
       this.prdService.get_producto_simple_by_marca(marca.id! ).subscribe( {
         next:
@@ -177,7 +178,7 @@ export class BuscarProdDirectoComponent implements OnInit  {
            }else{
              Swal.fire(  "error", respuesta.error);
            } 
-           console.log('getProductosPorMarca',JSON.stringify(respuesta)); 
+           CustomConsole.log('getProductosPorMarca',JSON.stringify(respuesta)); 
           
            },error: error => {
              Swal.fire(  "error",  error.error.error);

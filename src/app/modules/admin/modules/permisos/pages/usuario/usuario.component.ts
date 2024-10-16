@@ -77,13 +77,13 @@ export class UsuarioComponent implements OnInit {
     this.userService.getUsuarios().subscribe(
 
       {next: (datos:any)=>{
-          //console.log(datos);
+          //CustomConsole.log(datos);
           
      if (datos.numdata > 0 ){ 
        datos.data!.forEach((dato:Usuarios , index:number )=>{
          this.usuarios[index] = new UsuarioModel( dato );
        }) 
-       //console.log(this.usuarios);
+       //CustomConsole.log(this.usuarios);
      }else{
        this.usuarios = [];
      }
@@ -91,7 +91,7 @@ export class UsuarioComponent implements OnInit {
          this.loading.hide()
        } ,
        error : (error : any) => {this.loading.hide();
-         //console.log(error)
+         //CustomConsole.log(error)
          alert( error.error.error);
        }
       

@@ -36,21 +36,21 @@ export class OperacionesComponent implements OnInit {
       
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.clases = value??[] ;
-      //console.log('Clases = >',this.clases) 
+      //CustomConsole.log('Clases = >',this.clases) 
     },error : (e:any)=>Swal.fire(e.error.error)})
     
     this.cntService.currentCntGrupo.subscribe({next:(value:CntGruposModel[] | null)=>{
       this.Mgrupos = value??[] ;
-      //console.log('Grupos = >',this.Mgrupos) 
+      //CustomConsole.log('Grupos = >',this.Mgrupos) 
     },error : (e:any)=>Swal.fire(e.error.error)})
  
     this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[] | null)=>{
       this.McuentasMayores = value??[] ;
-      //console.log('Cuentas = >',this.McuentasMayores) 
+      //CustomConsole.log('Cuentas = >',this.McuentasMayores) 
     },error : (e:any)=>Swal.fire(e.error.error)})
     this.cntService.currentsubcuenta.subscribe({next:(value:vwCntSubCuentaModel[] | null)=>{
       this.Mcuentas = value??[] ;
-      //console.log('subCuentas = >',this.Mcuentas) 
+      //CustomConsole.log('subCuentas = >',this.Mcuentas) 
     },error : (e:any)=>Swal.fire(e.error.error)})
     
 
@@ -76,6 +76,6 @@ export class OperacionesComponent implements OnInit {
   }
   onSubmit() {
     // Aquí puedes manejar la lógica de envío del formulario
-    //console.log(this.newCntTransacciones);
+    //CustomConsole.log(this.newCntTransacciones);
   }
 }

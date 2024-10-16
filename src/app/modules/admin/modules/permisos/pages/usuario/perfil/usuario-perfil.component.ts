@@ -85,7 +85,7 @@ export class UsuarioPerfilComponent implements OnInit {
      
     this.loading.show(); 
     this.userService.guardarUsuarioPerfil(this.usuarioActual , this.perfilUsuario).subscribe(
-     (respuesta:any)=>{//console.log(respuesta)
+     (respuesta:any)=>{//CustomConsole.log(respuesta)
       
      if (respuesta.error === 'ok'){
        alert('datos ingresados con exito');   
@@ -101,7 +101,7 @@ export class UsuarioPerfilComponent implements OnInit {
     this.loading.show()
     this.userService.getPerfiles().subscribe(
       (datos:any )=>{
-         //console.log(datos);
+         //CustomConsole.log(datos);
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:Perfil , index : number )=>{
@@ -109,7 +109,7 @@ export class UsuarioPerfilComponent implements OnInit {
         if ( this.perfilUsuario  == dato.id) {dato.select = true;}
         this.perfiles[index] =  dato ;
       }) 
-      //console.log('perfiles',this.perfiles , this.perfiles.length);
+      //CustomConsole.log('perfiles',this.perfiles , this.perfiles.length);
     }else{
       this.perfiles = [];
     }
@@ -117,7 +117,7 @@ export class UsuarioPerfilComponent implements OnInit {
         this.loading.hide()
       } ,
       error => {this.loading.hide();
-        //console.log(error)
+        //CustomConsole.log(error)
         Swal.fire(JSON.stringify(error));
       }
       );

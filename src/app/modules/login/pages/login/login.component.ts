@@ -8,6 +8,7 @@ import { Modal1Component } from 'src/app/modules/shared/components/modal1/modal1
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { Form, NgForm } from '@angular/forms';
 import { select } from 'src/app/interfaces/generales.interface';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 
 @Component({
@@ -29,10 +30,9 @@ export class LoginComponent implements OnInit {
     this._datosInicialesService.getDatosIniSucursal().subscribe(
       (data:any)=>{
       this.sucursal = data;
-      _datosInicialesService.chageSucursal(this.sucursal[0])
-      console.log(this.sucursal);
+      _datosInicialesService.chageSucursal(this.sucursal[0]) 
     } ,
-    error => {console.log(error)
+    error => {CustomConsole.log(error)
       alert( error.error.error)
     }
       ); 
@@ -41,21 +41,18 @@ export class LoginComponent implements OnInit {
     
 
     login( form: NgForm){
-   if(form.invalid){return;}
-    console.log(`usuario ${this.usuario.Login} y pass ${this.usuario.pass}`)
-   // let usuario:Usuario;
+   if(form.invalid){return;} 
 
     this._loginService.getLogin(this.usuario.Login , this.usuario.pass).subscribe(
       async (datos:any)=>{ 
-        if(datos.data.usuario.length === 0){
-           
+        if(datos.data.usuario.length === 0){ 
           alert('error de usuario')
         }else{
-          console.log('getLogin',datos.data.usuario);  
+          CustomConsole.log('getLogin',datos.data.usuario);  
           localStorage.setItem('sis41254#2@', datos.data.usuario.key_registro );
           localStorage.setItem('#2@56YH7H82BF', datos.data.usuario.id ); 
           const digestBuffer = await this._loginService.digestMessage(new Date().toDateString());
-          console.log('llave para permisos' , digestBuffer );
+          CustomConsole.log('llave para permisos' , digestBuffer );
           
           localStorage.setItem('#2@JIEQPJKASFÑLKJ', digestBuffer); 
           
@@ -64,18 +61,10 @@ export class LoginComponent implements OnInit {
         }
       
     } ,
-    error => {console.log(error)
+    error => {CustomConsole.log(error)
       alert( error.error.error)
     }
-      );
-      /*
-    usuario = this._loginService.getLogin(this.usuario.Login , this.usuario.pass);
-    console.log(usuario);
-    if (typeof(usuario) === 'undefined'){
-      alert('usuario o constraseña invalidas')
-    } else{
-      this._Router.navigate(['home'])
-    }*/
+      ); 
     
   }
    myFunction(x:any) { 
@@ -89,10 +78,8 @@ export class LoginComponent implements OnInit {
 
 ngOnInit(): void {
   this.usuario =  new UsuarioModel( undefined);
-  this.usuario.Login = 'admin';
-  this.usuario.pass = 'prom2001josdom'; 
-
-    
+ // this.usuario.Login = 'admin';
+ // this.usuario.pass = 'prom2001josdom';   
   } 
 }
  

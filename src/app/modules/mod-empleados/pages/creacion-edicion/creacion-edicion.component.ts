@@ -8,6 +8,7 @@ import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { MatDialog } from '@angular/material/dialog';
 import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { tap } from 'rxjs';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-creacion-edicion',
@@ -45,7 +46,7 @@ export class CreacionEdicionComponent implements OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify( error)),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
   }
   manageEmpleado(){
@@ -55,7 +56,7 @@ export class CreacionEdicionComponent implements OnInit {
     if( this.nuevoEmpleado.tipo == 0 ){ Swal.fire( 'debe seleccionar el tipo de empleado', '', 'error');  return; }
     this.loading.show(); 
     this.empleadosServices.guardarEmpleado(this.nuevoEmpleado).
-    subscribe({next: (respuesta:any)=>{console.log(respuesta)
+    subscribe({next: (respuesta:any)=>{CustomConsole.log(respuesta)
       if (respuesta.error === 'ok'){
          Swal.fire('datos ingresados con exito');  
          this.nuevoEmpleado =    new    EmpleadoModel( ); 
@@ -171,13 +172,13 @@ export class CreacionEdicionComponent implements OnInit {
      this.loading.show()
      this.empleadosServices.getEmpleados()
      .subscribe({next: (datos:any)=>{
-          console.log(datos);
+          CustomConsole.log(datos);
           
      if (datos.numdata > 0 ){ 
        datos.data!.forEach((dato:any )=>{ 
         this.empleados.push(dato.objeto);
        }) 
-       console.log('empleados',this.empleados);
+       CustomConsole.log('empleados',this.empleados);
      }else{
        this.empleados = [];
      }
@@ -185,7 +186,7 @@ export class CreacionEdicionComponent implements OnInit {
          this.loading.hide();
        } ,
        error: error => {this.loading.hide();
-         console.log(error)
+         CustomConsole.log(error)
          Swal.fire('Error Busqueda', error.error.error,  'error');
        }}
        );
@@ -196,11 +197,11 @@ export class CreacionEdicionComponent implements OnInit {
     this.loading.show()
     this.empleadosServices.getTiposEmpleados().subscribe(
       {next:(datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          
     if (datos.numdata > 0 ){ 
       this.tipoEmpleado = datos.data ; 
-      console.log(this.tipoEmpleado);
+      CustomConsole.log(this.tipoEmpleado);
     }else{
       this.tipoEmpleado = [];
     }
@@ -208,7 +209,7 @@ export class CreacionEdicionComponent implements OnInit {
         this.loading.hide()
       } ,
       error: (error : any) => {this.loading.hide();
-        console.log(error)
+        CustomConsole.log(error)
         Swal.fire( error.error.error, '', 'error');
       }}
       );

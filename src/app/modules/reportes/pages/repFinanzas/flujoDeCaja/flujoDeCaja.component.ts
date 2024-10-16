@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { cntMovCuentasRequest, cntSubCuentaRequest } from 'src/app/interfaces/producto-request';
 import { ReporteMovimientoCuentas } from 'src/app/interfaces/reporteMovimientoCuentas.'; 
 import { subCuenta, vwCntSubCuentaModel } from 'src/app/models/cnt-sub-cuenta/cnt-sub-cuenta.module';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
@@ -88,7 +89,7 @@ export class flujoDeCajaComponent {
            
         if (datos.numdata > 0 ){
           this.resumenVenta = datos.data  ;
-          console.log('getResumenProductosVentas',this.resumenVenta);
+          CustomConsole.log('getResumenProductosVentas',this.resumenVenta);
           if(this.resumenVenta.movimientos![0] !== undefined){
             this.resumenVenta.movimientos![0].show = true 
           }

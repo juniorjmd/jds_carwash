@@ -6,6 +6,7 @@ import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 import { ValuesFormuGasto } from 'src/app/interfaces/valuesFormularios';
 import { loading } from 'src/app/models/app.loading';
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { DocumentoService } from 'src/app/services/documento.service';
@@ -53,7 +54,7 @@ export class NewGastoComponent {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire('Error:', JSON.stringify(error)),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
   }
   crearDocumento() {
@@ -66,7 +67,7 @@ export class NewGastoComponent {
     this.documentoService.crearDocumentoGasto  
     (this.newGasto).pipe(
       tap((respuesta: DocumentoCierreRequest) => {
-        console.log('crearDocumento', respuesta); 
+        CustomConsole.log('crearDocumento', respuesta); 
         if (respuesta.error == 'ok') {
           this.response.result = true;
           this.response.documento = respuesta.data.documentoFinal
@@ -92,13 +93,13 @@ export class NewGastoComponent {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('crearDocumento completo')
+      complete: () => CustomConsole.log('crearDocumento completo')
     });}
   }
 
   onSubmit(): void {
     if (this.gastoForm?.valid) {
-      console.log(this.gastoForm.value);
+      CustomConsole.log(this.gastoForm.value);
       this.newGasto = this.gastoForm.value;
       this.crearDocumento();
     }

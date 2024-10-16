@@ -7,6 +7,7 @@ import { vistas } from '../models/app.db.view';
 
 import { HttpClient } from '@angular/common/http';  
 import { httpOptions } from '../models/app.db.url'; 
+import { CustomConsole } from '../models/CustomConsole';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ constructor(private http: HttpClient ) { }
                 // "_tabla" : vistas.cajasActivas       
                  "_tablas" : [vistas.corte_de_caja ,vistas.corte_de_caja_parcial ,vistas.corte_de_caja_pagos ]             
                 };
-    console.log('servicios de cierres getCierresTotalesYparciales' ,url.action , datos, httpOptions());
+    CustomConsole.log('servicios de cierres getCierresTotalesYparciales' ,url.action , datos, httpOptions());
     return this.http.post(url.action , datos, httpOptions()) ;
 } 
 
@@ -32,7 +33,7 @@ getProductosPorCierres(id:number){
               "_where" : [{columna : 'id_cierre_caja' , tipocomp : '=' , dato : id}]     
                 //"_tablas" : [vistas.corte_de_caja ,vistas.corte_de_caja_parcial ,vistas.corte_de_caja_pagos ]             
               };
-  console.log('servicios de cierres getCierresTotalesYparciales' ,url.action , datos, httpOptions());
+  CustomConsole.log('servicios de cierres getCierresTotalesYparciales' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
 } 
 }

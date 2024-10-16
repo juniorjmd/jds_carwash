@@ -7,6 +7,7 @@ import { TABLA } from '../models/app.db.tables';
 import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { UsuarioModel } from '../models/usuario.model';
+import { CustomConsole } from '../models/CustomConsole';
 
 @Injectable({
     providedIn: 'root'
@@ -16,21 +17,21 @@ export class usuarioService {
     // private _configService = inject(configService); 
 constructor(private http: HttpClient ,
         private loading : loading ){ 
-        console.log('servicios usuarios inicializado');  
+        CustomConsole.log('servicios usuarios inicializado');  
     }
     
     getPerfiles(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : TABLA.perfiles
                     };
-        console.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     } 
     getUsuarios(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.usuario
                     };
-        console.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     } 
 
@@ -41,14 +42,14 @@ constructor(private http: HttpClient ,
           arrayDatos[key] = usuario[key] ;
             
         }}
-        console.log(arrayDatos);
+        CustomConsole.log(arrayDatos);
         
         let datos = {"action": actions.actionInsert ,
                      "_tabla" : TABLA.usuarios,
                      "_arraydatos" : arrayDatos
                     };
 
-        console.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
     guardarUsuarioPerfil(usuario : UsuarioModel ,  perfil:number){
@@ -60,7 +61,7 @@ constructor(private http: HttpClient ,
         }
        };
 
-        console.log('servicios de usuarios activo - guardarUsuarioPerfil' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de usuarios activo - guardarUsuarioPerfil' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
     updateUsuarios(usuario : Usuarios){
@@ -73,7 +74,7 @@ constructor(private http: HttpClient ,
         }else{
             where=[{"columna" : key , "tipocomp" : '=' , "dato" : usuario[key]}];
         }}
-        console.log(arrayDatos);
+        CustomConsole.log(arrayDatos);
         
         let datos = {"action": actions.actionUpdate ,
                      "_tabla" : TABLA.usuarios,
@@ -81,7 +82,7 @@ constructor(private http: HttpClient ,
                      "_where": where
                     };
 
-        console.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
 

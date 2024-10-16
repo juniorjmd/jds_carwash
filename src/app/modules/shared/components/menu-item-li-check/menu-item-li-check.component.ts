@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Recurso } from 'src/app/interfaces/recurso'; 
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { usuarioService } from 'src/app/services/usuario.services';
 import Swal from 'sweetalert2';
 
@@ -14,7 +15,7 @@ export class MenuItemLiCheckComponent implements OnInit {
   @Input() idPerfil!:number;  
   recursos:Recurso[]=[]; 
    constructor(    private usuarioService:usuarioService ){
-    console.log('recursos :::::  ',this.recurso);
+    CustomConsole.log('recursos :::::  ',this.recurso);
     
    }
   ngOnInit(): void { 
@@ -33,10 +34,10 @@ export class MenuItemLiCheckComponent implements OnInit {
 
   toggleSeleccionado() {
     //this.recurso.seleccionado = !this.recurso.seleccionado;
- console.log(this.recurso.display_nombre);
+ CustomConsole.log(this.recurso.display_nombre);
       let numPadre = this.recurso.idPadre.length  - 1 ; 
       let rec2:Recurso[] = [];
-      console.log( 'numPadre' , numPadre)
+      CustomConsole.log( 'numPadre' , numPadre)
       if (numPadre >= 0  ){ 
       this.recurso.idPadre.forEach((x, index)=>{
         if(index == 0){
@@ -51,7 +52,7 @@ export class MenuItemLiCheckComponent implements OnInit {
           let cont =  rec2[numPadre].recursosHijos.reduce((count, child) => {
             return count + (child.seleccionado ? 1 : 0);
           }, 0);
-          console.log('numero de hijos' , cont);
+          CustomConsole.log('numero de hijos' , cont);
           
           if(cont == 0){
             rec2[numPadre].seleccionado = false
@@ -70,12 +71,12 @@ export class MenuItemLiCheckComponent implements OnInit {
 
 
     this.updateChildSelection(this.recurso.seleccionado);
-    console.log('finalizo' , this.recurso.display_nombre);
+    CustomConsole.log('finalizo' , this.recurso.display_nombre);
     if(this.idPerfil > 0 ){
      this.usuarioService.setArrayRecursos(this.idPerfil , rec2[0]).subscribe(
       {
         next:(val)=>{
-          console.log(val);
+          CustomConsole.log(val);
           
         },
         error:e=>Swal.fire(JSON.stringify(e))
@@ -89,16 +90,16 @@ export class MenuItemLiCheckComponent implements OnInit {
       this.recurso.recursosHijos.forEach(child => {
         child.seleccionado = isSelected;
         if (child.recursosHijos && child.recursosHijos.length > 0) {
-          console.log(  'inicio' ) ; 
+          CustomConsole.log(  'inicio' ) ; 
           this.updateChildSelectionRecursive(child, isSelected);
-          console.log(  'fin' ) ; 
+          CustomConsole.log(  'fin' ) ; 
         }
       });
     }
   }
 
   updateChildSelectionRecursive(recurso: Recurso, isSelected: boolean) {
-    console.log(  'recursivo' ) ; 
+    CustomConsole.log(  'recursivo' ) ; 
     recurso.recursosHijos.forEach(child => {
       child.seleccionado = isSelected;
       if (child.recursosHijos && child.recursosHijos.length > 0) {

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { select } from 'src/app/interfaces/generales.interface';
 import { loading } from 'src/app/models/app.loading';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocumentoService } from 'src/app/services/documento.service';
@@ -21,12 +22,12 @@ export class MoverDocumentosComponent implements OnInit {
   ngOnInit(): void {
   }
   asignarACaja(caja:cajaModel){
-    console.log(caja);
+    CustomConsole.log(caja);
     caja.documentoActivoCaja = this.Documento.orden
     this.loading.show();
   this.documentoService.cambiarDocumentoDeCaja(caja).subscribe(
     (datos:any)=>{ 
-       console.log('asignarACaja',datos);  
+       CustomConsole.log('asignarACaja',datos);  
        this.loading.hide();
        this.dialogo.close(true);
 } )
@@ -37,13 +38,13 @@ export class MoverDocumentosComponent implements OnInit {
     subscribe(
       (datos:any)=>{
         let cont = 0;
-         console.log('getCajasActivas',datos); 
+         CustomConsole.log('getCajasActivas',datos); 
          this.cajasActivas = []; 
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:any    )=>{  
        this.cajasActivas.push(dato); 
        
-       console.log(dato);
+       CustomConsole.log(dato);
       }) 
    }
 } )

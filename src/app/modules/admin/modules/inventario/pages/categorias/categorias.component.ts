@@ -6,6 +6,7 @@ import { CategoriasService } from 'src/app/services/nServices/categorias.service
 import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
 import { Categoria } from 'src/app/interfaces/nInterfaces/categoria';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   templateUrl: './categorias.component.html',
@@ -30,7 +31,7 @@ ngOnInit() {
   this.catService.getCategorias().subscribe(
     {next:(value)=>{
       this.datos = value.categorias;
-      console.log('CategoriasComponent - getCategorias' , value , this.datos); 
+      CustomConsole.log('CategoriasComponent - getCategorias' , value , this.datos); 
     },
     error:error=>Swal.fire(JSON.stringify(error))
   }

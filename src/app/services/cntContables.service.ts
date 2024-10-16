@@ -14,6 +14,7 @@ import { CntOperacionesModel } from '../models/cnt-operaciones/cnt-operaciones.m
 import { TABLA } from '../models/app.db.tables';
 import { TransaccionesModel } from '../models/transacciones/transacciones.module';
 import { TrasladosCuentasModel } from '../models/trasladosCuentas.';
+import { CustomConsole } from '../models/CustomConsole';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class CntContablesService {
   currentoperacion = this.operacionSource.asObservable();
  
 constructor(private http: HttpClient  ) {  
-    console.log('servicios cuentas contables inicializado');  
+    CustomConsole.log('servicios cuentas contables inicializado');  
   }
 
   getTrasladoByType(tipo:string){ 
@@ -53,7 +54,7 @@ constructor(private http: HttpClient  ) {
     let datos = {"action": actions.action_generar_nueva_operacion ,
       _operacion
    };
-   console.log('setNewOperacion' ,url.actionAdmin , datos, httpOptions());
+   CustomConsole.log('setNewOperacion' ,url.actionAdmin , datos, httpOptions());
    return this.http.post(url.actionAdmin , datos, httpOptions()) ;
   }
 
@@ -63,7 +64,7 @@ constructor(private http: HttpClient  ) {
     "_tabla" : TABLA.operaPrestablecidas,
     "_where" : where  
    };
-   console.log('borrar tablas operaPrestablecidas ' ,url.action , datos, httpOptions());
+   CustomConsole.log('borrar tablas operaPrestablecidas ' ,url.action , datos, httpOptions());
    return this.http.post(url.action , datos, httpOptions()) ;
   }
   
@@ -73,7 +74,7 @@ constructor(private http: HttpClient  ) {
     "_tabla" : TABLA.transacciones_tmp,
     "_where" : where  
    };
-   console.log('borrar tablas temporales por usuario ' ,url.action , datos, httpOptions());
+   CustomConsole.log('borrar tablas temporales por usuario ' ,url.action , datos, httpOptions());
    return this.http.post(url.action , datos, httpOptions()) ;
   }
 
@@ -83,7 +84,7 @@ constructor(private http: HttpClient  ) {
     "_tabla" : TABLA.transacciones_tmp,
     "_where" : where  
    };
-   console.log('borrar tablas temporales por id ' ,url.action , datos, httpOptions());
+   CustomConsole.log('borrar tablas temporales por id ' ,url.action , datos, httpOptions());
    return this.http.post(url.action , datos, httpOptions()) ;
   }
 
@@ -108,7 +109,7 @@ constructor(private http: HttpClient  ) {
                  "_tabla" : vistas.mediosPorCajaActiva,
                  "_columnaUsuario": 'usuarioCaja'
                 };
-    console.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
+    CustomConsole.log('servicios de cajas activo ' ,url.action , datos, httpOptions());
     return this.http.post(url.action , datos, httpOptions()) ;
 } 
 getCntTransaccionesTmp():Observable<cntTransaccionesRequest>{
@@ -117,7 +118,7 @@ getCntTransaccionesTmp():Observable<cntTransaccionesRequest>{
     "_columnaUsuario": 'usuario'
    }; 
    
-   console.log('getCntTransaccionesTmp',url.action , datos, httpOptions()) ;
+   CustomConsole.log('getCntTransaccionesTmp',url.action , datos, httpOptions()) ;
    return this.http.post<cntTransaccionesRequest>(url.action , datos, httpOptions()) ;
 }
 
@@ -151,7 +152,7 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
       "_arraydatos" : arraydatos
      };
   } 
-  console.log('setCntTransaccionesTmp',url.action , datos);
+  CustomConsole.log('setCntTransaccionesTmp',url.action , datos);
   
    return this.http.post<any>(url.action , datos, httpOptions()) ;
 }
@@ -162,7 +163,7 @@ setCntTransaccionesTmp(data:TransaccionesModel):Observable<any>{
     "_arraydatos" : data
    };
  
-console.log('setCntTransaccionesTmp',url.actionAdmin , datos);
+CustomConsole.log('setCntTransaccionesTmp',url.actionAdmin , datos);
 
  return this.http.post<any>(url.actionAdmin , datos, httpOptions()) ;
  }
@@ -191,7 +192,7 @@ console.log('setCntTransaccionesTmp',url.actionAdmin , datos);
      let datos = {"action": actions.ejecutarTraslados , 
       "_arraydatos" : idTraslado
      }; 
-     console.log('ejecutarTrasladosCuentas' , url.actionAdmin , datos, httpOptions())
+     CustomConsole.log('ejecutarTrasladosCuentas' , url.actionAdmin , datos, httpOptions())
      return this.http.post<ejecucionTrasladosRequest>(url.actionAdmin , datos, httpOptions()) ;
   }
   bucarSoporteMovimiento(idTraslado:number):Observable<soporteMovimientoCntRequest>{
@@ -202,7 +203,7 @@ console.log('setCntTransaccionesTmp',url.actionAdmin , datos);
       "_obj" : ['obj'],  
       "_columnas": ['obj'],           
      };
-    console.log('bucarSoporteMovimiento' , url.action , datos, httpOptions())
+    CustomConsole.log('bucarSoporteMovimiento' , url.action , datos, httpOptions())
     return this.http.post<soporteMovimientoCntRequest>(url.action , datos, httpOptions()) ;
  }
 /**
@@ -217,7 +218,7 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
                "_where" : where , 
                "_obj" : ['obj'],             
               };
-  console.log('servicios de empleados - getEmpleadosAcumulados' ,url.action , datos, httpOptions());
+  CustomConsole.log('servicios de empleados - getEmpleadosAcumulados' ,url.action , datos, httpOptions());
   return this.http.post(url.action , datos, httpOptions()) ;
 } 
 
@@ -247,7 +248,7 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
       "_tabla" : vistas.vw_cnt_cuenta_mayores
      }; 
 
-    console.log('getCntCuentasMayores' , url.action , datos, httpOptions())
+    CustomConsole.log('getCntCuentasMayores' , url.action , datos, httpOptions())
      return this.http.post<cntCuentaMayorRequest>(url.action , datos, httpOptions()) ;
   }
   setNewSubCuenta(subCnt:vwCntSubCuentaModel){
@@ -282,7 +283,7 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
 
     } 
     
-   console.log(datos);
+   CustomConsole.log(datos);
    
     return this.http.post(url.action , datos, httpOptions()) ;
   }
@@ -300,7 +301,7 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
     let datos = {
       "action": actions.resumenCuentas, _fechaInicio,_fechaFin, _idPrd
     };
-    console.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
     return this.http.post<cntMovCuentasRequest>(url.actionDocumentos, datos, httpOptions());
   }  
   getCntCuentasCajasAsignadas():Observable<cntSubCuentaRequest>{
@@ -421,7 +422,7 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
       "_groupby": ["idDocumento" , "idDocumentoFinal"]  ,
       "_orderby": [["idDocumento" , "DESC"]] 
      }; 
-     console.log('getDocumentosOperacionesAuto',datos);
+     CustomConsole.log('getDocumentosOperacionesAuto',datos);
      
      return this.http.post<cntDocOperacionesRequest>(url.action , datos, httpOptions()) ;
   }
@@ -429,7 +430,7 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
     let datos = {"action": actions.actionSelect , 
       "_tabla" : vistas.vw_transacciones ,
     "_where" : [{columna : 'cod_comprobante' , tipocomp : '=' , dato : idOperacion }]     }; 
-    console.log("getCntTransacciones" , url.action , datos, httpOptions())
+    CustomConsole.log("getCntTransacciones" , url.action , datos, httpOptions())
      return this.http.post<cntTransaccionesRequest>(url.action , datos, httpOptions()) ;
   }
 }

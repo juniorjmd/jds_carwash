@@ -15,6 +15,7 @@ import { FindCategoriasComponent } from '../../../modals/findCategorias/findCate
 import { FindMarcasComponent } from '../../../modals/findMarcas/findMarcas.component';
 import { ModalFndClienteComponent } from '../../../modals/modalFndCliente/modalFndCliente.component';
 import { error } from 'jquery';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-crear-actividad',
@@ -80,7 +81,7 @@ export class CrearActividadComponent  implements OnInit{
 
   iniciaPrd(){ 
   this.actividadService.getProductosDisponibles().subscribe({next : (value:ProductoRequest)=>{
-    console.log('getProductosDisponibles',value); 
+    CustomConsole.log('getProductosDisponibles',value); 
     this.actividadService.setArrayProductos(value.data)
   }})
   }
@@ -115,7 +116,7 @@ export class CrearActividadComponent  implements OnInit{
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire('Error:',JSON.stringify( error)),
-        complete: () =>{ console.log('FindProductosComponent completo'); 
+        complete: () =>{ CustomConsole.log('FindProductosComponent completo'); 
           this.iniciaDescuentos();
           this.getTmpProductos();
         }
@@ -130,7 +131,7 @@ export class CrearActividadComponent  implements OnInit{
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire('Error:', error),
-        complete: () =>{ console.log('FindCategoriasComponent completo'); 
+        complete: () =>{ CustomConsole.log('FindCategoriasComponent completo'); 
           this.iniciaDescuentos();
           this.getTmpCategorias();
         }
@@ -146,7 +147,7 @@ export class CrearActividadComponent  implements OnInit{
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire('Error:', error),
-        complete: () => { console.log('FindCategoriasComponent completo'); 
+        complete: () => { CustomConsole.log('FindCategoriasComponent completo'); 
           this.iniciaDescuentos();
           this.getTmpMarcas();
         }
@@ -162,7 +163,7 @@ export class CrearActividadComponent  implements OnInit{
       ).subscribe({
         next: () => {},
         error: (error) => Swal.fire('Error:', JSON.stringify(error)),
-        complete: () => { console.log('FindCategoriasComponent completo'); 
+        complete: () => { CustomConsole.log('FindCategoriasComponent completo'); 
           this.iniciaDescuentos();
           this.getTmpClientes();
         }
@@ -224,7 +225,7 @@ onSubmitActividad() {
           return;} 
 
           this.actividadService.createDescuentoActividad(this.actividadForm.value).subscribe({next:(response:any) => {
-      console.log('Descuento actividad creado:', response);
+      CustomConsole.log('Descuento actividad creado:', response);
       if(response.error == 'ok'){
         if(this.showprd ) this.getTmpProductos()
         if( this.showcat ) this.getTmpCategorias()

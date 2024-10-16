@@ -5,6 +5,7 @@ import { loading } from 'src/app/models/app.loading';
 import { fechaBusqueda, select } from 'src/app/interfaces/generales.interface';
 import Swal from 'sweetalert2'; 
 import { AcumuladosEmpleadoModel } from 'src/app/models/acumulados-empleados/acumulados-empleados.module';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-pagos',
@@ -41,7 +42,7 @@ export class PagosComponent implements OnInit {
     
 this.loading.show(); 
 this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo , this.descripcionAticipo.trim()).subscribe(
- (respuesta:any)=>{console.log(respuesta)
+ (respuesta:any)=>{CustomConsole.log(respuesta)
   
  if (respuesta.error === 'ok'){
   Swal.fire('datos ingresados con exito');  
@@ -55,7 +56,7 @@ this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo
  })
   }
   validarValor(index:number ){ 
-  console.log(
+  CustomConsole.log(
     this.empleadosConAcumulados[index] ) ;
     /*,item.maximoDescuento, item.valorADescontarEnPago*/
     if( this.empleadosConAcumulados[index].valorADescontarEnPago! < 0 ){
@@ -73,7 +74,7 @@ this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo
     total a Pagar : <h3><b>${empleado.TotalAcumuladoPendientes! - empleado.valorADescontarEnPago!}</b></h3> 
    `; 
   Swal.fire({html:pagosHtml, width: '900px', showConfirmButton:true, confirmButtonText:'Pagar' ,cancelButtonColor:'red', cancelButtonText :'Cancelar',showCancelButton:true}).then(value=>{
-    console.log(value);
+    CustomConsole.log(value);
     if(value.isConfirmed){
       this.generarPago(empleado, index , fechas);
     }
@@ -82,7 +83,7 @@ this.empleadosServices.guardarAnticipoEmpleado(this.empleado, this.valorAnticipo
   generarPago(Empleado:EmpleadoModel, index:number , fechas:fechaBusqueda){
 this.loading.show(); 
 this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
- (respuesta:any)=>{console.log(respuesta)
+ (respuesta:any)=>{CustomConsole.log(respuesta)
   
  if (respuesta.error === 'ok'){
   Swal.fire('datos ingresados con exito');  
@@ -97,7 +98,7 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
 
   validarEmpleado(){
     this.empleado = this.empleados[this.indexEmpleado]
-    console.log('empleado',this.empleado);
+    CustomConsole.log('empleado',this.empleado);
     
   }
   getEmpleados(){  
@@ -113,7 +114,7 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
         next :
       
        (datos:any)=>{
-          console.log('getEmpleados' , datos);
+          CustomConsole.log('getEmpleados' , datos);
           
      if (datos.numdata > 0 ){ 
        datos.data!.forEach((dato:any , index:number )=>{ 
@@ -129,7 +130,7 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
           this.empleado  = this.empleados[this.indexEmpleado] ;  
         }
        }) 
-       console.log('empleados',this.empleados);
+       CustomConsole.log('empleados',this.empleados);
      }else{
        this.empleados = [];
      }
@@ -137,14 +138,14 @@ this.empleadosServices.guardarPagoEmpleado(Empleado , fechas).subscribe(
          this.loading.hide();
        } ,
        error : (error:any) => {this.loading.hide();
-         console.log(error)
+         CustomConsole.log(error)
          Swal.fire( error.error.error, '', 'error');
        }}
        );
    }  
    
   removeGetActivo(a:string){
-    console.log(a);
+    CustomConsole.log(a);
     $('.likcontPrd').each(function(){
        $(this).removeClass('active')
     }) ;
@@ -180,12 +181,12 @@ liquidarPagos(auxiliar:EmpleadoModel , index :number , fechas:fechaBusqueda){
      
      this.empleadosConAcumulados[index].maximoDescuento =  totalValorAcumulado;
      this.empleadosConAcumulados[index].valorADescontarEnPago =  totalValorAcumulado;
-     //console.log('empleado final',this.empleadosConAcumulados[index]);
+     //CustomConsole.log('empleado final',this.empleadosConAcumulados[index]);
 
        this.loading.hide();
      } ,
      error: ( error) => {this.loading.hide();
-       console.log(error)
+       CustomConsole.log(error)
        Swal.fire( error.error.error, '', 'error');
      }}
      );

@@ -19,6 +19,7 @@ import { ParametrosModel } from 'src/app/models/parametros/parametros.model';
 import { FndClienteComponent } from 'src/app/modules/shared/modals/fnd-cliente/fnd-cliente.component';
 import { ClientesModel } from 'src/app/models/clientes/clientes.module';
 import { tap } from 'rxjs';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-ingreso',
@@ -63,7 +64,7 @@ export class IngresoComponent implements OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire('Error:', error),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
     
   }
@@ -76,7 +77,7 @@ export class IngresoComponent implements OnInit {
     this.loading.show();
     this.serviceCaja.getCajasActivasYparametros().subscribe(
       (datos: any) => {
-        console.log(datos);
+        CustomConsole.log(datos);
         let cont: number;
         if (datos[0].numdata == 1) {
           datos[0].data!.forEach((dato: caja) => {
@@ -85,7 +86,7 @@ export class IngresoComponent implements OnInit {
             this.cajaEStablecida.id = cajaAux.id;
             this.cajaEStablecida.nombre = cajaAux.nombre;
           });
-          //console.log('cajas : ' , this.cajas);
+          //CustomConsole.log('cajas : ' , this.cajas);
         } else if (datos[0].numdata > 0) {
           if (datos[1].numdata > 0) {
             let definir = 0;
@@ -126,14 +127,14 @@ export class IngresoComponent implements OnInit {
       .open(EstablecerCajaComponent)
       .afterClosed()
       .subscribe((caja: cajaModel) => {
-        console.log('caja_seleccionada', caja);
+        CustomConsole.log('caja_seleccionada', caja);
         if (typeof caja != 'undefined') {this.cajaEStablecida = caja;
           this.serviceCaja.asignarCaja(caja);
         }
       });
   }
   generarIngresoApatios() {
-    console.log('caja establecida',this.cajaEStablecida)
+    CustomConsole.log('caja establecida',this.cajaEStablecida)
     if (this.cajaEStablecida == undefined || this.cajaEStablecida.id == undefined) {
       Swal.fire(
         'Debe establecer una caja para asignar el servicio creado',
@@ -175,21 +176,21 @@ export class IngresoComponent implements OnInit {
           cancelButtonText: 'No',
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
-          console.log(result);
+          CustomConsole.log(result);
 
           if (result.isDismissed) {
             this.ingreso.cajaAsignada = this.cajaEStablecida.id;
             this.ingreso.nombreCajaAsignada = this.cajaEStablecida.nombre;
             this.ingreso.idDocumento = 0;
           }
-          console.log(this.ingreso);
+          CustomConsole.log(this.ingreso);
 
           // return;
           this.loading.show();
           this.VehiculosService.guardarNuevoIngresoServicio(
             this.ingreso
           ).subscribe((respuesta: any) => {
-            console.log(respuesta);
+            CustomConsole.log(respuesta);
 
             if (respuesta.error === 'ok') {
               Swal.fire('datos ingresados con exito');
@@ -218,7 +219,7 @@ export class IngresoComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.guardarNuevoIngresoServicio(this.ingreso).subscribe(
       (respuesta: any) => {
-        console.log(respuesta);
+        CustomConsole.log(respuesta);
 
         if (respuesta.error === 'ok') {
           Swal.fire('datos ingresados con exito');
@@ -249,13 +250,13 @@ export class IngresoComponent implements OnInit {
     this.loading.show();
     this.empleadosServices.getEmpleadosLavador()
     .subscribe({next:     (datos: any) => {
-        console.log(datos);
+        CustomConsole.log(datos);
 
         if (datos.numdata > 0) {
           datos.data!.forEach((dato: any, index: number) => {
             this.empleados.push(dato.objeto);
           });
-          console.log('getEmpleadosLavador - empleados', this.empleados);
+          CustomConsole.log('getEmpleadosLavador - empleados', this.empleados);
         } else {
           this.empleados = [];
         }
@@ -264,7 +265,7 @@ export class IngresoComponent implements OnInit {
       },error:
       (error) => {
         this.loading.hide();
-        console.log('error getEmpleadosLavador',error);
+        CustomConsole.log('error getEmpleadosLavador',error);
         Swal.fire(error.error.error, '', 'error');
       }}
     );
@@ -280,7 +281,7 @@ export class IngresoComponent implements OnInit {
       this.ingreso.placaVehiculo!
     ).subscribe({next:
       (datos: any) => {
-        console.log('getVehiculos_propietario',datos);
+        CustomConsole.log('getVehiculos_propietario',datos);
         let dato: any = {
           placaVehiculo: '',
           propietario: 0,
@@ -297,7 +298,7 @@ export class IngresoComponent implements OnInit {
         if (datos.numdata > 0) {
           dato = datos.data[0]; 
         } 
-        console.log(dato);
+        CustomConsole.log(dato);
         this.ingreso.propietario = dato.propietario; 
         this.ingreso.nombrePropietario = dato.nombrePropietario; 
         this.ingreso.cod_tipo_vehiculo = dato.cod_tipo_vehiculo;
@@ -309,7 +310,7 @@ export class IngresoComponent implements OnInit {
       },error:
       (error) => {
         this.loading.hide();
-        console.log(error);
+        CustomConsole.log(error);
         Swal.fire(error.error.error, '', 'error');
       }}
     );
@@ -324,16 +325,16 @@ export class IngresoComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.getTiposServicios().subscribe({next:
       (datos: any) => {
-        console.log(datos); 
+        CustomConsole.log(datos); 
         if (datos.numdata > 0) {
           this.tiposServicio = datos.data!.map((x:any) => x.obj );
-          console.log('tiposervicio' , this.tiposServicio);
+          CustomConsole.log('tiposervicio' , this.tiposServicio);
         } else {
           this.tiposServicio = [];
         } 
       },error:  (error) => {
         this.loading.hide();
-        console.log(error);
+        CustomConsole.log(error);
         Swal.fire(error.error.error, '', 'error');
       },complete:()=>  this.loading.hide() }
     );
@@ -346,7 +347,7 @@ export class IngresoComponent implements OnInit {
         this.ingreso.valor = servicio.valor;
       }
     });
-    console.log('optener el valor del servicio', this.ingreso);
+    CustomConsole.log('optener el valor del servicio', this.ingreso);
   }
 
   mostrarServicioPorTipo() {
@@ -356,9 +357,9 @@ export class IngresoComponent implements OnInit {
       return;
     }
     let cont = 0;
-    console.log('mostrarServicioPorTipo' , this.serviciosAVehiculos, 'tipo de servicio' , this.tipo_servicio )
+    CustomConsole.log('mostrarServicioPorTipo' , this.serviciosAVehiculos, 'tipo de servicio' , this.tipo_servicio )
     this.serviciosAmostrar = this.serviciosAVehiculos.filter(x=>x.tipo_servicio == this.tipo_servicio)
-    console.log(this.serviciosAmostrar)
+    CustomConsole.log(this.serviciosAmostrar)
     
   }
   getServiciosVehiculos() {
@@ -372,11 +373,11 @@ export class IngresoComponent implements OnInit {
       this.ingreso.cod_tipo_vehiculo
     ).subscribe({next:
       (datos: any) => {
-        console.log(datos);
+        CustomConsole.log(datos);
 
         if (datos.numdata > 0) {
           this.serviciosAVehiculos = datos.data.map( (x:any)=>x.obj!);
-          console.log(this.serviciosAVehiculos);
+          CustomConsole.log(this.serviciosAVehiculos);
           this.mostrarServicioPorTipo();
         } else {
           this.serviciosAVehiculos = [];
@@ -386,7 +387,7 @@ export class IngresoComponent implements OnInit {
       },error:
       (error) => {
         this.loading.hide();
-        console.log(error);
+        CustomConsole.log(error);
         Swal.fire(error.error.error, '', 'error');
       }}
     );
@@ -398,11 +399,11 @@ export class IngresoComponent implements OnInit {
     this.loading.show();
     this.VehiculosService.geTiposVehiculos().subscribe({next:
       (datos: any) => {
-        console.log('geTiposVehiculos', datos);
+        CustomConsole.log('geTiposVehiculos', datos);
 
         if (datos.numdata > 0) {
           this.tiposVehiculo = datos.data  
-          console.log(this.tiposVehiculo);
+          CustomConsole.log(this.tiposVehiculo);
         } else {
           this.tiposVehiculo = [];
         }
@@ -410,7 +411,7 @@ export class IngresoComponent implements OnInit {
         this.loading.hide();
       },error:   (error) => {
         this.loading.hide();
-        console.log(error);
+        CustomConsole.log(error);
         Swal.fire(error.error.error, '', 'error');
       }}
     );

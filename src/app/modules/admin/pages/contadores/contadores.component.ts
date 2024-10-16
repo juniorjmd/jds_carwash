@@ -9,6 +9,7 @@ import { caja } from 'src/app/interfaces/caja.interface';
 import { TipoDocumento } from 'src/app/interfaces/tipo-documento';
 import { Contador } from 'src/app/interfaces/contador';
 import { establecimientosRequest } from 'src/app/interfaces/producto-request';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-contadores',
@@ -54,7 +55,7 @@ export class ContadoresComponent implements OnInit {
         this.tipContadores= [];
         this.serviceCaja.getTiposDocumentosConContadores()
          .subscribe({next:     (datos:any)=>{
-             console.log(datos); 
+             CustomConsole.log(datos); 
         if (datos.numdata > 0 ){  
           datos.data!.forEach((dato:TipoDocumento , index:number )=>{
             this.tipContadores[index] = dato;
@@ -81,13 +82,13 @@ export class ContadoresComponent implements OnInit {
       this.serviceCaja.getContadores()
          .subscribe({next :
           (datos:any)=>{
-             console.log(datos);
+             CustomConsole.log(datos);
              
         if (datos.numdata > 0 ){ 
           datos.data!.forEach((dato:Contador  , index:number )=>{ 
             this.contadores[index] = dato ;
           }) 
-          console.log(this.contadores);
+          CustomConsole.log(this.contadores);
         }else{
           this.contadores = [];
         }
@@ -151,7 +152,7 @@ export class ContadoresComponent implements OnInit {
        
        this.loading.show(); 
        this.serviceCaja.setConsecutivo(this.newContador).subscribe(
-       {next: (respuesta:any)=>{console.log(respuesta)
+       {next: (respuesta:any)=>{CustomConsole.log(respuesta)
          
         if (respuesta.error === 'ok'){
           alert('datos ingresados con exito');  

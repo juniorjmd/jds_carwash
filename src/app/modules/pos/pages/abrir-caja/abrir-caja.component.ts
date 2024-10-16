@@ -13,6 +13,7 @@ import { cajaRequest } from 'src/app/interfaces/producto-request';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({
   selector: 'app-abrir-caja',
   templateUrl: './abrir-caja.component.html',
@@ -32,7 +33,7 @@ export class AbrirCajaComponent implements OnInit {
     private newAbrirCajaDialog : MatDialog) { 
       this.getCajas()
       this.serviceCaja.getCuentasContablesEstablecimientoUsuario().subscribe({next:(value:cajaRequest)=>{
-        console.log('getCuentasContablesEstablecimientoUsuario' , value)
+        CustomConsole.log('getCuentasContablesEstablecimientoUsuario' , value)
         this.inicioService.validarCuentasContablesEstablecimiento(value.data[0] )  
       }})
     
@@ -59,7 +60,7 @@ export class AbrirCajaComponent implements OnInit {
     this.serviceCaja.cerrarCajaParcial(caja)
        .subscribe(
         (respuesta:any)=>{
-          console.log(respuesta)
+          CustomConsole.log(respuesta)
          
         if (respuesta.error === 'ok'){ 
            
@@ -67,7 +68,7 @@ export class AbrirCajaComponent implements OnInit {
         respuesta.data!.forEach((dato:any   )=>{
           cajaResumen =  dato  ;
 
-          console.log(cajaResumen, dato , dato); 
+          CustomConsole.log(cajaResumen, dato , dato); 
         }) 
         this.abrirResumen(cajaResumen );
         
@@ -87,7 +88,7 @@ export class AbrirCajaComponent implements OnInit {
     this.serviceCaja.cerrarCaja(caja)
        .subscribe(
         (respuesta:any)=>{
-          console.log(respuesta)
+          CustomConsole.log(respuesta)
          
         if (respuesta.error === 'ok'){ 
            
@@ -95,7 +96,7 @@ export class AbrirCajaComponent implements OnInit {
         respuesta.data!.forEach((dato:any   )=>{
           cajaResumen =  dato  ;
 
-          console.log(cajaResumen, dato , dato); 
+          CustomConsole.log(cajaResumen, dato , dato); 
         }) 
         this.abrirResumen(cajaResumen );
         
@@ -117,7 +118,7 @@ export class AbrirCajaComponent implements OnInit {
     this.serviceCaja.resumenCaja(caja)
        .subscribe(
         (datos:any)=>{
-           console.log(datos);  
+           CustomConsole.log(datos);  
       if (datos.numdata > 0 ){ 
         datos.data!.forEach((dato:any   )=>{
           cajaResumen = dato.json ; 
@@ -141,7 +142,7 @@ export class AbrirCajaComponent implements OnInit {
        .subscribe( {next:
         (datos:cajaRequest)=>{        
           let cont = 0;
-           console.log('getCajasUsuario',datos);
+           CustomConsole.log('getCajasUsuario',datos);
            this.cajaAbiertaFlag = false;   
       if (datos.numdata > 0 ){ 
 
@@ -167,7 +168,7 @@ export class AbrirCajaComponent implements OnInit {
   }
   asignarCaja(caja : cajaModel){
     /*["/home", "pos"]*/ 
-    console.log(caja);
+    CustomConsole.log(caja);
     
       this.newAbrirCajaDialog.open(DefinirBaseCajaComponent,{data:caja})
       .afterClosed()
@@ -186,7 +187,7 @@ export class AbrirCajaComponent implements OnInit {
     this.loading.show() 
     this.cajaService.abrirCaja(caja, 0).subscribe( {next:
       (respuesta:any)=>{
-        console.log(respuesta)
+        CustomConsole.log(respuesta)
        
       if (respuesta.error === 'ok'){
        Swal.fire( respuesta.datos[0].msg ); 

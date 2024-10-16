@@ -11,6 +11,7 @@ import { EmpleadoModel } from '../models/empleados/empleados.module';
 import { table } from 'ngx-bootstrap-icons';
 import { TABLA } from '../models/app.db.tables';
 import { ParametrosModel } from '../models/parametros/parametros.model';
+import { CustomConsole } from '../models/CustomConsole';
 
 
 
@@ -61,7 +62,7 @@ constructor(private http: HttpClient){}
           "action": actions.actionSelect,
           "_tabla": vistas.vw_productos_vendidos,  
         };
-        console.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
+        CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
         return this.http.post<ProductosVendidosRequest>(url.action, datos, httpOptions());
       }   
   getVendedores():Observable<empleadoRequest>{
@@ -91,7 +92,7 @@ constructor(private http: HttpClient){}
     let datos = {"action": actions.actionSelect ,
         "_tabla" : vistas.usuario
        };
-      console.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions()); 
+      CustomConsole.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions()); 
        return this.http.post<usuarioVentasRequest>(url.action , datos, httpOptions()) ;
   }
 
@@ -117,7 +118,7 @@ constructor(private http: HttpClient){}
     getDatosIniSucursal(){
        
         let datos = {"action": actions.datosInicialesSucursal};
-        console.log('servicios datos iniciales inicializado ' ,url.datosIniciales , datos, url.httpOptionsSinAutorizacion);
+        CustomConsole.log('servicios datos iniciales inicializado ' ,url.datosIniciales , datos, url.httpOptionsSinAutorizacion);
         return this.http.post(url.datosIniciales , datos, url.httpOptionsSinAutorizacion) ;
       
     }

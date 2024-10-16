@@ -31,7 +31,7 @@ private dialogo= inject(MatDialogRef<ModalUpdateProductoComponent>);
   constructor( @Inject(MAT_DIALOG_DATA) public   newProducto:ProductoModel , private loading:loading){ 
     this.getPresentacion();
     this.getCategorias_marcas()   
-    //console.log('producto injectado' , this.newProducto); 
+    //CustomConsole.log('producto injectado' , this.newProducto); 
     let precio:PrdPreciosModule = new PrdPreciosModule();
     precio.id_producto = this.newProducto.id
     precio.precio_con_iva = 0;
@@ -56,19 +56,19 @@ private dialogo= inject(MatDialogRef<ModalUpdateProductoComponent>);
       this.loading.show()
       this.productoService.getCategorias_marcas().subscribe({
         next: (datos:[categoriaRequest,marcaRequest])=>{
-           //console.log('getCategorias_marcas',datos);
+           //CustomConsole.log('getCategorias_marcas',datos);
        let cont:number;    
       if (datos[0].numdata > 0 ){ 
         this.categorias = 
         datos[0].data ;
-        //console.log(this.categorias); 
+        //CustomConsole.log(this.categorias); 
       }else{
         this.categorias = [];
       }
       if (datos[1].numdata > 0 ){ 
         cont = 1 ; 
         this.marcas = datos[1].data ;
-        //console.log(this.marcas);
+        //CustomConsole.log(this.marcas);
       }else{
         this.marcas = [];
       }
@@ -146,7 +146,7 @@ private dialogo= inject(MatDialogRef<ModalUpdateProductoComponent>);
         this.loading.show(); 
         this.productoService.updateProducto(this.newProducto).subscribe(
           {next:
-         (respuesta:any)=>{//console.log(respuesta)
+         (respuesta:any)=>{//CustomConsole.log(respuesta)
           
          if (respuesta.error === 'ok'){ 
           Swal.fire('datos ingresados con exito'); 

@@ -101,7 +101,7 @@ export class UsuarioNuevoComponent implements OnInit {
   ngOnInit(): void {
   }
   guardarUsuario(){
-    //console.log('nueva caja',this.newUsuario.Nombre1)
+    //CustomConsole.log('nueva caja',this.newUsuario.Nombre1)
     this.newUsuario.usr_registro =  parseInt(localStorage.getItem('#2@56YH7H82BF')!); 
     if (typeof(this.newUsuario.Nombre1) === 'undefined'){
      this.loading.hide();
@@ -129,7 +129,7 @@ export class UsuarioNuevoComponent implements OnInit {
     
     this.loading.show(); 
     this.userService.guardarUsuarios(this.newUsuario).subscribe({next : 
-     (respuesta:any)=>{//console.log(respuesta)
+     (respuesta:any)=>{//CustomConsole.log(respuesta)
       
      if (respuesta.error === 'ok'){
        alert('datos ingresados con exito');  

@@ -11,6 +11,7 @@ import { ModalCntSubCuentasComponent } from '../../modals/cuentasContables/cnt-s
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-medios-de-pago',
@@ -44,7 +45,7 @@ MedioP:MediosDePago[] = [] ;
     .afterClosed() 
     .pipe(
       tap((response: responseSubC) => {
-        console.log('buscarCuentasContablesGastos',response);
+        CustomConsole.log('buscarCuentasContablesGastos',response);
         if (response.confirmado && response.datoDevolucion !== undefined ) {   
             this.newMedioP.nombreCuentaContable = response.datoDevolucion.nombre_scuenta!;
             this.newMedioP.cuentaContable = response.datoDevolucion.id_scuenta!;  
@@ -53,14 +54,14 @@ MedioP:MediosDePago[] = [] ;
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire('Error:', error),
-      complete: () => console.log('buscarCuentasContables completo')
+      complete: () => CustomConsole.log('buscarCuentasContables completo')
     }); 
   }
    
 
   guardarMedio(){
     //newMedioP.nombre
-    console.log('nueva caja',this.newMedioP.nombre)
+    CustomConsole.log('nueva caja',this.newMedioP.nombre)
     if (typeof(this.newMedioP.nombre) === 'undefined' || this.newMedioP.nombre.trim() === ''){
      this.loading.hide();
      alert('Debe ingresar el Nombre del medio de pago');
@@ -87,7 +88,7 @@ MedioP:MediosDePago[] = [] ;
     this.loading.show(); 
   
     this.serviceCaja.setMedioDePago(this.newMedioP).subscribe(
-     (respuesta:any)=>{console.log(respuesta)
+     (respuesta:any)=>{CustomConsole.log(respuesta)
       
      if (respuesta.error === 'ok'){
        alert('datos ingresados con exito');  
@@ -117,14 +118,14 @@ MedioP:MediosDePago[] = [] ;
     this.serviceCaja.getEstablecimientos()
      .subscribe(
       (datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          this.esta = [];   
     if (datos.numdata > 0 ){ 
       
       datos.data!.forEach((dato:Establecimientos , index:number )=>{
         this.esta[index] = new establecimientoModel( dato );
       }) 
-      console.log(this.esta);
+      CustomConsole.log(this.esta);
     }
 
         this.loading.hide()
@@ -142,13 +143,13 @@ getMedios(){
   this.serviceCaja.getMedios()
      .subscribe(
       (datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:MediosDePago , index:number )=>{
         this.MedioP[index] =   dato ;
       }) 
-      console.log(this.MedioP);
+      CustomConsole.log(this.MedioP);
     }else{
       this.MedioP = [];
     }

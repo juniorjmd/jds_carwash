@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { error } from 'jquery';
 import { DescuentoRequest } from 'src/app/interfaces/producto-request';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { DescuentoModule } from 'src/app/models/descuento/descuento.model';
 import { ProductoService } from 'src/app/services/producto.service';
 import Swal from 'sweetalert2';
@@ -23,7 +24,7 @@ export class DescuentosComponent {
   }
    editar( ){  
         this.productoService.setDescuento(this.newDesc).subscribe({next:(value:any)=>{
-          console.log(value);
+          CustomConsole.log(value);
           if (value.error != undefined && value.error == 'ok'){ 
             this.newDesc =  new DescuentoModule();
             this.getDescuentos();

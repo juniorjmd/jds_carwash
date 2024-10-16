@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdminCategoriasComponent } from '../../modals/admin-categorias/admin-categorias.component';
 import { tap } from 'rxjs';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-categorias',
@@ -29,7 +30,7 @@ private newAbrirDialog =  inject(MatDialog)
     .afterClosed() 
     .pipe(
       tap((response: any) => {
-        console.log('AdminCategoriasComponent',response); 
+        CustomConsole.log('AdminCategoriasComponent',response); 
         if(response){
         this.getAllCategorias();
         }
@@ -37,7 +38,7 @@ private newAbrirDialog =  inject(MatDialog)
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire('Error:', error),
-      complete: () => console.log('buscarCuentasContables completo')
+      complete: () => CustomConsole.log('buscarCuentasContables completo')
     }); 
   }
 
@@ -50,12 +51,12 @@ private newAbrirDialog =  inject(MatDialog)
     this.loading.show()
     this.productoService.getCategorias().subscribe({
        next :(datos:categoriaRequest)=>{
-         console.log('getAllCategorias',datos);
+         CustomConsole.log('getAllCategorias',datos);
          
     if (datos.numdata > 0 ){  
         this.categorias = datos.data!.map((x:any)=>x.obj) 
         this.productoService.asignarCategorias(this.categorias);
-        console.log(this.categorias);
+        CustomConsole.log(this.categorias);
     }else{
       this.categorias = [];
     }
@@ -63,7 +64,7 @@ private newAbrirDialog =  inject(MatDialog)
         this.loading.hide()
       } ,
       error: error => {this.loading.hide();
-        console.log(error)
+        CustomConsole.log(error)
         alert( error.error.error);
       }}
       );

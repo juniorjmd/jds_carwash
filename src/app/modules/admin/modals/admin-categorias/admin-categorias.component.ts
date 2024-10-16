@@ -10,6 +10,7 @@ import { tap } from 'rxjs';
 import { loading } from 'src/app/models/app.loading';
 import { categoriaRequest } from 'src/app/interfaces/producto-request';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
  
 
 @Component({
@@ -33,9 +34,9 @@ categoriasPadre2: CategoriasModel[] = [];
 
 filtrarPadre2(){
   const padre1Id = this.categoriaForm?.get('categoriaPadre1')?.value;  
-  //console.log('padre1Id' , padre1Id)
+  //CustomConsole.log('padre1Id' , padre1Id)
   let objPadre =    this.categorias.filter(x => x.id == padre1Id)[0];
-  //console.log(objPadre)
+  //CustomConsole.log(objPadre)
   this.categoriaForm?.get('cuentaContable')?.setValue( objPadre.NombreCuentaContable);
   this.newCateg.idCuentaContable  = objPadre.idCuentaContable;
   this.categoriasPadre2 = this.categorias.filter(x => x.idPadreCategoria == padre1Id);
@@ -72,7 +73,7 @@ filtrarPadre3(){
   .afterClosed() 
   .pipe(
     tap((response: responseSubC) => {
-      //console.log('buscarCuentasContables',response);
+      //CustomConsole.log('buscarCuentasContables',response);
       if (response.confirmado && response.datoDevolucion !== undefined ) {  
         this.categoriaForm?.get('cuentaContable')?.setValue( response.datoDevolucion.nombre_scuenta);
         this.newCateg.idCuentaContable  = response.datoDevolucion.id_scuenta;
@@ -81,12 +82,12 @@ filtrarPadre3(){
   ).subscribe({
     next: () => {},
     error: (error) => Swal.fire('Error:', error),
-    complete: () =>  console.log('buscarCuentasContables completo')
+    complete: () =>  CustomConsole.log('buscarCuentasContables completo')
   }); 
 }
   onSubmit(): void {
     if (this.categoriaForm?.valid) {
-      //console.log(this.categoriaForm.value);
+      //CustomConsole.log(this.categoriaForm.value);
       let valores:any = this.categoriaForm.value ; 
       this.newCateg.idPadreCategoria = 0;
       if( valores.categoriaPadre2!= undefined && valores.categoriaPadre2 > 0 ){
@@ -108,9 +109,9 @@ filtrarPadre3(){
       this.newCateg.name_usuario_creacion = undefined ; 
       this.newCateg.name_usuario_edicion = undefined ;  
 
-      //console.log(this.newCateg);
+      //CustomConsole.log(this.newCateg);
       this.prdService.setCategorias(this.newCateg).subscribe({next:(value:any)=>{ 
-        //console.log(value)
+        //CustomConsole.log(value)
         this.dialogo.close(true); 
       },error:error=>Swal.fire(error)})
     } 
@@ -119,12 +120,12 @@ filtrarPadre3(){
     this.loading.show()
     this.prdService.getCategorias().subscribe({
        next :(datos:categoriaRequest)=>{
-         //console.log('getAllCategorias',datos);
+         //CustomConsole.log('getAllCategorias',datos);
          
     if (datos.numdata > 0 ){  
         this.categorias = datos.data!.map((x:any)=>x.obj) 
         this.prdService.asignarCategorias(this.categorias);
-        //console.log(this.categorias);
+        //CustomConsole.log(this.categorias);
         this.newAbrirDialog.closeAll();
     }else{
       this.categorias = [];

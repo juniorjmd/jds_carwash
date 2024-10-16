@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MediosDePago } from 'src/app/interfaces/medios-de-pago.interface';
 import { DocumentoCierreRequest } from 'src/app/interfaces/producto-request';
 import { loading } from 'src/app/models/app.loading'; 
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { arrRetorno, documentoDev, } from 'src/app/models/ventas/documento.model';
 import { DocpagosModel  } from 'src/app/models/ventas/pagos.model';
 import { cajasServices } from 'src/app/services/Cajas.services'; 
@@ -27,7 +28,7 @@ export class pagosSaldoNotasDebitoComponent implements OnInit {
   ) { 
     
     console.clear();
-    console.log('datos recibidos modal pagosSaldoNotasDebitoComponent' , this.Documento);
+    CustomConsole.log('datos recibidos modal pagosSaldoNotasDebitoComponent' , this.Documento);
     
     this.getMediosP()}
 
@@ -50,7 +51,7 @@ export class pagosSaldoNotasDebitoComponent implements OnInit {
     return prd;}).filter(x=> x.cnt > 0 ) ;  
 
       this.documentoService.crearNotaDebito(this.Documento).subscribe({next:(value:DocumentoCierreRequest)=>{
-        console.log('crearNotaDebito',value);   
+        CustomConsole.log('crearNotaDebito',value);   
        this.dialogo.close({rep:true,documento:value.data.documentoFinal });
   
        },error:error=>Swal.fire(error.error.error)})
@@ -86,16 +87,16 @@ setVueltos(index:number){
  
 }
 getMediosP(){ 
-  console.log('DocumentoActivo',this.Documento)
+  CustomConsole.log('DocumentoActivo',this.Documento)
   this.listo = false;
   this.loading.show()
   this.serviceCaja.getMediosByEstablecimiento(this.Documento.idEsta)
      .subscribe( {next:(datos:any)=>{
-         console.log('getMediosCajaActiva',datos);
+         CustomConsole.log('getMediosCajaActiva',datos);
       if (datos.numdata > 0 ){ 
         this.pagos = []; 
          
-      console.log('pagos recibidos' , this.pagos);
+      CustomConsole.log('pagos recibidos' , this.pagos);
       
         datos.data!.forEach((dato:MediosDePago )=>{  
          let pago = new DocpagosModel();  
@@ -113,7 +114,7 @@ getMediosP(){
     }else{
       this.pagos = [];
     } 
-    console.log('pagos realizados' , this.pagos ); 
+    CustomConsole.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
       } ,

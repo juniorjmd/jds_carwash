@@ -4,6 +4,7 @@ import { CategoriasModel } from 'src/app/models/categorias.model';
 import { loading } from 'src/app/models/app.loading';
 import { ProductoService } from 'src/app/services/producto.service'; 
 import { BodegasModule } from 'src/app/models/bodegas/bodegas.module';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-bodegas',
@@ -20,10 +21,10 @@ export class BodegasComponent implements OnInit {
     this.loading.show()
     this.productoService.getbodegas().subscribe(
       {next:   (datos:any)=>{
-         console.log('getBodegas',datos); 
+         CustomConsole.log('getBodegas',datos); 
     if (datos.numdata > 0 ){
       this.bodegas =  datos.data!.map((x:any)=>x.obj)  ;
-      console.log('bodegas',this.bodegas);
+      CustomConsole.log('bodegas',this.bodegas);
     }else{
       this.bodegas = [];
     }
@@ -31,7 +32,7 @@ export class BodegasComponent implements OnInit {
         this.loading.hide()
       } ,
       error:(error : any) => {this.loading.hide();
-        console.log(error)
+        CustomConsole.log(error)
         alert( error.error.error);
       }}
       );

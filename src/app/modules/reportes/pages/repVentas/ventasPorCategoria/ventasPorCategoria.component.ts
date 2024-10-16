@@ -9,6 +9,7 @@ import { ProductoVendido } from 'src/app/interfaces/productoVendido.';
 import Swal from 'sweetalert2';
 import { CategoriasVendidasModel } from 'src/app/models/categorias.model';
 import { ResumenVenta } from 'src/app/interfaces/resumenVenta.';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-ventasPorCategoria',
@@ -39,7 +40,7 @@ export class ventasPorCategoriaComponent implements OnInit {
      }
 
      getVentasPorProducto(prd:CategoriasVendidasModel){
-      console.log('productos seleccionado' , this.categoriaSeleccionada);
+      CustomConsole.log('productos seleccionado' , this.categoriaSeleccionada);
       this.categoriaSeleccionada = prd;
       if(this.categoriaSeleccionada?.id != 0){
       //  alert('categoria seleccionado ' +JSON.stringify(this.categoriaSeleccionada!) )
@@ -58,7 +59,7 @@ export class ventasPorCategoriaComponent implements OnInit {
            
         if (datos.numdata > 0 ){
           this.resumenVenta = datos.data  ;
-          console.log('getResumenProductosVentas',this.resumenVenta);
+          CustomConsole.log('getResumenProductosVentas',this.resumenVenta);
        } else{
         Swal.fire('No existen datos relacionados con la busqueda')
        } 
@@ -73,8 +74,8 @@ export class ventasPorCategoriaComponent implements OnInit {
           (datos:any)=>{
             let cont = 0; 
              this.documentos = []; 
-             console.log('getDocumentos', datos.numdata);
-             console.log('getDocumentos_recuest', datos );
+             CustomConsole.log('getDocumentos', datos.numdata);
+             CustomConsole.log('getDocumentos_recuest', datos );
              
         if (datos.numdata > 0 ){ 
           datos.data!.forEach((dato:any , index : number  )=>{  
@@ -170,7 +171,7 @@ export class ventasPorCategoriaComponent implements OnInit {
   pagosHtml += '</td></tr></table>'
 
    Swal.fire({html:pagosHtml, width: '800px' , showCancelButton:true , cancelButtonText:'imprimir'}).then(value=>{
-    console.log(value);
+    CustomConsole.log(value);
     if(value.isDismissed){
       this.imprimirFactura(venta);
     }
@@ -178,7 +179,7 @@ export class ventasPorCategoriaComponent implements OnInit {
    });
   }
   async imprimirFactura(factura:DocumentosModel)
-  { console.log(factura); 
+  { CustomConsole.log(factura); 
    let printerManager =  new PrinterManager(this.serviceCaja);;
    printerManager.setDocumento(factura);
    printerManager.printReceipt();
@@ -203,7 +204,7 @@ async ExportarResumen()
 
   getDocumentosPorFecha(){
     //this.printer_factura_final(); 
-    console.log('categoriaSeleccionada' , this.categoriaSeleccionada);
+    CustomConsole.log('categoriaSeleccionada' , this.categoriaSeleccionada);
     
     if(this.categoriaSeleccionada?.id == 0){  
       Swal.fire('Es necesario escoger el producto a filtrar','error','error');
@@ -225,7 +226,7 @@ async ExportarResumen()
        
     if (datos.numdata > 0 ){
       this.resumenVenta = datos.data  ;
-      console.log('getResumenProductosVentas',this.resumenVenta);
+      CustomConsole.log('getResumenProductosVentas',this.resumenVenta);
    } else{
     Swal.fire('No existen datos relacionados con la busqueda')
    } 
@@ -239,8 +240,8 @@ async ExportarResumen()
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
-         console.log('getDocumentos', datos.numdata);
-         console.log('getDocumentos_recuest', datos );
+         CustomConsole.log('getDocumentos', datos.numdata);
+         CustomConsole.log('getDocumentos_recuest', datos );
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:any , index : number  )=>{  

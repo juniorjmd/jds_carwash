@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { UsuarioResponseInterface } from 'src/app/interfaces/UsuarioResponse.Interface';
 import { select } from 'src/app/interfaces/generales.interface';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { LoginService } from 'src/app/services/login.services';
@@ -38,7 +39,7 @@ export class GeneralesComponent implements OnInit {
           this.usuario = usuario ; 
           let userPermisos:RecursoDetalle  = usuario.permisos.filter((x)=> x.nombre_recurso == "Admin")[0]
           this.listado = this.getMenuImage(userPermisos.recursosHijos??[]);
-          console.log('estoy en getUsuarioLogeado generales', this.usuario , this.listado);
+          CustomConsole.log('estoy en getUsuarioLogeado generales', this.usuario , this.listado);
           }
         });
       }

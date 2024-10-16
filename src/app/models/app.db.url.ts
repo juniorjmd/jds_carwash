@@ -29,12 +29,13 @@ export let url:any = { }
 export let printer :any= {  
 }
 
-
+export let enviroment :string;  
 
 export async function loadConfig(http: HttpClient) {
   const config = await firstValueFrom(http.get<any>('assets/config.json'));
   
   const baseURL = config.baseURL;
+  const envi = config.enviroment;
   const endpoints = config.endpoints;
 
   // Reemplazar las constantes con los valores del JSON 
@@ -50,5 +51,6 @@ export async function loadConfig(http: HttpClient) {
         'inventario': baseURL + endpoints.inventario
       };
       printer = config.printer ;
+      enviroment = envi;
 }
 

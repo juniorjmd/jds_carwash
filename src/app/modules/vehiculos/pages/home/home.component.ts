@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { usuarioService } from 'src/app/services/usuario.services';
 
@@ -16,7 +17,7 @@ permisos?:RecursoDetalle;
 
   ngOnInit(): void {
     this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ; 
-      console.log('usuario homeComponent',this.usuario)
+      CustomConsole.log('usuario homeComponent',this.usuario)
       this.permisos =  this.usuario?.permisos.filter(x=> x.display_nombre == "Vehiculos")[0];
     });
 

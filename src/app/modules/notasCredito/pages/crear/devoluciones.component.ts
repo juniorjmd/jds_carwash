@@ -1,6 +1,7 @@
 import { Component, inject,  OnInit } from '@angular/core'; 
 import { DocumentoCierreRequest, DocumentoRequest } from 'src/app/interfaces/producto-request';
 import { CarteraModel } from 'src/app/models/cartera/cartera.model'; 
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model'; 
 import { cajasServices } from 'src/app/services/Cajas.services';
@@ -32,7 +33,7 @@ export class DevolucionesCreateComponent implements OnInit {
     }})
   }
 printDocumento(doc:DocumentosModel){
-  console.log('documento a imprimir',doc);
+  CustomConsole.log('documento a imprimir',doc);
   
   if(doc  != undefined  && doc.orden != undefined ){
     let printerManager:PrinterManager =  new PrinterManager(this.serviceCaja);;;
@@ -47,14 +48,14 @@ printDocumento(doc:DocumentosModel){
       if(retorno.numdata!> 0){
         let docs:DocumentosModel[] = retorno.data.map(x=>x.objeto); 
         this.docAbono =  docs[0];
-        console.log('retorno' , retorno , this.docAbono);
+        CustomConsole.log('retorno' , retorno , this.docAbono);
        
       }
     } , error:error=>{Swal.fire(error,error.error.error, 'error')}
   })
   }
   recalcular(indice:number){
-    console.log('validar cantidad' ,   this.docAbono.listado[indice].cant_real_descontada,this.docAbono.listado[indice].cant_devuelta ,
+    CustomConsole.log('validar cantidad' ,   this.docAbono.listado[indice].cant_real_descontada,this.docAbono.listado[indice].cant_devuelta ,
       ( this.docAbono.listado[indice].cant_real_descontada < this.docAbono.listado[indice].cant_devuelta! )
 
     );
@@ -63,13 +64,13 @@ printDocumento(doc:DocumentosModel){
     {this.docAbono.listado[indice].cant_devuelta = 0 ; }
    else{
     this.docAbono.campo_auxiliar_2 =  this.docAbono.listado.reduce((acc, item) => acc + ( parseFloat(item.presioVenta.toString()) *  item.cant_devuelta! ), 0);
-    console.log('documento a enviar',this.docAbono);}
+    CustomConsole.log('documento a enviar',this.docAbono);}
   
   }
   pagarTodo(){
     this.docAbono.listado.forEach(x=> x.cant_devuelta = (x.estado_linea_venta =='A')? x.cant_real_descontada:0 )
     this.docAbono.campo_auxiliar_2 =  this.docAbono.listado.reduce((acc, item) => acc + ( parseFloat(item.presioVenta.toString()) *  item.cant_devuelta! ), 0);
-     console.log('documento a enviar',this.docAbono);
+     CustomConsole.log('documento a enviar',this.docAbono);
   
   }
 
@@ -78,9 +79,9 @@ printDocumento(doc:DocumentosModel){
       Swal.fire('Error en el envio' , 'debe ingresar minimo un producto' , 'error')
       return;
     }
-     console.log('documento a enviar',this.docAbono);
+     CustomConsole.log('documento a enviar',this.docAbono);
      this.docService.crearDocumentoDevolucion(this.docAbono).subscribe({next:(value:DocumentoCierreRequest)=>{
-      console.log('crearDocumentoAbono',value);
+      CustomConsole.log('crearDocumentoAbono',value);
       this.buscarDocumento();
       this.printDocumento(value.data.documentoFinal )
 
@@ -89,7 +90,7 @@ printDocumento(doc:DocumentosModel){
   cancelar(){
     this.docAbono.listado.forEach(x=> x.presioVenta = 0)
     this.docAbono.campo_auxiliar_2 =  0 ;
-    console.log('documento a enviar',this.docAbono);
+    CustomConsole.log('documento a enviar',this.docAbono);
   
   }
 }

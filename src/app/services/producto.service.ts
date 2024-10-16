@@ -18,6 +18,7 @@ import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
 import { DescuentoModule } from '../models/descuento/descuento.model';
+import { CustomConsole } from '../models/CustomConsole';
 
 
 @Injectable({
@@ -38,7 +39,7 @@ currentMarcas = this.marcasSource.asObservable();
 
   // private _configService = inject(configService); 
 constructor(  ){ 
-    console.log('servicios productos inicializado');  
+    CustomConsole.log('servicios productos inicializado');  
 }
 
 
@@ -86,7 +87,7 @@ setDescuento(desc:DescuentoModule){
        _arraydatos  : desc 
     }; 
 
-     console.log(datos);
+     CustomConsole.log(datos);
      
       return this.http.post(url.action , datos, httpOptions()) ;
       
@@ -99,7 +100,7 @@ getDescuentos():Observable<DescuentoRequest>{
       "_tabla" : vistas.inv_descuentos,
      };
  
-     console.log(datos);
+     CustomConsole.log(datos);
      
       return this.http.post<DescuentoRequest>(url.action , datos, httpOptions()) ;
        
@@ -111,7 +112,7 @@ setCategorias(CATEGORIA:CategoriasModel){
       "_arraydatos" : CATEGORIA
      };
      
- console.log('crear nueva categoria' , url.action , datos, httpOptions());
+ CustomConsole.log('crear nueva categoria' , url.action , datos, httpOptions());
  
   return this.http.post(url.action , datos, httpOptions()) ; 
 }
@@ -123,14 +124,14 @@ getProductosExistencia(codPrd:ProductoModel):Observable<ProductoExitenciasReques
   let where = [{"columna" : "id_producto" , "tipocomp" : '=' , "dato" : codPrd.id    } ]
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.prd_inventario,  "_where" : where  
               };
-  console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
   return this.http.post<ProductoExitenciasRequest>(this.baseUrl, datos, httpOptions()) ;
 } 
 
 get_producto_simple(){ 
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.inv_mst_producto ,  _limit: 300
               };
-  console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 }
 
@@ -139,7 +140,7 @@ get_producto_simple_by_marca(marca:any){
   let _where =  [{"columna" : "idMarca" , "tipocomp" : '=' , "dato" : marca   } ]
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.inv_mst_producto ,  _limit: 300 , _where
               };
-  console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 }
 
@@ -152,14 +153,14 @@ get_producto_simple_by_nombre(name:any){
      ]
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.inv_mst_producto ,  _limit: 300 , _where
               };
-  console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
 get_producto_simple_by_categoria(categoria:any){ 
   let _where =  [{"columna" : "idCategoria" , "tipocomp" : '=' , "dato" : categoria   } ]
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.inv_mst_producto ,  _limit: 300 , _where
               };
-  console.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios getProductosExistencia' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 }
 
@@ -167,7 +168,7 @@ getTiposDeDocumentos(){
   let datos = {"action": actions.actionSelect ,
                "_tabla" : vistas.tiposDeDocumentos
               };
-  console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 }  
 getbodegas(){
@@ -176,7 +177,7 @@ getbodegas(){
     "_obj": ['obj'],
     "_tabla" : vistas.prd_bodegas_inventario
               };
-  console.log('servicios de usuarios activo - getbodegas' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios de usuarios activo - getbodegas' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
 
@@ -186,7 +187,7 @@ getCategorias():Observable<categoriaRequest>{
               "_columnas": ['obj'],
               "_obj": ['obj'],
               };
-  console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
   return this.http.post<categoriaRequest>(this.baseUrl, datos, httpOptions()) ;
 } 
 getCategoriasVendidas():Observable<categoriaVendidosRequest>{
@@ -195,14 +196,14 @@ getCategoriasVendidas():Observable<categoriaVendidosRequest>{
               "_columnas": ['obj'],
               "_obj": ['obj'],
               };
-  console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
   return this.http.post<categoriaVendidosRequest>(this.baseUrl, datos, httpOptions()) ;
 } 
 getMarcas():Observable<marcaRequest>{
   let datos = {"action": actions.actionSelect ,
                "_tabla" : vistas.marcas 
               };
-  console.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios de usuarios activo - getCategorias' ,this.baseUrl, datos, httpOptions());
   return this.http.post<categoriaRequest>(this.baseUrl, datos, httpOptions()) ;
 } 
 
@@ -213,7 +214,7 @@ getProductosCodBarras(codPrd:any){
 ]
   let datos = {"action": actions.actionSelect , "_tabla" : vistas.productos,  "_where" : where  
               };
-  console.log('servicios getProductosCodBarrasVCnt' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios getProductosCodBarrasVCnt' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
 
@@ -223,14 +224,14 @@ getProductosById(codPrd:any):Observable<ProductoRequest>{
     "_columnas": ['obj'],
     "_obj": ['obj'],
      };
-  console.log('servicios getProductosById' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios getProductosById' ,this.baseUrl, datos, httpOptions());
   return this.http.post<ProductoRequest>(this.baseUrl, datos, httpOptions()) ;
 } 
 
 
 getPresentacioProducto():Observable<presentacionPrdRequest>{
   let datos = {"action": actions.actionSelect , "_tabla" : TABLA.presentacionProducto  }
-  console.log('getPresentacioProducto  ' ,url.action , datos, httpOptions());
+  CustomConsole.log('getPresentacioProducto  ' ,url.action , datos, httpOptions());
   return this.http.post<presentacionPrdRequest>(url.action , datos, httpOptions()) ;
 }
 // #endregion
@@ -240,7 +241,7 @@ getCategorias_marcas():Observable<[categoriaRequest,marcaRequest]>{
   let datos = {"action": actions.actionSelects ,
                "_tablas" : [vistas.categorias , vistas.marcas]
               };
-  console.log('servicios de productos activo - getCategorias_marcas' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios de productos activo - getCategorias_marcas' ,this.baseUrl, datos, httpOptions());
   return this.http.post<[categoriaRequest,marcaRequest]>(this.baseUrl, datos, httpOptions()) ;
 } 
 // #endregion
@@ -260,7 +261,7 @@ CERRAR_INVENTARIO(bodega:number , nombre:string , desc:string, tipo:number):Obse
    "_procedure" : PROCEDURE.sp_cerrar_inventario,
    "_arraydatos" : arraydatos
   };
-   console.log('servicios CERRAR_INVENTARIO' ,this.baseUrl, datos, httpOptions());
+   CustomConsole.log('servicios CERRAR_INVENTARIO' ,this.baseUrl, datos, httpOptions());
    return this.http.post<Observable<any>>(this.baseUrl, datos, httpOptions()) ;
  } 
 
@@ -278,7 +279,7 @@ getProductosCodBarrasVCnt(codPrd:string , caja:number){
     "_arraydatos" : arraydatos
    };
 
-  console.log('servicios getProductosCodBarrasVCnt' ,this.baseUrl, datos, httpOptions());
+  CustomConsole.log('servicios getProductosCodBarrasVCnt' ,this.baseUrl, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
  
@@ -291,7 +292,7 @@ getPrecarguePorBodega(bodega:number){
   let where = [{"columna" : "bodega" , "tipocomp" : '=' , "dato" : bodega   } ]
   let datos = {"action": actions.actionSelectPorUsuario ,
    "_tabla" : vistas.aux_ingreso_inventario,  "_where" : where , "_columnaUsuario": 'cod_usuario' };  
-  console.log('servicios getProductosExistencia' ,`${this.baseUrl}`, datos, httpOptions());
+  CustomConsole.log('servicios getProductosExistencia' ,`${this.baseUrl}`, datos, httpOptions());
   return this.http.post(this.baseUrl, datos, httpOptions()) ;
 } 
  
@@ -313,7 +314,7 @@ eliminaritemIngresoInventario(idDato:string | number | undefined){
 
 borrarPrecarguePorBodega(bodega:number){
   let datos = {"action": actions.action_cancelar_inventario , "_bodega_ingreso" : bodega };
-  console.log('servicios getProductosExistencia' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios getProductosExistencia' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 } 
 
@@ -329,7 +330,7 @@ guardarPrdVentas(producto :ProductoModel , documentoActivo:DocumentosModel , pre
   '_documento' : documentoActivo.orden,
   '_precioVenta' : precioVenta , _validarExistencia
 };
-  console.log('servicios guardarPrdCompra' ,this.urlVentas, datos, httpOptions());
+  CustomConsole.log('servicios guardarPrdCompra' ,this.urlVentas, datos, httpOptions());
   return this.http.post(this.urlVentas, datos, httpOptions()) ;
 }
 guardarNuevoProducto(producto :ProductoModel  ){
@@ -337,7 +338,7 @@ guardarNuevoProducto(producto :ProductoModel  ){
   let datos = {"action": actions.action_insertar_new_producto , 
   "_producto_enviado" : producto  
 };
-  console.log('servicios guardarPrdCompra' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios guardarPrdCompra' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 }
 
@@ -346,7 +347,7 @@ updateProducto(producto :ProductoModel  ){
   let datos = {"action": actions.action_update_producto , 
   "_producto_enviado" : producto  
 };
-  console.log('servicios guardarPrdCompra' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios guardarPrdCompra' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 }
 
@@ -368,7 +369,7 @@ updateDocumento(documento :DocumentosModel  ){
             _where ,
            _arraydatos
            };
-  console.log('servicios updateDocumento' ,url.action, datos, httpOptions());
+  CustomConsole.log('servicios updateDocumento' ,url.action, datos, httpOptions());
   return this.http.post<DocumentoRequest>(url.action, datos, httpOptions()) ;
 }
 guardarNuevoProductoPrecargue( precargue :AuxIngresoInventarioModule ){
@@ -376,7 +377,7 @@ guardarNuevoProductoPrecargue( precargue :AuxIngresoInventarioModule ){
   let datos = {"action": actions.action_ingreso_precargue , 
   "_ingreso" : precargue  
 };
-  console.log('servicios guardarNuevoProductoPrecargue' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios guardarNuevoProductoPrecargue' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 }
 
@@ -385,7 +386,7 @@ devolverPrdCompra(producto : DocumentoListado  ){
   let datos = {"action": actions.devolver_producto_venta , 
   "_producto_enviado" : producto  
 };
-  console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 }
 
@@ -401,7 +402,7 @@ getProductosGeneral(limit?:any): Observable<ProductoRequest|any>  {
               };
   }
   
-  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
   return this.http.post<ProductoRequest|any>(this.urlInventario, datos, httpOptions()) ;
 } 
 
@@ -409,7 +410,7 @@ getProductosPorCategoria(codCategoria:any){
   let datos = {"action": actions.get_all_products_by_category , "_id_cate" : codCategoria,
       "_limit" : [0,100]   
               };
-  console.log('servicios getProductosPorCategoria' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios getProductosPorCategoria' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 } 
 
@@ -417,7 +418,7 @@ getProductosPorNombre(texto:string , limit?:any  ){
   let datos  = {"action": actions.get_all_products_by_name ,"_dato_busqueda" : texto ,
     "_limit" : limit
   }; 
-  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 } 
 
@@ -425,7 +426,7 @@ getProductosPorMarca(codMarca : any){
   let datos = {"action": actions.get_all_products_by_brand , "_id_brand" :codMarca,
       "_limit" : [0,100] 
               };
-  console.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios getProductosPorMarca' ,this.urlInventario, datos, httpOptions());
   return this.http.post(this.urlInventario, datos, httpOptions()) ;
 } 
 
@@ -435,7 +436,7 @@ getProductoById(idprd:any):Observable<ProductoRequest|any>{
     "_id_producto" : idprd 
    };
 
-  console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
   return this.http.post<Observable<ProductoRequest|any>>(this.urlInventario, datos, httpOptions()) ;
 }
 
@@ -447,7 +448,7 @@ getProductoExtistenciaDocById(idprd:any , orden:number):Observable<ProductoExite
     "_orden_documento" : orden 
    };
 
-  console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
   return this.http.post<Observable<ProductoExitenciaRequest|any>>(this.urlInventario, datos, httpOptions()) ;
 }
  
@@ -457,7 +458,7 @@ getProductoByIdOrCodBarra(idprd:any):Observable<ProductoRequest|any>{
     "_id_producto" : idprd 
    };
 
-  console.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
+  CustomConsole.log('servicios getProductosCodBarrasVCnt' ,this.urlInventario, datos, httpOptions());
   return this.http.post<Observable<ProductoRequest|any>>(this.urlInventario, datos, httpOptions()) ;
 }
 // #endregion

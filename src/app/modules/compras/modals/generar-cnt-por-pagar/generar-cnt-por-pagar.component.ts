@@ -8,6 +8,7 @@ import { loading } from 'src/app/models/app.loading';
 import { DocumentoCierreRequest,  plazoRequest } from 'src/app/interfaces/producto-request';
 import { DocumentoService } from 'src/app/services/documento.service';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'modal-generar-cnt-por-pagar',
@@ -37,7 +38,7 @@ export class GenerarCntPorPagarComponent implements OnInit {
         this.getMediosP()
         if(this.inData.origen == 'EdicionCompra'){
           this.docService.getPlazoCreditoPorDocumentoBase(inData.Documento.orden).subscribe({next:( value:plazoRequest )=>{
-            console.log('plazos y cuota ', value); 
+            CustomConsole.log('plazos y cuota ', value); 
             this.pagoPorCredito.aux1 =  value.data[0].cuotas ; 
             this.pagoPorCredito.aux2 = value.data[0].plazos;
           },error:(e)=>Swal.fire(e.error.error), 
@@ -55,8 +56,8 @@ export class GenerarCntPorPagarComponent implements OnInit {
         this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2 , this.inData.Documento
       )
        .subscribe({next: (datos:DocumentoCierreRequest)=>{
-          console.log(datos); 
-          console.log('pagos realizados' , this.pagos ); 
+          CustomConsole.log(datos); 
+          CustomConsole.log('pagos realizados' , this.pagos ); 
           this.loading.hide()
           this.retorno.result = true;
           this.retorno.documento = datos.data.documentoFinal;
@@ -70,8 +71,8 @@ export class GenerarCntPorPagarComponent implements OnInit {
       this.serviceCaja.setPagoDocumentoCompraCredito(this.inData.origen ,this.inData.Documento.orden ,this.pagos , 
         this.pagoPorCredito.aux1 , this.pagoPorCredito.aux2)
        .subscribe({next: (datos:DocumentoCierreRequest)=>{
-          console.log(datos); 
-          console.log('pagos realizados' , this.pagos ); 
+          CustomConsole.log(datos); 
+          CustomConsole.log('pagos realizados' , this.pagos ); 
           this.loading.hide()
           this.retorno.result = true;
           this.retorno.documento = datos.data.documentoFinal;
@@ -101,7 +102,7 @@ export class GenerarCntPorPagarComponent implements OnInit {
       } 
     
       let totalMedios:number =  this.pagos.reduce((acc:number, current) => acc + current.valorPagado, 0);
-        console.log('totalMedios', totalMedios);
+        CustomConsole.log('totalMedios', totalMedios);
         
       this.pagoPorCredito!.valorPagado =  totalFactura -  totalMedios;
    
@@ -118,12 +119,12 @@ setVueltos(index:number){
 }
 getMediosP(){ 
   console.clear();
-  console.log('DocumentoActivo',this.inData.Documento)
+  CustomConsole.log('DocumentoActivo',this.inData.Documento)
   this.listo = false;
   this.loading.show()
   this.serviceCaja.getMediosByEstablecimiento(this.inData.Documento.establecimiento)
      .subscribe( {next:(datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
         
     if (datos.numdata > 0 ){ 
       let  index : number = this.inData.Documento.pagos.length; 
@@ -146,7 +147,7 @@ getMediosP(){
             return;}// O puedes devolver un valor específico que indique que no debe incluirse en la lista de pagos
           
       }).filter((pago): pago is DocpagosModel => pago !== undefined);
-    console.log('pagos recibidos' , this.pagos);
+    CustomConsole.log('pagos recibidos' , this.pagos);
         }
       datos.data!.forEach((dato:MediosDePago )=>{  
        let pago = new DocpagosModel();  
@@ -163,7 +164,7 @@ getMediosP(){
     }else{
       this.pagos = [];
     } 
-    console.log('pagos realizados' , this.pagos ); 
+    CustomConsole.log('pagos realizados' , this.pagos ); 
         this.loading.hide()
         this.listo = true;
       } ,

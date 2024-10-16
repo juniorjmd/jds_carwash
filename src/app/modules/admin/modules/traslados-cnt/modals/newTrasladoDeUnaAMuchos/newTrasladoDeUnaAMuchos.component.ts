@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { tap } from 'rxjs';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { CntOperacionPrestablecidas } from 'src/app/interfaces/traslados_cnt/cnt_operacion_prestablecidas.';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { TrasladosCuentasArrModel, TrasladosCuentasModel } from 'src/app/models/trasladosCuentas.';
 import { ModalCntSubCuentasComponent } from 'src/app/modules/admin/modals/cuentasContables/cnt-sub-cuentas.component';
 import { CntContablesService } from 'src/app/services/cntContables.service';
@@ -81,7 +82,7 @@ buscarCuentaContableOrigen(){
        ))
        this.nombreCuentaDestino = response.datoDevolucion.nombre_scuenta!;
        this.idCuentaDestino = response.datoDevolucion.id_scuenta!;   
-       console.log('buscarCuentasContablesGastos',response , this.nombreCuentaDestino , response.datoDevolucion.nombre_scuenta!,
+       CustomConsole.log('buscarCuentasContablesGastos',response , this.nombreCuentaDestino , response.datoDevolucion.nombre_scuenta!,
        this.idCuentaDestino , response.datoDevolucion.id_scuenta!   ) ;
        
      }  
@@ -89,7 +90,7 @@ buscarCuentaContableOrigen(){
  ).subscribe({
    next: () => {},
    error: (error) => Swal.fire('Error:', error),
-   complete: () => console.log('buscarCuentasContables completo')
+   complete: () => CustomConsole.log('buscarCuentasContables completo')
  }); 
    
  }

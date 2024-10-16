@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { caja } from 'src/app/interfaces/caja.interface';
 import { select } from 'src/app/interfaces/generales.interface';
 import { loading } from 'src/app/models/app.loading'; 
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
@@ -33,14 +34,14 @@ getCajas(){
      .subscribe(
       (datos:any)=>{
         let cont = 0;
-         console.log('getCajas',datos); 
+         CustomConsole.log('getCajas',datos); 
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:caja   )=>{
         cajaAux =  new cajaModel( dato ); 
         this.cajas.push(cajaAux); 
              
       }) 
-      console.log('cajas : ' , this.cajas);
+      CustomConsole.log('cajas : ' , this.cajas);
     }else{
       this.cajas = [];
     }

@@ -9,6 +9,7 @@ import { CiudadModel } from 'src/app/models/maestros.model';
 import { NewCiudadComponent } from './new-ciudad.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoConfirmacionComponent } from 'src/app/modules/shared/components/dialogo-confirmacion/dialogo-confirmacion.component';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 
 @Component({
@@ -53,7 +54,7 @@ numCiudades : number = 0 ;
     .subscribe((confirmado: Boolean)=>{
       if (confirmado){
         this.maestroCliente.eliminarCiudades(CityD).subscribe(
-          (respuesta:any)=>{console.log(respuesta)
+          (respuesta:any)=>{CustomConsole.log(respuesta)
             if (respuesta.error === 'ok'){
               alert('datos eliminados con exito');     
               this.listar();

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RecursoDetalle, Usuario } from 'src/app/interfaces/usuario.interface';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { usuarioService } from 'src/app/services/usuario.services';
@@ -48,13 +49,13 @@ export class InicioRepFinansasComponent  {
   usuario?: Usuario;
   ngOnInit(): void {
     this.usuarioService.currentUsuario.subscribe((usuario) => {  this.usuario = usuario ; 
-      console.log('InicioRepVentasComponent - usuarioLogueado' , this.usuario);
+      CustomConsole.log('InicioRepVentasComponent - usuarioLogueado' , this.usuario);
       
       let recursos =  this.usuario?.permisos.find(x=> x.nombre_recurso  == "reportes")?.recursosHijos ; 
 
       this.menusUsuario =  recursos?.find(x=> x.nombre_recurso  == "ventas")?.recursosHijos||[] ; 
 
-      console.log('InicioRepVentasComponent - permisos ' , this.menusUsuario  );
+      CustomConsole.log('InicioRepVentasComponent - permisos ' , this.menusUsuario  );
       
     });
     this._datosInicialesService.currentSucursal.subscribe({next:(suc)=>{   

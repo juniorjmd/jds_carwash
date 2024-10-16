@@ -50,7 +50,7 @@ export class CntClaseComponent implements OnInit {
     
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.Clases = (value != undefined)? [...value]:[] ;
-      //console.log(this.Clases) 
+      //CustomConsole.log(this.Clases) 
     },error : (e:any)=>Swal.fire(e.error.error)})
    }
 

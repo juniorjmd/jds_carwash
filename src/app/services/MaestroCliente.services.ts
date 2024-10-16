@@ -11,6 +11,7 @@ import { select } from '../interfaces/generales.interface';
 import { loading } from 'src/app/models/app.loading';  
 import { CategoriasModel } from '../models/categorias.model';
 import { BehaviorSubject } from 'rxjs';
+import { CustomConsole } from '../models/CustomConsole';
 
 
 @Injectable({
@@ -31,7 +32,7 @@ export class MaestroClienteServices {
   // private _configService = inject(configService); 
 constructor(private http: HttpClient ,
         private loading : loading ){ 
-        console.log('servicios datos iniciales inicializado');  
+        CustomConsole.log('servicios datos iniciales inicializado');  
     }
     asignarCategorias(cat:CategoriasModel[]){
         this.cateSource.next( cat) 
@@ -42,7 +43,7 @@ constructor(private http: HttpClient ,
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.ciudades
                     };
-        console.log('servicios de maestro - ciudades ' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de maestro - ciudades ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
     getCiudadesPorDepartamento(id:number){
@@ -52,12 +53,12 @@ constructor(private http: HttpClient ,
                      "_tabla" : vistas.ciudades ,
                      "_where" : where
                     };
-        console.log('servicios de maestro - ciudad ' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de maestro - ciudad ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
     getCiudadesPorDepartamentoOdoo(id:number){
         let datos = {"action": actions.actionBuscarCiudadOdoo ,"_state_id" : id};
-        console.log('getCiudadesPorDepartamentoOdoo' ,url.action , datos, httpOptions());
+        CustomConsole.log('getCiudadesPorDepartamentoOdoo' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ; 
     }
     setCiudades( ciudad:CiudadModel){
@@ -71,7 +72,7 @@ constructor(private http: HttpClient ,
         "_tabla" : TABLA.ciudades,
         "_arraydatos" : arraydatos
        };
-       console.log(datos);
+       CustomConsole.log(datos);
        
         return this.http.post(url.action , datos, httpOptions()) ;
     }
@@ -109,7 +110,7 @@ constructor(private http: HttpClient ,
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.departamento
                     };
-        console.log('servicios de maestro - departamento ' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de maestro - departamento ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
     getDepartamentosPorPais(id:any){
@@ -119,28 +120,28 @@ constructor(private http: HttpClient ,
                      "_tabla" : vistas.departamento ,
                      "_where" : where
                     };
-        console.log('servicios de maestro - departamento ' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de maestro - departamento ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
     getPaises(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : TABLA.pais
                     };
-        console.log('servicios de maestro - paises ' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de maestro - paises ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
 
 
     getPaisesOdoo(){
         let datos = {"action": actions.actionBuscarPaisesOdoo};
-        console.log('servicios de maestro - paises ' ,url.action , datos, httpOptions());
+        CustomConsole.log('servicios de maestro - paises ' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
     getDepartamentosPorPaisOdoo(pais_id:any){
 
         let datos = {"action": actions.actionBuscarStatesOdoo ,
                      "_id_pais" : pais_id};
-        console.log('getDepartamentosPorPaisOdoo' ,url.action , datos, httpOptions());
+        CustomConsole.log('getDepartamentosPorPaisOdoo' ,url.action , datos, httpOptions());
         return this.http.post(url.action , datos, httpOptions()) ;
     }
     setPaises( pais:PaisModel){
@@ -149,7 +150,7 @@ constructor(private http: HttpClient ,
         "_tabla" : TABLA.pais,
         "_arraydatos" : arraydatos
        };
-       console.log(datos);
+       CustomConsole.log(datos);
        
         return this.http.post(url.action , datos, httpOptions()) ;
     }
@@ -182,7 +183,7 @@ constructor(private http: HttpClient ,
         "_tabla" : TABLA.departamento,
         "_arraydatos" : arraydatos
        };
-       console.log(datos);
+       CustomConsole.log(datos);
        
         return this.http.post(url.action , datos, httpOptions()) ;
     }
@@ -212,14 +213,14 @@ constructor(private http: HttpClient ,
             let datos = {"action": actions.actionSelect ,
             "_tabla" : vistas.maestros
            };
-          console.log('servicios maestro Cliente - maestros ' ,url.action , datos, httpOptions());
+          CustomConsole.log('servicios maestro Cliente - maestros ' ,url.action , datos, httpOptions());
           return await    this.http.post(url.action , datos, httpOptions()).toPromise() ;
         }
 
         async  setTipoDocumentoOdoo(){
             let datos = {"action": actions.actionTipDoc  
            };
-          console.log('servicios maestro Cliente - getTipoDoc ' ,url.action , datos, httpOptions());
+          CustomConsole.log('servicios maestro Cliente - getTipoDoc ' ,url.action , datos, httpOptions());
           return await    this.http.post(url.action , datos, httpOptions()).toPromise() ;
         }
    
@@ -227,55 +228,55 @@ constructor(private http: HttpClient ,
         let datos = {"action": actions.actionSelect ,
         "_tabla" : vistas.maestros
        };
-      console.log('servicios maestro Cliente - maestros ' ,url.action , datos, httpOptions());
+      CustomConsole.log('servicios maestro Cliente - maestros ' ,url.action , datos, httpOptions());
        return this.http.post(url.action , datos, httpOptions()) ;
     }
 
      setTiposDocumentos(){
         let datos = {"action": actions.actionTipDoc  };
-      console.log('servicios maestro Cliente - setTiposDocumentos ' ,url.action , datos, httpOptions());
+      CustomConsole.log('servicios maestro Cliente - setTiposDocumentos ' ,url.action , datos, httpOptions());
        return this.http.post(url.action , datos, httpOptions()) ;
     }
     setTitulos(){
         let datos = {"action": actions.actionTitulosOdoo  };
-      console.log('servicios maestro Cliente - actionTitulosOdoo ' ,url.action , datos, httpOptions());
+      CustomConsole.log('servicios maestro Cliente - actionTitulosOdoo ' ,url.action , datos, httpOptions());
        return this.http.post(url.action , datos, httpOptions()) ;
     }
     
     setCategorias(){
         let datos = {"action": actions.actionCategoriasOdoo  };
-      console.log('servicios maestro Cliente - actionCategoriasOdoo  ' ,url.action , datos, httpOptions());
+      CustomConsole.log('servicios maestro Cliente - actionCategoriasOdoo  ' ,url.action , datos, httpOptions());
        return this.http.post(url.action , datos, httpOptions()) ;
     }
     setCategoriasPrd(){
         let datos = {"action": actions.actionSelect ,  "_tabla" : vistas.categorias  };
-      console.log('servicios maestro Cliente - actionCategoriasOdoo  ' ,url.action , datos, httpOptions());
+      CustomConsole.log('servicios maestro Cliente - actionCategoriasOdoo  ' ,url.action , datos, httpOptions());
        return this.http.post(url.action , datos, httpOptions()) ;
     }
     setMarcas(){
         let datos = {"action": actions.actionSelect ,  "_tabla" : vistas.marcas   };
-      console.log('servicios maestro Cliente - actionBuscarMarcas  ' ,url.action , datos, httpOptions());
+      CustomConsole.log('servicios maestro Cliente - actionBuscarMarcas  ' ,url.action , datos, httpOptions());
        return this.http.post(url.action , datos, httpOptions()) ;
     }
     setMarcasCatego(categoId:number){
         let datos = {"action": actions.actionBuscarMarcas ,
        "_categ":true ,
        "_data" : categoId };
-      console.log('servicios maestro Cliente - actionBuscarMarcas  ' ,url.action , datos, httpOptions());
+      CustomConsole.log('servicios maestro Cliente - actionBuscarMarcas  ' ,url.action , datos, httpOptions());
        return this.http.post(url.action , datos, httpOptions()) ;
     }
  setEmpresas(){
         let datos = {"action": actions.actionEmpresasOdoo  };
-      console.log('servicios maestro Cliente - setTiposDocumentos ' ,url.action , datos, httpOptions());
+      CustomConsole.log('servicios maestro Cliente - setTiposDocumentos ' ,url.action , datos, httpOptions());
        return this.http.post(url.action , datos, httpOptions()) ;
     }
     async getTipoDoc(){
         try {
             const maestroService = await  this.setTipoDocumentoOdoo();
             const retorno = await maestroService 
-            console.log('retorno - getTipoDoc', retorno); 
+            CustomConsole.log('retorno - getTipoDoc', retorno); 
             this.crearMaestrosDatos(retorno ,'asdfasdf');
-           console.log('estoy en getTipoDoc',this.MaestrosCliente);
+           CustomConsole.log('estoy en getTipoDoc',this.MaestrosCliente);
         } catch (error : any) {
             throw new Error(`Error al leer getTipoDoc : ${error}`);
           }}
@@ -284,9 +285,9 @@ constructor(private http: HttpClient ,
         try {
             const maestroService = await  this.setMaestrosClientes_new();
             const retorno = await maestroService 
-            console.log('retorno', retorno); 
+            CustomConsole.log('retorno', retorno); 
             this.crearMaestrosDatos(retorno);
-           console.log('estoy en pruebaget',this.MaestrosCliente);
+           CustomConsole.log('estoy en pruebaget',this.MaestrosCliente);
         } catch (error : any) {
             throw new Error(`Error al leer maestros : ${error}`);
           }}
@@ -294,7 +295,7 @@ constructor(private http: HttpClient ,
     crearMaestrosDatos(datos:any , tipo:any = null){ 
         this.finP1 = true; 
         this.MaestrosCliente = [];
-         console.log('crearMaestrosDatos',datos);
+         CustomConsole.log('crearMaestrosDatos',datos);
          let idActual = 0;
          datos.data!.forEach((datoMaestro:maestroSelect)=>{
             if (idActual !== datoMaestro.id){
@@ -331,7 +332,7 @@ constructor(private http: HttpClient ,
 
          })
          
-        console.log('esto es maestro cliente ' , this.MaestrosCliente);
+        CustomConsole.log('esto es maestro cliente ' , this.MaestrosCliente);
         
             this.loading.hide(); 
             return true;
@@ -444,13 +445,13 @@ constructor(private http: HttpClient ,
 
  
        getMaestroClientes(nomMaestro:string):any{ 
-         console.log('getMaestroClientes ',this.MaestrosCliente, nomMaestro);
+         CustomConsole.log('getMaestroClientes ',this.MaestrosCliente, nomMaestro);
          let datosRetorno:any = []; 
             this.MaestrosCliente!.forEach(
                 (value )=>{
-                console.log('getMaestroClientes',value ,value.nombre, nomMaestro);
+                CustomConsole.log('getMaestroClientes',value ,value.nombre, nomMaestro);
                  if(value.nombre === nomMaestro){   
-                    console.log('envio' , value);  
+                    CustomConsole.log('envio' , value);  
                     datosRetorno =  value.datos;
                 }
                 

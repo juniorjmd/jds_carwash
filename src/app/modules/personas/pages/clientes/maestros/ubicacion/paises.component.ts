@@ -8,6 +8,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { DialogoConfirmacionComponent } from "src/app/modules/shared/components/dialogo-confirmacion/dialogo-confirmacion.component";
 import { NewPaisComponent } from './new-pais.component';
 import { loading } from 'src/app/models/app.loading';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({
   selector: 'app-paises',
   templateUrl: './paises.component.html',
@@ -35,7 +36,7 @@ export class PaisesComponent implements OnInit {
     .subscribe((confirmado: Boolean)=>{
       if (confirmado){
         this.maestroCliente.eliminarPaises(pais).subscribe(
-          (respuesta:any)=>{console.log(respuesta)
+          (respuesta:any)=>{CustomConsole.log(respuesta)
             if (respuesta.error === 'ok'){
               alert('datos eliminados con exito');     
               this.listarPaises();
@@ -56,7 +57,7 @@ export class PaisesComponent implements OnInit {
       this.paises = [];
     }
         
-        console.log(this.paises);
+        CustomConsole.log(this.paises);
         this.loading.hide() 
       } ,
       error => {this.loading.hide();

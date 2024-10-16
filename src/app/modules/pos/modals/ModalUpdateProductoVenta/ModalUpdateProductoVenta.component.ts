@@ -5,6 +5,7 @@ import { error } from 'jquery';
 import { DocumentoListado } from 'src/app/interfaces/documento.interface';
 import { ProductoExitenciaRequest, ProductoRequest } from 'src/app/interfaces/producto-request';
 import { loading } from 'src/app/models/app.loading';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { ProductoService } from 'src/app/services/producto.service';
@@ -37,7 +38,7 @@ export class ModalUpdateProductoVentaComponent implements OnInit {
   }
 
   editar(){
-    console.log('ModalUpdateProductoVentaComponent' ,this.item );
+    CustomConsole.log('ModalUpdateProductoVentaComponent' ,this.item );
     this.service.editarLineaDocumento(this.item).subscribe({next:value=>{
       if (value.error == 'ok'){
         this.dialogo.close(true)   
@@ -50,7 +51,7 @@ export class ModalUpdateProductoVentaComponent implements OnInit {
     if (this.validarExistencia){ 
         this.loading.show()
         this.prdService.getProductoExtistenciaDocById(this.item.idProducto,this.item.idDocumento!).subscribe({next:(value:ProductoExitenciaRequest)=>{
-          console.log('producto completo', value); 
+          CustomConsole.log('producto completo', value); 
           this.loading.hide()    
 
           if(value.data.existencia  <    this.item.cantidadVendida) 

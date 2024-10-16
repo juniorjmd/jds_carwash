@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FndClienteComponent } from '../../../shared/modals/fnd-cliente/fnd-cliente.component';
 import { tap } from 'rxjs';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-clientes',
@@ -18,7 +19,7 @@ export class ClientesComponent implements OnInit {
 
   buscaCliente(evento:Event , texto : string){
     evento.preventDefault();
-    console.log(texto);
+    CustomConsole.log(texto);
   }
 
   abrirBuscarCliente(){
@@ -33,7 +34,7 @@ export class ClientesComponent implements OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
   }
   abrirCrearCliente(){
@@ -48,7 +49,7 @@ export class ClientesComponent implements OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire(JSON.stringify(error)),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
   }
 }

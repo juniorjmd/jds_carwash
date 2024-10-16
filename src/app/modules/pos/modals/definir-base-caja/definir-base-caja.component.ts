@@ -4,6 +4,7 @@ import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { loading } from 'src/app/models/app.loading'; 
 import { cajasServices } from 'src/app/services/Cajas.services';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-definir-base-caja',
@@ -33,7 +34,7 @@ export class DefinirBaseCajaComponent implements OnInit {
       this.loading.show() 
       this.cajaService.abrirCaja(this.caja, this.valorIngresar).subscribe(
         (respuesta:any)=>{
-          console.log(respuesta)
+          CustomConsole.log(respuesta)
          
         if (respuesta.error === 'ok'){
          Swal.fire( respuesta.datos[0].msg );  

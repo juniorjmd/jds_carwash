@@ -8,6 +8,7 @@ import { MaestroClienteServices } from 'src/app/services/MaestroCliente.services
 import { loading } from 'src/app/models/app.loading';
 import { pais } from 'src/app/interfaces/maestros.interface';
 import { select } from 'src/app/interfaces/generales.interface';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-new-departamento',
@@ -41,7 +42,7 @@ export class NewDepartamentoComponent implements OnInit {
       this.paises = [];
     }
         
-        console.log(this.paises);
+        CustomConsole.log(this.paises);
         this.loading.hide() 
       } ,
       error => {this.loading.hide();
@@ -64,7 +65,7 @@ export class NewDepartamentoComponent implements OnInit {
     if(this.deprto.id > 0 ){
         this.maestroServicio.actualizarDepartamentos(this.deprto).subscribe(
 
-          (respuesta:any)=>{console.log(respuesta)
+          (respuesta:any)=>{CustomConsole.log(respuesta)
             this.loading.hide();
             if (respuesta.error === 'ok'){
               alert('datos ingresados con exito'); 
@@ -77,7 +78,7 @@ export class NewDepartamentoComponent implements OnInit {
         );
     }else{
       this.maestroServicio.setDepartamentos(this.deprto).subscribe(
-        (respuesta:any)=>{console.log(respuesta)
+        (respuesta:any)=>{CustomConsole.log(respuesta)
           this.loading.hide();
         if (respuesta.error === 'ok'){
           alert('datos ingresados con exito'); 
@@ -88,7 +89,7 @@ export class NewDepartamentoComponent implements OnInit {
       
       );
     }
-    console.log('nuevo pais',this.deprto)
+    CustomConsole.log('nuevo pais',this.deprto)
   }
   ngOnInit(): void {
     

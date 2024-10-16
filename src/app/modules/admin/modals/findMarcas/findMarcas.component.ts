@@ -19,14 +19,14 @@ export class FindMarcasComponent {
   ngOnInit(): void { 
     this.actividadService.arrayMarcas.subscribe({next:(prd)=>{
       this.marcas = [...prd??[]]; 
-      //console.log('oninit filtroname',this.filtroName); 
+      //CustomConsole.log('oninit filtroname',this.filtroName); 
       if(this.filtroName == '') {this.marcasFiltrados = [...this.marcas];}  
           }})
   } 
   
  
   enviarProducto(item:MarcasModel){
-    //console.log(item); 
+    //CustomConsole.log(item); 
     let id:number = (typeof( item.id ) == 'string')? parseInt(item.id!) :item.id! ;  
     if(!item.selected){
       this.actividadService.ingresarItemDescuentoTmp(id ,'BRD' ).subscribe({next:val=>{
@@ -60,17 +60,17 @@ export class FindMarcasComponent {
       this.actividadService.
       getCategoriasDisponiblesByName(this.filtroName)
       .subscribe({next:(value)=>{ 
-        //console.log('resultado busqueda' , value);
+        //CustomConsole.log('resultado busqueda' , value);
         
         if(value.numdata > 0) { 
-          //console.log('termina la busqueda');
+          //CustomConsole.log('termina la busqueda');
           
           this.marcasFiltrados = value.data;
           const nuevosProductos = value.data.filter((nuevoProducto: MarcasModel) => 
             !this.marcas.some(producto => producto.id === nuevoProducto.id)
           ); 
           this.actividadService.setArrayMarcas( [...this.marcas, ...nuevosProductos] );
-          //console.log('busqueda marcas',this.marcasFiltrados);
+          //CustomConsole.log('busqueda marcas',this.marcasFiltrados);
           
         }
       }})

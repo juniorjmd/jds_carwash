@@ -13,6 +13,7 @@ import { CntOperacionPrestablecidas } from 'src/app/interfaces/traslados_cnt/cnt
 import { newTrasladoDeMuchasAUnaComponent } from '../../modals/newTrasladoDeMuchasAUna/newTrasladoDeMuchasAUna.component';
 import { ejecutarDeMuchaAUnaComponent } from '../../modals/ejecutarDeMuchaAUna/ejecutarDeMuchaAUna.component';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-traslado-de-muchas-a-una',
@@ -48,7 +49,7 @@ editar(item:CntOperacionPrestablecidas){
 .afterClosed() 
 .pipe(
   tap((response: responseSubC) => {
-    console.log('buscarCuentasContablesGastos',response);
+    CustomConsole.log('buscarCuentasContablesGastos',response);
     if(response != undefined){ 
       if (response  ) {    
         this.ngAfterViewInit()
@@ -58,7 +59,7 @@ editar(item:CntOperacionPrestablecidas){
 ).subscribe({
   next: () => {},
   error: (error) => Swal.fire('Error:', error),
-  complete: () => console.log('buscarCuentasContables completo')
+  complete: () => CustomConsole.log('buscarCuentasContables completo')
 }); 
 
 
@@ -69,7 +70,7 @@ ejecutarPerforma(item:CntOperacionPrestablecidas){
   ngAfterViewInit(): void {
     this.cntService.getTrasladoByType('DE_MUCHOS_A_UNA').subscribe({next:(value)=>{
       this.datos = value.data;
-      console.log('Datos recibidos',this.datos);
+      CustomConsole.log('Datos recibidos',this.datos);
       
     },error:e=>Swal.fire(e.error.error)})
   }
@@ -87,7 +88,7 @@ this.newAbrirDialog.open(newTrasladoDeMuchasAUnaComponent, { data:  null })
 ).subscribe({
   next: () => {},
   error: (error) => Swal.fire('Error:', error),
-  complete: () => console.log('buscarCuentasContables completo')
+  complete: () => CustomConsole.log('buscarCuentasContables completo')
 }); 
 
 }

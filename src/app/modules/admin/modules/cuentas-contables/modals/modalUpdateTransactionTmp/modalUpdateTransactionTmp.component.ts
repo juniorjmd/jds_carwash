@@ -49,7 +49,7 @@ export class ModalUpdateTransactionTmpComponent implements OnInit{
   constructor( @Inject(MAT_DIALOG_DATA) public newCntTransacciones:vwTransaccionesModel,
   public dialogo: MatDialogRef<IngresarProductoVentaComponent>,private cntService:CntContablesService , 
   private newAbrirDialog: MatDialog, private load : loading  ){
-    //console.log('newCntTransacciones',this.newCntTransacciones);
+    //CustomConsole.log('newCntTransacciones',this.newCntTransacciones);
     
   }
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class ModalUpdateTransactionTmpComponent implements OnInit{
     this.cntService.currentsubcuenta.subscribe({next:(value:vwCntSubCuentaModel[] | null)=>{
       this.Mcuentas = value??[] ;
 
-      //console.log(this.Mcuentas)  
+      //CustomConsole.log(this.Mcuentas)  
     },error : (e:any)=>Swal.fire(e.error.error), complete: () =>  this.load.hide()})
   }
 
@@ -66,7 +66,7 @@ export class ModalUpdateTransactionTmpComponent implements OnInit{
   onSubmit() {
     // Aquí puedes manejar la lógica de envío del formulario
     this.load.show(); 
-    //console.log(this.newCntTransacciones);
+    //CustomConsole.log(this.newCntTransacciones);
     if((this.newCntTransacciones.id_cuenta||0) <= 0){  return ;}
     
     if(((this.newCntTransacciones.valor_debito||0) <= 0 ) && ((this.newCntTransacciones.valor_credito||0) <= 0)){  
@@ -82,7 +82,7 @@ export class ModalUpdateTransactionTmpComponent implements OnInit{
   buscarCuentasContables( ){ 
     
     this.slcuentas= this.Mcuentas.filter(x=>x.id_scuenta == this.newCntTransacciones.id_cuenta)[0]; 
-    //console.log('buscarCuentasContables',this.slcuentas);
+    //CustomConsole.log('buscarCuentasContables',this.slcuentas);
     if(this.slcuentas == undefined){
        this.cntService.getCntCuentasById(this.newCntTransacciones.id_cuenta).subscribe({next:(value:cntSubCuentaVwRequest)=>{
         let data :subCuenta ;
@@ -121,12 +121,12 @@ export class ModalUpdateTransactionTmpComponent implements OnInit{
     .afterClosed() 
     .pipe(
       tap((response: responseSubC) => { 
-        //console.log('ModalCntSubCuentasComponent',response);
+        //CustomConsole.log('ModalCntSubCuentasComponent',response);
         if (response.confirmado && response.datoDevolucion !== undefined ) {  
           this.subCuentaCreacion = response.datoDevolucion.id_scuenta!; 
           this.load.show();
           this.slcuentas= this.Mcuentas.filter(x=>x.id_scuenta == this.subCuentaCreacion)[0]; 
-          //console.log('ModalCntSubCuentasComponent',this.slcuentas); 
+          //CustomConsole.log('ModalCntSubCuentasComponent',this.slcuentas); 
           this.newCntTransacciones.id_cuenta = response.datoDevolucion!.id_scuenta||0;
           this.newCntTransacciones.nro_subcuenta = response.datoDevolucion!.nro_scuenta||0;
           this.newCntTransacciones.nombre_subcuenta = response.datoDevolucion!.nombre_scuenta||'';

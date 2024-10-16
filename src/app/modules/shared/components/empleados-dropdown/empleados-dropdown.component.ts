@@ -1,4 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 
@@ -17,11 +18,11 @@ export class EmpleadosDropdownComponent implements OnInit{
   private inicioService= inject(DatosInicialesService) ;
   
   ngOnInit(): void { 
-    console.log('opciones : ',this.options);
+    CustomConsole.log('opciones : ',this.options);
     this.inicioService.currentVendedores.subscribe(vendedores => {
       if (vendedores) {
         // Aquí puedes trabajar con el array de vendedores
-        console.log('Vendedores actualizados:', vendedores);
+        CustomConsole.log('Vendedores actualizados:', vendedores);
         this.options = vendedores;
       }
     });

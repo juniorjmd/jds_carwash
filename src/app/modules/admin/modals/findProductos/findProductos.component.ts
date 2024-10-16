@@ -17,7 +17,7 @@ export class FindProductosComponent implements OnInit {
   ngOnInit(): void { 
     this.actividadService.arrayProductos.subscribe({next:(prd)=>{
       this.productos = [...prd??[]]; 
-      //console.log('oninit filtroname',this.filtroName); 
+      //CustomConsole.log('oninit filtroname',this.filtroName); 
       if(this.filtroName == '') {this.productosFiltrados = [...this.productos];}
       
       
@@ -57,14 +57,14 @@ export class FindProductosComponent implements OnInit {
       getProductosDisponiblesByName(this.filtroName)
       .subscribe({next:(value)=>{ 
         if(value.numdata > 0) { 
-          //console.log('termina la busqueda');
+          //CustomConsole.log('termina la busqueda');
           
           this.productosFiltrados = value.data;
           const nuevosProductos = value.data.filter((nuevoProducto: ProductoModel) => 
             !this.productos.some(producto => producto.id === nuevoProducto.id)
           ); 
           this.actividadService.setArrayProductos( [...this.productos, ...nuevosProductos] );
-          //console.log('busqueda productos',this.productosFiltrados);
+          //CustomConsole.log('busqueda productos',this.productosFiltrados);
           
         }
       }})

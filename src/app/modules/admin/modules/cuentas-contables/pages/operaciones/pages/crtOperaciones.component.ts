@@ -56,7 +56,7 @@ export class CrearOperacionesComponent implements OnInit {
   cancelarOperacion(){ 
     this.load.show();
     this.cntService.deleteListadoOprTmp().subscribe({next:(value:any)=>{ 
-      //console.log('cancelarOperacion' , value); 
+      //CustomConsole.log('cancelarOperacion' , value); 
       this.operCntTransacciones = [];
       this.limpiarMovimiento();
     },error:error=>Swal.fire(error.error.error), complete: () =>  this.load.hide()})
@@ -88,7 +88,7 @@ export class CrearOperacionesComponent implements OnInit {
     .afterClosed() 
     .pipe(
       tap((response: responseSubC) => { 
-        //console.log('buscarCuentasContablesGastos',response);
+        //CustomConsole.log('buscarCuentasContablesGastos',response);
         if (response.confirmado && response.datoDevolucion !== undefined ) {  
           this.subCuentaCreacion = response.datoDevolucion.id_scuenta!; 
           this.load.show();
@@ -146,7 +146,7 @@ export class CrearOperacionesComponent implements OnInit {
     this.slcuentas = undefined;
   }
   guardarOperacion(){
-    //console.log('guardaroperacion' , this.operacion);
+    //CustomConsole.log('guardaroperacion' , this.operacion);
     if(this.operacion.nombre == ''){Swal.fire('error', 'debe ingresar el nombre de la operacion' , 'warning') ; return;}
     if(this.operCntTransacciones.length <= 0 ){Swal.fire('error', 'No exiten movimientos para generar la operacion' , 'warning') ; return;}
     this.cntService.setNewOperacion(this.operacion).subscribe({next:(value:any| null)=>{
@@ -163,22 +163,22 @@ export class CrearOperacionesComponent implements OnInit {
     this.getTransaccionesTemporales();
     this.cntService.currentCntClase.subscribe({next:(value:CntClasesModel[] | null)=>{
       this.clases = value??[] ;
-      //console.log(this.clases) 
+      //CustomConsole.log(this.clases) 
     },error : (e:any)=>Swal.fire(e.error.error), complete: () =>  this.load.hide()})
     
     this.cntService.currentCntGrupo.subscribe({next:(value:CntGruposModel[] | null)=>{
       this.Mgrupos = value??[] ;
-      //console.log(this.clases) 
+      //CustomConsole.log(this.clases) 
     },error : (e:any)=>Swal.fire(e.error.error), complete: () =>  this.load.hide()})
  
     this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[] | null)=>{
       this.McuentasMayores = value??[] ;
-      //console.log(this.clases) 
+      //CustomConsole.log(this.clases) 
       
     },error : (e:any)=>Swal.fire(e.error.error)})
     this.cntService.currentsubcuenta.subscribe({next:(value:vwCntSubCuentaModel[] | null)=>{
       this.Mcuentas = value??[] ;
-      //console.log(this.clases) 
+      //CustomConsole.log(this.clases) 
       if (this.subCuentaCreacion > 0 ){
         this.onCuentaMayorChange() 
        this.newCntTransacciones.id_cuenta= this.subCuentaCreacion;
@@ -208,7 +208,7 @@ export class CrearOperacionesComponent implements OnInit {
   }
   onCuentaMayorChange(){   
      this.slcuentas= undefined;
-     //console.log('onCuentaMayorChange', this.Mcuentas , this.selectedCuentaMayor);
+     //CustomConsole.log('onCuentaMayorChange', this.Mcuentas , this.selectedCuentaMayor);
     this.cuentas  = this.Mcuentas.filter(x=>x.cod_cuenta == this.selectedCuentaMayor)
 
     if(this.cuentas.length == 0){
@@ -253,10 +253,10 @@ export class CrearOperacionesComponent implements OnInit {
           const currentDate = new Date(x.fecha_transaccion);
           return currentDate < min ? currentDate : min;
         },new Date('9999-12-31')); // Initialize with a large date
-          //console.log(minDate); // Will print the earliest date 
+          //CustomConsole.log(minDate); // Will print the earliest date 
           this.operacion.fechaOperacion =  this.formatDateToString(minDate); 
          this.newCntTransacciones.fecha_transaccion = this.operacion.fechaOperacion;
-          //console.log('fecha transaccion',this.operacion.fechaOperacion, this.newCntTransacciones.fecha_transaccion );
+          //CustomConsole.log('fecha transaccion',this.operacion.fechaOperacion, this.newCntTransacciones.fecha_transaccion );
           
           
     }
@@ -271,7 +271,7 @@ export class CrearOperacionesComponent implements OnInit {
     this.newCntTransacciones.nombre_cuenta = this.slcuentas.nombre_cuenta ; 
     this.newCntTransacciones.nombre_grupo = this.slcuentas.nombre_grupo ; 
     this.newCntTransacciones.nombre_clase = this.slcuentas.nombre_clase ;  
-    //console.log(this.newCntTransacciones);
+    //CustomConsole.log(this.newCntTransacciones);
     this.cntService.setCntTransaccionesTmp(this.newCntTransacciones).subscribe({next:(value:any)=>{ 
       this.getTransaccionesTemporales();
       this.limpiarMovimiento();

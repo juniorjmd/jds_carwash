@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TipoDeDocumentos } from 'src/app/interfaces/tipo-de-documentos';
 import { ProductoService } from 'src/app/services/producto.service';
 import { loading } from 'src/app/models/app.loading';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-tipos-de-documentos',
@@ -13,7 +14,7 @@ export class TiposDeDocumentosComponent implements OnInit {
   constructor( private servicePrd : ProductoService ,  private loading : loading ) {
     this.loading.show();
     this.servicePrd.getTiposDeDocumentos().subscribe(
-      (respuesta:any)=>{console.log(respuesta)
+      (respuesta:any)=>{CustomConsole.log(respuesta)
        
       if (respuesta.error === 'ok'){
          this.tiposDeDocumento = respuesta.data;

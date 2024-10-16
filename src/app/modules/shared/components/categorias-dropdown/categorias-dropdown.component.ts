@@ -1,5 +1,6 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { CategoriasModel } from 'src/app/models/categorias.model';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { EmpleadoModel } from 'src/app/models/empleados/empleados.module';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { ProductoService } from 'src/app/services/producto.service';
@@ -19,7 +20,7 @@ export class CategiasDropdownComponent implements OnInit{
   private prdService= inject(ProductoService) ;
   
   ngOnInit(): void { 
-    console.log('opciones : ',this.options);
+    CustomConsole.log('opciones : ',this.options);
     this.prdService.currentCategorias.subscribe((value:CategoriasModel[]|null)=>{
       if(value != undefined){
         this.options = value;  
@@ -47,7 +48,7 @@ export class CategiasDropdownComponent implements OnInit{
   showDropdown() {
     const dropdownButton = document.querySelector('.ddMarcas') as HTMLElement;
     const dropdownFiltro = document.querySelector('.ddMarcasFiltro') as HTMLElement;
-    console.log(dropdownButton);
+    CustomConsole.log(dropdownButton);
     
     if (dropdownButton && dropdownButton.getAttribute('aria-expanded') === 'false') {
       dropdownButton.ariaExpanded

@@ -17,6 +17,7 @@ import { loading } from 'src/app/models/app.loading';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { establecimientoModel } from 'src/app/models/ventas/establecimientos.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'modals-abonos-cuentas-por-pagar',
@@ -59,14 +60,14 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
       tap((confirmado:  {response:true  , persona:ClientesModel})=>{
         if (confirmado.response) { 
           this.personaIngreso = confirmado.persona;
-          console.log('personaIngreso',this.personaIngreso);
+          CustomConsole.log('personaIngreso',this.personaIngreso);
           this.docAbono.cliente =  ( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id!;
           this.buscarCreditoCliente();   }
       })
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire('Error:', JSON.stringify( error)),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
   }
   buscarCreditoCliente( ){
@@ -76,7 +77,7 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
     .getCuentasXPagarByPersonaAbonos(( typeof( this.personaIngreso.id!) == "string"   ) ? parseInt(this.personaIngreso.id) :this.personaIngreso.id! ,
      this.docAbono.establecimiento )
     .subscribe({next:(retorno:CarteraRequest)=>{
-      console.log('getCuentasXPagarByPersonaAbonos',retorno);
+      CustomConsole.log('getCuentasXPagarByPersonaAbonos',retorno);
       
       if(retorno.numdata!> 0){
         this.lisCartera =  retorno.data;
@@ -107,7 +108,7 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
           
         })??[];
         
-        console.log('cartera' ,  this.lisCartera)
+        CustomConsole.log('cartera' ,  this.lisCartera)
       }
     } , error:error=>{Swal.fire( JSON.stringify(error))}
   })
@@ -118,13 +119,13 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
     {this.docAbono.listado[indice].presioVenta = 0 ; }
    else{
     this.docAbono.valorParcial =  this.docAbono.listado.reduce((acc, item) => acc + parseFloat(item.presioVenta.toString()), 0);
-    console.log('documento a enviar',this.docAbono);}
+    CustomConsole.log('documento a enviar',this.docAbono);}
   
   }
   pagarTodo(){
     this.docAbono.listado.forEach(x=> x.presioVenta = x.valorTotal)
     this.docAbono.valorParcial =  this.docAbono.listado.reduce((acc, item) => acc + parseFloat(item.presioVenta.toString()), 0);
-    console.log('documento a enviar',this.docAbono);
+    CustomConsole.log('documento a enviar',this.docAbono);
   
   }
 
@@ -152,10 +153,10 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
     this.loading.show();
     this.docService .cerrarDocumento(this.docActivo!.orden).subscribe({next:(respuesta: DocumentoCierreRequest) => {
       //console.clear();
-      console.log("respuesta cierre documento =>" , respuesta)
+      CustomConsole.log("respuesta cierre documento =>" , respuesta)
       if (respuesta.error === 'ok') {  
         this.docActivo = Object.assign(new DocumentosModel(), respuesta.data.documentoFinal); 
-        console.log('facturarDocumento =>>>>>', this.docActivo);
+        CustomConsole.log('facturarDocumento =>>>>>', this.docActivo);
         this.printer_factura_final(); 
       } else {
         try {
@@ -172,7 +173,7 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
           Swal.fire(error.error.error, '', 'error');
          } catch (error : any) {
           Swal.fire('error en el servidor', '', 'error');
-         }},complete:()=>{console.log('facturarDocumento completo');
+         }},complete:()=>{CustomConsole.log('facturarDocumento completo');
             this.loading.hide()
          }
     })
@@ -189,9 +190,9 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
     if(this.docAbono.valorParcial <= 0){
       Swal.fire('Error en el envio' , 'debe ingresar minimo un abono' , 'error')
     }
-     console.log('documento a enviar',this.docAbono);
+     CustomConsole.log('documento a enviar',this.docAbono);
      this.docService.crearDocumentoAbonoCredito(this.docAbono).subscribe({next:(value:DocumentoCierreRequest)=>{
-      console.log('crearDocumentoAbonoCredito', value);
+      CustomConsole.log('crearDocumentoAbonoCredito', value);
       
      this.docActivo =   value.data.documentoFinal;
       
@@ -206,15 +207,15 @@ export class AbonosCuentasPorPagarComponent  implements OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire('Error:', error),
-      complete: () => console.log('buscarCliente completo')
+      complete: () => CustomConsole.log('buscarCliente completo')
     });   
-      console.log('crearDocumentoAbono',value); 
+      CustomConsole.log('crearDocumentoAbono',value); 
      }})
   }
   cancelar(){
     this.docAbono.listado.forEach(x=> x.presioVenta = 0)
     this.docAbono.valorParcial =  this.docAbono.listado.reduce((acc, item) => acc + parseFloat(item.presioVenta.toString()), 0);
-    console.log('documento a enviar',this.docAbono);
+    CustomConsole.log('documento a enviar',this.docAbono);
   
   }
 }

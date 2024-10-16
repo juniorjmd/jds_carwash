@@ -32,7 +32,7 @@ export class ModalCntClaseComponent implements OnInit {
   
   onSubmit() {
     // Aquí puedes manejar la lógica de envío del formulario
-    //console.log(this.newCntClase);
+    //CustomConsole.log(this.newCntClase);
   }
 
   ngOnInit(): void { }

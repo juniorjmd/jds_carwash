@@ -12,6 +12,7 @@ import { ModalCntSubCuentasComponent } from '../../modals/cuentasContables/cnt-s
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { tap } from 'rxjs';
 import { establecimientosRequest } from 'src/app/interfaces/producto-request';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-crear',
@@ -45,7 +46,7 @@ export class CrearComponent implements OnInit {
     .afterClosed() 
     .pipe(
       tap((response: responseSubC) => {
-        console.log('buscarCuentasContablesGastos',response);
+        CustomConsole.log('buscarCuentasContablesGastos',response);
         if (response.confirmado && response.datoDevolucion !== undefined ) {  
           switch(nombreBusqueda){
             case'cajaGeneral':
@@ -108,11 +109,11 @@ export class CrearComponent implements OnInit {
     ).subscribe({
       next: () => {},
       error: (error) => Swal.fire('Error:', error),
-      complete: () => console.log('buscarCuentasContables completo')
+      complete: () => CustomConsole.log('buscarCuentasContables completo')
     }); 
   }
   asignarLocation( b:BodegasModule){
-    console.log("asignar datos al elemento",b) 
+    CustomConsole.log("asignar datos al elemento",b) 
       this.newEsta.idAuxiliar =   (typeof ( b.id! ) === 'number'  )? b.id! : parseInt(b.id!) ;
       this.newEsta.nombreAuxiliar =   b.nombre ;  
       this.newEsta.idBodegaStock =   (typeof ( b.id! ) === 'number'  )? b.id! : parseInt(b.id!) ;
@@ -125,14 +126,14 @@ export class CrearComponent implements OnInit {
 this.locationStore = [this.auxBodega];
     this.serviceCaja.getBodegasDisponibles()
     .subscribe({next:     (datos:any)=>{
-        console.log(datos);
+        CustomConsole.log(datos);
         this.locationStore = [];   
         this.locationPOS   = [];
       this.locationVirtual  = [];
    if (datos.numdata > 0 ){  
             this.locationStore = datos.data!.map((x:any)=>x.obj) 
             this.locationStore.unshift(this.auxBodega);  
-     console.log("this.locationStore" , this.locationStore) 
+     CustomConsole.log("this.locationStore" , this.locationStore) 
      this.newEsta.tipo = 0;
      this.newEsta.estado = 0;
     }else{
@@ -164,11 +165,11 @@ this.locationStore = [this.auxBodega];
   getEstablecimiento(){ 
     this.serviceCaja.getAllEstablecimientos()
      .subscribe({next:   (datos:establecimientosRequest )=>{
-         console.log(datos);   
+         CustomConsole.log(datos);   
     if (datos.numdata > 0 ){ 
       this.establecimientos = datos.data??[];
       this.serviceCaja.asignarEstablecimientos(datos.data);
-      console.log(this.establecimientos);
+      CustomConsole.log(this.establecimientos);
       this.newEsta.tipo = 0;
       this.newEsta.estado = 0;
     }
@@ -186,14 +187,14 @@ this.locationStore = [this.auxBodega];
   getTiposEstablecimiento(){ 
     this.serviceCaja.getTiposEstablecimientos()
      .subscribe({next:  (datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          this.tiposEsta = [];   
     if (datos.numdata > 0 ){ 
       
       datos.data!.forEach((dato:TiposEstablecimientos , index:number )=>{
         this.tiposEsta[index] = new TiposEstablecimientosModel( dato );
       }) 
-      console.log(this.tiposEsta);
+      CustomConsole.log(this.tiposEsta);
     }
 
         this.loading.hide()
@@ -217,7 +218,7 @@ this.locationStore = [this.auxBodega];
     }})
   }
   guardarCaja(){
-   console.log('nueva caja',this.newEsta.nombre)
+   CustomConsole.log('nueva caja',this.newEsta.nombre)
    if (typeof(this.newEsta.nombre) === 'undefined'){
     this.loading.hide();
     Swal.fire('Debe ingresar el Nombre del establecimiento');
@@ -231,7 +232,7 @@ this.locationStore = [this.auxBodega];
      }
    }
 
-   console.log('this.newEsta.idAuxiliar : '+this.newEsta.idAuxiliar,'this.newEsta.tipo '+this.newEsta.tipo )
+   CustomConsole.log('this.newEsta.idAuxiliar : '+this.newEsta.idAuxiliar,'this.newEsta.tipo '+this.newEsta.tipo )
    if(this.newEsta.tipo == 1) {
   
    if ( this.newEsta.idAuxiliar  ==  0 ){
@@ -253,7 +254,7 @@ this.locationStore = [this.auxBodega];
    this.loading.show(); 
  
    this.serviceCaja.setEstablecimiento(this.newEsta).subscribe(
-    (respuesta:any)=>{console.log(respuesta)
+    (respuesta:any)=>{CustomConsole.log(respuesta)
      
     if (respuesta.error === 'ok'){
       Swal.fire('datos ingresados con exito');  

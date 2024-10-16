@@ -12,6 +12,7 @@ import { PrinterManager } from 'src/app/models/printerManager';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { resumenPrd, ResumenVenta } from 'src/app/interfaces/resumenVenta.';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'app-ventasDiaria',
@@ -54,7 +55,7 @@ const day = date.getDate(); // */
   }
   removeGetActivo(a:string){
     this.limpiarListado()
-    console.log(a);
+    CustomConsole.log(a);
     $('.likcontPrd').each(function(){
        $(this).removeClass('active')
     }) ;
@@ -137,7 +138,7 @@ async ExportarResumen()
   pagosHtml += '</td></tr></table>'
 
    Swal.fire({html:pagosHtml, width: '800px' , showCancelButton:true , cancelButtonText:'imprimir'}).then(value=>{
-    console.log(value);
+    CustomConsole.log(value);
     if(value.isDismissed){
       this.imprimirFactura(venta);
     }
@@ -145,7 +146,7 @@ async ExportarResumen()
    });
   }
   async imprimirFactura(factura:DocumentosModel)
-  { console.log(factura); 
+  { CustomConsole.log(factura); 
    let printerManager =  new PrinterManager(this.serviceCaja);;
    printerManager.setDocumento(factura);
    printerManager.printReceipt();
@@ -161,8 +162,8 @@ async ExportarResumen()
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
-         console.log('getDocumentos', datos.numdata);
-         console.log('getDocumentos_recuest', datos );
+         CustomConsole.log('getDocumentos', datos.numdata);
+         CustomConsole.log('getDocumentos_recuest', datos );
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:any , index : number  )=>{  
@@ -196,7 +197,7 @@ async ExportarResumen()
            
         if (datos.numdata > 0 ){
           this.resumenVenta = datos.data  ;
-          console.log('getResumenProductosVentas',this.resumenVenta);
+          CustomConsole.log('getResumenProductosVentas',this.resumenVenta);
        } else{
         Swal.fire('No existen datos relacionados con la busqueda')
        } 
@@ -210,8 +211,8 @@ async ExportarResumen()
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
-         console.log('getDocumentos', datos.numdata);
-         console.log('getDocumentos_recuest', datos );
+         CustomConsole.log('getDocumentos', datos.numdata);
+         CustomConsole.log('getDocumentos_recuest', datos );
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:any , index : number  )=>{  
@@ -237,8 +238,8 @@ async ExportarResumen()
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
-         console.log('getDocumentos', datos.numdata);
-         console.log('getDocumentos_recuest', datos );
+         CustomConsole.log('getDocumentos', datos.numdata);
+         CustomConsole.log('getDocumentos_recuest', datos );
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:any , index : number  )=>{  

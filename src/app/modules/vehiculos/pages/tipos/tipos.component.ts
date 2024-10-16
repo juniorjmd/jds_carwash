@@ -5,6 +5,7 @@ import { loading } from 'src/app/models/app.loading';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { select } from 'src/app/interfaces/generales.interface';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({
   selector: 'app-tipos',
   templateUrl: './tipos.component.html',
@@ -33,7 +34,7 @@ export class TiposComponent {
       if (result.isConfirmed) {
         this.VehiculosService.eliminarTipoDeVehiculo(tipo).subscribe(
           (respuesta: any) => {
-            console.log(respuesta);
+            CustomConsole.log(respuesta);
             if (respuesta.error === 'ok') {
               this.getTiposVehiculos();
               Swal.fire('Elemento eliminado con exito!', '', 'success');
@@ -49,7 +50,7 @@ export class TiposComponent {
     this.loading.show();
     this.VehiculosService.geTiposVehiculos().subscribe(
       (datos: any) => {
-        console.log(datos);
+        CustomConsole.log(datos);
 
         if (datos.numdata > 0) {
           datos.data!.forEach((dato: TipoVehiculoModule, index: number) => {
@@ -59,7 +60,7 @@ export class TiposComponent {
               dato.descripcion
             );
           });
-          console.log(this.tiposVehiculo);
+          CustomConsole.log(this.tiposVehiculo);
         } else {
           this.tiposVehiculo = [];
         }
@@ -68,7 +69,7 @@ export class TiposComponent {
       },
       (error) => {
         this.loading.hide();
-        console.log(error);
+        CustomConsole.log(error);
         Swal.fire(error.error.error, '', 'error');
       }
     );
@@ -86,7 +87,7 @@ export class TiposComponent {
     this.loading.show();
     this.VehiculosService.guardarTipoVehiculo(this.newTipoVehiculo).subscribe(
       (respuesta: any) => {
-        console.log(respuesta);
+        CustomConsole.log(respuesta);
 
         if (respuesta.error === 'ok') {
           Swal.fire('datos ingresados con exito');

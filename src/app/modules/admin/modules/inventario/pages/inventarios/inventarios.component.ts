@@ -7,6 +7,7 @@ import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
 import { InventarioService } from 'src/app/services/nServices/inventario.service';
 import { ExecuteService } from 'src/app/services/nServices/execute.service';
 import Swal from 'sweetalert2';
+import { CustomConsole } from 'src/app/models/CustomConsole';
  
 
 @Component({
@@ -30,7 +31,7 @@ openModal() {
 getInventarios(){
   this.invService.getInventarios().subscribe(
     {next:(value)=>{
-      console.log(value);
+      CustomConsole.log(value);
       this.datos = value;
        },
       error:(error)=>{Swal.fire(JSON.stringify(error));

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { PrinterManager } from 'src/app/models/printerManager';
 import { DevolucionModel } from 'src/app/models/ventas/documento.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
@@ -84,7 +85,7 @@ export class AnularComponent implements OnInit {
   pagosHtml += '</td></tr></table>'
 
    Swal.fire({html:pagosHtml, width: '800px' ,showDenyButton:true ,denyButtonText:'imprimir'}).then(value=>{
-    console.log(value);
+    CustomConsole.log(value);
     if(value.isDenied){
       this.imprimirFactura(venta);
     }
@@ -92,7 +93,7 @@ export class AnularComponent implements OnInit {
    });
   }
   async imprimirFactura(factura:DevolucionModel)
-  { console.log(factura); 
+  { CustomConsole.log(factura); 
    let printerManager =  new PrinterManager(this.serviceCaja);;;
    printerManager.setDocumentoDevolucion(factura)
    printerManager.printBonoDevolucion(false) ;
@@ -104,7 +105,7 @@ export class AnularComponent implements OnInit {
       (datos:any)=>{
         let cont = 0; 
          this.documentos = []; 
-         console.log('getDocumentos', datos.numdata , 'datos', datos );
+         CustomConsole.log('getDocumentos', datos.numdata , 'datos', datos );
          
     if (datos.numdata > 0 ){ 
       datos.data!.forEach((dato:any , index :number )=>{  

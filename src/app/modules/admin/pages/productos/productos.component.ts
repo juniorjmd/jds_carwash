@@ -17,6 +17,7 @@ import { categoriaRequest, marcaRequest, presentacionPrdRequest, ProductoExitenc
 import { ModalUpdateProductoComponent } from '../../modals/modalUpdateProducto/modalUpdateProducto.component';
 import { PresentacionPrdModel } from 'src/app/models/presentacionPrdModel';
 import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
@@ -93,7 +94,7 @@ export class ProductosComponent implements OnInit {
     }});
   }
    getProductosPorFiltro(){
-    console.log('busqueda productos inicial' ); 
+    CustomConsole.log('busqueda productos inicial' ); 
      this.loading.show()  
      this.productoService.getProductosPorNombre( this.textFindProductos ,[0,30] ).subscribe(
 
@@ -102,7 +103,7 @@ export class ProductosComponent implements OnInit {
          if (respuesta.error === 'ok'){
             if (respuesta.numdata > 0 ){
               const productos = respuesta.productos; 
-              console.log('producto general' , productos)
+              CustomConsole.log('producto general' , productos)
               this.Productos = productos   
             }else{ 
               Swal.fire(  "error",  'la busqueda no genero ningun resultado', "error" );
@@ -110,7 +111,7 @@ export class ProductosComponent implements OnInit {
           }else{ 
             Swal.fire(  "error", respuesta.error , "error"); 
           } 
-          console.log('getProductosNombre',JSON.stringify(respuesta));
+          CustomConsole.log('getProductosNombre',JSON.stringify(respuesta));
          
          
           } , error:    error => { this.loading.hide();  
@@ -135,15 +136,15 @@ export class ProductosComponent implements OnInit {
        }
        
        let nomInventario = this.inventario.bodega.nombre;
-       console.log(JSON.stringify(this.inventario.bodega))
+       CustomConsole.log(JSON.stringify(this.inventario.bodega))
       this.newAbrirDialog.open(BuscarProdDirectoComponent   )
       .afterClosed()
       .subscribe(( response:responsePrd  )=>{
-        console.log(response);
+        CustomConsole.log(response);
         
         if (response.confirmado){
          this.productoRetornoBusqueda = response.datoDevolucion!;
-          console.log('dato retornado busqueda directa',response.datoDevolucion);
+          CustomConsole.log('dato retornado busqueda directa',response.datoDevolucion);
           Swal.fire({
             title: `ingrese la cantidad a ingresar del producto "${response.datoDevolucion!.nombre}"
              en la bodega  : "${nomInventario}"  .`, 
@@ -153,7 +154,7 @@ export class ProductosComponent implements OnInit {
             cancelButtonText:'No'
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
-            console.log(result  );
+            CustomConsole.log(result  );
             if (result.isConfirmed) {  
               if(result.value <= 0){
                 Swal.fire( 'el valor debe ser mayor a cero', '', 'error');
@@ -161,10 +162,10 @@ export class ProductosComponent implements OnInit {
               }
               this.newIngresoPrecargue =    new AuxIngresoInventarioModule(this.productoRetornoBusqueda.id! , result.value ,  this.inventario.bodega ) ; 
               this.productoService.guardarNuevoProductoPrecargue( this.newIngresoPrecargue   ).subscribe(
-                (respuesta:any)=>{console.log(respuesta)
+                (respuesta:any)=>{CustomConsole.log(respuesta)
                  
                 if (respuesta.error === 'ok'){  
-                    console.log(respuesta);
+                    CustomConsole.log(respuesta);
                if (respuesta.numdata > 0 ){ 
                  this.AuxIngresoInventarioModule = respuesta.datos;  
                }else{
@@ -192,7 +193,7 @@ export class ProductosComponent implements OnInit {
       this.bodegas   = [this.auxBodega];
       this.productoService.getbodegas( ).subscribe({next : 
         (datos:any)=>{
-           console.log('producto component - get bodegas' , datos);
+           CustomConsole.log('producto component - get bodegas' , datos);
           if (datos.numdata > 0 ){ 
             this.bodegas = datos.data!.map((x:any)=>x.obj) 
             this.bodegas.unshift(this.auxBodega);
@@ -219,7 +220,7 @@ export class ProductosComponent implements OnInit {
       {  Swal.fire('Debe ingresar el nombre del inventario!!!', '', 'error');
       return;} 
         let msg = '';
-        console.log("inventario cerrar" , this.inventario)
+        CustomConsole.log("inventario cerrar" , this.inventario)
       switch(this.inventario.tipoInventario){
         case 1 : 
             msg = 'Ten en cuenta, el inventario tipo GENERAL borrara la existencia actual de los productos ingresados '+
@@ -249,7 +250,7 @@ export class ProductosComponent implements OnInit {
           
       this.productoService.CERRAR_INVENTARIO(this.inventario.bodega.id, this.inventario.nombre ,this.inventario.descripcion
         ,this.inventario.tipoInventario ).subscribe(
-          {next :       (respuesta:any)=>{console.log(respuesta)        
+          {next :       (respuesta:any)=>{CustomConsole.log(respuesta)        
           if (respuesta.error === 'ok'){ 
             this.AuxIngresoInventarioModule = [];   
             this.inventario ={
@@ -287,7 +288,7 @@ export class ProductosComponent implements OnInit {
       return;}
       
       this.productoService.borrarPrecarguePorBodega(this.inventario.bodega.id).subscribe(
-        (respuesta:any)=>{console.log(respuesta)
+        (respuesta:any)=>{CustomConsole.log(respuesta)
         
           if (respuesta.error === 'ok'){ 
             this.AuxIngresoInventarioModule = [];   
@@ -319,7 +320,7 @@ export class ProductosComponent implements OnInit {
       return;}
       this.productoService.getPrecarguePorBodega(this.inventario.bodega.id).subscribe({next:
         (datos:any)=>{
-           console.log(datos);
+           CustomConsole.log(datos);
       if (datos.numdata > 0 ){ 
         this.AuxIngresoInventarioModule = datos.data;  
       }else{
@@ -338,16 +339,16 @@ export class ProductosComponent implements OnInit {
      }
      editarPrd(prd:ProductoModel){ 
       console.clear();
-      console.log('producto enviado', prd);
+      CustomConsole.log('producto enviado', prd);
       
       this.limpiarFormulario() 
       this.newAbrirDialog.open(ModalUpdateProductoComponent , { data:  prd }  )
       .afterClosed()
       .subscribe(( response:responsePrd  )=>{
-        console.log(response);
+        CustomConsole.log(response);
         
         if (response.confirmado){ 
-          console.log('dato retornado busqueda directa',response.datoDevolucion);
+          CustomConsole.log('dato retornado busqueda directa',response.datoDevolucion);
        
         } 
       })  
@@ -358,13 +359,13 @@ export class ProductosComponent implements OnInit {
      existencias(prd:ProductoModel){
       this.productoService.getProductosExistencia(prd).subscribe({
         next:(value:ProductoExitenciasRequest )=>{
-           console.log('producto existencia' , value)
+           CustomConsole.log('producto existencia' , value)
            if(value.error == 'ok'){
             if(value.numdata> 0 ){
               prd.existencias = value.data;
               if (prd.existencias.length > 0 ){ 
                 this.existenciasPrd = prd.existencias; 
-                console.log(this.existenciasPrd);
+                CustomConsole.log(this.existenciasPrd);
                 let pagosHtml:string =  `<h1>Producto : <br>${prd.nombre}</h1>
                 <table class='table' style='font-size:12px'> 
                 <tr><td colspan='10' > <h1>Existentencias y Movimientos</h1><td></tr> 
@@ -431,11 +432,11 @@ export class ProductosComponent implements OnInit {
         {
           next:
         (datos:any)=>{
-           console.log(datos);
+           CustomConsole.log(datos);
            
       if (datos.numdata > 0 ){ 
         this.existenciasPrd = datos.data; 
-        console.log(this.existenciasPrd);
+        CustomConsole.log(this.existenciasPrd);
         let pagosHtml:string =  `<h1>Producto : <br>${this.existenciasPrd[0].nombre_producto}</h1>
         <table class='table' style='font-size:12px'> 
         <tr><td colspan='10' > <h1>Existentencias y Movimientos</h1><td></tr> 
@@ -503,12 +504,12 @@ export class ProductosComponent implements OnInit {
     this.loading.show()
     this.productoService.getCategorias_marcas().subscribe({
       next: (datos:[categoriaRequest,marcaRequest])=>{
-         console.log('getCategorias_marcas',datos);
+         CustomConsole.log('getCategorias_marcas',datos);
      let cont:number;    
     if (datos[0].numdata > 0 ){ 
       this.categorias = 
       datos[0].data ;
-      console.log(this.categorias);
+      CustomConsole.log(this.categorias);
       this.categorias1 = this.categorias.filter(x=>x.idPadreCategoria == 0)
       this.categorias1.unshift(this.categoriaAux[0]);
     }else{
@@ -517,7 +518,7 @@ export class ProductosComponent implements OnInit {
     if (datos[1].numdata > 0 ){ 
       cont = 1 ; 
       this.marcas = datos[1].data ;
-      console.log(this.marcas);
+      CustomConsole.log(this.marcas);
     }else{
       this.marcas = [this.marcasAux];
     }
@@ -605,7 +606,7 @@ export class ProductosComponent implements OnInit {
       this.loading.show(); 
       this.productoService.guardarNuevoProducto(this.newProducto).subscribe(
         {next:
-       (respuesta:any)=>{console.log(respuesta)
+       (respuesta:any)=>{CustomConsole.log(respuesta)
         
        if (respuesta.error === 'ok'){
         this.buscar = true;
@@ -635,12 +636,12 @@ export class ProductosComponent implements OnInit {
     this.productoService.getProductosGeneral([0,100]).subscribe({
       next: 
       (datos:any)=>{
-         console.log(datos);
+         CustomConsole.log(datos);
          
     if (datos.numdata > 0 ){ 
       this.buscar =  false;
       this.Productos = datos.productos 
-      console.log('getProductos',this.Productos);
+      CustomConsole.log('getProductos',this.Productos);
     }else{
       this.Productos = [];
     }
@@ -658,7 +659,7 @@ export class ProductosComponent implements OnInit {
     }
 
   removeGetActivo(a:string){
-    console.log(a);
+    CustomConsole.log(a);
     $('.likcontPrd').each(function(){
        $(this).removeClass('active')
     }) ;

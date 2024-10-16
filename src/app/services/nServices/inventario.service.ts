@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';  
 import { Inventario } from 'src/app/interfaces/nInterfaces/inventario';
 import { httpOptions } from 'src/app/models/app.db.url';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 import { ambiente } from 'src/app/modules/shared/shared.module';
 
 @Injectable({
@@ -12,7 +13,7 @@ export class InventarioService {
   URL = ambiente.urlBaseBack + 'inventario/'; 
 
   constructor(private http: HttpClient) { 
-    console.log('inventario service inicializado');
+    CustomConsole.log('inventario service inicializado');
     
   }
   
@@ -23,14 +24,14 @@ export class InventarioService {
   }
 
   setInventarios( data:Inventario){
-      console.log( `${this.URL}`,data , httpOptions());
+      CustomConsole.log( `${this.URL}`,data , httpOptions());
       
     return this.http.post<Inventario[]>( `${this.URL}`,data , httpOptions());
  
   }
 
   editarElementoLinea( linea:any  , id:number){
-   console.log("lineaModificada" , linea , "idLineaCambiada" , id);
+   CustomConsole.log("lineaModificada" , linea , "idLineaCambiada" , id);
    
   }
 

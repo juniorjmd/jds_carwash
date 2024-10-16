@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Recurso } from 'src/app/interfaces/recurso';
 import { RecursoDetalle } from 'src/app/interfaces/usuario.interface';
+import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
   selector: 'shared-menu-item-li',
@@ -12,7 +13,7 @@ export class MenuItemLiComponent {
   @Input() recurso!: RecursoDetalle;
 
    constructor(){
-    console.log('recursos :::::  ',this.recurso);
+    CustomConsole.log('recursos :::::  ',this.recurso);
     
    }
 

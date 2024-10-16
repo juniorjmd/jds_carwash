@@ -20,16 +20,16 @@ constructor(private cntService:CntContablesService){
 }
 filtrarPorNombre( ) {
   this.Subcuentas =  [...this.auxSubCuentas]
-  //console.log('codigo cuenta',this.newSubcuenta.cod_cuenta);
+  //CustomConsole.log('codigo cuenta',this.newSubcuenta.cod_cuenta);
   if(this.newSubcuenta.nombre_scuenta && this.newSubcuenta.nombre_scuenta!.trim() != '') {
     if(this.newSubcuenta.cod_cuenta !== undefined &&  this.newSubcuenta.cod_cuenta! > 0 )
     {
       this.Subcuentas =  this.Subcuentas.filter(item => item.nombre_scuenta?.toUpperCase()!.includes(this.newSubcuenta.nombre_scuenta!.toUpperCase()));
       }else{
         this.cntService.getCntCuentasByName(this.newSubcuenta.nombre_scuenta).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
-          //console.log('getCntCuentasByName',value)
+          //CustomConsole.log('getCntCuentasByName',value)
           this.Subcuentas = value.data;  
-          //console.log('Subcuentas' , this.Subcuentas) 
+          //CustomConsole.log('Subcuentas' , this.Subcuentas) 
          },
         error: (e:any)=>Swal.fire(e.error.error)})
       } 
@@ -44,10 +44,10 @@ cancelar(){
 filtrarSubCuentas(){
   if(this.newSubcuenta.cod_cuenta != undefined){ 
   this.cntService.getCntCuentasByIdCM(this.newSubcuenta.cod_cuenta).subscribe( {next:(value:cntSubCuentaRequest)=>{ 
-    //console.log('getCntCuentasByIdCM',value)
+    //CustomConsole.log('getCntCuentasByIdCM',value)
     this.Subcuentas = value.data; 
     this.auxSubCuentas=value.data;
-    //console.log('Subcuentas' , this.Subcuentas) 
+    //CustomConsole.log('Subcuentas' , this.Subcuentas) 
    },
   error: (e:any)=>Swal.fire(e.error.error)})
 }else{this.getAllSubcuentas()}
@@ -55,9 +55,9 @@ filtrarSubCuentas(){
 ngOnInit() {
   this.cntService.currentCntcuentaM.subscribe({next:(value:CntCuentaMModel[] | null)=>{
     
-    //console.log('currentCntcuentaM - value',value) 
+    //CustomConsole.log('currentCntcuentaM - value',value) 
     this.cuentas = value??[] ;
-    //console.log('currentCntcuentaM',this.cuentas) 
+    //CustomConsole.log('currentCntcuentaM',this.cuentas) 
   },error : (e:any)=>Swal.fire(e.error.error)})
   // Aquí deberías cargar los datos de `cnt_cuenta` desde el servicio correspondiente
   
@@ -69,7 +69,7 @@ getAllSubcuentas(){
   this.cntService.getCntCuentas().subscribe( {next:(value:cntSubCuentaRequest)=>{   
     this.Subcuentas = value.data; 
     this.auxSubCuentas=value.data;
-    //console.log('Subcuentas' , this.Subcuentas) 
+    //CustomConsole.log('Subcuentas' , this.Subcuentas) 
    },
   error: (e:any)=>Swal.fire(e.error.error)})
 
@@ -78,10 +78,10 @@ getAllSubcuentas(){
 }
 enviarNewRegistro() {
   // Aquí puedes manejar la lógica de envío del formulario
-  //console.log('nueva subcuenta' , this.newSubcuenta);
+  //CustomConsole.log('nueva subcuenta' , this.newSubcuenta);
   
   this.cntService.setNewSubCuenta(this.newSubcuenta).subscribe( {next:(value:any)=>{   
-    //console.log('Subcuentas' ,value) 
+    //CustomConsole.log('Subcuentas' ,value) 
     this.filtrarSubCuentas()
    },
   error: (e:any)=>Swal.fire(e.error.error)})  
