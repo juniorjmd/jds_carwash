@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BuscarProdDirectoComponent } from 'src/app/modules/pos/modals/buscar-prod-directo/buscar-prod-directo.component';
 import { responsePrd } from 'src/app/interfaces/odoo-prd';
 import Swal from 'sweetalert2';
-import { categoriaRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciasRequest } from 'src/app/interfaces/producto-request';
+import { categoriaRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciasRequest, ProductoRequest } from 'src/app/interfaces/producto-request';
 import { ModalUpdateProductoComponent } from '../../modals/modalUpdateProducto/modalUpdateProducto.component';
 import { PresentacionPrdModel } from 'src/app/models/presentacionPrdModel';
 import { PrdPreciosModule } from 'src/app/models/prd-precios/prd-precios.module';
@@ -24,7 +24,9 @@ import { CustomConsole } from 'src/app/models/CustomConsole';
   styleUrls: ['./productos.component.css']
 }) 
 export class ProductosComponent implements OnInit {
+  codProducto='';
   buscar = true;
+  auxPrd:ProductoModel[] = []
   auxBodega:BodegasModule = {nombre : 'SELECCIONAR LA BODEGA' ,estado:0,   id:0  , descripcion : ''}
   existenciasPrd:PrdExistenciasModule[]=[] ;
   
@@ -32,9 +34,7 @@ export class ProductosComponent implements OnInit {
   productoRetornoBusqueda!:ProductoModel ;
   AuxIngresoInventarioModule : AuxIngresoInventarioModule[] = [];
 
-
-  newIngresoPrecargue !:AuxIngresoInventarioModule ;
-
+ 
 
   bodegas :BodegasModule[] = [this.auxBodega];
   inventario:any={
@@ -129,13 +129,82 @@ export class ProductosComponent implements OnInit {
       this.categorias3  = this.categorias2.filter( x=> x.idPadreCategoria == this.newProducto.idCategoria2  )
       this.categorias3.unshift(this.categoriaAux[0]);
     }
-     busquedaAuxiliarProducto( ){   
+    buscarProductoPorCodigo() {
+      // Verificar si el código del producto es válido
+      if (!this.codProducto?.trim()) {
+        return;
+      }
+    
+      // Verificar si la bodega es válida
+      if (this.inventario.bodega.id <= 0) {
+        Swal.fire('Debe seleccionar la bodega de ingreso', '', 'error');
+        return;
+      }
+    
+      // Llamar al servicio para buscar el producto
+      this.productoService.getProductoByIdOrCodBarra(this.codProducto).subscribe({
+        next: (val: ProductoRequest) => {
+          CustomConsole.log('dato retornado busqueda directa', val.data);
+    
+          if (val.numdata > 1) {
+            this.auxPrd = val.data;
+            // Crear el contenido HTML del modal
+            const items = val.data.map(producto => 
+              `<li style="cursor: pointer; margin: 5px 0;" data-producto-id="${producto.id}">${producto.nombre}</li>`).join('');
+            const listHTML = `<ul id="productList">${items}</ul>`;
+    
+            // Mostrar el modal con Swal
+            Swal.fire({
+              title: 'Selecciona un producto',
+              html: listHTML,
+              showConfirmButton: false,
+              focusConfirm: false,
+              didOpen: () => {
+                const self = this; 
+                const productos = this.auxPrd ;
+                // Añadir event listeners a los elementos de la lista después de que el modal se abra
+                const elements = document.querySelectorAll('#productList li');
+                const fndfiltrarAuxPrd = 
+                elements.forEach((element ) => {
+                  element.addEventListener('click', (event) => { 
+                    const target = event.currentTarget as HTMLElement;
+                    console.log(target); 
+                    const productId = target.getAttribute('data-producto-id');
+                    this.filtrarAuxPrd(productId);
+                  });
+                });
+              }
+            });
+          } else if (val.numdata === 1 && val.data[0]) {
+            // Agregar la cantidad si se encontró un solo producto
+            this.agregarCantidad(val.data[0]);
+          } else {
+            // Manejar el caso donde no se encontró ningún producto
+            Swal.fire('No se encontró el producto', '', 'warning');
+          }
+        },
+        error: (e) => {
+          const errorMessage = e.error?.message || 'Error desconocido';
+          Swal.fire('Ocurrió un error al buscar el producto', errorMessage, 'error');
+        }
+      });
+    }
+    
+    filtrarAuxPrd(idAux:any){  
+      const selectedProduct = this.auxPrd.find(producto => producto.id === idAux ); 
+      if (selectedProduct) {
+        Swal.close();
+        this.agregarCantidad(selectedProduct);
+      }
+    }   
+ 
+ 
+    busquedaAuxiliarProducto( ){   
       if(this.inventario.bodega.id <= 0) {
         Swal.fire( 'Debe seleccionar la bodega de ingreso', '', 'error');
         return;
        }
        
-       let nomInventario = this.inventario.bodega.nombre;
        CustomConsole.log(JSON.stringify(this.inventario.bodega))
       this.newAbrirDialog.open(BuscarProdDirectoComponent   )
       .afterClosed()
@@ -145,50 +214,55 @@ export class ProductosComponent implements OnInit {
         if (response.confirmado){
          this.productoRetornoBusqueda = response.datoDevolucion!;
           CustomConsole.log('dato retornado busqueda directa',response.datoDevolucion);
-          Swal.fire({
-            title: `ingrese la cantidad a ingresar del producto "${response.datoDevolucion!.nombre}"
-             en la bodega  : "${nomInventario}"  .`, 
-            input: 'number',
-            showCancelButton: true,
-            confirmButtonText: 'Si', 
-            cancelButtonText:'No'
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            CustomConsole.log(result  );
-            if (result.isConfirmed) {  
-              if(result.value <= 0){
-                Swal.fire( 'el valor debe ser mayor a cero', '', 'error');
-                return;
-              }
-              this.newIngresoPrecargue =    new AuxIngresoInventarioModule(this.productoRetornoBusqueda.id! , result.value ,  this.inventario.bodega ) ; 
-              this.productoService.guardarNuevoProductoPrecargue( this.newIngresoPrecargue   ).subscribe(
-                (respuesta:any)=>{CustomConsole.log(respuesta)
-                 
-                if (respuesta.error === 'ok'){  
-                    CustomConsole.log(respuesta);
-               if (respuesta.numdata > 0 ){ 
-                 this.AuxIngresoInventarioModule = respuesta.datos;  
-               }else{
-                 this.AuxIngresoInventarioModule = [];     
-                 } 
-                 
-               }else{ 
-                 try {
-                  Swal.fire(respuesta.error, '', 'error');
-                 } catch (error : any) {
-                  Swal.fire('error en el servidor', '', 'error');
-                 }
-               
-               }
-                this.loading.hide(); 
-                }) 
-            } 
-         }) 
+          this.agregarCantidad(response.datoDevolucion!)
         } 
       })  
     
      }
 
+
+     agregarCantidad(prd:ProductoModel){ 
+      let nomInventario = this.inventario.bodega.nombre;
+      Swal.fire({
+        title: `ingrese la cantidad a ingresar del producto "${prd!.nombre}"
+         en la bodega  : "${nomInventario}"  .`, 
+        input: 'number',
+        showCancelButton: true,
+        confirmButtonText: 'Si', 
+        cancelButtonText:'No'
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        CustomConsole.log(result  );
+        if (result.isConfirmed) {  
+          if(result.value <= 0){
+            Swal.fire( 'el valor debe ser mayor a cero', '', 'error');
+            return;
+          }
+          let ingreso =    new AuxIngresoInventarioModule(prd.id! , result.value ,  this.inventario.bodega ) ; 
+          this.productoService.guardarNuevoProductoPrecargue( ingreso  ).subscribe(
+            (respuesta:any)=>{CustomConsole.log(respuesta)
+             
+            if (respuesta.error === 'ok'){  
+                CustomConsole.log(respuesta);
+           if (respuesta.numdata > 0 ){ 
+             this.AuxIngresoInventarioModule = respuesta.datos;  
+           }else{
+             this.AuxIngresoInventarioModule = [];     
+             } 
+             
+           }else{ 
+             try {
+              Swal.fire(respuesta.error, '', 'error');
+             } catch (error : any) {
+              Swal.fire('error en el servidor', '', 'error');
+             }
+           
+           }
+            this.loading.hide(); 
+            }) 
+        } 
+     }) 
+     }
      getBodegas(){ 
       this.bodegas   = [this.auxBodega];
       this.productoService.getbodegas( ).subscribe({next : 

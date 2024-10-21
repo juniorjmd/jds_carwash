@@ -259,13 +259,20 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-2">
-            <button class="btn btn-success" (click)="busquedaAuxiliarProducto()">Agregar producto</button>
+        <div class="col-sm-12 col-lg-3">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="cod. producto" aria-label="Texto"
+                (keyup.enter)=" buscarProductoPorCodigo()" [(ngModel)] = 'codProducto' (keyup.escape)="codProducto = ''"              > 
+                <div class="input-group-append">
+                    <button class="btn btn-success" (click)="busquedaAuxiliarProducto()">Agregar producto</button>
+                </div>
+              </div>
+           
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-12 col-lg-2">
             <button class="btn btn-danger" (click)="borrarPrecarga()">Limpiar listado</button>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-12 col-lg-2">
             <button class="btn btn-info" (click)="cerrarInventario()">cerrar inventario</button>
         </div>
     </div>
