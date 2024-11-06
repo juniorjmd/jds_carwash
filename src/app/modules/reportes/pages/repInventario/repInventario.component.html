@@ -1,0 +1,10 @@
+ <div class="container-fluid">
+  <h2>Inventarios</h2>
+  <div class="row">
+    <div class="col-lg-3">
+        <select [(ngModel)]="idInventario">
+            <option *ngFor="let item of inventarios" [value]="item.id">{{item.nombre}}</option>
+        </select>
+    </div>
+  </div>
+ </div>
