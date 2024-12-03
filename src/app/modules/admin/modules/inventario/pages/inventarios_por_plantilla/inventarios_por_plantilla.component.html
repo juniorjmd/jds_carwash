@@ -1,0 +1,90 @@
+<div class="container">
+    <h3>Cargue de Inventario por Plantilla</h3>
+    <p>
+      Para realizar el cargue masivo de inventario, siga estos pasos:
+    </p>
+    <ol>
+      <li>
+        Descargue una de las plantillas disponibles a continuación. Puede elegir entre los formatos Excel y CSV:
+        <ul>
+          <li>
+            <a href="../assets/csv/plantilla_inventario/plantilla_creacion_inicial_productos.xlsx" download>
+              Descargar plantilla Excel
+            </a>
+          </li>
+          <li>
+            <a href="../assets/csv/plantilla_inventario/plantilla_creacion_inicial_productos.csv" download>
+              Descargar plantilla CSV
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        Diligencie la plantilla con los datos correspondientes. Asegúrese de no eliminar ni modificar las columnas existentes.
+      </li>
+      <li>
+        Si utiliza la plantilla Excel, antes de subir el archivo, conviértalo a formato CSV:
+        <ol>
+          <li>Abra el archivo Excel en su editor (por ejemplo, Microsoft Excel).</li>
+          <li>Haga clic en <strong>Archivo &gt; Guardar como</strong>.</li>
+          <li>Seleccione la ubicación donde desea guardar el archivo.</li>
+          <li>En el campo <strong>Tipo</strong>, elija <strong>CSV (delimitado por comas) (*.csv)</strong>.</li>
+          <li>Guarde el archivo.</li>
+        </ol>
+      </li>
+      <li>
+        Seleccione el archivo CSV utilizando el botón a continuación.
+      </li>
+      <li>
+        Valide el archivo para asegurarse de que no hay errores en los datos. Si se encuentran errores, corrija el archivo y vuelva a cargarlo.
+      </li>
+      <li>
+        Una vez validado correctamente, podrá procesar el archivo para cargar los datos al sistema.
+      </li>
+    </ol>
+  
+    <hr />
+  
+    <label for="fileUpload">Selecciona el archivo CSV:</label>
+    <input
+      type="file"
+      id="fileUpload"
+      (change)="onFileSelected($event)"
+      accept=".csv"
+      class="form-control"
+    />
+    <br />
+  
+    <button
+      class="btn btn-primary"
+      [disabled]="!fileUploaded"
+      (click)="validateFile()"
+    >
+      Validar Archivo
+    </button>
+    <button
+      class="btn btn-success"
+      [disabled]="!validationPassed"
+      (click)="processFile()"
+    >
+      Procesar Archivo
+    </button>
+  
+    <hr />
+  
+    <div *ngIf="validationErrors.length > 0" class="alert alert-danger">
+      <h5>Errores de Validación</h5>
+      <p>
+        Se encontraron los siguientes errores en el archivo. Por favor, corrija los errores y vuelva a cargar el archivo.
+      </p>
+      <ul>
+        <li *ngFor="let error of validationErrors">{{ error }}</li>
+      </ul>
+    </div>
+  
+    <div *ngIf="validationPassed" class="alert alert-success">
+      <h5>Validación Exitosa</h5>
+      <p>El archivo ha sido validado correctamente. Ahora puede procesar los datos.</p>
+    </div>
+  </div>
+  

@@ -1,0 +1,3 @@
+﻿codigo,categoria,marca,nombre,referencia,precioVenta,precioCompra,porcentajeIva,presentacion,cantidad
+12345ABC,Electrónica,XYZ,Producto de ejemplo,REF-001,150.5,100.0,19.0,Caja,10.0
+67890DEF,Hogar,ABC,Otro producto ejemplo,REF-002,200.0,150.0,5.0,Unidad,5.0

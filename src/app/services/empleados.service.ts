@@ -14,7 +14,7 @@ import { CustomConsole } from '../models/CustomConsole';
 export class EmpleadosService {
 
   // private _configService = inject(configService); 
-constructor(private http: HttpClient ) { }
+constructor(private readonly http: HttpClient ) { }
   
   getTiposEmpleados(){
     let datos = {"action": actions.actionSelect ,

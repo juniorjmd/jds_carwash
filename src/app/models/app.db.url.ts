@@ -16,10 +16,19 @@ const httpOptionsSinAutorizacion = {
 })
 }; 
 
-export let httpOptions = ()=>{
+export const httpOptions = ()=>{
   return {
     headers: new HttpHeaders({
       'Content-type': 'application/json' ,
+      'Authorization' : 'Bearer ' + localStorage.getItem('sis41254#2@')! 
+  }) 
+  }
+}
+
+
+export const httpFileOptions = ()=>{
+  return {
+    headers: new HttpHeaders({ 
       'Authorization' : 'Bearer ' + localStorage.getItem('sis41254#2@')! 
   }) 
   }
@@ -48,7 +57,8 @@ export async function loadConfig(http: HttpClient) {
         'brand': baseURL + endpoints.brand,
         'datosIniciales':baseURL + endpoints.datosIniciales,
         'login': baseURL + endpoints.login,
-        'inventario': baseURL + endpoints.inventario
+        'inventario': baseURL + endpoints.inventario,
+        'csv_manager': baseURL + endpoints.csv_manager
       };
       printer = config.printer ;
       enviroment = envi;

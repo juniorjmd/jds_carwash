@@ -1,0 +1,4 @@
+
+-- valida que estas agregandolo al recurso inventario
+INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `img`, `padreId`, `display_nombre`) VALUES ('5', 'cargarPorPlantilla', '<i class=\"bi bi-upload\"></i>', '19', 'Cargar Productos Por Plantilla');
+insert into recurso_direcciones ( id_recurso, direccion) values( 84 , '/home/admin/inventarios') , ( 84 , 'inventario_por_plantilla') ;

@@ -13,6 +13,7 @@ import { DescuentosComponent } from './pages/descuentos/descuentos.component';
 import { ActividadesDescuentosComponent } from './pages/actividades-descuentos/actividades-descuentos.component';
 import { WrkInventarioComponent } from './pages/wrk-inventario/wrk-inventario.component'; 
 import { IndexComponent } from './pages/index/index.component';
+import { InventariosPorPlantillaComponent } from './pages/inventarios_por_plantilla/inventarios_por_plantilla.component';
 
 const routes: Routes = [{ path: '', component: ApiComponent , 
                        children:[
@@ -28,6 +29,7 @@ const routes: Routes = [{ path: '', component: ApiComponent ,
                         { path: 'gruposProductos', component: GruposComponent} , 
                         { path: 'descuentos', component: DescuentosComponent} , 
                         { path: 'actividades', component: ActividadesDescuentosComponent} ,  
+                        { path: 'inventario_por_plantilla', component: InventariosPorPlantillaComponent} , 
                         { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
                                  ] }];
 

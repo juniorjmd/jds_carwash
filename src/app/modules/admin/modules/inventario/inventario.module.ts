@@ -26,6 +26,7 @@ import { ProductosComponent } from './pages/productos/productos.component';
 import { WrkInventarioComponent } from './pages/wrk-inventario/wrk-inventario.component';
 import { FormsModule } from '@angular/forms';
 import { IndexComponent } from './pages/index/index.component';
+import { InventariosPorPlantillaComponent } from './pages/inventarios_por_plantilla/inventarios_por_plantilla.component';
 
 
 
@@ -52,7 +53,7 @@ import { IndexComponent } from './pages/index/index.component';
     ModalCrearGrupoComponent,
     ModalCrearDescuentoComponent,
     ModalCrearActDescuentoComponent,
-    WrkInventarioComponent,
+    WrkInventarioComponent,InventariosPorPlantillaComponent,
     IndexComponent
   ],
   imports: [

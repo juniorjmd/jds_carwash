@@ -1,0 +1,16 @@
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+h3 {
+  color: #007bff;
+}
+
+.alert {
+  margin-top: 20px;
+}

@@ -1,5 +1,5 @@
-{
-    "baseURL": "https://services.carwash.sofdla.com.co/services/view/action/",
+ {
+    "baseURL": "https://lubrimonrroy.sofdla.com.co/backend/services/view/action/",
     "endpoints": {
       "action": "",
       "inventario": "inventario/",
@@ -8,12 +8,12 @@
       "admin": "admin/",
       "login": "login/",
       "datosIniciales": "datosiniciales/",
-      "brand": "brand/",
-      "csv_manager": "csv_manager/"
-    },  
+      "brand": "brand/"
+    },
     "printer": {
       "namePrinterGenerico": "impresora_punto_de_venta"
     }, 
     "enviroment":   "dev"
+     
   }
   
