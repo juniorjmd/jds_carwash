@@ -23,7 +23,7 @@ import { DocumentosComprasModel, DocumentosModel } from "../models/ventas/docume
 import { establecimientoModel } from "../models/ventas/establecimientos.model";
 import { OperacionesComponent } from "../modules/admin/modules/cuentas-contables/pages/operaciones/operaciones.component";
 import { TrasladosCntComponent } from "../modules/admin/modules/traslados-cnt/traslados-cnt.component";
-import { Inventario, InventarioApl } from "./nInterfaces/inventario";
+import { Inventario, InventarioApl, InventarioAplDetalle } from "./nInterfaces/inventario";
 import { Recurso } from "./recurso";
 import { ReporteMovimientoCuentas } from "./reporteMovimientoCuentas.";
 import { ResumenCreditos } from "./resumenCuentas";
@@ -40,6 +40,12 @@ export interface ProductoRequest {
 export interface InventarioAplicadoRequest { 
   data: InventarioApl[]; 
   producto: ProductoModel; 
+  query: string;
+  numdata: number;
+  error: string;
+}
+export interface InventarioAplicadoDetalleRequest { 
+  data: InventarioAplDetalle[];  
   query: string;
   numdata: number;
   error: string;

@@ -13,7 +13,7 @@ import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModel } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { categoriaRequest, categoriaVendidosRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, InventarioAplicadoRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciaRequest, ProductoExitenciasRequest, ProductoRequest } from '../interfaces/producto-request';
+import { categoriaRequest, categoriaVendidosRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, InventarioAplicadoDetalleRequest, InventarioAplicadoRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciaRequest, ProductoExitenciasRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
@@ -112,6 +112,17 @@ getInventariosAplicados():Observable<InventarioAplicadoRequest>{
  
      CustomConsole.log(datos);
      return this.http.post<InventarioAplicadoRequest>(url.action , datos, httpOptions()) ;
+       
+}
+getInventariosAplicadosDetalle( idInventario:any ):Observable<InventarioAplicadoDetalleRequest>{
+  
+  let _where = [{"columna" : "idInventario" , "tipocomp" : '=' , "dato" : idInventario   } ] 
+  let datos:any  = {"action": actions.actionSelect ,
+      "_tabla" : vistas.inv_inventario_ingreso_aplicado,_where
+     };
+ 
+     CustomConsole.log(datos);
+     return this.http.post<InventarioAplicadoDetalleRequest>(url.action , datos, httpOptions()) ;
        
 }
 setCategorias(CATEGORIA:CategoriasModel){

@@ -30,4 +30,21 @@ export interface InventarioApl {
 }
 
 
+export interface InventarioAplDetalle {
+    id: bigint;
+    cod_producto: string;
+    cantidad: number;
+    idInventario: bigint;
+    referencia?: string | null;
+    usuario_creacion: bigint;
+    usuario_edicion?: bigint | null;
+    fecha_creacion?: Date | null;
+    fecha_actualizacion?: Date | null;
+    estado?: number | null;
+    cantidadAnterios?: number | null;
+    cantidadAjuste?: number | null;
+    nombre?: string | null;
+}
+
+
 

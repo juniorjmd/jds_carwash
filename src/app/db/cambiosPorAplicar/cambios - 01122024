@@ -2,3 +2,26 @@
 -- valida que estas agregandolo al recurso inventario
 INSERT INTO `recurso` (`tipo_recurso`, `nombre_recurso`, `img`, `padreId`, `display_nombre`) VALUES ('5', 'cargarPorPlantilla', '<i class=\"bi bi-upload\"></i>', '19', 'Cargar Productos Por Plantilla');
 insert into recurso_direcciones ( id_recurso, direccion) values( 84 , '/home/admin/inventarios') , ( 84 , 'inventario_por_plantilla') ;
+
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `jdpsoluc_jds`@`%` 
+    SQL SECURITY DEFINER
+VIEW `vw_inv_inventario_ingreso_aplicado` AS
+    SELECT 
+        `inv_inventario_ingreso_aplicado`.`id` AS `id`,
+        `inv_inventario_ingreso_aplicado`.`cod_producto` AS `cod_producto`,
+        `inv_inventario_ingreso_aplicado`.`cantidad` AS `cantidad`,
+        `inv_inventario_ingreso_aplicado`.`idInventario` AS `idInventario`,
+        `inv_inventario_ingreso_aplicado`.`referencia` AS `referencia`,
+        `inv_inventario_ingreso_aplicado`.`usuario_creacion` AS `usuario_creacion`,
+        `inv_inventario_ingreso_aplicado`.`usuario_edicion` AS `usuario_edicion`,
+        `inv_inventario_ingreso_aplicado`.`fecha_creacion` AS `fecha_creacion`,
+        `inv_inventario_ingreso_aplicado`.`fecha_actualizacion` AS `fecha_actualizacion`,
+        `inv_inventario_ingreso_aplicado`.`estado` AS `estado`,
+        `inv_inventario_ingreso_aplicado`.`cantidadAnterios` AS `cantidadAnterios`,
+        `inv_inventario_ingreso_aplicado`.`cantidadAjuste` AS `cantidadAjuste`,
+        `inv_mst_producto`.`nombre` AS `nombre`
+    FROM
+        (`inv_inventario_ingreso_aplicado`
+        LEFT JOIN `inv_mst_producto` ON ((`inv_mst_producto`.`id` = `inv_inventario_ingreso_aplicado`.`cod_producto`)))

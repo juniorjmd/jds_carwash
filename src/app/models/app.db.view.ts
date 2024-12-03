@@ -9,6 +9,7 @@
   act_det_categoria : 'vw_act_det_categoria',
   act_det_marca : 'vw_act_det_marca',
 
+  inv_inventario_ingreso_aplicado : 'vw_inv_inventario_ingreso_aplicado',
 
   vw_actividad_disponible_categoria:'vw_actividad_disponible_categoria',
   vw_actividad_disponible_cliente:'vw_actividad_disponible_cliente',
