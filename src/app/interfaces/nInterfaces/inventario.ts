@@ -14,3 +14,20 @@ export interface Inventario {
 }
 
 
+
+export interface InventarioApl {
+    id: number;
+    nombre: string;
+    descripcion: string;
+    id_tipo: number;
+    estado: string;
+    fechaCreacion: Date;
+    fechaAplicacion: Date;
+    id_categoria: number;
+    id_marca: number;
+    id_proveedor: number;
+    usuario: string;
+}
+
+
+

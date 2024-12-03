@@ -25,6 +25,7 @@ import { CuentasPorPagarComponent } from './pages/repFinanzas/cuentasPorPagar/cu
 import { CuentasPorCobrarComponent } from './pages/repFinanzas/cuentasPorCobrar/cuentasPorCobrar.component';
 import { repClienteComponent } from './pages/repCliente/repCliente.component';
 import { repProveedorComponent } from './pages/repProveedor/repProveedor.component';
+import { RepInventarioComponent } from './pages/repInventario/repInventario.component';
 
 
 @NgModule({
@@ -34,8 +35,8 @@ import { repProveedorComponent } from './pages/repProveedor/repProveedor.compone
     InicioReportesComponent,ventasPorCategoriaComponent,
      VerFacturasClienteComponent, ventasPorProductoComponent,ventasPorVendedorComponent,ventasDiariaHoraComponent,
        BienvenidaRPComponent,ventasDiariaComponent, MovimientosCuentaComponent, InicioRepVentasComponent, devolucionesRepoComponent
-       ,BienvenidaRFComponent,InicioRepFinansasComponent, EstadoDeResultadoComponent, CuentasPorPagarComponent,CuentasPorCobrarComponent
-  ],
+       ,BienvenidaRFComponent,InicioRepFinansasComponent, EstadoDeResultadoComponent, CuentasPorPagarComponent,CuentasPorCobrarComponent,
+        RepInventarioComponent ],
   imports: [
     CommonModule,
     ReportesRoutingModule, 

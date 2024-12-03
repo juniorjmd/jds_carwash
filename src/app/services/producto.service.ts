@@ -13,7 +13,7 @@ import { DocumentosModel } from '../models/ventas/documento.model';
 import { ProductoModel } from '../models/producto/producto.module';
 import { UsuarioModel } from '../models/usuario.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { categoriaRequest, categoriaVendidosRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciaRequest, ProductoExitenciasRequest, ProductoRequest } from '../interfaces/producto-request';
+import { categoriaRequest, categoriaVendidosRequest, DescuentoRequest, DocumentoCierreRequest, DocumentoRequest, InventarioAplicadoRequest, marcaRequest, presentacionPrdRequest, ProductoExitenciaRequest, ProductoExitenciasRequest, ProductoRequest } from '../interfaces/producto-request';
 import { PrdPreciosModule } from '../models/prd-precios/prd-precios.module';
 import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
@@ -103,6 +103,15 @@ getDescuentos():Observable<DescuentoRequest>{
      CustomConsole.log(datos);
      
       return this.http.post<DescuentoRequest>(url.action , datos, httpOptions()) ;
+       
+}
+getInventariosAplicados():Observable<InventarioAplicadoRequest>{
+  let datos:any  = {"action": actions.actionSelect ,
+      "_tabla" : TABLA.inventario,
+     };
+ 
+     CustomConsole.log(datos);
+     return this.http.post<InventarioAplicadoRequest>(url.action , datos, httpOptions()) ;
        
 }
 setCategorias(CATEGORIA:CategoriasModel){

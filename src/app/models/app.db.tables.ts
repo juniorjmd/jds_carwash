@@ -32,6 +32,7 @@
     contador:"contadores" , 
     tiposVehiculos:"inv_mst_tipos_vehiculos",
     inv_descuentos:"inv_descuentos",
+    inventario:"inv_inventario",
     inv_inventario_ingreso_auxiliar:'inv_inventario_ingreso_auxiliar',
     transacciones_tmp:'cnt_transacciones_tmp', 
     operaPrestablecidas:'cnt_operacion_prestablecidas', 

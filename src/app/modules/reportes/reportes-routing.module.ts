@@ -24,6 +24,7 @@ import { CuentasPorPagarComponent } from './pages/repFinanzas/cuentasPorPagar/cu
 import { CuentasPorCobrarComponent } from './pages/repFinanzas/cuentasPorCobrar/cuentasPorCobrar.component';
 import { repClienteComponent } from './pages/repCliente/repCliente.component';
 import { repProveedorComponent } from './pages/repProveedor/repProveedor.component';
+import { RepInventarioComponent } from './pages/repInventario/repInventario.component';
 
 const routes: Routes = [{ path: '', component: InicioReportesComponent ,   children:[
     {path : 'reportesMenu' , component:ReportesComponent}, 
@@ -32,6 +33,7 @@ const routes: Routes = [{ path: '', component: InicioReportesComponent ,   child
     {path : 'productosVendidos' , component: productosVendidosComponent},  
     {path : 'cliente' , component: repClienteComponent},
     {path : 'proveedor' , component: repProveedorComponent}, 
+    {path : 'reporteInventario' , component: RepInventarioComponent},
     { path: 'reporteFinanciero', component: InicioRepFinansasComponent ,   children:[ 
       {path : '' , component:BienvenidaRFComponent}, 
       {path : 'movimientos' , component:movimientosCuentasComponent},  
