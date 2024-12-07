@@ -1,4 +1,6 @@
 import { Component, type OnInit } from '@angular/core';
+import { isNullOrUndefined } from '@swimlane/ngx-datatable';
+import { fileProcessResponse } from 'src/app/interfaces/file_procces_response.interface';
 import { InventoryService } from 'src/app/services/inventory.service';
 import Swal from 'sweetalert2';
 
@@ -12,7 +14,7 @@ export class InventariosPorPlantillaComponent implements OnInit {
   validationPassed: boolean = false;
   selectedFile: File | null = null;
   validationErrors: string[] = [];
-
+  llave_archivo :string|null = null;
   constructor(private inventoryService: InventoryService) {}
   ngOnInit(): void { }
 
@@ -42,13 +44,16 @@ export class InventariosPorPlantillaComponent implements OnInit {
 
       
       this.inventoryService.validateFile(formData).subscribe({
-        next: (errors) => {
+        next: (data:fileProcessResponse) => {
+          console.log(data.errors);
+          let errors = data.errors ; 
           if (errors.length > 0) { 
             this.validationErrors = errors;
             this.validationPassed = false;
           } else {
             this.validationErrors = [];
             this.validationPassed = true;
+            this.llave_archivo = data.key_subida
           }
         },
         error: (e) => {Swal.fire('Error al validar el archivo.' + JSON.stringify(e)) ; 
@@ -61,11 +66,14 @@ export class InventariosPorPlantillaComponent implements OnInit {
     if (this.selectedFile && this.validationPassed) {
       const formData = new FormData();
       formData.append('file', this.selectedFile);
-
-      this.inventoryService.processFile(formData).subscribe({
+      if(!isNullOrUndefined( this.llave_archivo )  ){
+      this.inventoryService.processFile(this.llave_archivo).subscribe({
         next: () => Swal.fire('Archivo procesado exitosamente.'),
-        error: () => Swal.fire('Error al procesar el archivo.'),
+        error: (e) => Swal.fire('Error al procesar el archivo.' + JSON.stringify(e)),
       });
+    }else{
+      Swal.fire('error' , 'No existe la llave para procesar el archivo');
+    }
     }
   }
 
