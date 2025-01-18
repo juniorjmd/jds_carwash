@@ -75,6 +75,7 @@ export class VentasComponent implements AfterViewInit, OnInit {
     private documentoService: DocumentoService,
     private productoService: ProductoService,
     private _ServLogin: LoginService, 
+    private _Router : Router,
     private dInicialServ: DatosInicialesService
   ) {    
           this.getUsuarioLogueado();
@@ -93,10 +94,30 @@ export class VentasComponent implements AfterViewInit, OnInit {
     }}); 
     this.dInicialServ.continueVenta.subscribe({next:(value)=>{
       this.continuar = value;
-      CustomConsole.log('continuar',this.continuar);
+      CustomConsole.log('continuar => continueVenta',this.continuar);
+
       if ( this.continuar ){
-      this.getMediosP();
-      this.getAsyncDocumentos();
+        
+        this.serviceCaja.getCajasActivasUsuarioActivo().subscribe({next:(value)=>{
+          CustomConsole.log('CAJA USUARIO LOGUEADO',JSON.stringify(value))
+          if(value.numdata > 0 ){
+            this.getMediosP();
+            this.getAsyncDocumentos();
+          }else{
+            //home/pos/abrir
+            this._Router.navigate(['home','pos','abrir']);
+          }
+        },error:e=>Swal.fire(JSON.stringify(e))})
+      
+      }
+      else{
+        
+        this.serviceCaja.getCajasActivasUsuarioActivo().subscribe({next:(value)=>{
+          CustomConsole.log('CAJA USUARIO LOGUEADO',JSON.stringify(value))
+          if(value.numdata <= 0 ){  
+            this._Router.navigate(['home','pos','abrir']);
+          }
+        },error:e=>Swal.fire(JSON.stringify(e))})
       }
       
     }})

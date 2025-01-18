@@ -42,17 +42,20 @@ VIEW `vw_inv_inventario_ingreso_aplicado` AS
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
-DROP TRIGGER IF EXISTS `jdpsoluc_car_wash`.`auxiliar_Creacion_inicial_productos_AFTER_INSERT`;
+DROP TRIGGER IF EXISTS `auxiliar_Creacion_inicial_productos_AFTER_INSERT`;
 
-DELIMITER $$
-USE `jdpsoluc_car_wash`$$
-CREATE DEFINER=`jdpsoluc_jds`@`%` TRIGGER `auxiliar_Creacion_inicial_productos_AFTER_INSERT` AFTER INSERT ON `auxiliar_Creacion_inicial_productos` FOR EACH ROW BEGIN
-    declare _idbodega , _idexistencia , _idMarca , _idCategoria, _idPresentacion , _cuentaCat , countLetra , pos , auxCont int ; 
+DELIMITER $$ CREATE DEFINER=`jdpsoluc_jds`@`%` TRIGGER `auxiliar_Creacion_inicial_productos_AFTER_INSERT` AFTER INSERT ON `auxiliar_Creacion_inicial_productos` FOR EACH ROW BEGIN
+   
+    declare _idbodega , _idexistencia , _idMarca , _idCategoria, _idPresentacion , _cuentaCat , countLetra , pos , auxCont ,
+            count_prd int ; 
     declare _letra text;
     declare _antes_de_iva ,_iva decimal(10,2);
+    
+    
+     select count(0) into count_prd from inv_mst_producto where upper(id) = upper( new.codigo );
      select count(0) into _idCategoria from inv_categorias where upper(nombre) = upper( new.categoria );
     -- set _idCategoria = 0;
-   
+    
     if _idCategoria = 0 then
     SELECT par_id into _cuentaCat FROM parametros where cod_parametro = 'ID_CUENTA_INVENTARIO_CATEGORIA'; 
 		set countLetra = 1 ; 
@@ -92,38 +95,35 @@ CREATE DEFINER=`jdpsoluc_jds`@`%` TRIGGER `auxiliar_Creacion_inicial_productos_A
     select id into _idPresentacion from inv_mst_producto_presentacion where upper(nombre) = upper( new.presentacion );
     select id into _idMarca from inv_marcas where upper(nombre) = upper( new.marca ); 
     select id into   _idCategoria from inv_categorias where upper(nombre) = upper( new.categoria );
-    
-   
-    
+    set _antes_de_iva = new.precioVenta  / (1 + new.porcentajeIva ); 
+    set  _iva = new.precioVenta - _antes_de_iva ;
+    if count_prd = 0 then 
     insert into inv_mst_producto (
-id, usuario_creacion, 
-idCategoria, idMarca, nombre,
-  precioVenta, porcent_iva,
-  precioCompra, 
-  barcode, descripcion,
-  infoTributaria, presentacion
-  , cod_prd_externo ) values(  new.codigo, 1,_idCategoria, _idMarca , new.nombre , new.precioVenta , new.porcentajeIva , new.precioCompra ,
-   new.codigo, concat('producto ' ,  new.codigo) , case   when new.porcentajeIva > 0 then 'GRABADO' else 'EXENTO' end , _idPresentacion , 
-    NEW.referencia 
-  ); 
-  set _antes_de_iva = new.precioVenta  / (1 + new.porcentajeIva ); 
-  set  _iva =new.precioVenta - _antes_de_iva ;
-  insert into inv_mst_producto_images (id_producto) values(new.codigo);
-  insert into inv_mst_producto_precios (valor_iva,precio_antes_de_iva,precio_con_iva,usuario_creacion, id_producto ) values(
-  _iva , _antes_de_iva , new.precioVenta  , 1 , new.codigo  ) ;  
+		id, usuario_creacion, 
+		idCategoria, idMarca, nombre,
+		  precioVenta, porcent_iva,
+		  precioCompra, 
+		  barcode, descripcion,
+		  infoTributaria, presentacion
+		  , cod_prd_externo ) values(  new.codigo, 1,_idCategoria, _idMarca , new.nombre , new.precioVenta , new.porcentajeIva , new.precioCompra ,
+		   new.codigo, concat('producto ' ,  new.codigo) , case   when new.porcentajeIva > 0 then 'GRABADO' else 'EXENTO' end , _idPresentacion , 
+			NEW.referencia 
+		  ); 
   
-   
-	select min( id ) into _idbodega FROM inv_bodegas;
-    
-    select id into _idexistencia from inv_mst_producto_existencias  where 
+   insert into inv_mst_producto_images (id_producto) values(new.codigo);
+   insert into inv_mst_producto_precios (valor_iva,precio_antes_de_iva,precio_con_iva,usuario_creacion, id_producto ) values(
+  _iva , _antes_de_iva , new.precioVenta  , 1 , new.codigo  ) ; 
+  else 
+     update inv_mst_producto set usuario_edicion = 1 , porcent_iva =  new.porcentajeIva,
+		  precioCompra =  new.precioCompra ,  
+		  infoTributaria = case   when new.porcentajeIva > 0 then 'GRABADO' else 'EXENTO' end , presentacion = _idPresentacion where  upper(id) = upper( new.codigo ); 
+  end if ; 
+  
+  select min( id ) into _idbodega FROM inv_bodegas;
+  select id into _idexistencia from inv_mst_producto_existencias  where 
     id_producto = new.codigo and  id_bodega = _idbodega ; 
-    
-    update inv_mst_producto_existencias 
+   update inv_mst_producto_existencias 
     set cant_inicial = new.cantidad ,  cant_actual= new.cantidad 
-    where id = _idexistencia ; 
-     
-    
-    
-  
+    where id = _idexistencia ;  
 END$$
 DELIMITER ;

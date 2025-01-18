@@ -231,7 +231,14 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
 
 
 
-
+  
+    getCajasActivasUsuarioActivo():Observable<cajaRequest>{ 
+        let datos = {"action": actions.actionSelectPorUsuario ,
+            "_tabla" : vistas.cajasActivas,
+            "_columnaUsuario": 'usuarioEstadoCaja' 
+           }; 
+     return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+    } 
     
     getCajasActivas(){
         let datos = {"action": actions.actionSelect ,
