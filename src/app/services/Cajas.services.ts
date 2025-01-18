@@ -240,11 +240,11 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
      return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     } 
     
-    getCajasActivas(){
+    getCajasActivas():Observable<cajaRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.cajasActivas                    
                     }; 
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     } 
     
  
@@ -260,11 +260,19 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
         let datos = {"action": actions.actionSelectPorUsuario ,
                      "_tabla" : vistas.cajas_por_usuario,
                      "_columnaUsuario": 'idUsuario',
-                     "_where" : [{columna : 'estadoEsta' , tipocomp : '=' , dato : 1}]
+                     "_where" : [{columna : 'estadoGeneral' , tipocomp : '=' , dato : 1}]
                     }; 
         return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
     } 
     
+    getCajasUsuarioActivas():Observable<cajaRequest>{
+        let datos = {"action": actions.actionSelect ,
+                     "_tabla" : vistas.cajas_por_usuario, 
+                     "_where" : [{columna : 'estadoGeneral' , tipocomp : '=' , dato : 1}]
+                    }; 
+        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+    } 
+
     getCajasPorUsuario(usuario:number){
         let datos = {"action": actions.actionSelCajaXuser ,
                      "_usuario" :usuario

@@ -5,6 +5,7 @@ import { loading } from 'src/app/models/app.loading';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import Swal from 'sweetalert2';
 import { CustomConsole } from 'src/app/models/CustomConsole';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-definir-base-caja',
@@ -15,6 +16,7 @@ export class DefinirBaseCajaComponent implements OnInit {
  caja:cajaModel ;
  valorIngresar:number= 0;
   constructor( private cajaService : cajasServices,
+      private _Router : Router,
     public dialogo: MatDialogRef<DefinirBaseCajaComponent>,
     @Inject(MAT_DIALOG_DATA) public cajaImport:cajaModel,
     
@@ -37,7 +39,10 @@ export class DefinirBaseCajaComponent implements OnInit {
           CustomConsole.log(respuesta)
          
         if (respuesta.error === 'ok'){
-         Swal.fire( respuesta.datos[0].msg );  
+         Swal.fire( respuesta.datos[0].msg ).then(()=>{
+          this._Router.navigate(["/home","pos","ventas"]);
+          location.reload();
+         });  
          this.dialogo.close(true);
         }else{
           Swal.fire(respuesta.error);
