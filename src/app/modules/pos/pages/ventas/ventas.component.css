@@ -12,7 +12,11 @@ elemt-empdropdown btn-group{
 elemt-docdropdown {
     width: 100% !important;
 }   
-
+.borde , .borde_general{
+    border: 1px solid gray; padding-top: 5px;padding-bottom: 5px;
+}
+.borde_general{  border-radius: 10px; background-color: #e4e5eb;
+}
 elemt-docdropdown btn-group{
     width: 100% !important;
 }   
@@ -24,7 +28,7 @@ elemt-docdropdown btn-group{
 .colVendedor{max-width: 370px !important;}
 .colCliente{max-width: 270px !important;}
 .tablaProductos{
-    min-height: 385px !important; overflow:auto !important;
+    min-height: 350px !important; overflow:auto !important;
 }
 
 

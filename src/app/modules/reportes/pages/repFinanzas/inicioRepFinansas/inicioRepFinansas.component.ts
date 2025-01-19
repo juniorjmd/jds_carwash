@@ -8,7 +8,7 @@ import { usuarioService } from 'src/app/services/usuario.services';
 
 @Component({
   selector: 'app-inicio-rep-ventas', 
-  template: `<div class="container-fluid">
+  template: `<div class="container-fluid  fondoGeneral confondoBrillante pt-3 pb-3 ">
   <div class="row">
       <!-- Menú lateral -->
       <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">

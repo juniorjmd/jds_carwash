@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 export class DefinirBaseCajaComponent implements OnInit {
  caja:cajaModel ;
  valorIngresar:number= 0;
+ 
   constructor( private cajaService : cajasServices,
       private _Router : Router,
     public dialogo: MatDialogRef<DefinirBaseCajaComponent>,

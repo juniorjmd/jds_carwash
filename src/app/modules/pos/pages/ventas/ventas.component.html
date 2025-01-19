@@ -1,63 +1,102 @@
 
 <div *ngIf="continuar; else ErrorEstablecimiento">
-<div *ngIf="documentoActivo != undefined" class="container-fluid" (click)='irbuscarProducto()' (keyup)='irbuscarProducto()'>
-    <div class="row">
+    
+<div *ngIf="documentoActivo != undefined" class="container-fluid borde_general mt-2" (click)='irbuscarProducto()' (keyup)='irbuscarProducto()'><br>
+    <div class="row  ">
         <div class="col-sm-12">
-            <h3 class="centrado">Punto De Venta {{documentoActivo!.nombreEsta}}
-                <h4 class="centrado subtitulosEspeciales"> {{documentoActivo!.nombreCaja}}</h4>
-            </h3>
+            <h3 class="centrado">Punto De Venta  </h3> 
+           
         </div>
     </div>
+    <div class="row borde">
+        <div class="col-lg-2 col-sm-12"><h3>Establecimiento :</h3>  </div>
+        <div class="col-lg-3 col-sm-12"><h4 class="subtitulosEspeciales"> {{documentoActivo!.nombreEsta}}  </h4></div>
+        <div class="col-lg-1 col-sm-12"><h3>Caja : </h3></div>
+        <div class="col-lg-3 col-sm-12"> <h4 class="subtitulosEspeciales"> {{documentoActivo!.nombreCaja}}</h4> </div> 
+    </div>
+
     <div class="row"> 
-        <div class="col-sm-12 col-lg-9">
-            <div class="row"> 
-                <div 
-                class="col-sm-12 col-lg-3 colCliente" 
-               >
-                    <span>Cliente</span> 
-                    <div class="input-group mb-3">
-                        <div class="d-flex input-group">  
-                            <div class="btn-group dropend">
-                                <button type="button"class="btn btn-outline-success "> 
-                                        <span>{{documentoActivo!.clienteNombre!}}</span>
-                                </button>
-                                <button type="button" class="btn btn-info" 
-                                title="Añadir cliente al Documento" 
-                                (click)='buscarCliente()'><i class="bi bi-person"></i>&nbsp;
-                           </button>
+        <div class="col-sm-12 col-lg-9 borde">
+            <div class="row pt-3 "> 
+                <div class="col-sm-12 col-lg-3 "   >
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <h5>Cliente</h5>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <div class="input-group mb-3">
+                                <div class="d-flex input-group">  
+                                    <div class="btn-group dropend">
+                                        <button type="button"class="btn btn-outline-success "> 
+                                                <span>{{documentoActivo!.clienteNombre!}}</span>
+                                        </button>
+                                        <button type="button" class="btn btn-info" 
+                                        title="Añadir cliente al Documento" 
+                                        (click)='buscarCliente()'><i class="bi bi-person"></i>&nbsp;
+                                   </button>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div> 
+               </div>
+                </div>
+                <div class="col-sm-7 col-lg-4 " >
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <h5>Vendedor</h5>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <div class="input-group mb-3">
+                                <elemt-empDropdown   (selectionChange)="cambiarVendedor($event);"
+                               [selectedValue]="empleadoActivo" 
+                                ></elemt-empDropdown> </div>
+                        </div>
+                    </div> 
+                    
+                </div>
+                <div class="col-sm-5 col-lg-3 " >
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <h5>Documentos</h5>
+                        </div>
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <div class="input-group mb-3">  
+                                <elemt-docDropdown [options] ="documentos" (clickBtnRefress)="getDocumentos()" (selectionChange)="cambiarDocumentoActivo($event);"
+                                [selectedValue]="documentoActivo" ></elemt-docDropdown> 
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-                <div class="col-sm-7 col-lg-4 colVendedor" >
-                    <span>Vendedor</span>
-                    <div class="input-group mb-3">
-                        <elemt-empDropdown   (selectionChange)="cambiarVendedor($event);"
-                       [selectedValue]="empleadoActivo" 
-                        ></elemt-empDropdown> </div>
-                </div>
-                <div class="col-sm-5 col-lg-3 colDocumentos" >
-                    <span>documentos</span>
-                    <div class="input-group mb-3">  
-                        <elemt-docDropdown [options] ="documentos" (clickBtnRefress)="getDocumentos()" (selectionChange)="cambiarDocumentoActivo($event);"
-                        [selectedValue]="documentoActivo" ></elemt-docDropdown> 
-                     </div>
-                </div>
                 <div class="col-sm-12 col-lg-2">
-                    <span> Cod producto</span>
-                    
-                    <div class="input-group mb-3">
-                        <input class="o_input form-control" (focus)="codigoProducto = ''" (keyup.enter)='buscarProducto()' #codProd type="text" [(ngModel)]="codigoProducto"  placeholder="Buscar" aria-label="Buscar"/>
-                   
-                        <button (click)='buscarProducto()' class="btn btn-outline-secondary" type="button">
-                            <i class="bi bi-search"></i>
-                        </button>
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <h5>Cod producto</h5>
+                        </div>
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <div class="input-group mb-3">
+                                <input class="o_input form-control" (focus)="codigoProducto = ''" (keyup.enter)='buscarProducto()' #codProd type="text" [(ngModel)]="codigoProducto"  placeholder="Buscar" aria-label="Buscar"/>
+                           
+                                <button (click)='buscarProducto()' class="btn btn-outline-secondary" type="button">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                   
                 </div> 
             </div>
-            <div class="row">
+            <div class="row pt-3 ">
                 <div class="col-sm-12 tablaProductos" >
-                    <table class="table table-striped">
+                    <table class="table table-striped table-bordered">
                         <thead class="thead-inverse">
                             <tr  style="text-align: center;" >
                                 <th>&nbsp;</th>
@@ -71,7 +110,7 @@
                         </thead>
                         <tbody>
                             <tr  *ngFor="let item of documentoActivo!.listado">
-                                <td>
+                                <td class="centrado">
                                     <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-x-circle" style="cursor:pointer" (click)="eliminarLinea(item)"></i>
                                 </td>
                                 <td>{{item.nombreProducto}}</td>
@@ -80,7 +119,7 @@
                                 <td style="text-align: right;" >{{item.IVA|currency}}</td>
                                 <td style="text-align: right;" >{{item.cantidadVendida}}</td>
                                 <td style="text-align: right;" >{{item.valorTotal|currency}}</td>
-                                <td>
+                                <td class="centrado">
                                     <i *ngIf="item.estado_linea_venta == 'A'" class="bi bi-pencil" style="cursor:pointer" (click)="editar(item)"></i>
                                 </td>
                             </tr>
@@ -90,7 +129,7 @@
               
             </div>            
         </div>
-        <div class="col-sm-12 col-lg-3">
+        <div class="col-sm-12 col-lg-3 borde ps-3 pe-3">
           <div class="row">
             <div class="col-sm-12 col-lg-12" style="padding: 0px;"> 
                     <div class="btn-group" role="group" aria-label="Basic example"  style="width: 100%;">
@@ -134,8 +173,8 @@
             </div> 
           </div>
           <div class="row">
-            <div class="col-sm-12 col-lg-12" style="padding: 0px;"> 
-                <table class="table" style="width: 100%;">
+            <div class="col-sm-12 col-lg-12"  > 
+                <table class="table " style="width: 100%;">
                 <tr>
                     <th colspan="2">
                         <h3 style="color: coral;">Medios de Pago</h3>
@@ -150,47 +189,91 @@
           </div>
         </div>  
     </div> 
-    <div class="row">
-        <div class="col-sm-12 col-lg-5"> 
-            <div class="row">
-                <hr class="division"> 
-                <div class="col-sm-2 col-lg-2">
-                    <span>subTotal : </span>
-                    <span class="text-end">{{documentoActivo!.valorParcial | currency}}</span>
+    <div class="row ps-1 pe-1 pt-1">  
+                <div class="col-sm-12 col-lg-2 borde">
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <h5>Sub Total</h5>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12 text-end"   >
+                            <h5>{{documentoActivo!.valorParcial | currency}}</h5>
+                        </div>
+                    </div> 
                 </div>
-                <div class="col-sm-2 col-lg-2">
-                    <span>Descuento : </span>
-                    <span class="text-end">{{documentoActivo!.descuento | currency}}</span>
+                <div class="col-sm-12 col-lg-2 borde">
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <h5>Descuento</h5>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12 text-end"   >
+                            <h5>{{documentoActivo!.descuento | currency}}</h5>
+                        </div>
+                    </div> 
                 </div>
-                <div class="col-sm-2 col-lg-2">
-                    <span>Iva    : </span>
-                    <span class="text-end">{{documentoActivo!.valorIVA | currency}}</span>
+                <div class="col-sm-12 col-lg-1 borde">
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <h5>Iva</h5>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12 text-end"   >
+                            <h5>{{documentoActivo!.valorIVA | currency}}</h5>
+                        </div> 
+                    </div> 
                 </div>
-                <div class="col-sm-4 col-lg-3">
-                    <span>Otros impuestos : </span>
-                    <span class="text-end">{{'0' | currency}}</span>
+                <div class="col-sm-12 col-lg-2 borde">
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12"   >
+                            <h5>Otros impuestos</h5>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-sm-12 col-lg-12 text-end"   >
+                         <h5>{{'0' | currency}}</h5>
+                        </div> 
+                    </div> 
+                </div>   
+            <div class="col-sm-12 col-lg-2 borde">
+                <div class="row"> 
+                    <div class="col-sm-12 col-lg-12"   >
+                        <h5>Total</h5>
+                    </div>
                 </div>
+                <div class="row"> 
+                    <div class="col-sm-12 col-lg-12 text-end"   >
+                        <h5>{{documentoActivo!.valorTotal | currency}}</h5>
+                    </div> 
+                </div> 
             </div>
-        </div>
-        <div class="col-sm-12 col-lg-5"> 
-        <div class="row"> 
-            <hr class="division">
-            <div class="col-sm-4 col-lg-2">
-                <span>Total : </span>
-                <span class="text-end">{{documentoActivo!.valorTotal | currency}}</span>
+            <div class="col-sm-12 col-lg-1 borde">
+                <div class="row"> 
+                    <div class="col-sm-12 col-lg-12"   >
+                        <h5>Ajuste</h5>
+                    </div>
+                </div>
+                <div class="row"> 
+                    <div class="col-sm-12 col-lg-12 text-end"   >
+                        <h5>{{documentoActivo!.ajusteAlpeso | currency}}</h5>
+                    </div> 
+                </div> 
             </div>
-            <div class="col-sm-4 col-lg-2">
-                <span>Ajuste : </span>
-                <span class="text-end">{{documentoActivo!.ajusteAlpeso | currency}}</span>
-            </div>
-            <div class="col-sm-4 col-lg-3">
-                <span>Total Factura : </span>
-                <span class="text-end">{{documentoActivo!.totalFactura | currency}}</span>
-            </div> 
-        </div>
-        </div>  
-        <div class="col-sm-12 col-lg-2">
-        </div>
+            <div class="col-sm-12 col-lg-2 borde">
+                <div class="row"> 
+                    <div class="col-sm-12 col-lg-12"   >
+                        <h5>Total Factura</h5>
+                    </div>
+                </div>
+                <div class="row"> 
+                    <div class="col-sm-12 col-lg-12 text-end"   >
+                       <h5>{{documentoActivo!.totalFactura | currency}}</h5> 
+                    </div> 
+                </div> 
+            </div>  
 </div> 
 </div>
 </div>

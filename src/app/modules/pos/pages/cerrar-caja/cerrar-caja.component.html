@@ -22,17 +22,15 @@
                 </thead>
                 <tbody >
                     <tr *ngFor="let caja of cajas" >
-                        <td scope="row">{{caja.nombre}}</td>
+                        <td >{{caja.nombre}}</td>
                         <td>{{caja.descripcion}}</td>
                         <td>{{caja.fechaEstadoCaja}}</td>
                         <td>
-                            <div class="d-flex justify-content-around"> 
-                         
-                            <i class="bi bi-door-open fs-2 boton_activo text-success" (click)="cerrar_parcial(caja)" title="liberar caja"></i>
-                        
-                            <i class="bi bi-lock fs-2 boton_activo text-success" (click)="cerrar(caja)" title="Cerrar caja"></i>
-                        </div>
-                    </td>
+                            <div class="d-flex justify-content-around">
+                                <i class="bi bi-door-open fs-2 boton_activo text-success" (click)="cerrar_parcial(caja)" title="liberar caja"></i> 
+                                <i class="bi bi-lock fs-2 boton_activo text-success" (click)="cerrar(caja)" title="Cerrar caja"></i>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
