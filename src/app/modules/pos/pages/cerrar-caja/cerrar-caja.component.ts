@@ -8,8 +8,7 @@ import { cajaModel } from 'src/app/models/ventas/cajas.model';
 import { cajasResumenModel } from 'src/app/models/ventas/cajasResumen.model';
 import { cajasServices } from 'src/app/services/Cajas.services';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
-import Swal from 'sweetalert2';
-import { DefinirBaseCajaComponent } from '../../modals/definir-base-caja/definir-base-caja.component';
+import Swal from 'sweetalert2'; 
 import { ResumenCajaComponent } from '../../modals/resumen-caja/resumen-caja.component';
 
 import { loading } from 'src/app/models/app.loading'; 
@@ -153,43 +152,6 @@ export class CerrarCajaComponent implements OnInit {
           Swal.fire( error.error.error);
         } } 
         );
-  }
-  asignarCaja(caja : cajaModel){
-    /*["/home", "pos"]*/ 
-    CustomConsole.log(caja);
-    
-      this.newAbrirCajaDialog.open(DefinirBaseCajaComponent,{data:caja})
-      .afterClosed()
-      .subscribe((confirmado: Boolean)=>{
-        if (confirmado){ 
-          this._Router.navigate(["/home","pos","ventas"]);
-      }
-      })
-  }
-  continuar(){
-    this._Router.navigate(["/home","pos","ventas"]);
-  }
-
-  continuar_caja_suspendida(caja : cajaModel){
-    
-    this.loading.show() 
-    this.cajaService.abrirCaja(caja, 0).subscribe( {next:
-      (respuesta:any)=>{
-        CustomConsole.log(respuesta)
-       
-      if (respuesta.error === 'ok'){
-       Swal.fire( respuesta.datos[0].msg ); 
-       this.continuar();
-      }else{
-        Swal.fire(respuesta.error);
-      }
-      this.loading.hide();
-     
-      },
-      error:(error : any) => {this.loading.hide();
-        Swal.fire( error.error.error);
-      }}
-      );
   } 
   
 }
