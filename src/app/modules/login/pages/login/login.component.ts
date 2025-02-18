@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/services/login.services';
 import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
-import { Router } from '@angular/router';
-import { Usuario } from 'src/app/interfaces/usuario.interface';
+import { Router } from '@angular/router'; 
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
 import { Modal1Component } from 'src/app/modules/shared/components/modal1/modal1.component'
 import { UsuarioModel } from 'src/app/models/usuario.model';
-import { Form, NgForm } from '@angular/forms';
-import { select } from 'src/app/interfaces/generales.interface';
+import {   NgForm } from '@angular/forms'; 
 import { CustomConsole } from 'src/app/models/CustomConsole';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -33,7 +32,7 @@ export class LoginComponent implements OnInit {
       _datosInicialesService.chageSucursal(this.sucursal[0]) 
     } ,
     error => {CustomConsole.log(error)
-      alert( error.error.error)
+      Swal.fire('error', JSON.stringify(error) , 'error') 
     }
       ); 
    }
@@ -46,7 +45,7 @@ export class LoginComponent implements OnInit {
     this._loginService.getLogin(this.usuario.Login , this.usuario.pass).subscribe(
       async (datos:any)=>{ 
         if(datos.data.usuario.length === 0){ 
-          alert('error de usuario')
+          Swal.fire('error de usuario')
         }else{
           CustomConsole.log('getLogin',datos.data.usuario);  
           localStorage.setItem('sis41254#2@', datos.data.usuario.key_registro );
@@ -62,7 +61,8 @@ export class LoginComponent implements OnInit {
       
     } ,
     error => {CustomConsole.log(error)
-      alert( error.error.error)
+     
+      Swal.fire('error', JSON.stringify(error) , 'error') 
     }
       ); 
     

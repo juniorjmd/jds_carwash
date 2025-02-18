@@ -14,18 +14,49 @@
         <div class="col-lg-1 col-sm-12"><h3>Caja : </h3></div>
         <div class="col-lg-3 col-sm-12"> <h4 class="subtitulosEspeciales"> {{documentoActivo!.nombreCaja}}</h4> </div> 
     </div>
+    
 
     <div class="row"> 
         <div class="col-sm-12 col-lg-9 borde">
-            <div class="row pt-3 "> 
-                <div class="col-sm-12 col-lg-3 "   >
-                    <div class="row"> 
-                        <div class="col-sm-12 col-lg-12"   >
+            <div class="row">
+                <div class="col-sm-12 col-lg-12 py-2">
+                    <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%;"> 
+                            <button type="button" class="btn btn-success" title="Facturar" (click)='asignarPagosAVenta()'><i class="bi bi-check2-all"></i></button>
+                            <button type="button" class="btn btn-primary" title="Crear Documento" (click)='crearDocumento()'><i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
+                            <button type="button" class="btn btn-danger" title="Eliminar Documento" (click)='cancelarDocumento()'><i class="bi bi-trash"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
+                            <button type="button" class="btn btn-warning" title="Busqueda Producto" (click)='busquedaAuxiliarProducto()'><i class="bi bi-search"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
+                            <button *ngIf="planSepare" type="button" class="btn btn-success" style="background-color: #67b4e0;" title="plan separe"><i class="bi bi-hand-index-thumb"></i>&nbsp;<i class="bi bi-shop"></i></button>
+                            <button *ngIf="pasaAotraCaja" type="button" title="Mover Documento a otra caja" (click)='moverDocumentoCaja()' class="btn btn-danger" style="background-color: #4d4444; border-color: #4d4444;"><i class="bi bi-arrow-left-right"></i>&nbsp;<i class="bi bi-cash"></i></button>
+                        
+                    <button type="button" class="btn btn-success" title="Remision" (click)='asignarPagosARemision()'><i class="bi bi-check2-all"></i>Rem</button> 
+                    <button *ngIf="CrtGasto" type="button" class="btn" (click)="generarGasto()" style="background-color: rgb(197, 174, 69);" 
+                    title="Ingresar Nuevo Gasto">
+                    <i class="bi bi-file-earmark-plus"></i> </button>
+                    <button *ngIf="cotiza" type="button" class="btn btn-info" (click)="crearCotizacion()" title="Guardar Como cotizacion"><i class="bi bi-hand-index-thumb"></i> Cotizacion</button>
+                     
+                    <button type="button" class="btn btn-primary" 
+                    (click)="generarAbonosCuentasXcobrar()" title="Generar abonos de cuentas por cobrar" >
+                        <i class="bi bi-receipt"></i> CxC
+                      </button>
+                
+               
+                            <button *ngIf="domicilio" type="button" class="btn" (click)="generarEnvio()" style="background-color: rgb(41, 39, 39);" title="Guardar como Envio"><img src="assets/img/img_menu_interno/deliveri_truck.png" style="width:30px;height:30px" /></button>
+                            <button *ngIf="libranza" type="button" class="btn btn-success" (click)="generarLibranza()" title="Libranza"><i class="bi bi-hand-index-thumb"></i> Libranza</button>
+                             <button *ngIf="ingresoServicio" (click)="ingresarServicio()"   type="button" class="btn btn-primary">
+                                <i class="bi bi-car-front-fill"></i> <i class="bi bi-wrench"></i>  
+                              </button>
+                    </div>       
+                </div> 
+              </div>
+            <div class="row pt-3"> 
+                <div class="col-sm-12 col-lg-3">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12">
                             <h5>Cliente</h5>
                         </div>
                     </div>
                     <div class="row"> 
-                        <div class="col-sm-12 col-lg-12"   >
+                        <div class="col-sm-12 col-lg-12">
                             <div class="input-group mb-3">
                                 <div class="d-flex input-group">  
                                     <div class="btn-group dropend">
@@ -96,6 +127,7 @@
             </div>
             <div class="row pt-3 ">
                 <div class="col-sm-12 tablaProductos" >
+
                     <table class="table table-striped table-bordered">
                         <thead class="thead-inverse">
                             <tr  style="text-align: center;" >
@@ -130,48 +162,7 @@
             </div>            
         </div>
         <div class="col-sm-12 col-lg-3 borde ps-3 pe-3">
-          <div class="row">
-            <div class="col-sm-12 col-lg-12" style="padding: 0px;"> 
-                    <div class="btn-group" role="group" aria-label="Basic example"  style="width: 100%;">
-                        <button type="button" class="btn btn-success" title="Facturar" (click)='asignarPagosAVenta()'><i class="bi bi-check2-all"></i></button>
-                        <button type="button" class="btn btn-primary" title="Crear Documento" (click)='crearDocumento()'><i class="bi bi-plus"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
-                        <button type="button" class="btn btn-danger" title="Eliminar Documento" (click)='cancelarDocumento()'><i class="bi bi-trash"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
-                        <button type="button" class="btn btn-warning" title="Busqueda Producto" (click)='busquedaAuxiliarProducto()'><i class="bi bi-search"></i>&nbsp;<i class="bi bi-file-earmark"></i></button>
-                        <button *ngIf="planSepare" type="button" class="btn btn-success" style="background-color: #67b4e0;" title="plan separe"><i class="bi bi-hand-index-thumb"></i>&nbsp;<i class="bi bi-shop"></i></button>
-                        <button *ngIf="pasaAotraCaja" type="button" title="Mover Documento a otra caja" (click)='moverDocumentoCaja()' class="btn btn-danger" style="background-color: #4d4444; border-color: #4d4444;"><i class="bi bi-arrow-left-right"></i>&nbsp;<i class="bi bi-cash"></i></button>
-                    </div>
-            </div> 
-          </div> 
-          <div class="row">
-             <div class="col-sm-12 col-lg-12" style="padding: 0px;">  
-             <div class="btn-group" role="group"  style="width: 100%; margin-top: 5px;margin-bottom: 5px;"  aria-label="Basic example">
-                <button type="button" class="btn btn-success" title="Remision" (click)='asignarPagosARemision()'><i class="bi bi-check2-all"></i>Rem</button> 
-                <button *ngIf="CrtGasto" type="button" class="btn" (click)="generarGasto()" style="background-color: rgb(197, 174, 69);" 
-                title="Ingresar Nuevo Gasto">
-                <i class="bi bi-file-earmark-plus"></i> </button>
-                <button *ngIf="cotiza" type="button" class="btn btn-info" (click)="crearCotizacion()" title="Guardar Como cotizacion"><i class="bi bi-hand-index-thumb"></i> Cotizacion</button>
-                 
-                <button type="button" class="btn btn-primary" 
-                (click)="generarAbonosCuentasXcobrar()" title="Generar abonos de cuentas por cobrar" >
-                    <i class="bi bi-receipt"></i> CxC
-                  </button>
-            
-            </div>
-              </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12 col-lg-12" style="padding: 0px;"> 
-                    <div class="btn-group" role="group"  style="width: 100%; margin-top: 5px;margin-bottom: 5px;"  aria-label="Basic example">
-                        <button *ngIf="ingresoServicio" (click)="ingresarServicio()"   type="button" class="btn btn-primary">
-                            <i class="bi bi-car-front-fill"></i> <i class="bi bi-wrench"></i>  
-                          </button>
-                        <button *ngIf="domicilio" type="button" class="btn" (click)="generarEnvio()" style="background-color: rgb(41, 39, 39);" title="Guardar como Envio"><img src="assets/img/img_menu_interno/deliveri_truck.png" style="width:30px;height:30px" /></button>
-                        <button *ngIf="libranza" type="button" class="btn btn-success" (click)="generarLibranza()" title="Libranza"><i class="bi bi-hand-index-thumb"></i> Libranza</button>
-                        
-                    
-                    </div>
-            </div> 
-          </div>
+       
           <div class="row">
             <div class="col-sm-12 col-lg-12"  > 
                 <table class="table " style="width: 100%;">

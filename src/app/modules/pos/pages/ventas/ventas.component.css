@@ -28,7 +28,7 @@ elemt-docdropdown btn-group{
 .colVendedor{max-width: 370px !important;}
 .colCliente{max-width: 270px !important;}
 .tablaProductos{
-    min-height: 350px !important; overflow:auto !important;
+    min-height: 320px !important; overflow:auto !important;
 }
 
 
