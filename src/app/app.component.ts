@@ -19,17 +19,13 @@ export class AppComponent  implements OnInit {
   constructor( private globals: Globals, private titleService: Title   ){ 
    // CustomConsole.setEnvironment('dev');  
     this.llaveIncio = '';
-    this.titleService.setTitle('JDS - sofdla.com.co'); 
-
+    this.titleService.setTitle('JDS - sofdla.com.co');  
   }
-  async ngOnInit() {
-    // Cargar la configuración una vez al iniciar la aplicación
+  async ngOnInit() { 
     await loadConfig(this.http);  
-    CustomConsole.setEnvironment(enviroment); 
-    console.log(enviroment);
-    
-    // Ahora la configuración está disponible para el resto de la aplicación
-   // console.log("Configuración cargada:", url , printer);
+    CustomConsole.setEnvironment( enviroment);  
+    CustomConsole.log(enviroment); 
+    CustomConsole.log(url);  
   }
  
 }

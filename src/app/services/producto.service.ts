@@ -19,6 +19,7 @@ import { CategoriasModel } from '../models/categorias.model';
 import { MarcasModel } from '../models/marcas/marcas.module';
 import { DescuentoModule } from '../models/descuento/descuento.model';
 import { CustomConsole } from '../models/CustomConsole';
+import { ConfigService } from './config.service';
 
 
 @Injectable({
@@ -28,7 +29,7 @@ export class ProductoService {
  
 private http = inject(HttpClient); 
 private loading = inject(loading);  
-private readonly baseUrl:string = url.action ;
+private readonly baseUrl:string = this.configService.url.action ;
 private readonly   urlInventario =  `${this.baseUrl}inventario/`;
 private readonly   urlVentas =  `${this.baseUrl}ventas/`;
 
@@ -38,7 +39,7 @@ private marcasSource = new BehaviorSubject<MarcasModel[]|null>(null);
 currentMarcas = this.marcasSource.asObservable();
 
   // private _configService = inject(configService); 
-constructor(  ){ 
+constructor(  private configService:ConfigService ){ 
     CustomConsole.log('servicios productos inicializado');  
 }
 
@@ -57,7 +58,7 @@ deleteDescuento(desc:DescuentoModule){
     "_tabla" : TABLA.inv_descuentos,
     "_where" : where  
    };
-    return this.http.post(url.action , datos, httpOptions()) ;
+    return this.http.post(this.configService.url.action , datos, httpOptions()) ;
 } 
 setDescuento(desc:DescuentoModule){
   let datos:any  = {"action": actions.actionInsert ,
@@ -89,7 +90,7 @@ setDescuento(desc:DescuentoModule){
 
      CustomConsole.log(datos);
      
-      return this.http.post(url.action , datos, httpOptions()) ;
+      return this.http.post(this.configService.url.action , datos, httpOptions()) ;
       
 
        
@@ -102,7 +103,7 @@ getDescuentos():Observable<DescuentoRequest>{
  
      CustomConsole.log(datos);
      
-      return this.http.post<DescuentoRequest>(url.action , datos, httpOptions()) ;
+      return this.http.post<DescuentoRequest>(this.configService.url.action , datos, httpOptions()) ;
        
 }
 getInventariosAplicados():Observable<InventarioAplicadoRequest>{
@@ -111,7 +112,7 @@ getInventariosAplicados():Observable<InventarioAplicadoRequest>{
      };
  
      CustomConsole.log(datos);
-     return this.http.post<InventarioAplicadoRequest>(url.action , datos, httpOptions()) ;
+     return this.http.post<InventarioAplicadoRequest>(this.configService.url.action , datos, httpOptions()) ;
        
 }
 getInventariosAplicadosDetalle( idInventario:any ):Observable<InventarioAplicadoDetalleRequest>{
@@ -122,7 +123,7 @@ getInventariosAplicadosDetalle( idInventario:any ):Observable<InventarioAplicado
      };
  
      CustomConsole.log(datos);
-     return this.http.post<InventarioAplicadoDetalleRequest>(url.action , datos, httpOptions()) ;
+     return this.http.post<InventarioAplicadoDetalleRequest>(this.configService.url.action , datos, httpOptions()) ;
        
 }
 setCategorias(CATEGORIA:CategoriasModel){
@@ -132,9 +133,9 @@ setCategorias(CATEGORIA:CategoriasModel){
       "_arraydatos" : CATEGORIA
      };
      
- CustomConsole.log('crear nueva categoria' , url.action , datos, httpOptions());
+ CustomConsole.log('crear nueva categoria' , this.configService.url.action , datos, httpOptions());
  
-  return this.http.post(url.action , datos, httpOptions()) ; 
+  return this.http.post(this.configService.url.action , datos, httpOptions()) ; 
 }
 
 
@@ -251,8 +252,8 @@ getProductosById(codPrd:any):Observable<ProductoRequest>{
 
 getPresentacioProducto():Observable<presentacionPrdRequest>{
   let datos = {"action": actions.actionSelect , "_tabla" : TABLA.presentacionProducto  }
-  CustomConsole.log('getPresentacioProducto  ' ,url.action , datos, httpOptions());
-  return this.http.post<presentacionPrdRequest>(url.action , datos, httpOptions()) ;
+  CustomConsole.log('getPresentacioProducto  ' ,this.configService.url.action , datos, httpOptions());
+  return this.http.post<presentacionPrdRequest>(this.configService.url.action , datos, httpOptions()) ;
 }
 // #endregion
 
@@ -325,7 +326,7 @@ eliminaritemIngresoInventario(idDato:string | number | undefined){
   "_tabla" : TABLA.inv_inventario_ingreso_auxiliar,
   "_where" : where  
  };
-  return this.http.post(url.action , datos, httpOptions()) ;
+  return this.http.post(this.configService.url.action , datos, httpOptions()) ;
 }
 //#endregion
 // #region metodos de inventarioController
@@ -389,8 +390,8 @@ updateDocumento(documento :DocumentosModel  ){
             _where ,
            _arraydatos
            };
-  CustomConsole.log('servicios updateDocumento' ,url.action, datos, httpOptions());
-  return this.http.post<DocumentoRequest>(url.action, datos, httpOptions()) ;
+  CustomConsole.log('servicios updateDocumento' ,this.configService.url.action, datos, httpOptions());
+  return this.http.post<DocumentoRequest>(this.configService.url.action, datos, httpOptions()) ;
 }
 guardarNuevoProductoPrecargue( precargue :AuxIngresoInventarioModule ){
 

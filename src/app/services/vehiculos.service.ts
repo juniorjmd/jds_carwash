@@ -1,30 +1,28 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-
+import { Injectable } from '@angular/core'; 
 import { loading } from 'src/app/models/app.loading';
-import { TipoVehiculoModule } from '../models/tipo-vehiculo/tipo-vehiculo.module';
-import { Usuarios } from '../interfaces/usuario.interface';
+import { TipoVehiculoModule } from '../models/tipo-vehiculo/tipo-vehiculo.module'; 
 import { actions } from '../models/app.db.actions';
 import { TABLA } from '../models/app.db.tables';
 import { httpOptions, url } from '../models/app.db.url';
-import { vistas } from '../models/app.db.view';
-import { UsuarioModel } from '../models/usuario.model';
+import { vistas } from '../models/app.db.view'; 
 import { TiposServiciosModule } from '../models/tipos-servicios/tipos-servicios.module';
 import { ServiciosModule } from '../models/servicios/servicios.module';
 import { procedure } from '../models/app.db.procedure';
 import { ServiciosCostosModule } from '../models/servicios-costos/servicios-costos.module';
 import { VehiculosIngresoServicioModule } from '../models/vehiculos-ingreso-servicio/vehiculos-ingreso-servicio.module';
 import { CustomConsole } from '../models/CustomConsole';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root',
 })
  
 export class VehiculosService {
-  urlVehiculo =  url.action + 'vehiculos/';
+  urlVehiculo =  this.configService.url.action + 'vehiculos/';
   
   // private _configService = inject(configService); 
-constructor(private http: HttpClient, private loading: loading) {
+constructor(private http: HttpClient, private loading: loading,  private configService:ConfigService) {
     CustomConsole.log('servicios usuarios inicializado');
   }
   //---------------------------------------------------------------------------
@@ -40,11 +38,11 @@ constructor(private http: HttpClient, private loading: loading) {
     };
     CustomConsole.log(
       'vehiculo service  - getCostosServicios',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
 
@@ -55,7 +53,7 @@ constructor(private http: HttpClient, private loading: loading) {
       _tabla: TABLA.vehiculos_servicios_costos,
       _where: where,
     };
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   guardarNuevoIngresoServicioold(nuevoTipo: VehiculosIngresoServicioModule) {
@@ -80,11 +78,11 @@ constructor(private http: HttpClient, private loading: loading) {
 
     CustomConsole.log(
       'servicios de creacion servicios de vehiculos activo',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   //-------------------------
@@ -160,11 +158,11 @@ constructor(private http: HttpClient, private loading: loading) {
 
     CustomConsole.log(
       'servicios de creacion servicios de vehiculos activo',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   //---------------------------------------------------------------------------
@@ -180,11 +178,11 @@ constructor(private http: HttpClient, private loading: loading) {
     };
     CustomConsole.log(
       'servicios de usuarios activo - getUsuarios',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getVehiculoNoAsignadoAServicios(codServicio: number) {
@@ -198,11 +196,11 @@ constructor(private http: HttpClient, private loading: loading) {
     };
     CustomConsole.log(
       'vehiculo service - getVehiculoNoAsignadoAServicios',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getServiciosPorTipo(tipo: number) {
@@ -216,11 +214,11 @@ constructor(private http: HttpClient, private loading: loading) {
     };
     CustomConsole.log(
       'vehiculoService - getServiciosPorTipo',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getServiciosPorTipoVehiculo(tipo: number) {
@@ -234,11 +232,11 @@ constructor(private http: HttpClient, private loading: loading) {
     };
     CustomConsole.log(
       'servicios de usuarios activo - getUsuarios',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getVehiculos_propietario(tipo: string) {
@@ -250,11 +248,11 @@ constructor(private http: HttpClient, private loading: loading) {
     };
     CustomConsole.log(
       'servicios de VEHICULOS activo - getVehiculos_propietario',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   eliminarServicios(oldTipoVh: ServiciosModule) {
     let where = [{ columna: 'id', tipocomp: '=', dato: oldTipoVh.id }];
@@ -263,7 +261,7 @@ constructor(private http: HttpClient, private loading: loading) {
       _tabla: TABLA.vehiculos_servicios,
       _where: where,
     };
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   public guardarServicios(nuevoTipo: ServiciosModule) {
     let arrayDatos: any = new Object();
@@ -289,11 +287,11 @@ constructor(private http: HttpClient, private loading: loading) {
 
     CustomConsole.log(
       'servicios de creacion servicios de vehiculos activo',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   //---------------------------------------------------------------------------
@@ -309,11 +307,11 @@ constructor(private http: HttpClient, private loading: loading) {
     };
     CustomConsole.log(
       'servicios de usuarios activo - getUsuarios',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   eliminarTiposServicios(oldTipoVh: TiposServiciosModule) {
@@ -323,7 +321,7 @@ constructor(private http: HttpClient, private loading: loading) {
       _tabla: TABLA.TiposServicios,
       _where: where,
     };
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   public guardarTiposServicios(nuevoTipo: TiposServiciosModule) {
     let arrayDatos: any = new Object();
@@ -347,11 +345,11 @@ constructor(private http: HttpClient, private loading: loading) {
 
     CustomConsole.log(
       'servicios de creacion tipo de vehiculo activo',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   //---------------------------------------------------------------------------
@@ -364,11 +362,11 @@ constructor(private http: HttpClient, private loading: loading) {
     };
     CustomConsole.log(
       'servicios de servicios vehiculos activo - geTiposVehiculos',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   eliminarTipoDeVehiculo(oldTipoVh: TipoVehiculoModule) {
@@ -378,7 +376,7 @@ constructor(private http: HttpClient, private loading: loading) {
       _tabla: TABLA.tiposVehiculos,
       _where: where,
     };
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   public guardarTipoVehiculo(nuevoTipo: TipoVehiculoModule) {
@@ -403,10 +401,10 @@ constructor(private http: HttpClient, private loading: loading) {
 
     CustomConsole.log(
       'servicios de creacion tipo de vehiculo activo',
-      url.action,
+      this.configService.url.action,
       datos,
       httpOptions()
     );
-    return this.http.post(url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 }

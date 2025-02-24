@@ -6,6 +6,7 @@ import { httpOptions, url } from '../models/app.db.url';
 import { Observable, firstValueFrom } from 'rxjs';
 import { UsuarioResponseInterface } from '../interfaces/UsuarioResponse.Interface';
 import { CustomConsole } from '../models/CustomConsole';
+import { ConfigService } from './config.service';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class LoginService {
     private permisosUsuario : RecursoDetalle[] = [];
 
     // private _configService = inject(configService); 
-constructor(private http: HttpClient){ 
+constructor(private http: HttpClient ,  private configService:ConfigService){ 
         CustomConsole.log('servicios loguin inicializado');        
     }
 
@@ -36,8 +37,8 @@ constructor(private http: HttpClient){
                     "_password" : L_contraseña,
                     "_usuario" : L_usuario
                 };
-        CustomConsole.log('servicios datos iniciales inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
-        return this.http.post(url.login , datos, url.httpOptionsSinAutorizacion) ;
+        CustomConsole.log('servicios datos iniciales inicializado ' ,this.configService.url.login , datos, this.configService.url.httpOptionsSinAutorizacion);
+        return this.http.post(this.configService.url.login , datos, this.configService.url.httpOptionsSinAutorizacion) ;
     } 
 
 
@@ -51,8 +52,8 @@ constructor(private http: HttpClient){
         let datos = {"action": actions.actionValidarKeylogin ,
                     "_llaveSession" : localStorage.getItem('sis41254#2@')
                 };
-        CustomConsole.log('validar llave de session inicializado ' ,url.login , datos,         url.httpOptionsSinAutorizacion);
-        return this.http.post<UsuarioResponseInterface>(url.login , datos, httpOptions()) ;
+        CustomConsole.log('validar llave de session inicializado ' ,this.configService.url.login , datos,         this.configService.url.httpOptionsSinAutorizacion);
+        return this.http.post<UsuarioResponseInterface>(this.configService.url.login , datos, httpOptions()) ;
     }
     
     getUsuarioLogeadoObs(invoker: string = ''): Observable<any> {
@@ -61,16 +62,16 @@ constructor(private http: HttpClient){
           "_llaveSession": localStorage.getItem('sis41254#2@'),
           "_invoker": invoker
         };
-        CustomConsole.log('validar llave de session <observable> inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
-        return this.http.post(url.login, datos, httpOptions());
+        CustomConsole.log('validar llave de session <observable> inicializado', this.configService.url.login, datos, this.configService.url.httpOptionsSinAutorizacion);
+        return this.http.post(this.configService.url.login, datos, httpOptions());
       }
 
     // async  getUsuarioLogeadoAsync(invoker :string = '')
     // {       
     //     let datos = {"action": actions.actionValidarKeylogin ,
     //     "_llaveSession" : localStorage.getItem('sis41254#2@')  ,"_invoker": invoker };
-    //     CustomConsole.log('validar llave de session inicializado ' ,url.login , datos, url.httpOptionsSinAutorizacion);
-    //     return await   this.http.post(url.login , datos, httpOptions()).toPromise() ; 
+    //     CustomConsole.log('validar llave de session inicializado ' ,this.configService.url.login , datos, this.configService.url.httpOptionsSinAutorizacion);
+    //     return await   this.http.post(this.configService.url.login , datos, httpOptions()).toPromise() ; 
     // }
      getUsuarioLogeadoAsync(invoker: string = ''): Observable<any> {
         let datos = {
@@ -78,16 +79,16 @@ constructor(private http: HttpClient){
           _llaveSession: localStorage.getItem('sis41254#2@'),
           _invoker: invoker
         };
-      CustomConsole.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
-        return  this.http.post(url.login, datos, httpOptions()) ;
+      CustomConsole.log('validar llave de session inicializado', this.configService.url.login, datos, this.configService.url.httpOptionsSinAutorizacion);
+        return  this.http.post(this.configService.url.login, datos, httpOptions()) ;
       } 
       
   SET_PASS_USUARIO( _id_usuario:number, _pass:string): Observable<any> {
         let datos = {
           action: actions.actionSetPass, _id_usuario, _pass
         };
-       //  CustomConsole.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
-        return  this.http.post(url.login, datos, httpOptions()) ;
+       //  CustomConsole.log('validar llave de session inicializado', this.configService.url.login, datos, this.configService.url.httpOptionsSinAutorizacion);
+        return  this.http.post(this.configService.url.login, datos, httpOptions()) ;
       }
   getDatosUsuarioLogeado(invoker: string = ''): Observable<any> {
         let datos = {
@@ -95,8 +96,8 @@ constructor(private http: HttpClient){
           _llaveSession: localStorage.getItem('sis41254#2@'),
           _invoker: invoker
         };
-        CustomConsole.log('validar llave de session inicializado', url.login, datos, url.httpOptionsSinAutorizacion);
-        return  this.http.post(url.login, datos, httpOptions()) ;
+        CustomConsole.log('validar llave de session inicializado', this.configService.url.login, datos, this.configService.url.httpOptionsSinAutorizacion);
+        return  this.http.post(this.configService.url.login, datos, httpOptions()) ;
       }
     }
  

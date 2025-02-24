@@ -1,5 +1,5 @@
 {
-    "baseURL": "https://backcw.sofdla.com.co/services/view/action/",
+    "baseURL": "https://carwash.sofdla.com.co/bk.services/services/view/action/",
     "endpoints": {
       "action": "",
       "inventario": "inventario/",

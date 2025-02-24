@@ -6,10 +6,11 @@ import { LoginComponent } from './pages/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { ForgotPassWordComponent } from './pages/forgotPassWord/forgotPassWord.component';
 
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent,ForgotPassWordComponent],
   imports: [
     CommonModule,
     LoginRoutingModule, 

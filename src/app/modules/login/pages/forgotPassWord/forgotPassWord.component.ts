@@ -1,22 +1,19 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { LoginService } from 'src/app/services/login.services';
-import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
-import { Router } from '@angular/router'; 
+import {  Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { vwsucursal } from 'src/app/models/app.db.interfaces';
-import { Modal1Component } from 'src/app/modules/shared/components/modal1/modal1.component'
-import { UsuarioModel } from 'src/app/models/usuario.model';
-import {   NgForm } from '@angular/forms'; 
 import { CustomConsole } from 'src/app/models/CustomConsole';
-import Swal from 'sweetalert2'; 
-
+import { UsuarioModel } from 'src/app/models/usuario.model';
+import { DatosInicialesService } from 'src/app/services/DatosIniciales.services';
+import { LoginService } from 'src/app/services/login.services';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  providers:[Modal1Component]
+  selector: 'app-forgot-pass-word',
+  templateUrl: './forgotPassword.component.html',
+  styleUrls: ['./forgotPassWord.component.css']  
 })
-export class LoginComponent implements OnInit { 
+export class ForgotPassWordComponent implements OnInit { 
   usuario!:UsuarioModel;
   sucursal:vwsucursal[]=[]; 
   constructor(private _datosInicialesService : DatosInicialesService,
@@ -76,6 +73,9 @@ ngOnInit(): void {
   this.usuario =  new UsuarioModel( undefined); 
   this.getDatosInciales();
   } 
+  changePassword( form: NgForm){
+    
+  }
 }
  
 

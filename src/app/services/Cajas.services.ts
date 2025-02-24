@@ -17,19 +17,20 @@ import { DocpagosModel } from '../models/ventas/pagos.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { cajaRequest, DocumentoCierreRequest, establecimientosRequest } from '../interfaces/producto-request';
 import { DocumentosModel } from '../models/ventas/documento.model';
+import { ConfigService } from './config.service';
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class cajasServices { 
-    urlVentas = url.action + "ventas/";
+    urlVentas = this.configService.url.action + "ventas/";
 
     private cajaSource = new BehaviorSubject<any>(null);
     currentCaja = this.cajaSource.asObservable();
     private establecimientosSource = new BehaviorSubject<establecimientoModel[]|null>(null);
     currentArrEsta = this.establecimientosSource.asObservable(); 
-constructor(private http: HttpClient ,
+constructor(private http: HttpClient ,private configService :ConfigService,
         private loading : loading ){ 
     }
 
@@ -46,7 +47,7 @@ constructor(private http: HttpClient ,
                      "_parametro" : {"idCaja" : caja.id } , 
                      "_valorIngresar" : valorIngresar
                     };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
     
@@ -54,13 +55,13 @@ constructor(private http: HttpClient ,
         let datos = {"action": actions.actionResumenCaja ,
                      "_parametro" : {"idCaja" : caja.id }  
                     };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     cerrarCaja(caja : cajaModel){
         let datos = {"action": actions.actionCerarCaja ,
                      "_parametro" : {"idCaja" : caja.id } 
                     };
-        return this.http.post(url.actionVentas , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.actionVentas , datos, httpOptions()) ;
     }
 
     getCuentasContablesEstablecimientoUsuario():Observable<cajaRequest>{
@@ -69,13 +70,13 @@ constructor(private http: HttpClient ,
             "_tabla" : vistas.cajasActivas,
             "_columnaUsuario": 'usuarioEstadoCaja'  
            };
-return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+return this.http.post<cajaRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
  cerrarCajaParcial(caja : cajaModel){
         let datos = {"action": actions.actionCerarCajaParcial ,
                      "_parametro" : {"idCaja" : caja.id } 
                     };
-        return this.http.post(url.actionVentas , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.actionVentas , datos, httpOptions()) ;
     }
     
     getTiposDocumentosConContadores(){
@@ -83,7 +84,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
                      "_tabla" : vistas.tipos_documentos_con_cont,
                      "_where" : [{columna : 'estado' , tipocomp : '=' , dato : 1}]
                     };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
     getEstablecimientos():Observable<establecimientosRequest>{
@@ -91,7 +92,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
                      "_tabla" : vistas.establecimiento,
                      "_where" : [{columna : 'estado' , tipocomp : '=' , dato : 1}]
                     };
-        return this.http.post<establecimientosRequest>(url.action , datos, httpOptions()) ;
+        return this.http.post<establecimientosRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
 
      getEstablecimientosCompras():Observable<establecimientosRequest>{
@@ -104,38 +105,38 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
 {columna : 'idRetefuenteCompra ' , tipocomp : '>' , dato : 0} ,
 {columna : 'idBodegaStock' , tipocomp : '>' , dato : 0} ]
                     };
-        return this.http.post<establecimientosRequest>(url.action , datos, httpOptions()) ;
+        return this.http.post<establecimientosRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
 
     getAllEstablecimientos():Observable<establecimientosRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.establecimiento
                     };
-        return this.http.post<establecimientosRequest>(url.action , datos, httpOptions()) ;
+        return this.http.post<establecimientosRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
     
     getAllTiposEstablecimientos(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.tipo_establecimiento 
                     };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
     getLocacionesExternas(){
         let datos = {"action": actions.actionBuscarLocacionesExternas  };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getLocacionesPrincipales(){
         let datos = {"action": actions.actionBuscarLocacionesExternas  ,
         "_principal" : true
                     };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getLocacionesVirtuales(){
         let datos = {"action": actions.actionBuscarLocacionesExternas  ,
         "_virtual" : true
                     };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
 
@@ -146,27 +147,27 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
                         "_obj": ['obj'],
                         "_where" : [{columna : 'estado' , tipocomp : '=' , dato : 1}]
                        };
-           return this.http.post(url.action , datos, httpOptions()) ;
+           return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getLocacionesFisicas(){
         let datos = {"action": actions.actionBuscarLocacionesExternas  ,
         "_fisicas" : true
                     };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getLocacionesExistencias(id:number){
         let datos = {"action": actions.actionBuscarLocacionesExternas  ,
         "_principal" : false,"_fisicas" : false,"_existencia" : true,
              "_id_principal" : id
              };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getLocacionesSecundarias(id:number){
         let datos = {"action": actions.actionBuscarLocacionesExternas  ,
         "_principal" : false,"_fisicas" : false,
              "_id_principal" : id
              };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getTiposEstablecimientos(){
         let datos = {"action": actions.actionSelect ,
@@ -174,27 +175,27 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
                      "_where" : [{columna : 'estado' , tipocomp : '=' , dato : 1}]
                     };
                     
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getCaja(id:number):Observable<cajaRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.cajas , 
                      "_where" : [{columna : 'id' , tipocomp : '=' , dato : id}]
                     }; 
-                    return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+                    return this.http.post<cajaRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
     getCajas():Observable<cajaRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.cajas
                     }; 
-        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+        return this.http.post<cajaRequest>(this.configService.url.action , datos, httpOptions()) ;
     } 
     getCajasTraslados():Observable<cajaRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.cajas,
                      "_where" : [{columna : 'cuentaContableEfectivo' , tipocomp : '>' , dato : 0}]
                     }; 
-        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+        return this.http.post<cajaRequest>(this.configService.url.action , datos, httpOptions()) ;
     } 
     getMediosCajaActiva(){
         let datos = {"action": actions.actionSelectPorUsuario ,
@@ -202,13 +203,13 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
                      "_columnaUsuario": 'usuarioCaja' , 
                      "_orderBy" : [['nombre', 'DESC']]
                     }; 
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     } 
     getMedios(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.medios
                     }; 
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     } 
 
     getMediosByEstablecimiento( idEsta : number){
@@ -220,13 +221,13 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
 
                       ]
                     }; 
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     } 
     getContadores(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.contadores
                     }; 
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     } 
 
 
@@ -237,14 +238,14 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "_tabla" : vistas.cajasActivas,
             "_columnaUsuario": 'usuarioEstadoCaja' 
            }; 
-     return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+     return this.http.post<cajaRequest>(this.configService.url.action , datos, httpOptions()) ;
     } 
     
     getCajasActivas():Observable<cajaRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.cajasActivas                    
                     }; 
-        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+        return this.http.post<cajaRequest>(this.configService.url.action , datos, httpOptions()) ;
     } 
     
  
@@ -253,7 +254,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
                     // "_tabla" : vistas.cajasActivas       
                      "_tablas" : [vistas.cajasActivas , TABLA.PARAMETROS]             
                     }; 
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     } 
     
     getCajasUsuario():Observable<cajaRequest>{
@@ -262,7 +263,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
                      "_columnaUsuario": 'idUsuario',
                      "_where" : [{columna : 'estadoGeneral' , tipocomp : '=' , dato : 1}]
                     }; 
-        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+        return this.http.post<cajaRequest>(this.configService.url.action , datos, httpOptions()) ;
     } 
     
     getCajasUsuarioActivas():Observable<cajaRequest>{
@@ -270,14 +271,14 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
                      "_tabla" : vistas.cajas_por_usuario, 
                      "_where" : [{columna : 'estadoGeneral' , tipocomp : '=' , dato : 1}]
                     }; 
-        return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
+        return this.http.post<cajaRequest>(this.configService.url.action , datos, httpOptions()) ;
     } 
 
     getCajasPorUsuario(usuario:number){
         let datos = {"action": actions.actionSelCajaXuser ,
                      "_usuario" :usuario
                     }; 
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     } 
 
     setPagoDocumento(idDocumento:number , pagos:DocpagosModel[] ){
@@ -319,7 +320,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
         "_idUsuario" : idUsuario, 
          "_cajas" : cajas
        }; 
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     setCaja(caja:cajaModel){
         let datos ;
@@ -360,7 +361,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "_arraydatos" : arraydatos
            };
         }  
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
         
 
         
@@ -390,7 +391,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "_procedure" : PROCEDURE.insertaContador,
             "_arraydatos" : arraydatos
            }; 
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
         
 
         
@@ -425,7 +426,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
             "_arraydatos" : arraydatos
            };
         }  
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
         
 
         
@@ -510,7 +511,7 @@ return this.http.post<cajaRequest>(url.action , datos, httpOptions()) ;
         
        // (datos);
        
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
         
 
         
@@ -540,7 +541,7 @@ setMedioDePago(newMedio:MediosDePagoModel){
     "_tabla" : TABLA.medios, "_where" : where,
     "_arraydatos" : arraydatos
    };
-   return this.http.post(url.action , datos, httpOptions()) ;
+   return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     
 
     

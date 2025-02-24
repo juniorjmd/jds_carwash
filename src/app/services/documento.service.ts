@@ -13,13 +13,14 @@ import { TABLA } from '../models/app.db.tables';
 import { EmpleadoModel } from '../models/empleados/empleados.module';
 import { DocumentoListado } from '../interfaces/documento.interface';
 import { CustomConsole } from '../models/CustomConsole';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentoService {
  
-constructor(private http: HttpClient, private loading: loading) {
+constructor(private http: HttpClient, private loading: loading , private configService:ConfigService) {
     CustomConsole.log('servicio documentos');
   }
 
@@ -35,8 +36,8 @@ constructor(private http: HttpClient, private loading: loading) {
       "_columnaUsuario": 'usuario',
       "_where": [{"columna": 'estado', "tipocomp": '=', "dato": 1}]
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
-    return this.http.post<DocumentoRequest>(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', this.configService.url.action, datos, httpOptions());
+    return this.http.post<DocumentoRequest>(this.configService.url.action, datos, httpOptions());
   }
 
    getCompras(): Observable<any> {
@@ -46,8 +47,8 @@ constructor(private http: HttpClient, private loading: loading) {
       "_obj": ['objeto'],
       "_columnas": ['objeto'] 
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   getPagosCPP(): Observable<any> {
     let datos = {
@@ -56,8 +57,8 @@ constructor(private http: HttpClient, private loading: loading) {
       "_obj": ['objeto'],
       "_columnas": ['objeto'] 
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getPlazoCreditoPorDocumentoBase(orden:number): Observable<any> {
@@ -69,8 +70,8 @@ constructor(private http: HttpClient, private loading: loading) {
       "_tabla": TABLA.mst_mov_credito, _where , 
       "_columnas": ['cuotas','plazos'] 
     };
-    CustomConsole.log('getPlazoCreditoPorDocumentoBase', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('getPlazoCreditoPorDocumentoBase', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   getCxPProveedores(): Observable<any> {
     let datos = {
@@ -79,8 +80,8 @@ constructor(private http: HttpClient, private loading: loading) {
       "_obj": ['objeto'],
       "_columnas": ['objeto'] 
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   getDevoluciones(): Observable<any> {
     let datos = {
@@ -89,8 +90,8 @@ constructor(private http: HttpClient, private loading: loading) {
       "_obj": ['objeto'],
       "_columnas": ['objeto'] 
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   
@@ -103,8 +104,8 @@ constructor(private http: HttpClient, private loading: loading) {
       "_obj": ['objeto'],
       "_columnas": ['objeto'] , _where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getCuentasXCobrarByPersona( idPersona :number): Observable<CarteraRequest> {
@@ -114,8 +115,8 @@ constructor(private http: HttpClient, private loading: loading) {
       "_tabla": vistas.cartera, 
       "_where": where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
-    return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentos', this.configService.url.action, datos, httpOptions());
+    return this.http.post<CarteraRequest>(this.configService.url.action, datos, httpOptions());
   }
 
   getCuentasXCobrarByfecha(_fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
@@ -123,16 +124,16 @@ constructor(private http: HttpClient, private loading: loading) {
       "action": actions.resumenCuentaporCobra, 
       _fechaInicio , _fechaFin
     };
-    CustomConsole.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
-    return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de getCuentasXCobrarByfecha', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post<CreditosResumenRequest>(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
     let datos = {
       "action": actions.resumenCuentaporPagar, 
       _fechaInicio , _fechaFin
     };
-    CustomConsole.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
-    return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de getCuentasXCobrarByfecha', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post<CreditosResumenRequest>(this.configService.url.actionDocumentos, datos, httpOptions());
   } 
   
   
@@ -141,16 +142,16 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "action": actions.resumenCuentaporPagarProveedor, 
       _fechaInicio , _fechaFin , _proveedor
     };
-    CustomConsole.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
-    return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de getCuentasXCobrarByfecha', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post<CreditosResumenRequest>(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   getCuentasXCobrarClienteByfecha(_cliente:number , _fechaInicio:string, _fechaFin:string): Observable<CreditosResumenRequest> { 
     let datos = {
       "action": actions.resumenCuentaporCobrarCliente, 
       _fechaInicio , _fechaFin , _cliente
     };
-    CustomConsole.log('servicios de getCuentasXCobrarByfecha', url.actionDocumentos, datos, httpOptions());
-    return this.http.post<CreditosResumenRequest>(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de getCuentasXCobrarByfecha', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post<CreditosResumenRequest>(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   getCuentasXCobrarByPersonaAbonos( idPersona :number): Observable<CarteraRequest> {
     let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona},
@@ -160,8 +161,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.cartera, 
       "_where": where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
-    return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentos', this.configService.url.action, datos, httpOptions());
+    return this.http.post<CarteraRequest>(this.configService.url.action, datos, httpOptions());
   }
   getCuentasXPagarByPersonaAbonos( idPersona :number , idEstablecimiento:any): Observable<CarteraRequest> {
     let where = [{"columna": 'idTercero', "tipocomp": '=', "dato": idPersona},
@@ -172,8 +173,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.credito, 
       "_where": where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
-    return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentos', this.configService.url.action, datos, httpOptions());
+    return this.http.post<CarteraRequest>(this.configService.url.action, datos, httpOptions());
   }
 
   getCuentasXCobrar(): Observable<CarteraRequest> { 
@@ -182,8 +183,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.cartera  ,
       "_limit" : 300
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
-    return this.http.post<CarteraRequest>(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentos', this.configService.url.action, datos, httpOptions());
+    return this.http.post<CarteraRequest>(this.configService.url.action, datos, httpOptions());
   }
 
 
@@ -197,8 +198,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_columnaUsuario": 'usuario',
       "_where": where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentos', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   
@@ -212,8 +213,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_columnaUsuario": 'usuario',
       "_where": where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentosByOrden', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentosByOrden', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getDocumentosByNumFactura( codFactura : string): Observable<any> {
@@ -226,8 +227,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_columnaUsuario": 'usuario',
       "_where": where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentos', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   } 
   getVentasByNumFactura( codFactura : string): Observable<any> {
     let where = [{"columna": 'idDocumentoFinal', "tipocomp": '=', "dato": codFactura}];
@@ -239,8 +240,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_columnaUsuario": 'usuario',
       "_where": where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentos', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   } 
    getDocComprasByNumFactura( codFactura : string): Observable<any> {
     let where = [{"columna": 'idDocumentoFinal', "tipocomp": '=', "dato": codFactura}];
@@ -252,8 +253,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_columnaUsuario": 'usuario',
       "_where": where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentos', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   getDocumentosUsuario(): Observable<any> {
     let where = [{"columna": 'tipoDocumentoFinal', "tipocomp": '=', "dato": 1}];
@@ -265,8 +266,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_columnaUsuario": 'usuario',
       "_where": where
     };
-    CustomConsole.log('servicios de usuarios activo - getDocumentos', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de usuarios activo - getDocumentos', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getCajasActivas(establecimiento: number): Observable<any> {
@@ -276,8 +277,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.cajasActivas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getCajasActivas', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getCajasActivas', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
  
 
@@ -285,9 +286,9 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
     let datos = { 
             "action": actions.action_get_documentos_caja  
           }
-          CustomConsole.log('servicios de documentos - getDocumentosCaja', url.actionDocumentos, datos, httpOptions());
+          CustomConsole.log('servicios de documentos - getDocumentosCaja', this.configService.url.actionDocumentos, datos, httpOptions());
  
-      return this.http.post<any>(url.actionDocumentos, datos, httpOptions());
+      return this.http.post<any>(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   getDocumentosCompraBlanco():Observable<any>{
@@ -298,8 +299,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_obj": ['objeto'],
       "_tabla": vistas.documentos_por_tip_documento , _where
     };
-    CustomConsole.log('servicios de documentos - getCajasActivas', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getCajasActivas', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getDocumentosCompra( idCliente?:any):Observable<any>{
@@ -315,8 +316,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_columnas": ['objeto'],
       "_obj": ['objeto'],_tabla ,  _where
     };
-    CustomConsole.log('servicios de documentos - getCajasActivas', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getCajasActivas', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getDocumentosCompraById( idDocumentoFinal?:any):Observable<any>{
@@ -328,8 +329,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_columnas": ['objeto'],
       "_obj": ['objeto'],_tabla ,  _where
     };
-    CustomConsole.log('servicios de documentos - getCajasActivas', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getCajasActivas', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getVentasFinalizadas(codVenta: string = ''): Observable<any> {
@@ -344,8 +345,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadas', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadas', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getVentasFinalizadasPorCliente(codVenta: string): Observable<any> {
@@ -360,8 +361,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorCliente', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorCliente', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   getVentasFinalizadasPorClienteFecha(codVenta: string, fecha1: string, fecha2: string): Observable<any> {
     let where = [
@@ -377,8 +378,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorCliente', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorCliente', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   getVentasFinalizadasPorFecha(fecha1: string, fecha2: string): Observable<any> {
     let where = [
@@ -392,8 +393,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   
@@ -409,8 +410,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla":vistas.documentoDev, 
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getDevolucionesPorFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getDevolucionesPorFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getVentasFinalizadasPorFechaHora(fecha1: string, fecha2: string , 
@@ -428,8 +429,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getVentasFinalizadasPorProductoFecha(idProducto:string , fecha1: string, fecha2: string): Observable<any> {
@@ -452,8 +453,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getVentasFinalizadasPorCarteraFecha( fecha1: string, fecha2: string): Observable<any> {
@@ -470,8 +471,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasACreditoCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   
@@ -490,8 +491,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasACreditoCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorProductoFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getComprasFinalizadasPorCreditoFechaPorProveedor( id:number ,  fecha1: string, fecha2: string): Observable<any> {
@@ -509,8 +510,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.comprasACreditoCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getComprasFinalizadasPorCreditoFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getComprasFinalizadasPorCreditoFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   
   getComprasFinalizadasPorCreditoFecha( fecha1: string, fecha2: string): Observable<any> {
@@ -527,45 +528,45 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.comprasACreditoCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getComprasFinalizadasPorCreditoFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getComprasFinalizadasPorCreditoFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   getResumenCategoriaVentas(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 
     let datos = {
       "action": actions.resumenVentaCategoria, _idPrd,_fechaInicio,_fechaFin
     };
-    CustomConsole.log('servicios de documentos - getResumenCategoriaVentas', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getResumenCategoriaVentas', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   getResumenUsuarioVentas(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 
     let datos = {
       "action": actions.resumenVentaUsuarioCajero, _idPrd,_fechaInicio,_fechaFin
     };
-    CustomConsole.log('servicios de documentos - getResumenUsuarioVentas', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getResumenUsuarioVentas', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   getResumenVendedorVentas(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 
     let datos = {
       "action": actions.resumenVentaVendedor, _idPrd,_fechaInicio,_fechaFin
     };
-    CustomConsole.log('servicios de documentos - getResumenVendedorVentas', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getResumenVendedorVentas', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   getResumenVendedorCliente(_idPrd:any , _fechaInicio: string, _fechaFin: string): Observable<any> { 
     let datos = {
       "action": actions.resumenVentaCliente, _idPrd,_fechaInicio,_fechaFin
     };
-    CustomConsole.log('servicios de documentos - getResumenVendedorVentas', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getResumenVendedorVentas', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   getResumenVentas(  _fechaInicio: string, _fechaFin: string): Observable<any> { 
     let datos = {
       "action": actions.resumenVentas, _fechaInicio,_fechaFin
     };
-    CustomConsole.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getResumenVentas', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   
@@ -573,15 +574,15 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
     let datos = {
       "action": actions.resumenDevolucion, _fechaInicio,_fechaFin
     };
-    CustomConsole.log('servicios de documentos - getResumenVentas', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getResumenVentas', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   getResumenVentasPorHora(  _fechaInicio: string, _fechaFin: string , _horaInicio: string, _horaFin: string  ): Observable<any> { 
     let datos = {
       "action": actions.resumenVentas, _fechaInicio,_fechaFin, _horaInicio, _horaFin
     };
-    CustomConsole.log('servicios de documentos - getResumenVentasPorHora', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getResumenVentasPorHora', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   getResumenProductosVentas(_idPrd:string , _fechaInicio: string, _fechaFin: string): Observable<any> {
     /* $_dato = "( Select {$valor['dato']['columna']} from {$valor['dato']['tabla']} WHERE "
@@ -590,8 +591,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
     let datos = {
       "action": actions.resumenVentaProducto, _idPrd,_fechaInicio,_fechaFin
     };
-    CustomConsole.log('servicios de documentos - getResumenProductosVentas', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getResumenProductosVentas', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   getVentasFinalizadasPorCategoriasFecha(categoriaId:any , fecha1: string, fecha2: string): Observable<any> {
@@ -614,8 +615,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
 
@@ -634,8 +635,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   getVentasFinalizadasPorUsuarioFecha(id:any , fecha1: string, fecha2: string): Observable<any> {
@@ -653,19 +654,19 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla": vistas.ventasCerradas,
       "_where": where
     };
-    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('servicios de documentos - getVentasFinalizadasPorFecha', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   cambiarDocumento(documento: number): Observable<any> {
     let datos = {"action": actions.actionChangeDocumentos, "_docActual": documento};
-    CustomConsole.log('cambiarDocumento activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('cambiarDocumento activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   cambiarDocumentoCompra(documento: number): Observable<any> {
     let datos = {"action": actions.actionChangeCompraDocumentos, "_docActual": documento};
-    CustomConsole.log('cambiarDocumento activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('cambiarDocumento activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   
@@ -702,8 +703,8 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       datos._arraydatos = item ;
 
     }
-    CustomConsole.log('editarLineaDocumento activo', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('editarLineaDocumento activo', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
   cambiarVendedorDocumento(documento: number , vendedor : EmpleadoModel): Observable<any> {
     let where =   [{"columna" : "orden" , "tipocomp" : "=" , "dato" : documento }]
@@ -715,78 +716,78 @@ getCuentasXPagarByfecha(_fechaInicio:string, _fechaFin:string): Observable<Credi
       "_tabla" : TABLA.documentos, "_where" : where ,
       "_arraydatos" : arraydatos
      };
-    CustomConsole.log('cambiarDocumento activo', url.action, datos, httpOptions());
-    return this.http.post(url.action, datos, httpOptions());
+    CustomConsole.log('cambiarDocumento activo', this.configService.url.action, datos, httpOptions());
+    return this.http.post(this.configService.url.action, datos, httpOptions());
   }
 
   cancelarDocumento(documento: number): Observable<any> {
     let datos = {"action": actions.actionCancelarDocumentos, "_documento": documento};
-    CustomConsole.log('cancelarDocumento activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('cancelarDocumento activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   convertirDocumentoEnCotizacion(documento: number): Observable<DocumentoCierreRequest> {
     let datos = {"action": actions.actionCambiarDocumentosACotizacion, "_documento": documento};
-    CustomConsole.log('generar cotizacion activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post<DocumentoCierreRequest>(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('generar cotizacion activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post<DocumentoCierreRequest>(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   generarDomicilioDocumento(documento: number): Observable<any> {
     let datos = {"action": actions.actionCambiarDocADomicilio, "_documento": documento};
-    CustomConsole.log('actionCambiarDocADomicilio', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('actionCambiarDocADomicilio', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   cerrarDocumento(documento: number): Observable<any> {
     let datos = {"action": actions.actionCerarDocumentos, "_documento": documento};
-    CustomConsole.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumento activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   cerrarDocumentoRemision(documento: number): Observable<any> {
     let datos = {"action": actions.actionCerarDocumentosRemision, "_documento": documento};
-    CustomConsole.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumento activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   cambiarDocumentoDeCaja(caja: cajaModel): Observable<any> {
     let datos = {"action": actions.actionCambioCajaDocumento, "datos": caja};
-    CustomConsole.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumento activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 
   crearDocumento(): Observable<any> {
     let datos = {"action": actions.actionCrearDocumentos};
-    CustomConsole.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumento activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   crearDocumentoCompraEnBlanco(_establecimiento:number): Observable<any> {
     let datos = {"action": actions.actionCrearDocumentosCompraBlank , _establecimiento};
-    CustomConsole.log('crearDocumento activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumento activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
    crearDocumentoGasto(nuevoGasto:ValuesFormuGasto): Observable<any> {
     let datos = {"action": actions.actionCrearNewGasto ,"_arraydatos" : nuevoGasto};
-    CustomConsole.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumentoGasto activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   crearDocumentoAbono(nuevoGasto:DocumentosModel): Observable<any> {
     let datos = {"action": actions.actionCrearNewAbono ,"_documentoAbono" : nuevoGasto};
-    CustomConsole.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumentoGasto activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   crearDocumentoAbonoCredito(nuevoGasto:DocumentosModel): Observable<DocumentoCierreRequest> {
     let datos = {"action": actions.actionCrearNewAbonoCredito ,"_documentoAbono" : nuevoGasto};
-    CustomConsole.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post<DocumentoCierreRequest>(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumentoGasto activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post<DocumentoCierreRequest>(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   crearDocumentoDevolucion(nuevoGasto:DocumentosModel): Observable<any> {
     let datos = {"action": actions.actionCrearNewDevolucion ,"_documentoAbono" : nuevoGasto};
-    CustomConsole.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumentoGasto activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
   
   crearNotaDebito(nuevoGasto:documentoDev): Observable<any> {
     let datos = {"action": actions.actionCrearNewNotaDebito ,"_documentoAbono" : nuevoGasto};
-    CustomConsole.log('crearDocumentoGasto activo', url.actionDocumentos, datos, httpOptions());
-    return this.http.post(url.actionDocumentos, datos, httpOptions());
+    CustomConsole.log('crearDocumentoGasto activo', this.configService.url.actionDocumentos, datos, httpOptions());
+    return this.http.post(this.configService.url.actionDocumentos, datos, httpOptions());
   }
 }

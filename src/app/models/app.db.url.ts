@@ -14,8 +14,7 @@ const httpOptionsSinAutorizacion = {
   headers: new HttpHeaders({
     'Content-type': 'application/json'  
 })
-}; 
-
+};  
 export const httpOptions = ()=>{
   return {
     headers: new HttpHeaders({
@@ -23,9 +22,7 @@ export const httpOptions = ()=>{
       'Authorization' : 'Bearer ' + localStorage.getItem('sis41254#2@')! 
   }) 
   }
-}
-
-
+} 
 export const httpFileOptions = ()=>{
   return {
     headers: new HttpHeaders({ 
@@ -33,20 +30,14 @@ export const httpFileOptions = ()=>{
   }) 
   }
 }
-export let url:any = { }
-
-export let printer :any= {  
-}
-
+export let url:any = { } 
+export let printer :any= { } 
 export let enviroment :string;  
-
 export async function loadConfig(http: HttpClient) {
-  const config = await firstValueFrom(http.get<any>('assets/config.json'));
-  
+  const config = await firstValueFrom(http.get<any>('assets/config.json')); 
   const baseURL = config.baseURL;
   const envi = config.enviroment;
-  const endpoints = config.endpoints;
-
+  const endpoints = config.endpoints; 
   // Reemplazar las constantes con los valores del JSON 
     url = { 
         'httpOptionsSinAutorizacion':httpOptionsSinAutorizacion,

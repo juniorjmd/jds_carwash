@@ -12,13 +12,14 @@ import { table } from 'ngx-bootstrap-icons';
 import { TABLA } from '../models/app.db.tables';
 import { ParametrosModel } from '../models/parametros/parametros.model';
 import { CustomConsole } from '../models/CustomConsole';
+import { ConfigService } from './config.service';
 
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class DatosInicialesService {
+export class DatosInicialesService { 
     private sucursal:vwsucursal[] = [] ;
 
 
@@ -32,7 +33,9 @@ export class DatosInicialesService {
     private vendedores = new BehaviorSubject<EmpleadoModel[]|null>(null);
     currentVendedores = this.vendedores.asObservable();
  
-constructor(private http: HttpClient){}
+constructor(private http: HttpClient , private configService: ConfigService){
+
+}
 
     setArrayVendedores(sucursal:EmpleadoModel[]|null){ 
         this.vendedores.next(sucursal);
@@ -54,7 +57,7 @@ constructor(private http: HttpClient){}
             "_tabla" : TABLA.PARAMETROS,
             "_where" : [{columna : 'cod_parametro' , tipocomp : '=' , dato : 'VALIDAR_EXISTENCIA'}]     
            }; 
-           return this.http.post<parametroRequest>(url.action , datos, httpOptions()) ;
+           return this.http.post<parametroRequest>(this.configService.url.action , datos, httpOptions()) ;
       }
       
       getProductosVendidos(): Observable<ProductosVendidosRequest> {
@@ -63,21 +66,21 @@ constructor(private http: HttpClient){}
           "_tabla": vistas.vw_productos_vendidos,  
         };
         CustomConsole.log('servicios de usuarios activo - getDocumentoActivo', url.action, datos, httpOptions());
-        return this.http.post<ProductosVendidosRequest>(url.action, datos, httpOptions());
+        return this.http.post<ProductosVendidosRequest>(this.configService.url.action, datos, httpOptions());
       }   
   getVendedores():Observable<empleadoRequest>{
     let datos = {"action": actions.actionSelect , 
         "_tabla" : vistas.vendedores,
         "_where" : []
        }; 
-       return this.http.post<empleadoRequest>(url.action , datos, httpOptions()) ;
+       return this.http.post<empleadoRequest>(this.configService.url.action , datos, httpOptions()) ;
   } 
    getVendedoresConVentas():Observable<empleadoVentasRequest>{
     let datos = {"action": actions.actionSelect , 
         "_tabla" : vistas.vendedoresConVentas,
         "_where" : []
        }; 
-       return this.http.post<empleadoVentasRequest>(url.action , datos, httpOptions()) ;
+       return this.http.post<empleadoVentasRequest>(this.configService.url.action , datos, httpOptions()) ;
   }
 
   getUsuariosConVentas():Observable<usuarioRequest>{
@@ -85,15 +88,15 @@ constructor(private http: HttpClient){}
         "_tabla" : vistas.usuarioConVentas,
         "_where" : []
        }; 
-       return this.http.post<usuarioRequest>(url.action , datos, httpOptions()) ;
+       return this.http.post<usuarioRequest>(this.configService.url.action , datos, httpOptions()) ;
   }
 
   getUsuarios():Observable<usuarioVentasRequest>{
     let datos = {"action": actions.actionSelect ,
         "_tabla" : vistas.usuario
        };
-      CustomConsole.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions()); 
-       return this.http.post<usuarioVentasRequest>(url.action , datos, httpOptions()) ;
+      CustomConsole.log('servicios de usuarios activo - getUsuarios' ,this.configService.url.action , datos, httpOptions()); 
+       return this.http.post<usuarioVentasRequest>(this.configService.url.action , datos, httpOptions()) ;
   }
 
     validarCuentasContablesEstablecimiento(caja:cajaModel) {
@@ -115,12 +118,13 @@ constructor(private http: HttpClient){}
           }
       
     }
-    getDatosIniSucursal(){
-       
+    getDatosIniSucursal():Observable<any>{ 
         let datos = {"action": actions.datosInicialesSucursal};
-        CustomConsole.log('servicios datos iniciales inicializado ' ,url.datosIniciales , datos, url.httpOptionsSinAutorizacion);
-        return this.http.post(url.datosIniciales , datos, url.httpOptionsSinAutorizacion) ;
+        console.log('ingreso aqui - getDatosIniSucursal')
+        CustomConsole.log('servicios datos iniciales inicializado ' ,this.configService.url.datosIniciales , datos, this.configService.url.httpOptionsSinAutorizacion);
+        return this.http.post<any>(this.configService.url.datosIniciales , datos, this.configService.url.httpOptionsSinAutorizacion) ;
       
     }
+     
 }
  

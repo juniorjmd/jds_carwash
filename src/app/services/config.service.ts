@@ -1,33 +1,50 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class configService {
+export class ConfigService {
   private configUrl = 'assets/config.json';
+  public config: any;
   public url: any;
+  public enviroment!: string;
+  public printer: any;
 
   constructor(private http: HttpClient) {}
 
-  loadConfig(): Observable<any> {
-    return this.http.get(this.configUrl).pipe(
-      map((config: any) => {
-        this.url = this.buildUrls(config.baseURL, config.endpoints);
-        return this.url;
-      })
-    );
-  }
+  loadConfig(): Promise<any> {
+    return firstValueFrom(this.http.get<any>(this.configUrl))
+      .then(config => {
+        this.config = config;
+        const baseURL = config.baseURL;
+        const endpoints = config.endpoints;
 
-  private buildUrls(baseURL: string, endpoints: any): any {
-    const urls: any = {};
-    for (const key in endpoints) {
-      if (endpoints.hasOwnProperty(key)) {
-        urls[key] = baseURL + endpoints[key];
-      }
-    }
-    return urls;
+        // Construir las URLs a partir del archivo de configuración
+        this.url = { 
+          'httpOptionsSinAutorizacion': {
+            headers: { 'Content-type': 'application/json' }
+          },
+          'action':  baseURL + endpoints.action,
+          'actionDocumentos': baseURL + endpoints.actionDocumentos,
+          'actionAdmin': baseURL + endpoints.admin,
+          'actionVentas': baseURL + endpoints.actionVentas,
+          'brand': baseURL + endpoints.brand,
+          'datosIniciales': baseURL + endpoints.datosIniciales,
+          'login': baseURL + endpoints.login,
+          'inventario': baseURL + endpoints.inventario,
+          'csv_manager': baseURL + endpoints.csv_manager
+        };
+
+        this.printer = config.printer;
+        this.enviroment = config.enviroment;
+
+        console.log('Configuración cargada:', this.url, this.enviroment);
+      })
+      .catch((error: any) => {
+        console.error('Error al cargar la configuración', error);
+        return Promise.resolve(); // Maneja el error según tus necesidades
+      });
   }
 }
- 

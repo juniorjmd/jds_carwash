@@ -1,5 +1,5 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';  
+import { APP_INITIALIZER, NgModule } from '@angular/core';  
 //servicios
 
 //componentes
@@ -26,6 +26,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MessageModalComponent } from './message-modal/message-modal.component'; 
 
+
+import { ConfigService } from './services/config.service';
+
+export function initializeApp(configService: ConfigService) {
+  return () => configService.loadConfig();
+}
+
 @NgModule({
   declarations: [ 
     AppComponent, 
@@ -35,8 +42,8 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     CierresComponent,
     MiUsuarioComponent,    
     EnviosComponent, 
-       ParametrosComponent,
-          MessageModalComponent, 
+    ParametrosComponent,
+    MessageModalComponent, 
   ],
    imports: [
     NgbModule , 
@@ -50,11 +57,16 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     CommonModule, 
     TypeaheadModule.forRoot(), 
     ModalModule.forRoot(),
-    TooltipModule.forRoot(),
-
-    
+    TooltipModule.forRoot(),  
   ],
-  providers: [ Title,  loading], 
+  providers: [ Title,  loading,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [ConfigService],
+      multi: true
+    }
+  ], 
   bootstrap: [AppComponent],
   exports:[  AppComponent  
     ]

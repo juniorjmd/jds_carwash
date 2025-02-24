@@ -12,6 +12,7 @@ import { loading } from 'src/app/models/app.loading';
 import { CategoriasModel } from '../models/categorias.model';
 import { BehaviorSubject } from 'rxjs';
 import { CustomConsole } from '../models/CustomConsole';
+import { ConfigService } from './config.service';
 
 
 @Injectable({
@@ -30,7 +31,7 @@ export class MaestroClienteServices {
     private cateSource = new BehaviorSubject<CategoriasModel[]|[]>([]);
     currentCategorias = this.cateSource.asObservable(); 
   // private _configService = inject(configService); 
-constructor(private http: HttpClient ,
+constructor(private http: HttpClient , private configService:ConfigService,
         private loading : loading ){ 
         CustomConsole.log('servicios datos iniciales inicializado');  
     }
@@ -43,8 +44,8 @@ constructor(private http: HttpClient ,
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.ciudades
                     };
-        CustomConsole.log('servicios de maestro - ciudades ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de maestro - ciudades ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getCiudadesPorDepartamento(id:number){
         
@@ -53,13 +54,13 @@ constructor(private http: HttpClient ,
                      "_tabla" : vistas.ciudades ,
                      "_where" : where
                     };
-        CustomConsole.log('servicios de maestro - ciudad ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de maestro - ciudad ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getCiudadesPorDepartamentoOdoo(id:number){
         let datos = {"action": actions.actionBuscarCiudadOdoo ,"_state_id" : id};
-        CustomConsole.log('getCiudadesPorDepartamentoOdoo' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ; 
+        CustomConsole.log('getCiudadesPorDepartamentoOdoo' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ; 
     }
     setCiudades( ciudad:CiudadModel){
         let  arraydatos = { "cod_pais" : ciudad.cod_pais , "nombre" : ciudad.nombre ,
@@ -74,7 +75,7 @@ constructor(private http: HttpClient ,
        };
        CustomConsole.log(datos);
        
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
     actualizarCiudades(ciudad:CiudadModel){ 
@@ -88,7 +89,7 @@ constructor(private http: HttpClient ,
         "_where" : where ,
         "_arraydatos" : arraydatos
        };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     
     eliminarCiudades(ciudad:CiudadModel){ 
@@ -97,7 +98,7 @@ constructor(private http: HttpClient ,
         "_tabla" : TABLA.ciudades,
         "_where" : where  
        };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 /////////////////////////////////////////////////
 
@@ -110,8 +111,8 @@ constructor(private http: HttpClient ,
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.departamento
                     };
-        CustomConsole.log('servicios de maestro - departamento ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de maestro - departamento ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getDepartamentosPorPais(id:any){
         
@@ -120,29 +121,29 @@ constructor(private http: HttpClient ,
                      "_tabla" : vistas.departamento ,
                      "_where" : where
                     };
-        CustomConsole.log('servicios de maestro - departamento ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de maestro - departamento ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getPaises(){
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : TABLA.pais
                     };
-        CustomConsole.log('servicios de maestro - paises ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de maestro - paises ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
 
     getPaisesOdoo(){
         let datos = {"action": actions.actionBuscarPaisesOdoo};
-        CustomConsole.log('servicios de maestro - paises ' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de maestro - paises ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getDepartamentosPorPaisOdoo(pais_id:any){
 
         let datos = {"action": actions.actionBuscarStatesOdoo ,
                      "_id_pais" : pais_id};
-        CustomConsole.log('getDepartamentosPorPaisOdoo' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('getDepartamentosPorPaisOdoo' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     setPaises( pais:PaisModel){
         let  arraydatos = {   "cod_pais" : pais.cod_pais.toUpperCase() , "nombre" : pais.nombre }
@@ -152,7 +153,7 @@ constructor(private http: HttpClient ,
        };
        CustomConsole.log(datos);
        
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
     actualizarPaises(pais:PaisModel){ 
@@ -163,7 +164,7 @@ constructor(private http: HttpClient ,
         "_where" : where ,
         "_arraydatos" : arraydatos
        };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     
     eliminarPaises(pais:PaisModel){ 
@@ -172,7 +173,7 @@ constructor(private http: HttpClient ,
         "_tabla" : TABLA.pais,
         "_where" : where  
        };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     ///departamentos
     
@@ -185,7 +186,7 @@ constructor(private http: HttpClient ,
        };
        CustomConsole.log(datos);
        
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
     actualizarDepartamentos( dep:DepartamentoModel){ 
@@ -197,7 +198,7 @@ constructor(private http: HttpClient ,
         "_where" : where ,
         "_arraydatos" : arraydatos
        };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
     eliminarDepartamento(dep:DepartamentoModel){ 
@@ -206,69 +207,69 @@ constructor(private http: HttpClient ,
         "_tabla" : TABLA.departamento,
         "_where" : where  
        };
-        return this.http.post(url.action , datos, httpOptions()) ;
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     } 
 
     async  setMaestrosClientes_new(){
             let datos = {"action": actions.actionSelect ,
             "_tabla" : vistas.maestros
            };
-          CustomConsole.log('servicios maestro Cliente - maestros ' ,url.action , datos, httpOptions());
-          return await    this.http.post(url.action , datos, httpOptions()).toPromise() ;
+          CustomConsole.log('servicios maestro Cliente - maestros ' ,this.configService.url.action , datos, httpOptions());
+          return await    this.http.post(this.configService.url.action , datos, httpOptions()).toPromise() ;
         }
 
         async  setTipoDocumentoOdoo(){
             let datos = {"action": actions.actionTipDoc  
            };
-          CustomConsole.log('servicios maestro Cliente - getTipoDoc ' ,url.action , datos, httpOptions());
-          return await    this.http.post(url.action , datos, httpOptions()).toPromise() ;
+          CustomConsole.log('servicios maestro Cliente - getTipoDoc ' ,this.configService.url.action , datos, httpOptions());
+          return await    this.http.post(this.configService.url.action , datos, httpOptions()).toPromise() ;
         }
    
     private setMaestrosClientes(){
         let datos = {"action": actions.actionSelect ,
         "_tabla" : vistas.maestros
        };
-      CustomConsole.log('servicios maestro Cliente - maestros ' ,url.action , datos, httpOptions());
-       return this.http.post(url.action , datos, httpOptions()) ;
+      CustomConsole.log('servicios maestro Cliente - maestros ' ,this.configService.url.action , datos, httpOptions());
+       return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
      setTiposDocumentos(){
         let datos = {"action": actions.actionTipDoc  };
-      CustomConsole.log('servicios maestro Cliente - setTiposDocumentos ' ,url.action , datos, httpOptions());
-       return this.http.post(url.action , datos, httpOptions()) ;
+      CustomConsole.log('servicios maestro Cliente - setTiposDocumentos ' ,this.configService.url.action , datos, httpOptions());
+       return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     setTitulos(){
         let datos = {"action": actions.actionTitulosOdoo  };
-      CustomConsole.log('servicios maestro Cliente - actionTitulosOdoo ' ,url.action , datos, httpOptions());
-       return this.http.post(url.action , datos, httpOptions()) ;
+      CustomConsole.log('servicios maestro Cliente - actionTitulosOdoo ' ,this.configService.url.action , datos, httpOptions());
+       return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     
     setCategorias(){
         let datos = {"action": actions.actionCategoriasOdoo  };
-      CustomConsole.log('servicios maestro Cliente - actionCategoriasOdoo  ' ,url.action , datos, httpOptions());
-       return this.http.post(url.action , datos, httpOptions()) ;
+      CustomConsole.log('servicios maestro Cliente - actionCategoriasOdoo  ' ,this.configService.url.action , datos, httpOptions());
+       return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     setCategoriasPrd(){
         let datos = {"action": actions.actionSelect ,  "_tabla" : vistas.categorias  };
-      CustomConsole.log('servicios maestro Cliente - actionCategoriasOdoo  ' ,url.action , datos, httpOptions());
-       return this.http.post(url.action , datos, httpOptions()) ;
+      CustomConsole.log('servicios maestro Cliente - actionCategoriasOdoo  ' ,this.configService.url.action , datos, httpOptions());
+       return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     setMarcas(){
         let datos = {"action": actions.actionSelect ,  "_tabla" : vistas.marcas   };
-      CustomConsole.log('servicios maestro Cliente - actionBuscarMarcas  ' ,url.action , datos, httpOptions());
-       return this.http.post(url.action , datos, httpOptions()) ;
+      CustomConsole.log('servicios maestro Cliente - actionBuscarMarcas  ' ,this.configService.url.action , datos, httpOptions());
+       return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     setMarcasCatego(categoId:number){
         let datos = {"action": actions.actionBuscarMarcas ,
        "_categ":true ,
        "_data" : categoId };
-      CustomConsole.log('servicios maestro Cliente - actionBuscarMarcas  ' ,url.action , datos, httpOptions());
-       return this.http.post(url.action , datos, httpOptions()) ;
+      CustomConsole.log('servicios maestro Cliente - actionBuscarMarcas  ' ,this.configService.url.action , datos, httpOptions());
+       return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
  setEmpresas(){
         let datos = {"action": actions.actionEmpresasOdoo  };
-      CustomConsole.log('servicios maestro Cliente - setTiposDocumentos ' ,url.action , datos, httpOptions());
-       return this.http.post(url.action , datos, httpOptions()) ;
+      CustomConsole.log('servicios maestro Cliente - setTiposDocumentos ' ,this.configService.url.action , datos, httpOptions());
+       return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     async getTipoDoc(){
         try {

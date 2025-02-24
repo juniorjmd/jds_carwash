@@ -7,6 +7,7 @@ import { httpOptions, url } from '../models/app.db.url';
 import { vistas } from '../models/app.db.view';
 import { EmpleadoModel } from '../models/empleados/empleados.module';
 import { CustomConsole } from '../models/CustomConsole';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +15,14 @@ import { CustomConsole } from '../models/CustomConsole';
 export class EmpleadosService {
 
   // private _configService = inject(configService); 
-constructor(private readonly http: HttpClient ) { }
+constructor(private readonly http: HttpClient ,  private configService:ConfigService) { }
   
   getTiposEmpleados(){
     let datos = {"action": actions.actionSelect ,
                  "_tabla" : vistas.empleados_tipo ,   
                 };
-    CustomConsole.log('servicios de empleados - getTiposEmpleados' ,url.action , datos, httpOptions());
-    return this.http.post(url.action , datos, httpOptions()) ;
+    CustomConsole.log('servicios de empleados - getTiposEmpleados' ,this.configService.url.action , datos, httpOptions());
+    return this.http.post(this.configService.url.action , datos, httpOptions()) ;
 } 
 
 getEmpleados(){
@@ -30,8 +31,8 @@ getEmpleados(){
                "_columnas" : ['objeto']   ,
                "_obj" : ['objeto'],             
               };
-  CustomConsole.log('servicios de empleados - getEmpleados' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  CustomConsole.log('servicios de empleados - getEmpleados' ,this.configService.url.action , datos, httpOptions());
+  return this.http.post(this.configService.url.action , datos, httpOptions()) ;
 }
 
 
@@ -46,8 +47,8 @@ getEmpleadosLavador(){
                "_columnas" : ['objeto']   ,
                "_obj" : ['objeto'],             
               };
-  CustomConsole.log('servicios de empleados - getEmpleados' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  CustomConsole.log('servicios de empleados - getEmpleados' ,this.configService.url.action , datos, httpOptions());
+  return this.http.post(this.configService.url.action , datos, httpOptions()) ;
 } 
 
 
@@ -62,8 +63,8 @@ getEmpleadosAcumulados( id:number|string , fechas:fechaBusqueda){
                "_where" : where , 
                "_obj" : ['obj'],             
               };
-  CustomConsole.log('servicios de empleados - getEmpleadosAcumulados' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  CustomConsole.log('servicios de empleados - getEmpleadosAcumulados' ,this.configService.url.action , datos, httpOptions());
+  return this.http.post(this.configService.url.action , datos, httpOptions()) ;
 } 
 
 
@@ -92,8 +93,8 @@ guardarAnticipoEmpleado(nuevoTipo:EmpleadoModel , valor:any , descripcion:string
     "_where":null
    }; 
   
-  CustomConsole.log('servicios de creacion anticipos empleados' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  CustomConsole.log('servicios de creacion anticipos empleados' ,this.configService.url.action , datos, httpOptions());
+  return this.http.post(this.configService.url.action , datos, httpOptions()) ;
  }
 
 guardarEmpleado(nuevoTipo:EmpleadoModel){ 
@@ -118,8 +119,8 @@ guardarEmpleado(nuevoTipo:EmpleadoModel){
     datos.action = actions.actionUpdate
   }
   
-  CustomConsole.log('servicios de creacion servicios de vehiculos activo' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  CustomConsole.log('servicios de creacion servicios de vehiculos activo' ,this.configService.url.action , datos, httpOptions());
+  return this.http.post(this.configService.url.action , datos, httpOptions()) ;
  }
 
 
@@ -145,8 +146,8 @@ guardarEmpleado(nuevoTipo:EmpleadoModel){
    };
   
   
-  CustomConsole.log('servicios de creacion de pagos a empleados' ,url.action , datos, httpOptions());
-  return this.http.post(url.action , datos, httpOptions()) ;
+  CustomConsole.log('servicios de creacion de pagos a empleados' ,this.configService.url.action , datos, httpOptions());
+  return this.http.post(this.configService.url.action , datos, httpOptions()) ;
  }
 
 

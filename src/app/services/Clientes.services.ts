@@ -9,17 +9,18 @@ import { ClientesModel } from '../models/clientes/clientes.module';
 import { clienteRequest, proveedorHistoricoRequest } from '../interfaces/producto-request';
 import { TABLA } from '../models/app.db.tables';
 import { CustomConsole } from '../models/CustomConsole';
+import { ConfigService } from './config.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ClientesService {
     private clientes:ClientesModel[] = []  ;
-    private urlpersona = url.action+'personas/';
+    private urlpersona = this.configService.url.action+'personas/';
     private clienteSource = new BehaviorSubject<any>(null);
     currentUsuario = this.clienteSource.asObservable();
     // private _configService = inject(configService); 
-constructor(private http: HttpClient ,
+constructor(private http: HttpClient ,private configService :ConfigService,
           ){  
         CustomConsole.log('servicios datos iniciales inicializado'); 
     }
@@ -42,8 +43,8 @@ constructor(private http: HttpClient ,
         "_tabla" : TABLA.documentos, "_where" : where ,
         "_arraydatos" : arraydatos
        };
-       CustomConsole.log(url.action , datos, httpOptions())
-       return this.http.post<any>(url.action , datos, httpOptions()) ;
+       CustomConsole.log(this.configService.url.action , datos, httpOptions())
+       return this.http.post<any>(this.configService.url.action , datos, httpOptions()) ;
     }
     getDatosIniClientes(){
    
@@ -62,8 +63,8 @@ constructor(private http: HttpClient ,
 
     getClientes():Observable<ClientesModel>{
         let datos = {"action": actions.actionSelect , "_tabla" : vistas.vw_mst_per_clientes, _limit: 300 }
-        CustomConsole.log('getClientes  ' ,url.action , datos, httpOptions());
-        return this.http.post<ClientesModel>(url.action , datos, httpOptions()) ;
+        CustomConsole.log('getClientes  ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post<ClientesModel>(this.configService.url.action , datos, httpOptions()) ;
     }
     getClientesByNumAndTipId( numId:string , tipId:number):Observable<clienteRequest>{
         let datos = {
@@ -72,8 +73,8 @@ constructor(private http: HttpClient ,
             {columna : 'numIdentificacion' , tipocomp : '=' , dato : numId}
         ]   , 
         "action": actions.actionSelect , "_tabla" : vistas.vw_mst_per_clientes, _limit: 300 }
-        CustomConsole.log('getClientes  ' ,url.action , datos, httpOptions());
-        return this.http.post<clienteRequest>(url.action , datos, httpOptions()) ;
+        CustomConsole.log('getClientes  ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post<clienteRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
 
     getClientesByNombre(nombreCliente:string  ):Observable<clienteRequest>{
@@ -81,8 +82,8 @@ constructor(private http: HttpClient ,
             "_where" : [{columna : 'nombreCompleto' , tipocomp : 'like' , dato : nombreCliente} 
         ]   , 
         "action": actions.actionSelect , "_tabla" : vistas.vw_mst_per_clientes, _limit: 300 }
-        CustomConsole.log('getClientes  ' ,url.action , datos, httpOptions());
-        return this.http.post<clienteRequest>(url.action , datos, httpOptions()) ;
+        CustomConsole.log('getClientes  ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post<clienteRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
 
     getProveedorByNombre(nombreCliente:string  ):Observable<clienteRequest>{
@@ -90,27 +91,27 @@ constructor(private http: HttpClient ,
             "_where" : [{columna : 'nombreCompleto' , tipocomp : 'like' , dato : nombreCliente} 
         ]   , 
         "action": actions.actionSelect , "_tabla" : vistas.vw_proveedor, _limit: 300 }
-        CustomConsole.log('getClientes  ' ,url.action , datos, httpOptions());
-        return this.http.post<clienteRequest>(url.action , datos, httpOptions()) ;
+        CustomConsole.log('getClientes  ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post<clienteRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
  getProveedor(  ):Observable<clienteRequest>{
         let datos = { 
         "action": actions.actionSelect , "_tabla" : vistas.vw_proveedor, _limit: 300 }
-        CustomConsole.log('getClientes  ' ,url.action , datos, httpOptions());
-        return this.http.post<clienteRequest>(url.action , datos, httpOptions()) ;
+        CustomConsole.log('getClientes  ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post<clienteRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
     getProveedorParaHistorico(  ):Observable<proveedorHistoricoRequest>{
         let datos = { 
         "action": actions.actionSelect , "_tabla" : vistas.vw_proveedorHist, _limit: 300 }
-        CustomConsole.log('getClientes  ' ,url.action , datos, httpOptions());
-        return this.http.post<proveedorHistoricoRequest>(url.action , datos, httpOptions()) ;
+        CustomConsole.log('getClientes  ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post<proveedorHistoricoRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
 
     getClienteParaHistorico(  ):Observable<proveedorHistoricoRequest>{
         let datos = { 
         "action": actions.actionSelect , "_tabla" : vistas.vw_clienteHist, _limit: 300 }
-        CustomConsole.log('getClientes  ' ,url.action , datos, httpOptions());
-        return this.http.post<proveedorHistoricoRequest>(url.action , datos, httpOptions()) ;
+        CustomConsole.log('getClientes  ' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post<proveedorHistoricoRequest>(this.configService.url.action , datos, httpOptions()) ;
     }
     getMaestroClientes():Observable<any>{
         let datos = {"action": actions.MAESTROS_CLIENTES  }
@@ -135,8 +136,8 @@ constructor(private http: HttpClient ,
         "_dato" : cliente.numIdentificacion ,
         "_limit":limit
        }
-        CustomConsole.log('actionSelectClienteOdoo  ' ,JSON.stringify(cliente),url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('actionSelectClienteOdoo  ' ,JSON.stringify(cliente),this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
  
     setClienteOdoo( cliente:ClientesModel   ){
@@ -156,8 +157,8 @@ constructor(private http: HttpClient ,
        } else{
         datos._arraydatos.usuario_creacion = 'USUARIO_LOGUEADO'
        }
-        CustomConsole.log('setClienteOdoo  ' ,JSON.stringify(cliente),url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('setClienteOdoo  ' ,JSON.stringify(cliente),this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
     pasarClienteOdooACntYasignarDoc( cliente:ClientesModel , documento : DocumentosModel  ){
@@ -167,16 +168,16 @@ constructor(private http: HttpClient ,
           "_agregar_a_documento" : true,
           "_documento_orden" : documento.orden 
        }
-        CustomConsole.log('setClienteOdoo  ' ,JSON.stringify(cliente),url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('setClienteOdoo  ' ,JSON.stringify(cliente),this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     updateClienteOdoo( cliente:ClientesModel   ){
 
         let datos = {"action": actions.actionActualizarClienteOdoo ,
         _arraydatos : cliente   
        }
-        CustomConsole.log('setClienteOdoo  ' ,JSON.stringify(cliente),url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('setClienteOdoo  ' ,JSON.stringify(cliente),this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     getClienteOdooPorCedula( cliente:ClientesModel ){
 
@@ -186,8 +187,8 @@ constructor(private http: HttpClient ,
         "_dato" : cliente.numIdentificacion,
         "_limit":1
        }
-        CustomConsole.log('actionSelectClienteOdoo  ' ,JSON.stringify(cliente),url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('actionSelectClienteOdoo  ' ,JSON.stringify(cliente),this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
 }

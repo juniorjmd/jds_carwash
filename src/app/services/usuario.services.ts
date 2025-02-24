@@ -11,6 +11,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Recurso } from '../interfaces/recurso';
 import { perfil, perfilRequest, recursoRequest } from '../interfaces/producto-request';
 import { CustomConsole } from '../models/CustomConsole';
+import { ConfigService } from './config.service';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +28,7 @@ export class usuarioService {
 
 
     // private _configService = inject(configService); 
-constructor(private http: HttpClient ,
+constructor(private http: HttpClient , private configService:ConfigService,
         private loading : loading ){ 
         CustomConsole.log('servicios usuarios inicializado');  
     }
@@ -44,28 +45,28 @@ constructor(private http: HttpClient ,
       getArrayRecursos():Observable<recursoRequest>{
         let datos = {"action": actions.getAllRecursosArr   
                     };
-        CustomConsole.log('servicios de usuarios activo - getArrayRecursos' ,url.actionAdmin , datos, httpOptions());
-        return this.http.post<recursoRequest>(url.actionAdmin , datos, httpOptions()) ;
+        CustomConsole.log('servicios de usuarios activo - getArrayRecursos' ,this.configService.url.actionAdmin , datos, httpOptions());
+        return this.http.post<recursoRequest>(this.configService.url.actionAdmin , datos, httpOptions()) ;
     } 
     
      
       getArrayRecursosByPerfil(_idPerfil:number):Observable<recursoRequest>{
         let datos = {"action": actions.getAllRecursosArrByPerfil , _idPerfil };
-        CustomConsole.log('servicios de usuarios activo - getArrayRecursosByPerfil' ,url.actionAdmin , datos, httpOptions());
-        return this.http.post<recursoRequest>(url.actionAdmin , datos, httpOptions()) ;
+        CustomConsole.log('servicios de usuarios activo - getArrayRecursosByPerfil' ,this.configService.url.actionAdmin , datos, httpOptions());
+        return this.http.post<recursoRequest>(this.configService.url.actionAdmin , datos, httpOptions()) ;
     } 
     
     setArrayRecursos(_perfil:number , _recursos:Recurso):Observable<recursoRequest>{
         let datos = {"action": actions.setAllRecursosArr  , _perfil ,  _recursos           };
-        CustomConsole.log('servicios de usuarios activo - setArrayRecursos' ,url.actionAdmin , datos, httpOptions());
-        return this.http.post<recursoRequest>(url.actionAdmin , datos, httpOptions()) ;
+        CustomConsole.log('servicios de usuarios activo - setArrayRecursos' ,this.configService.url.actionAdmin , datos, httpOptions());
+        return this.http.post<recursoRequest>(this.configService.url.actionAdmin , datos, httpOptions()) ;
     } 
     getPerfiles():Observable<perfilRequest>{
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : TABLA.perfiles
                     };
-        CustomConsole.log('servicios de usuarios activo - getPerfiles' ,url.action , datos, httpOptions());
-        return this.http.post<perfilRequest>(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de usuarios activo - getPerfiles' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post<perfilRequest>(this.configService.url.action , datos, httpOptions()) ;
     } 
 
 
@@ -87,7 +88,7 @@ constructor(private http: HttpClient ,
            };
         }  
        CustomConsole.log(datos); 
-       return this.http.post(url.action , datos, httpOptions()) ; 
+       return this.http.post(this.configService.url.action , datos, httpOptions()) ; 
     }
 
 
@@ -97,8 +98,8 @@ constructor(private http: HttpClient ,
         let datos = {"action": actions.actionSelect ,
                      "_tabla" : vistas.usuario
                     };
-        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     } 
 
     guardarUsuarios(usuario : Usuarios|UsuarioModel){ 
@@ -114,8 +115,8 @@ constructor(private http: HttpClient ,
                      "_arraydatos" : arrayDatos
                     };
 
-        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
-        return this.http.post(url.actionAdmin , datos, httpOptions()) ;
+        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.actionAdmin , datos, httpOptions()) ;
     }
     guardarUsuarioPerfil(usuario : UsuarioModel ,  perfil:number){
       
@@ -126,8 +127,8 @@ constructor(private http: HttpClient ,
         }
        };
 
-        CustomConsole.log('servicios de usuarios activo - guardarUsuarioPerfil' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de usuarios activo - guardarUsuarioPerfil' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
     updateUsuarios(usuario : Usuarios){ 
         let where:any[] = []  
@@ -143,8 +144,8 @@ constructor(private http: HttpClient ,
                      "_where": where
                     };
 
-        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,url.action , datos, httpOptions());
-        return this.http.post(url.action , datos, httpOptions()) ;
+        CustomConsole.log('servicios de usuarios activo - getUsuarios' ,this.configService.url.action , datos, httpOptions());
+        return this.http.post(this.configService.url.action , datos, httpOptions()) ;
     }
 
 }
