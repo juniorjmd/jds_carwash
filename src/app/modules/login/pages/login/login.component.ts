@@ -45,18 +45,17 @@ getDatosInciales(){
         if(datos.data.usuario.length === 0){ 
           Swal.fire('error de usuario')
         }else{
-          CustomConsole.log('getLogin',datos.data.usuario);  
+          CustomConsole.log('respuesta getLogin',datos.data.usuario);  
           localStorage.setItem('sis41254#2@', datos.data.usuario.key_registro );
           localStorage.setItem('#2@56YH7H82BF', datos.data.usuario.id ); 
-          const digestBuffer = await this._loginService.digestMessage(new Date().toDateString());
-          CustomConsole.log('llave para permisos' , digestBuffer );
+          const digestBuffer = await this._loginService.digestMessage(new Date().toDateString()); 
           localStorage.setItem('#2@JIEQPJKASFÑLKJ', digestBuffer);  
           localStorage.setItem(digestBuffer, datos.data.usuario.permisos.join()); 
-          console.log(datos.data.usuario)
-          if (!datos.data.usuario.change_pass){
+          if (datos.data.usuario.change_pass ===  0 ){
             this._Router.navigate(['cambiarPass']);
           }else{
-            this._Router.navigate(['' ]);
+            console.log('llego aqui')
+            this._Router.navigate(['home']);
           } 
         }
       
