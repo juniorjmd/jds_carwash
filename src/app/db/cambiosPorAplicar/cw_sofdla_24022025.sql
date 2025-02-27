@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
--- Host: mysql.us.stackcp.com    Database: dlausr_car_wash
+-- Host: mysql.us.stackcp.com    Database: 
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.6.18-MariaDB-log
 
@@ -16,11 +16,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping events for database 'dlausr_car_wash'
+-- Dumping events for database ''
 --
 
 --
--- Dumping routines for database 'dlausr_car_wash'
+-- Dumping routines for database ''
 --
 /*!50003 DROP FUNCTION IF EXISTS `GetChildren` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -32,7 +32,7 @@
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `GetChildren`(parentId INT) RETURNS longtext CHARSET utf8mb4 COLLATE utf8mb4_bin
+CREATE  FUNCTION `GetChildren`(parentId INT) RETURNS longtext CHARSET utf8mb4 COLLATE utf8mb4_bin
 BEGIN
         RETURN (
             SELECT JSON_ARRAYAGG(
@@ -62,7 +62,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getCostoProducto`(codigoproducto text) RETURNS int(11)
+CREATE  FUNCTION `getCostoProducto`(codigoproducto text) RETURNS int(11)
 BEGIN
 
 RETURN coalesce((select precioCompra from  inv_mst_producto where id =  codigoproducto ) , 0 ) ;
@@ -82,7 +82,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getEstablecimientoActivo`(`_key` TEXT) RETURNS int(11)
+CREATE  FUNCTION `getEstablecimientoActivo`(`_key` TEXT) RETURNS int(11)
 BEGIN
 declare _flag int;
 declare _esta int;
@@ -118,7 +118,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getEstado`(`letra` CHAR) RETURNS int(11)
+CREATE  FUNCTION `getEstado`(`letra` CHAR) RETURNS int(11)
 BEGIN
 
 RETURN (SELECT id FROM  estado_registro where estado = letra) ; 
@@ -138,7 +138,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIdCierreDeCajaActivo`(`_id_caja` INT) RETURNS int(11)
+CREATE  FUNCTION `getIdCierreDeCajaActivo`(`_id_caja` INT) RETURNS int(11)
 BEGIN
 RETURN ( coalesce( (SELECT id FROM corte_de_caja where id_Caja =  _id_caja and coalesce(fecha_cierre , 0 ) = 0),0));
 END ;;
@@ -157,7 +157,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIdCierreDeCajaParcialActivo`(`_id_usuario` INT) RETURNS int(11)
+CREATE  FUNCTION `getIdCierreDeCajaParcialActivo`(`_id_usuario` INT) RETURNS int(11)
 BEGIN
 
 RETURN ( coalesce(
@@ -178,7 +178,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIdContadorByName`(`_NOMBRE` CHAR(50)) RETURNS int(11)
+CREATE  FUNCTION `getIdContadorByName`(`_NOMBRE` CHAR(50)) RETURNS int(11)
 BEGIN
 RETURN (SELECT id FROM  tipos_de_documentos WHERE TRIM(nombre ) = TRIM(_NOMBRE)); 
 END ;;
@@ -197,7 +197,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIdDocumentoByIdFactura`(idFactura text) RETURNS int(11)
+CREATE  FUNCTION `getIdDocumentoByIdFactura`(idFactura text) RETURNS int(11)
 BEGIN
    
 RETURN coalesce( (select orden from documentos where idDocumentoFinal = idFactura ), 0 ) ;
@@ -217,7 +217,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIdEmpleadoPorTipNombre`(`_NOMBRE` CHAR(50)) RETURNS int(11)
+CREATE  FUNCTION `getIdEmpleadoPorTipNombre`(`_NOMBRE` CHAR(50)) RETURNS int(11)
 BEGIN
 RETURN (SELECT id FROM  mst_per_empleados_tipos WHERE TRIM(nombre ) = TRIM(_NOMBRE)); 
 END ;;
@@ -236,7 +236,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIdEstado`(`nombreEstado` CHAR(2)) RETURNS int(11)
+CREATE  FUNCTION `getIdEstado`(`nombreEstado` CHAR(2)) RETURNS int(11)
 BEGIN
 RETURN (select id from  estado_registro where trim(estado) = trim(nombreEstado));
 END ;;
@@ -255,7 +255,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIdEstadoEnvio`(`_nombreEstado` CHAR(45)) RETURNS int(11)
+CREATE  FUNCTION `getIdEstadoEnvio`(`_nombreEstado` CHAR(45)) RETURNS int(11)
 BEGIN
 RETURN (select id from  estado_domicilio where trim(nombre_estado) = trim(_nombreEstado));
 END ;;
@@ -274,7 +274,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIdExistenciaActiva`(`_key` INT) RETURNS int(11)
+CREATE  FUNCTION `getIdExistenciaActiva`(`_key` INT) RETURNS int(11)
 BEGIN
 declare _flag int;
 declare _esta int;
@@ -304,7 +304,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIdTipoDocumentoPorNombre`(`_name` VARCHAR(45)) RETURNS int(11)
+CREATE  FUNCTION `getIdTipoDocumentoPorNombre`(`_name` VARCHAR(45)) RETURNS int(11)
 BEGIN
 
 RETURN (select coalesce(id,-1) as id from 
@@ -325,7 +325,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getIngresosByDoc`(idDoc int) RETURNS int(11)
+CREATE  FUNCTION `getIngresosByDoc`(idDoc int) RETURNS int(11)
 BEGIN
    declare retorno decimal(16,2);
    set retorno = coalesce(
@@ -348,7 +348,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getNameProducto`(idProducto text) RETURNS text CHARSET utf8mb4 COLLATE utf8mb4_general_ci
+CREATE  FUNCTION `getNameProducto`(idProducto text) RETURNS text CHARSET utf8mb4 COLLATE utf8mb4_general_ci
 BEGIN
   RETURN ( select nombre from inv_mst_producto where id = coalesce(idProducto , '' ) ); 
   
@@ -368,7 +368,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getNumTotalHijos`(_id bigint) RETURNS int(11)
+CREATE  FUNCTION `getNumTotalHijos`(_id bigint) RETURNS int(11)
 BEGIN 
 RETURN ( select count(0) from inv_categorias b where b.idPadreCategoria = _id) ;
 END ;;
@@ -387,7 +387,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getParametroNumerico`(_codPar text) RETURNS decimal(16,2)
+CREATE  FUNCTION `getParametroNumerico`(_codPar text) RETURNS decimal(16,2)
 BEGIN
 
 RETURN coalesce((SELECT par_numerico FROM parametros 
@@ -408,7 +408,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `getPrefijoContadorByName`(`_NOMBRE` int) RETURNS text CHARSET utf8mb4 COLLATE utf8mb4_general_ci
+CREATE  FUNCTION `getPrefijoContadorByName`(`_NOMBRE` int) RETURNS text CHARSET utf8mb4 COLLATE utf8mb4_general_ci
 BEGIN
 RETURN (SELECT coalesce( prefijoAux ,concat('AUX',_NOMBRE) ) FROM  tipos_de_documentos WHERE id = _NOMBRE );  
 END ;;
@@ -427,7 +427,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `get_recurso_hijos`(_padreId INT) RETURNS longtext CHARSET utf8mb4 COLLATE utf8mb4_bin
+CREATE  FUNCTION `get_recurso_hijos`(_padreId INT) RETURNS longtext CHARSET utf8mb4 COLLATE utf8mb4_bin
 BEGIN
     DECLARE hijos_json JSON;
     
@@ -467,7 +467,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `id_cuenta_contable`(`cuenta` INT(11)) RETURNS int(11)
+CREATE  FUNCTION `id_cuenta_contable`(`cuenta` INT(11)) RETURNS int(11)
 BEGIN
 RETURN (select ifnull(id_cuenta, -1 ) from cnt_cuentas where nro_cuenta = cuenta LIMIT 1);
 END ;;
@@ -486,7 +486,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `ID_TIPO_RELACION`(`_name_tipo_relacion` VARCHAR(150)) RETURNS int(11)
+CREATE  FUNCTION `ID_TIPO_RELACION`(`_name_tipo_relacion` VARCHAR(150)) RETURNS int(11)
 BEGIN
 if _name_tipo_relacion <> '' then
 set @id_tipo = '';
@@ -511,7 +511,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `ID_TIP_NOTIFICACION`(`_name_tip_notificacion` VARCHAR(150)) RETURNS int(11)
+CREATE  FUNCTION `ID_TIP_NOTIFICACION`(`_name_tip_notificacion` VARCHAR(150)) RETURNS int(11)
 BEGIN
 if _name_tip_notificacion <> '' then
 set @id_tipo = '';
@@ -536,7 +536,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` FUNCTION `new_function`(codigoproducto text) RETURNS int(11)
+CREATE  FUNCTION `new_function`(codigoproducto text) RETURNS int(11)
 BEGIN
 
 RETURN coalesce((select precioCompra from  inv_mst_producto where id =  codigoproducto ) , 0 ) ;
@@ -556,7 +556,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `abrir_caja`(IN `idCaja` INT, IN `usuarioId` INT, IN `_valorInicial` DECIMAL(16,2))
+CREATE  PROCEDURE `abrir_caja`(IN `idCaja` INT, IN `usuarioId` INT, IN `_valorInicial` DECIMAL(16,2))
 BEGIN
    declare count int;
    declare _estado_caja int;
@@ -622,7 +622,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `actualizaCierresPagos`(IN `_documento` INT)
+CREATE  PROCEDURE `actualizaCierresPagos`(IN `_documento` INT)
 BEGIN
      declare _idMedioDePago int ;
      declare _valorPagado decimal(16,2);
@@ -689,7 +689,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `cambiarDocumentoActual`(IN `_usuario` INT, IN `_documento` INT)
+CREATE  PROCEDURE `cambiarDocumentoActual`(IN `_usuario` INT, IN `_documento` INT)
 BEGIN 
 declare _esta int;
 declare _caja int;
@@ -713,7 +713,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `cambiarDocumentoCompraActual`(IN `_documento` INT)
+CREATE  PROCEDURE `cambiarDocumentoCompraActual`(IN `_documento` INT)
 BEGIN 
 declare _esta int;
 declare _caja int;
@@ -737,7 +737,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `cancelarDocumento`(IN `_usuario` INT, IN `_documento` INT)
+CREATE  PROCEDURE `cancelarDocumento`(IN `_usuario` INT, IN `_documento` INT)
 BEGIN 
 declare CONTADOR int;
     select count(*) into contador from documentos where  usuario  = _usuario
@@ -775,7 +775,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `cerrarCaja`(IN `idCaja` INT, IN `usuarioId` INT)
+CREATE  PROCEDURE `cerrarCaja`(IN `idCaja` INT, IN `usuarioId` INT)
 BEGIN
 	declare count int;
 	declare _id int;
@@ -815,7 +815,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `crearNuevoDocumento`(IN `_usuario` INT)
+CREATE  PROCEDURE `crearNuevoDocumento`(IN `_usuario` INT)
 BEGIN 
 declare _esta int;
 declare _caja int;
@@ -846,7 +846,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `crearNuevoDocumentoAbonoCxC`(IN `_usuario` INT , in idCliente int)
+CREATE  PROCEDURE `crearNuevoDocumentoAbonoCxC`(IN `_usuario` INT , in idCliente int)
 BEGIN 
 declare _esta int;
 declare _caja int;
@@ -880,7 +880,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `crearNuevoDocumentoAbonoCxP`(IN `_usuario` INT , in idCliente int , in _establecimiento int)
+CREATE  PROCEDURE `crearNuevoDocumentoAbonoCxP`(IN `_usuario` INT , in idCliente int , in _establecimiento int)
 BEGIN 
 declare _esta int;
 declare _caja int;
@@ -913,7 +913,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `crearNuevoDocumentoCompra`(IN `_usuario` INT , IN `_esta` INT)
+CREATE  PROCEDURE `crearNuevoDocumentoCompra`(IN `_usuario` INT , IN `_esta` INT)
 BEGIN  
     SET SQL_SAFE_UPDATES = 0;
     update documentos set estado = 2  where usuario  = _usuario and tipoDocumentoFinal = getIdTipoDocumentoPorNombre('compra_activa')   ; 
@@ -941,7 +941,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `crearNuevoDocumentoDevolucion`(IN `_usuario` INT , in idFactura text)
+CREATE  PROCEDURE `crearNuevoDocumentoDevolucion`(IN `_usuario` INT , in idFactura text)
 BEGIN  
 declare _caja ,_esta, idCliente int;
 declare _documento_creado int;   
@@ -968,7 +968,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `crearNuevoDocumentoGasto`(IN `_usuario` INT)
+CREATE  PROCEDURE `crearNuevoDocumentoGasto`(IN `_usuario` INT)
 BEGIN 
 declare _esta int;
 declare _caja int;
@@ -1000,7 +1000,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `crearNuevoDocumentoNotaDebito`(IN `_usuario` INT , in idFactura text)
+CREATE  PROCEDURE `crearNuevoDocumentoNotaDebito`(IN `_usuario` INT , in idFactura text)
 BEGIN
 
 declare _caja ,_esta, idCliente int;
@@ -1027,7 +1027,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `crearNuevoDocumentoPorIngresoVehiculo`(IN `_usuario` INT ,  in cajaId int,
+CREATE  PROCEDURE `crearNuevoDocumentoPorIngresoVehiculo`(IN `_usuario` INT ,  in cajaId int,
 in _infoAdicional text,
 in _cliente int 
 
@@ -1058,7 +1058,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `devolucionTotal`(IN `Id_Venta` VARCHAR(12), IN `codusuario` INT, OUT `estatus` VARCHAR(10), OUT `totalDevuelto` DOUBLE, OUT `ivaDevuelto` DOUBLE, OUT `totalProductos` INT, OUT `totalPresioVent` DOUBLE)
+CREATE  PROCEDURE `devolucionTotal`(IN `Id_Venta` VARCHAR(12), IN `codusuario` INT, OUT `estatus` VARCHAR(10), OUT `totalDevuelto` DOUBLE, OUT `ivaDevuelto` DOUBLE, OUT `totalProductos` INT, OUT `totalPresioVent` DOUBLE)
 BEGIN
 		declare count int ; 
         declare id_cuenta_cartera varchar(100);
@@ -1170,7 +1170,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `distribuir_abono_en_cuotas`(IN p_abono DECIMAL(16,2), IN p_id_cartera INT)
+CREATE  PROCEDURE `distribuir_abono_en_cuotas`(IN p_abono DECIMAL(16,2), IN p_id_cartera INT)
 BEGIN
     DECLARE remaining_abono DECIMAL(16,2);
     DECLARE cuota_id INT;
@@ -1237,7 +1237,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `distribuir_abono_en_cuotas_credito`(IN p_abono DECIMAL(16,2), IN p_id_cartera INT , in _fechaPago datetime)
+CREATE  PROCEDURE `distribuir_abono_en_cuotas_credito`(IN p_abono DECIMAL(16,2), IN p_id_cartera INT , in _fechaPago datetime)
 BEGIN
     DECLARE remaining_abono DECIMAL(16,2);
     DECLARE cuota_id INT;
@@ -1306,7 +1306,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `editarListaCompra`(IN `id_compra` INT)
+CREATE  PROCEDURE `editarListaCompra`(IN `id_compra` INT)
 BEGIN 
 declare _idLinea int; 
 declare _idCompra VARCHAR(10);  
@@ -1412,7 +1412,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `eliminarCompras`(IN `id_compra` INT)
+CREATE  PROCEDURE `eliminarCompras`(IN `id_compra` INT)
 BEGIN
 declare _idProducto , _cantidad float ; 
 DECLARE recorrerCompra CURSOR FOR 		
@@ -1481,7 +1481,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `generarDomicilio`(IN `_documento` INT)
+CREATE  PROCEDURE `generarDomicilio`(IN `_documento` INT)
 BEGIN
     declare _id_cliente , _state_id, _country_id  int;
     declare _display_name,_email, _mobile, _phone, _street, _city, _street2 
@@ -1515,7 +1515,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `generar_json_recursos`()
+CREATE  PROCEDURE `generar_json_recursos`()
 BEGIN
     SELECT JSON_OBJECT(
         'recursos', JSON_ARRAYAGG(
@@ -1551,7 +1551,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getAllProductosByCategoria`(in _idCategoria bigInt, in inicio int , in cnt int)
+CREATE  PROCEDURE `getAllProductosByCategoria`(in _idCategoria bigInt, in inicio int , in cnt int)
 BEGIN
  declare prd_obj text ;
     declare precio_obj text ;
@@ -1631,7 +1631,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getAllProductosByMarca`(in _idMarca bigInt, in inicio int , in cnt int)
+CREATE  PROCEDURE `getAllProductosByMarca`(in _idMarca bigInt, in inicio int , in cnt int)
 BEGIN
  declare prd_obj text ;
     declare precio_obj text ;
@@ -1713,7 +1713,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getAllProductosByName`(in _dato_busqueda text, in inicio int , in cnt int)
+CREATE  PROCEDURE `getAllProductosByName`(in _dato_busqueda text, in inicio int , in cnt int)
 BEGIN
  declare prd_obj text ;
     declare precio_obj text ;
@@ -1800,7 +1800,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getAllProductosCompletos`( in inicio int , in cnt int)
+CREATE  PROCEDURE `getAllProductosCompletos`( in inicio int , in cnt int)
 BEGIN
  declare prd_obj text ;
     declare precio_obj text ;
@@ -1881,7 +1881,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getIdProductoCategoria`(IN categoriaID BIGINT)
+CREATE  PROCEDURE `getIdProductoCategoria`(IN categoriaID BIGINT)
 BEGIN
     DECLARE letras VARCHAR(255) DEFAULT '';
     DECLARE tempID BIGINT;
@@ -1950,7 +1950,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `GetMenus`()
+CREATE  PROCEDURE `GetMenus`()
 BEGIN
    
      CREATE TEMPORARY TABLE TempMenuHierarchy (
@@ -2007,7 +2007,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getProductoCompleto`(in IdProducto text)
+CREATE  PROCEDURE `getProductoCompleto`(in IdProducto text)
 BEGIN
     declare prd_obj text ;
     declare precio_obj text ;
@@ -2090,7 +2090,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getProductoCompletoExistencia`( in _id_producto text ,  in _id_caja int)
+CREATE  PROCEDURE `getProductoCompletoExistencia`( in _id_producto text ,  in _id_caja int)
 BEGIN
     select obj from vw_inv_mst_producto_existencias_by_caja where id = _id_caja and id_producto = _id_producto ; 
 END ;;
@@ -2109,7 +2109,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getSessionActive`()
+CREATE  PROCEDURE `getSessionActive`()
 BEGIN
 SELECT * FROM  `session` where coalesce(fecha_hora_fin,'') = '';
 END ;;
@@ -2128,7 +2128,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getTiposVehiculosNoAsignadoAservicio`( in _id_servicio int)
+CREATE  PROCEDURE `getTiposVehiculosNoAsignadoAservicio`( in _id_servicio int)
 BEGIN
     SELECT id, usuario_creacion, name_usuario_creacion, usuario_edicion, fecha_creacion, fecha_actualizacion, estado, nombre_estado, nombre, descripcion
     FROM  vw_inv_mst_vehiculos_tipos where id not in (
@@ -2150,7 +2150,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `getUserGenericDocuments`( in idUser integer , in validarCaja integer)
+CREATE  PROCEDURE `getUserGenericDocuments`( in idUser integer , in validarCaja integer)
 BEGIN  
     SET SESSION group_concat_max_len = 1000000;
     
@@ -2191,7 +2191,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `ingresar_saldo_cuenta`(IN `id_subcuenta` INT, IN `_fecha` DATE, IN `_debito` DECIMAL(16,2), IN `_credito` DECIMAL(16,2), IN `origen` VARCHAR(20))
+CREATE  PROCEDURE `ingresar_saldo_cuenta`(IN `id_subcuenta` INT, IN `_fecha` DATE, IN `_debito` DECIMAL(16,2), IN `_credito` DECIMAL(16,2), IN `origen` VARCHAR(20))
 BEGIN
 declare _dia ,_mes,_anio , _count int;
 declare  _clase ,_grupo , _cuenta int;
@@ -2773,7 +2773,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `insertaRetefuente`(IN `_id_usuario` VARCHAR(50), IN `_id_venta` VARCHAR(50), IN `_IVA` DOUBLE, IN `_total_venta_bruta` DOUBLE, IN `_total_venta_neta` DOUBLE, IN `_porcentaje_retefuente` DOUBLE)
+CREATE  PROCEDURE `insertaRetefuente`(IN `_id_usuario` VARCHAR(50), IN `_id_venta` VARCHAR(50), IN `_IVA` DOUBLE, IN `_total_venta_bruta` DOUBLE, IN `_total_venta_neta` DOUBLE, IN `_porcentaje_retefuente` DOUBLE)
 BEGIN
 set @tRF = 0;
 
@@ -2799,7 +2799,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `obtenerIdProductoCategoria`(IN categoriaID BIGINT)
+CREATE  PROCEDURE `obtenerIdProductoCategoria`(IN categoriaID BIGINT)
 BEGIN
     DECLARE letras VARCHAR(255) DEFAULT '';
     DECLARE tempID BIGINT;
@@ -2871,7 +2871,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `rectificaCantidades`()
+CREATE  PROCEDURE `rectificaCantidades`()
 BEGIN
 declare vidProducto varchar(12) ;
 declare cant int ;
@@ -2906,7 +2906,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `resumenCaja`(IN `_idCaja` INT)
+CREATE  PROCEDURE `resumenCaja`(IN `_idCaja` INT)
 BEGIN
 	declare idCajaResumen int;
     if _idCaja > 0 then 
@@ -2932,7 +2932,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `resumenCajaParcial`(IN `_idCaja` INT)
+CREATE  PROCEDURE `resumenCajaParcial`(IN `_idCaja` INT)
 BEGIN
 	declare idCajaResumen int;
     if _idCaja > 0 then 
@@ -2958,7 +2958,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `setPerfilAUsuario`(IN `_idPerfil` INT, IN `_idUsuario` INT)
+CREATE  PROCEDURE `setPerfilAUsuario`(IN `_idPerfil` INT, IN `_idUsuario` INT)
 BEGIN
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -2991,7 +2991,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_actualizar_cuotas_vencidas`()
+CREATE  PROCEDURE `sp_actualizar_cuotas_vencidas`()
 BEGIN
 
 SET SQL_SAFE_UPDATES = 0;
@@ -3032,7 +3032,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_actualizar_saldo_bonos`(IN p_idDocumento INT)
+CREATE  PROCEDURE `sp_actualizar_saldo_bonos`(IN p_idDocumento INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE;   
     DECLARE v_idMedioDePago INT;
@@ -3084,7 +3084,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_asignar_consecutivo_factura`(IN `_usuario` INT, IN `_modulo` VARCHAR(5), OUT `s_id_venta` VARCHAR(100), OUT `_id_venta` VARCHAR(100))
+CREATE  PROCEDURE `sp_asignar_consecutivo_factura`(IN `_usuario` INT, IN `_modulo` VARCHAR(5), OUT `s_id_venta` VARCHAR(100), OUT `_id_venta` VARCHAR(100))
 BEGIN
 	declare _cod_generado int;
     declare _cont_codigo int;
@@ -3135,7 +3135,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_buscar_productos`(IN `_dato_busqueda` TEXT)
+CREATE  PROCEDURE `sp_buscar_productos`(IN `_dato_busqueda` TEXT)
 BEGIN
 set @w = '';
 set @id_sh = '';
@@ -3201,7 +3201,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_cerrarCajaParcial`(IN `idCaja` INT, IN `usuarioId` INT)
+CREATE  PROCEDURE `sp_cerrarCajaParcial`(IN `idCaja` INT, IN `usuarioId` INT)
 BEGIN
 	declare count int;
 	declare _id_corte_caja int;
@@ -3240,7 +3240,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_cerrar_inventario`(
+CREATE  PROCEDURE `sp_cerrar_inventario`(
     IN _id_usuario INT,
     IN _id_bodega INT,
     IN nombre_inventario VARCHAR(45),
@@ -3375,7 +3375,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_cerrar_remision`(IN `_id_remision` INT, IN `_id_orden_compra` INT, IN `_usuario` VARCHAR(100))
+CREATE  PROCEDURE `sp_cerrar_remision`(IN `_id_remision` INT, IN `_id_orden_compra` INT, IN `_usuario` VARCHAR(100))
 BEGIN
 declare _cantidadVendida decimal(12,2);
 declare _presioSinIVa decimal(12,2);
@@ -3449,7 +3449,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_change_pass`(IN `_ID` VARCHAR(20), IN `_usr_registro` VARCHAR(150), IN `_pass` BLOB)
+CREATE  PROCEDURE `sp_change_pass`(IN `_ID` VARCHAR(20), IN `_usr_registro` VARCHAR(150), IN `_pass` BLOB)
 BEGIN 
 set @usuarioIngresado = _usr_registro;
 IF _ID is null or _ID = ''  THEN
@@ -3484,7 +3484,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `SP_CREAR_DOCUMENTO_COTIZACION`(IN `_usuario` INT, IN `_documento` INT)
+CREATE  PROCEDURE `SP_CREAR_DOCUMENTO_COTIZACION`(IN `_usuario` INT, IN `_documento` INT)
 BEGIN 
 declare CONTADOR int;
     select count(*) into contador from documentos where  usuario  = _usuario
@@ -3522,7 +3522,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_crear_editar_pedidos`(`_id_pedido_SAP` VARCHAR(20), `_cod_generado_sistema` VARCHAR(20), `_estado` VARCHAR(2), `_usuario` VARCHAR(150))
+CREATE  PROCEDURE `sp_crear_editar_pedidos`(`_id_pedido_SAP` VARCHAR(20), `_cod_generado_sistema` VARCHAR(20), `_estado` VARCHAR(2), `_usuario` VARCHAR(150))
 BEGIN
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -3569,7 +3569,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_crear_editar_perfil`(IN `_Perf_ID` VARCHAR(12), IN `_Perf_Nombre` VARCHAR(150), IN `_estado` CHAR(1), IN `_usuario` VARCHAR(100))
+CREATE  PROCEDURE `sp_crear_editar_perfil`(IN `_Perf_ID` VARCHAR(12), IN `_Perf_Nombre` VARCHAR(150), IN `_estado` CHAR(1), IN `_usuario` VARCHAR(100))
 BEGIN
 set @usuarioIngresado = _usuario;   
 
@@ -3615,7 +3615,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_crear_editar_recurso`(IN `_idrecurso` VARCHAR(5), IN `_id_menu` VARCHAR(5), IN `_tipo_recurso` VARCHAR(5), IN `_nombre_recurso` VARCHAR(200), IN `_id_recurso_sistema` VARCHAR(100), IN `_estado` VARCHAR(1), IN `_usuario` VARCHAR(150))
+CREATE  PROCEDURE `sp_crear_editar_recurso`(IN `_idrecurso` VARCHAR(5), IN `_id_menu` VARCHAR(5), IN `_tipo_recurso` VARCHAR(5), IN `_nombre_recurso` VARCHAR(200), IN `_id_recurso_sistema` VARCHAR(100), IN `_estado` VARCHAR(1), IN `_usuario` VARCHAR(150))
 BEGIN
 
 
@@ -3677,7 +3677,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_Crear_editar_usuario`(IN `_ID` VARCHAR(20), IN `_Login` VARCHAR(150), IN `_Nombre1` VARCHAR(150), IN `_Nombre2` VARCHAR(150), IN `_Apellido1` VARCHAR(150), IN `_Apellido2` VARCHAR(150), IN `_estado` VARCHAR(150), IN `_usr_registro` VARCHAR(150), IN `_pass` BLOB, IN `_change` CHAR(1), IN `_mail` VARCHAR(200))
+CREATE  PROCEDURE `sp_Crear_editar_usuario`(IN `_ID` VARCHAR(20), IN `_Login` VARCHAR(150), IN `_Nombre1` VARCHAR(150), IN `_Nombre2` VARCHAR(150), IN `_Apellido1` VARCHAR(150), IN `_Apellido2` VARCHAR(150), IN `_estado` VARCHAR(150), IN `_usr_registro` VARCHAR(150), IN `_pass` BLOB, IN `_change` CHAR(1), IN `_mail` VARCHAR(200))
 BEGIN
 declare _numusuario int;
 declare _lastIsertId int;
@@ -3829,7 +3829,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_crear_relacion_user_perfil`(IN `_idRelacion` VARCHAR(12), IN `_user_id` VARCHAR(12), IN `_perfil_id` VARCHAR(12), IN `_usuario` VARCHAR(100))
+CREATE  PROCEDURE `sp_crear_relacion_user_perfil`(IN `_idRelacion` VARCHAR(12), IN `_user_id` VARCHAR(12), IN `_perfil_id` VARCHAR(12), IN `_usuario` VARCHAR(100))
 BEGIN
  set @usuarioIngresado = _usuario;   
 
@@ -3873,7 +3873,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_devolver_producto`( in _id_linea_devolucion int)
+CREATE  PROCEDURE `sp_devolver_producto`( in _id_linea_devolucion int)
 BEGIN
   declare existenciaId int ;
   declare cntDevolucion decimal(10 , 2 );  
@@ -3920,7 +3920,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_devolver_producto_cotizacion`( in _id_linea_devolucion int)
+CREATE  PROCEDURE `sp_devolver_producto_cotizacion`( in _id_linea_devolucion int)
 BEGIN
   declare existenciaId int ;
   declare cntDevolucion decimal(10 , 2 );  
@@ -3964,7 +3964,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_devolver_producto_devolucion`( in _id_linea_devolucion int , in _cnt  DECIMAL(16,2) )
+CREATE  PROCEDURE `sp_devolver_producto_devolucion`( in _id_linea_devolucion int , in _cnt  DECIMAL(16,2) )
 BEGIN
   declare existenciaId int ;
   declare cntDevolucion decimal(10 , 2 );  
@@ -4012,7 +4012,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_devolver_producto_nota_debito`( in _id_linea_devolucion int , in _cnt  DECIMAL(16,2) )
+CREATE  PROCEDURE `sp_devolver_producto_nota_debito`( in _id_linea_devolucion int , in _cnt  DECIMAL(16,2) )
 BEGIN
   declare existenciaId , _movimiento int ;
   declare cntDevolucion decimal(10 , 2 );  
@@ -4128,7 +4128,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_eliminar_elemento`(IN `_user` VARCHAR(150), IN `_TABLA` VARCHAR(150), IN `_DATO` VARCHAR(150), IN `_COLUMNA` VARCHAR(150))
+CREATE  PROCEDURE `sp_eliminar_elemento`(IN `_user` VARCHAR(150), IN `_TABLA` VARCHAR(150), IN `_DATO` VARCHAR(150), IN `_COLUMNA` VARCHAR(150))
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -4174,7 +4174,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_generar_abonos_cartera`(IN p_idDocumento INT)
+CREATE  PROCEDURE `sp_generar_abonos_cartera`(IN p_idDocumento INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE; 
     DECLARE _idUsuario INT;
@@ -4264,7 +4264,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_generar_abonos_credito`(IN p_idDocumento INT)
+CREATE  PROCEDURE `sp_generar_abonos_credito`(IN p_idDocumento INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE; 
     DECLARE _idUsuario INT;
@@ -4415,7 +4415,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_generar_movimientos_cuenta_inventario`(IN p_idDocumento INT)
+CREATE  PROCEDURE `sp_generar_movimientos_cuenta_inventario`(IN p_idDocumento INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE; 
     DECLARE _idUsuario INT;
@@ -4593,7 +4593,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_generar_movimientos_cuenta_inventario_compra`(IN p_idDocumento INT)
+CREATE  PROCEDURE `sp_generar_movimientos_cuenta_inventario_compra`(IN p_idDocumento INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE; 
     DECLARE _idUsuario, id_resumen_iva , _idPersona , _id_hst_iva_rete INT;
@@ -4844,7 +4844,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_generar_movimientos_cuenta_pagos`(IN p_idDocumento INT)
+CREATE  PROCEDURE `sp_generar_movimientos_cuenta_pagos`(IN p_idDocumento INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE; 
     DECLARE _idUsuario INT;
@@ -5005,7 +5005,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_generar_movimientos_devolucion`(IN p_idDocumento INT)
+CREATE  PROCEDURE `sp_generar_movimientos_devolucion`(IN p_idDocumento INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE; 
     DECLARE _idUsuario INT;
@@ -5150,7 +5150,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_generar_movimientos_nota_debito`(IN p_idDocumento INT)
+CREATE  PROCEDURE `sp_generar_movimientos_nota_debito`(IN p_idDocumento INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE; 
     DECLARE _idUsuario INT;
@@ -5313,7 +5313,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_genera_fechas_pagos_compromisos`(`_cuotas` INT, `_intervalo_pagos` INT, `_fecha_obligacion` DATE, `_usuario` VARCHAR(100), `_compromiso` INT, `_tipo_compromiso` CHAR(3))
+CREATE  PROCEDURE `sp_genera_fechas_pagos_compromisos`(`_cuotas` INT, `_intervalo_pagos` INT, `_fecha_obligacion` DATE, `_usuario` VARCHAR(100), `_compromiso` INT, `_tipo_compromiso` CHAR(3))
 BEGIN
 declare _contador int;
 declare _fecha_pago date;
@@ -5355,7 +5355,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_id_documentos_por_id_producto`( in id_producto text)
+CREATE  PROCEDURE `sp_id_documentos_por_id_producto`( in id_producto text)
 BEGIN
   select orden from 
       vw_documentos_listado_productos_ventas where idProducto = id_producto ; 
@@ -5375,7 +5375,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_inserta_nuevo_contador`(IN `_codContador` VARCHAR(45), IN `_establecimiento` INT, IN `_tipoContador` INT, 
+CREATE  PROCEDURE `sp_inserta_nuevo_contador`(IN `_codContador` VARCHAR(45), IN `_establecimiento` INT, IN `_tipoContador` INT, 
 IN `_desde` INT, IN `_hasta` INT, 
 in _resolucion text , 
 in _fechaInicio date,
@@ -5421,7 +5421,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_inserta_tabla_auditoria`(IN `_usuario` VARCHAR(255) CHARSET utf8, IN `_tabla` VARCHAR(255) CHARSET utf8, IN `_campo` VARCHAR(255) CHARSET utf8, IN `_valor_anterior` BLOB, IN `_valor_nuevo` BLOB, IN `_accion` VARCHAR(255) CHARSET utf8)
+CREATE  PROCEDURE `sp_inserta_tabla_auditoria`(IN `_usuario` VARCHAR(255) CHARSET utf8, IN `_tabla` VARCHAR(255) CHARSET utf8, IN `_campo` VARCHAR(255) CHARSET utf8, IN `_valor_anterior` BLOB, IN `_valor_nuevo` BLOB, IN `_accion` VARCHAR(255) CHARSET utf8)
     NO SQL
     SQL SECURITY INVOKER
     COMMENT 'Inserta en sat_auditoria array IN'
@@ -5454,7 +5454,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_insert_medida_grupo`(IN `_id_tipo_medida` INT, IN `_id_grupo` INT, IN `usuarioIngresado` VARCHAR(150))
+CREATE  PROCEDURE `sp_insert_medida_grupo`(IN `_id_tipo_medida` INT, IN `_id_grupo` INT, IN `usuarioIngresado` VARCHAR(150))
 BEGIN	
  declare exit handler for 1452
     begin
@@ -5481,7 +5481,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_insert_recurso_perfil`(IN `_id_perfil` VARCHAR(50), IN `_id_recurso` VARCHAR(50), IN `usuarioIngresado` VARCHAR(150))
+CREATE  PROCEDURE `sp_insert_recurso_perfil`(IN `_id_perfil` VARCHAR(50), IN `_id_recurso` VARCHAR(50), IN `usuarioIngresado` VARCHAR(150))
 BEGIN	
  declare exit handler for 1452
     begin
@@ -5508,7 +5508,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_login`(IN `_usuarios` VARCHAR(45), IN `_pass` TEXT, IN `_key` TEXT)
+CREATE  PROCEDURE `sp_login`(IN `_usuarios` VARCHAR(45), IN `_pass` TEXT, IN `_key` TEXT)
 BEGIN
     declare _count int;
     declare _id_usuarios int;
@@ -5585,7 +5585,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_procesar_detalle_ordenes_carga`(`_id_cabecera` INT(11), `_pedido` INT(11), `_id_centro` VARCHAR(10), `_centro` VARCHAR(50), `_id_puesto_exp` VARCHAR(15), `_puesto_exp` VARCHAR(50), `_posicion` INT(11), `_id_material` INT(11), `_material` VARCHAR(50), `_cantidad` FLOAT, `_cod_usuario_registro` INT(11))
+CREATE  PROCEDURE `sp_procesar_detalle_ordenes_carga`(`_id_cabecera` INT(11), `_pedido` INT(11), `_id_centro` VARCHAR(10), `_centro` VARCHAR(50), `_id_puesto_exp` VARCHAR(15), `_puesto_exp` VARCHAR(50), `_posicion` INT(11), `_id_material` INT(11), `_material` VARCHAR(50), `_cantidad` FLOAT, `_cod_usuario_registro` INT(11))
 BEGIN
 DECLARE _RETORNO INT;
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -5624,7 +5624,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_procesar_ordenes_de_carga`(`_cod_cliente` VARCHAR(10), `_cod_remitente_conse` INT(10), `_ref_externa` VARCHAR(50), `_cod_ciudad` VARCHAR(45), `_ciudad_destino` VARCHAR(45), `_cod_destinataio` VARCHAR(20), `_destinatario` VARCHAR(45), `_placa` VARCHAR(6), `_cod_cedula` VARCHAR(45), `_cedula` VARCHAR(45), `_cod_transportador` VARCHAR(45), `_transportador` VARCHAR(150), `_fecha_estimada` VARCHAR(10), `_cod_usuario_registro` INT(11), `_estado` VARCHAR(2), `_cod_remision_sap` VARCHAR(45), `_fecha_remisioin_sap` VARCHAR(10), `_proceso` VARCHAR(10))
+CREATE  PROCEDURE `sp_procesar_ordenes_de_carga`(`_cod_cliente` VARCHAR(10), `_cod_remitente_conse` INT(10), `_ref_externa` VARCHAR(50), `_cod_ciudad` VARCHAR(45), `_ciudad_destino` VARCHAR(45), `_cod_destinataio` VARCHAR(20), `_destinatario` VARCHAR(45), `_placa` VARCHAR(6), `_cod_cedula` VARCHAR(45), `_cedula` VARCHAR(45), `_cod_transportador` VARCHAR(45), `_transportador` VARCHAR(150), `_fecha_estimada` VARCHAR(10), `_cod_usuario_registro` INT(11), `_estado` VARCHAR(2), `_cod_remision_sap` VARCHAR(45), `_fecha_remisioin_sap` VARCHAR(10), `_proceso` VARCHAR(10))
 BEGIN
 -- COLLATE utf8_unicode_ci 
 DECLARE _RETORNO INT;
@@ -5704,7 +5704,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_recorrer_documentos_listado_productos`(IN p_idDocumento INT)
+CREATE  PROCEDURE `sp_recorrer_documentos_listado_productos`(IN p_idDocumento INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE;
     DECLARE v_id INT;
@@ -5771,7 +5771,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_registro_ultimo_ingreso`(IN `_id_usuario` VARCHAR(10))
+CREATE  PROCEDURE `sp_registro_ultimo_ingreso`(IN `_id_usuario` VARCHAR(10))
 BEGIN
 	update usuarios set ultimo_ingreso = now() where ID = _id_usuario;
 END ;;
@@ -5790,7 +5790,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumenDevoluciones`(in _usuario int ,in fechaInicio date , in fechaFin date ,    in _session_id text )
+CREATE  PROCEDURE `sp_resumenDevoluciones`(in _usuario int ,in fechaInicio date , in fechaFin date ,    in _session_id text )
 BEGIN
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -5945,7 +5945,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumenVentas`(in _usuario int ,in fechaInicio date , in fechaFin date ,    in _session_id text )
+CREATE  PROCEDURE `sp_resumenVentas`(in _usuario int ,in fechaInicio date , in fechaFin date ,    in _session_id text )
 BEGIN
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -6099,7 +6099,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumenVentasCategorias`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
+CREATE  PROCEDURE `sp_resumenVentasCategorias`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
 BEGIN
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -6252,7 +6252,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumenVentasCliente`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
+CREATE  PROCEDURE `sp_resumenVentasCliente`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
 BEGIN  
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -6404,7 +6404,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumenVentasHoras`(in _usuario int ,in fechaInicio date , in fechaFin date ,  
+CREATE  PROCEDURE `sp_resumenVentasHoras`(in _usuario int ,in fechaInicio date , in fechaFin date ,  
 in horaini time , in horaFin time ,  
   in _session_id text )
 BEGIN
@@ -6560,7 +6560,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumenVentasProductos`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
+CREATE  PROCEDURE `sp_resumenVentasProductos`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
 BEGIN
   declare nombreUsuario, _desc
    -- prdMasVendido , prdMenosVendido 
@@ -6658,7 +6658,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumenVentasUsuario`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
+CREATE  PROCEDURE `sp_resumenVentasUsuario`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
 BEGIN 
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -6812,7 +6812,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumenVentasVendedor`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd int ,  in _session_id text )
+CREATE  PROCEDURE `sp_resumenVentasVendedor`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd int ,  in _session_id text )
 BEGIN  
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -6965,7 +6965,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumen_cuentas_por_cobrar`(in _usuario int ,in fechaInicio date , in fechaFin date ,    in _session_id text )
+CREATE  PROCEDURE `sp_resumen_cuentas_por_cobrar`(in _usuario int ,in fechaInicio date , in fechaFin date ,    in _session_id text )
 BEGIN
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -7147,7 +7147,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumen_cuentas_por_cobrar_por_cliente`(in _usuario int ,in fechaInicio date , in fechaFin date , in _cliente int ,  in _session_id text )
+CREATE  PROCEDURE `sp_resumen_cuentas_por_cobrar_por_cliente`(in _usuario int ,in fechaInicio date , in fechaFin date , in _cliente int ,  in _session_id text )
 BEGIN
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -7339,7 +7339,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumen_cuentas_por_pagar`(in _usuario int ,in fechaInicio date , in fechaFin date ,    in _session_id text )
+CREATE  PROCEDURE `sp_resumen_cuentas_por_pagar`(in _usuario int ,in fechaInicio date , in fechaFin date ,    in _session_id text )
 BEGIN
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -7521,7 +7521,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumen_cuentas_por_pagar_proveedor`(in _usuario int ,in fechaInicio date , in fechaFin date , in _prov int ,   in _session_id text )
+CREATE  PROCEDURE `sp_resumen_cuentas_por_pagar_proveedor`(in _usuario int ,in fechaInicio date , in fechaFin date , in _prov int ,   in _session_id text )
 BEGIN
   declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -7714,7 +7714,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_resumen_movimientos_cuentas`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
+CREATE  PROCEDURE `sp_resumen_movimientos_cuentas`(in _usuario int ,in fechaInicio date , in fechaFin date ,  in idPrd text ,  in _session_id text )
 BEGIN
  declare nombreUsuario , _desc
    -- prdMasVendido , prdMenosVendido 
@@ -7840,7 +7840,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_SET_BANDERA`(IN `_COD_FLAG` TEXT)
+CREATE  PROCEDURE `sp_SET_BANDERA`(IN `_COD_FLAG` TEXT)
 BEGIN
     DECLARE EST  , _id INT;
     declare nomUsu varchar(50);
@@ -7878,7 +7878,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_trasladar_Producto`(
+CREATE  PROCEDURE `sp_trasladar_Producto`(
     IN p_id_bodega_origen BIGINT,
     IN p_id_bodega_destino BIGINT,
     IN p_id_producto VARCHAR(10),
@@ -7992,7 +7992,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_update_cliente_documento`(`ordenDoc` INT, `ordenClient` INT)
+CREATE  PROCEDURE `sp_update_cliente_documento`(`ordenDoc` INT, `ordenClient` INT)
 BEGIN
      update documentos set cliente = ordenClient where  orden = ordenDoc ;
      select objeto  from vw_obj_documentos where  orden = ordenDoc ;
@@ -8012,7 +8012,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `sp_verificar_usuarios_permisos`(IN `_nickname` VARCHAR(150), IN `_pass` VARCHAR(150))
+CREATE  PROCEDURE `sp_verificar_usuarios_permisos`(IN `_nickname` VARCHAR(150), IN `_pass` VARCHAR(150))
 BEGIN
 	select * from usuarios where Login = _nickname  and pass = _pass ; 
 END ;;
@@ -8031,7 +8031,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `truncate_table`(IN `nomTable` VARCHAR(150))
+CREATE  PROCEDURE `truncate_table`(IN `nomTable` VARCHAR(150))
 BEGIN
 	
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -8069,7 +8069,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`dlausr_jds`@`%` PROCEDURE `updateFechaVentas`(IN `_id_venta` TEXT, IN `_fecha_venta` DATE)
+CREATE  PROCEDURE `updateFechaVentas`(IN `_id_venta` TEXT, IN `_fecha_venta` DATE)
 BEGIN
 	UPDATE `ventastemp` SET  `fecha` =  _fecha_venta WHERE `idVenta` = _id_venta;
 

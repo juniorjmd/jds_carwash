@@ -56,6 +56,16 @@ constructor(private http: HttpClient ,  private configService:ConfigService){
         return this.http.post<UsuarioResponseInterface>(this.configService.url.login , datos, httpOptions()) ;
     }
     
+
+    setRenovacionContrasena(_usuario:string):Observable<{error:any}>{
+      let datos = {"action": actions.actionResetearPass ,
+                  _usuario
+              };
+      CustomConsole.log('setRenovacionContrasena inicializado ' ,this.configService.url.login , datos,         this.configService.url.httpOptionsSinAutorizacion);
+      return this.http.post<{error:any}>(this.configService.url.login , datos, httpOptions()) ;
+  }
+
+
     getUsuarioLogeadoObs(invoker: string = ''): Observable<any> {
         const datos = {
           "action": actions.actionValidarKeylogin,

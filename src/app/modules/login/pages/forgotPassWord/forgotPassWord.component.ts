@@ -34,32 +34,32 @@ getDatosInciales(){
 }
     
 
-    login( form: NgForm){
-   if(form.invalid){return;} 
-
-    this._loginService.getLogin(this.usuario.Login , this.usuario.pass).subscribe(
-      async (datos:any)=>{ 
-        if(datos.data.usuario.length === 0){ 
-          Swal.fire('error de usuario')
-        }else{
-          CustomConsole.log('getLogin',datos.data.usuario);  
-          localStorage.setItem('sis41254#2@', datos.data.usuario.key_registro );
-          localStorage.setItem('#2@56YH7H82BF', datos.data.usuario.id ); 
-          const digestBuffer = await this._loginService.digestMessage(new Date().toDateString());
-          CustomConsole.log('llave para permisos' , digestBuffer );
+changePassword( form: NgForm){
+   if(form.invalid){
+    Swal.fire('error' , 'Debe ingresar un usuario valido!' , 'error')
+    return;}  
+    this._loginService.setRenovacionContrasena(this.usuario.Login).subscribe({next:
+       (datos:any)=>{ 
+        console.log(datos)
+        if(datos.error !== 'ok'){ 
+          Swal.fire('error en la operacion : msg => '+ datos.error)
+        }else{ 
+          Swal.fire({
+            title: 'Cambio de contraseña completado',
+            text: 'El sistema ha generado una nueva contraseña para el usuario suministrado. Esta información ha sido enviada al correo registrado.',
+            icon: 'success'
+          }).then(() => {
+            this._Router.navigate(['']); // Redirige cuando se cierra el modal
+          });
           
-          localStorage.setItem('#2@JIEQPJKASFÑLKJ', digestBuffer); 
-          
-          localStorage.setItem(digestBuffer, datos.data.usuario.permisos.join()); 
-          this._Router.navigate(['home']);
         }
       
     } ,
-    error => {
+    error:(error) => {
       CustomConsole.log(error) 
       Swal.fire('error', JSON.stringify(error) , 'error') 
-    }
-      ); 
+    }}
+  ); 
     
   }
    myFunction(x:any) { 
@@ -73,9 +73,6 @@ ngOnInit(): void {
   this.usuario =  new UsuarioModel( undefined); 
   this.getDatosInciales();
   } 
-  changePassword( form: NgForm){
-    
-  }
 }
  
 

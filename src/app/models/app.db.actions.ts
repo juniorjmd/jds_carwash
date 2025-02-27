@@ -149,6 +149,7 @@
     'actionSelectPorUsuario' :actionSelectPorUsuario,
     'actionlogin' :actionlogin ,
     'actionValidarKeylogin' :validarLlave,
+    'actionResetearPass' :'RESETEAR_USUARIO_PASS',
     'actionGetUsuarioActual' :getUsuarioLogeado,
     'actionSetPass' :'HIJODELAGRANCHINGADA',
     'actionSelCajaXuser' :actionSelectCajasPorUsuario, 
