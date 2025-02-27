@@ -8,7 +8,8 @@ import { EnviosComponent } from './components/envios/envios.component';
 import { ParametrosComponent } from './components/parametros/parametros.component'; 
 
  const routes:  Routes = [ 
-    { path: 'login', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule) },
+  { path: 'login', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule) },
+  { path: 'cambiarPass',component : MiUsuarioComponent ,},
     { path : 'home' , 
     component : HomeComponent ,
       children : [             
@@ -28,7 +29,6 @@ import { ParametrosComponent } from './components/parametros/parametros.componen
         { path : '**' , pathMatch:'full' , redirectTo : 'inicio'} 
       ]
     },
-     
      { path : '**' , pathMatch:'full' , redirectTo : 'login'},
 ] ;
 

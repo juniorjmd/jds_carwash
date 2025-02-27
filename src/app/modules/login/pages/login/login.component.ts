@@ -50,11 +50,14 @@ getDatosInciales(){
           localStorage.setItem('#2@56YH7H82BF', datos.data.usuario.id ); 
           const digestBuffer = await this._loginService.digestMessage(new Date().toDateString());
           CustomConsole.log('llave para permisos' , digestBuffer );
-          
-          localStorage.setItem('#2@JIEQPJKASFÑLKJ', digestBuffer); 
-          
+          localStorage.setItem('#2@JIEQPJKASFÑLKJ', digestBuffer);  
           localStorage.setItem(digestBuffer, datos.data.usuario.permisos.join()); 
-          this._Router.navigate(['home']);
+          console.log(datos.data.usuario)
+          if (!datos.data.usuario.change_pass){
+            this._Router.navigate(['cambiarPass']);
+          }else{
+            this._Router.navigate(['' ]);
+          } 
         }
       
     } ,

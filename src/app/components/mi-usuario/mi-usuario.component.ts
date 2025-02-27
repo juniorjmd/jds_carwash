@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { error } from 'jquery';
 import { Usuario, UsuarioLogeado } from 'src/app/interfaces/usuario.interface';
 import { LoginService } from 'src/app/services/login.services';
@@ -16,7 +17,8 @@ export class MiUsuarioComponent implements OnInit {
   newPassword: string = '';
   confirmPassword: string = '';
   passwordError: string = '';
-  constructor( private _ServLogin:LoginService) { }
+  constructor( private _ServLogin:LoginService, 
+      private _Router : Router ) { }
 
 
   changePassword() {
@@ -37,7 +39,11 @@ export class MiUsuarioComponent implements OnInit {
       {
         next:(val)=>{
           console.log(val);
-          if(val.error == 'ok'){ Swal.fire('Contraseña cambiada exitosamente')}else{Swal.fire(val.error)}
+          if(val.error == 'ok'){ 
+            Swal.fire('Contraseña cambiada exitosamente').then(() => {
+              this._Router.navigate(['']); // Redirige cuando se cierra el modal
+            });
+          }else{Swal.fire(val.error)}
           
         },error: e=> Swal.fire(JSON.stringify(e))
         
