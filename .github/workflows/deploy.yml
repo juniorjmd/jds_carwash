@@ -31,11 +31,11 @@ jobs:
       - name: Preparar carpeta destino en carwash
         run: |
           ssh sofdla.com.co@ssh.us.stackcp.com '
-            DEST="/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co"
+            DEST="/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co";
             if [ -d "$DEST" ]; then
-              mv "$DEST" "$DEST.old"
-            fi
-            mkdir -p "$DEST"
+              mv "$DEST" "$DEST.old";
+            fi;
+            mkdir -p "$DEST";
           '
 
       - name: Subir build a carwash
@@ -45,13 +45,13 @@ jobs:
       - name: Restaurar config y servicios en carwash
         run: |
           ssh sofdla.com.co@ssh.us.stackcp.com '
-            DEST="/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co"
-            OLDD="$DEST.old"
+            DEST="/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co";
+            OLDD="$DEST.old";
             if [ -d "$OLDD" ]; then
-              [ -d "$OLDD/bk.service" ] && cp -r "$OLDD/bk.service" "$DEST/"
-              [ -f "$OLDD/assets/config.json" ] && cp "$OLDD/assets/config.json" "$DEST/assets/config.json"
-              rm -rf "$OLDD"
-            fi
+              [ -d "$OLDD/bk.service" ] && cp -r "$OLDD/bk.service" "$DEST/";
+              [ -f "$OLDD/assets/config.json" ] && cp "$OLDD/assets/config.json" "$DEST/assets/config.json";
+              rm -rf "$OLDD";
+            fi;
           '
 
       #################################################################
@@ -61,11 +61,11 @@ jobs:
       - name: Preparar carpeta destino en distrimedjl
         run: |
           ssh sofdla.com.co@ssh.us.stackcp.com '
-            DEST="/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co"
+            DEST="/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co";
             if [ -d "$DEST" ]; then
-              mv "$DEST" "$DEST.old"
-            fi
-            mkdir -p "$DEST"
+              mv "$DEST" "$DEST.old";
+            fi;
+            mkdir -p "$DEST";
           '
 
       - name: Subir build a distrimedjl
@@ -75,11 +75,11 @@ jobs:
       - name: Restaurar config y servicios en distrimedjl
         run: |
           ssh sofdla.com.co@ssh.us.stackcp.com '
-            DEST="/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co"
-            OLDD="$DEST.old"
+            DEST="/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co";
+            OLDD="$DEST.old";
             if [ -d "$OLDD" ]; then
-              [ -d "$OLDD/bk.service" ] && cp -r "$OLDD/bk.service" "$DEST/"
-              [ -f "$OLDD/assets/config.json" ] && cp "$OLDD/assets/config.json" "$DEST/assets/config.json"
-              rm -rf "$OLDD"
-            fi
+              [ -d "$OLDD/bk.service" ] && cp -r "$OLDD/bk.service" "$DEST/";
+              [ -f "$OLDD/assets/config.json" ] && cp "$OLDD/assets/config.json" "$DEST/assets/config.json";
+              rm -rf "$OLDD";
+            fi;
           '
