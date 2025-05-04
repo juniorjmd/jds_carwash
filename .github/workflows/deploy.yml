@@ -1,50 +1,33 @@
-name: Deploy to Multiple Hosts
+name: Deploy to Multiple Domains via SSH
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Instalar dependencias y compilar
+      - name: Construir proyecto
         run: |
           npm install
           npm run build
 
-  deploy-produccion:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
+      - name: Configurar SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ssh.us.stackcp.com >> ~/.ssh/known_hosts
 
-      - name: Subir a Producción
-        uses: SamKirkland/FTP-Deploy-Action@v4
-        with:
-          server: ${{ secrets.FTP_PROD_HOST }}
-          username: ${{ secrets.FTP_PROD_USER }}
-          password: ${{ secrets.FTP_PROD_PASS }}
-          local-dir: dist/
-          server-dir: /ruta/produccion/
+      - name: Subir a carwash.sofdla.com.co
+        run: |
+          scp -r dist/* sofdla.com.co@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co/
 
-  deploy-demo:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
-
-      - name: Subir a Demo
-        uses: SamKirkland/FTP-Deploy-Action@v4
-        with:
-          server: ${{ secrets.FTP_DEMO_HOST }}
-          username: ${{ secrets.FTP_DEMO_USER }}
-          password: ${{ secrets.FTP_DEMO_PASS }}
-          local-dir: dist/
-          server-dir: /ruta/demo/
+      - name: Subir a distrimedjl.sofdla.com.co
+        run: |
+          scp -r dist/* sofdla.com.co@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co/
