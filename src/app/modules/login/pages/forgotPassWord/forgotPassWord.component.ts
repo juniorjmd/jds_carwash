@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-forgot-pass-word',
-  templateUrl: './forgotPassword.component.html',
+  templateUrl: './forgotPassWord.component.html',
   styleUrls: ['./forgotPassWord.component.css']  
 })
 export class ForgotPassWordComponent implements OnInit { 
