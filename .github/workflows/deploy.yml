@@ -1,0 +1,50 @@
+name: Deploy to Multiple Hosts
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Instalar dependencias y compilar
+        run: |
+          npm install
+          npm run build
+
+  deploy-produccion:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Subir a Producción
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ secrets.FTP_PROD_HOST }}
+          username: ${{ secrets.FTP_PROD_USER }}
+          password: ${{ secrets.FTP_PROD_PASS }}
+          local-dir: dist/
+          server-dir: /ruta/produccion/
+
+  deploy-demo:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Subir a Demo
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ secrets.FTP_DEMO_HOST }}
+          username: ${{ secrets.FTP_DEMO_USER }}
+          password: ${{ secrets.FTP_DEMO_PASS }}
+          local-dir: dist/
+          server-dir: /ruta/demo/
