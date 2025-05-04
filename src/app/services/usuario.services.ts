@@ -106,9 +106,7 @@ constructor(private http: HttpClient , private configService:ConfigService,
         const { ID, ...datosRestantes } = usuario; 
          datosRestantes.nombreCompleto = undefined;
         datosRestantes.usr_registro = undefined;
-        const arrayDatos = datosRestantes; 
-        
-        CustomConsole.log(arrayDatos);
+        const arrayDatos = datosRestantes;  
         
         let datos = {"action": actions.actionInsertUsuario ,
                      "_tabla" : TABLA.usuarios,
