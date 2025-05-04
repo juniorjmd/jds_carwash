@@ -12,7 +12,7 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Construir proyecto
+      - name: Construir proyecto Angular
         run: |
           npm install
           npm run build
@@ -24,10 +24,62 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ssh.us.stackcp.com >> ~/.ssh/known_hosts
 
-      - name: Subir a carwash.sofdla.com.co
-        run: |
-          scp -r dist/* sofdla.com.co@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co/
+      #################################################################
+      # 🔧 DEPLOY carwash.sofdla.com.co
+      #################################################################
 
-      - name: Subir a distrimedjl.sofdla.com.co
+      - name: Preparar carpeta destino en carwash
         run: |
-          scp -r dist/* sofdla.com.co@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co/
+          ssh sofdla.com.co@ssh.us.stackcp.com '
+            DEST="/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co"
+            if [ -d "$DEST" ]; then
+              mv "$DEST" "$DEST.old"
+            fi
+            mkdir -p "$DEST"
+          '
+
+      - name: Subir build a carwash
+        run: |
+          scp -r dist/jds_carwash/* sofdla.com.co@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co/
+
+      - name: Restaurar config y servicios en carwash
+        run: |
+          ssh sofdla.com.co@ssh.us.stackcp.com '
+            DEST="/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co"
+            OLDD="$DEST.old"
+            if [ -d "$OLDD" ]; then
+              [ -d "$OLDD/bk.service" ] && cp -r "$OLDD/bk.service" "$DEST/"
+              [ -f "$OLDD/assets/config.json" ] && cp "$OLDD/assets/config.json" "$DEST/assets/config.json"
+              rm -rf "$OLDD"
+            fi
+          '
+
+      #################################################################
+      # 🔧 DEPLOY distrimedjl.sofdla.com.co
+      #################################################################
+
+      - name: Preparar carpeta destino en distrimedjl
+        run: |
+          ssh sofdla.com.co@ssh.us.stackcp.com '
+            DEST="/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co"
+            if [ -d "$DEST" ]; then
+              mv "$DEST" "$DEST.old"
+            fi
+            mkdir -p "$DEST"
+          '
+
+      - name: Subir build a distrimedjl
+        run: |
+          scp -r dist/jds_carwash/* sofdla.com.co@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co/
+
+      - name: Restaurar config y servicios en distrimedjl
+        run: |
+          ssh sofdla.com.co@ssh.us.stackcp.com '
+            DEST="/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co"
+            OLDD="$DEST.old"
+            if [ -d "$OLDD" ]; then
+              [ -d "$OLDD/bk.service" ] && cp -r "$OLDD/bk.service" "$DEST/"
+              [ -f "$OLDD/assets/config.json" ] && cp "$OLDD/assets/config.json" "$DEST/assets/config.json"
+              rm -rf "$OLDD"
+            fi
+          '
