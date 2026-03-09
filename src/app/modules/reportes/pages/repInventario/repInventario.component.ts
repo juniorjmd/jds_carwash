@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { data } from 'jquery'; 
-import { Inventario, InventarioApl, InventarioAplDetalle } from 'src/app/interfaces/nInterfaces/inventario';
-import { InventarioAplicadoDetalleRequest, InventarioAplicadoRequest, ProductoRequest } from 'src/app/interfaces/producto-request';
-import { InventarioModule } from 'src/app/modules/admin/modules/inventario/inventario.module';
+import { Component, inject, OnInit } from '@angular/core'; 
+import {  InventarioApl, InventarioAplDetalle } from 'src/app/interfaces/nInterfaces/inventario';
+import { InventarioAplicadoDetalleRequest, InventarioAplicadoRequest, ProductoRequest } from 'src/app/interfaces/producto-request'; 
 import { ProductoService } from 'src/app/services/producto.service';
 import Swal from 'sweetalert2';
 

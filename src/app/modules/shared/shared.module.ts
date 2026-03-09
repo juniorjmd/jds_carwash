@@ -4,8 +4,7 @@ import { RouterModule } from '@angular/router';
 import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons';
 import { LiNavItemComponent } from './components/li-nav-item/li-nav-item.component';
 import { TabComponent } from './components/tab/tab.component';
-import { TableTrComponent } from './components/table-tr/table-tr.component';
-import { TableComponent } from './components/table/table.component';
+import { TableTrComponent } from './components/table-tr/table-tr.component'; 
 import { UlLinkComponent } from './components/ul-link/ul-link.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable'; 
 import { columnasTablaCnfg, confAmbiente } from './config';
@@ -49,8 +48,7 @@ import { MenuItemLiCheckComponent } from './components/menu-item-li-check/menu-i
     booleanpPipe,
     ImgB64Pipe ,
     dataArrayOdooPipe,
-    TabComponent,
-    TableComponent,
+    TabComponent, 
     TableTrComponent,
     UlLinkComponent,
     DropdownFndComponent,
@@ -74,8 +72,7 @@ import { MenuItemLiCheckComponent } from './components/menu-item-li-check/menu-i
   ],
   exports:[FndClienteComponent, MenuItemLiComponent,MenuItemLiCheckComponent,
     LiNavItemComponent ,DropdownFndComponent,DocumentosDropdownComponent,categoriasVendidasDropdownComponent ,
-    TabComponent,usuarioDropdownComponent,
-    TableComponent ,
+    TabComponent,usuarioDropdownComponent, 
     TableTrComponent,vendedoresDropdownComponent,
     UlLinkComponent , 
     booleanpPipe,

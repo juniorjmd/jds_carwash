@@ -5,7 +5,7 @@
       "inventario": "inventario/",
       "actionDocumentos": "documentos/",
       "actionVentas": "ventas/",
-      "admin": "admin/",
+      "admin": "administrator/",
       "login": "login/",
       "datosIniciales": "datosiniciales/",
       "brand": "brand/",
@@ -16,4 +16,6 @@
     }, 
     "enviroment":   "dev"
   }
+  
+
   

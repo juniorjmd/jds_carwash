@@ -3,9 +3,8 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, inject, type
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { ColumnasTabla } from 'src/app/interfaces/nInterfaces/columnas-tabla';
-import { ModalCrearGrupoComponent } from '../../../inventario/component/modal-crear-grupo/modal-crear-grupo.component';
 import { NewTrasladoDesdeCajaComponent } from '../../modals/newTrasladoDesdeCaja/newTrasladoDesdeCaja.component';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import {  MatDialog } from '@angular/material/dialog';
 import { responseSubC } from 'src/app/interfaces/odoo-prd';
 import { tap } from 'rxjs';
 import { CntContablesService } from 'src/app/services/cntContables.service';
