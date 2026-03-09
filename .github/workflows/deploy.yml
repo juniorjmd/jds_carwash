@@ -86,4 +86,3 @@ steps:
           rm -rf "$DEST.old";
         fi;
       '
-```
