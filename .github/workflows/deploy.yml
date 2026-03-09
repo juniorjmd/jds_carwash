@@ -26,7 +26,7 @@ jobs:
     
       - name: Comprimir build
         run: |
-          tar -czf build.tar.gz -C dist/jds-carwash .
+          tar -czf build.tar.gz -C dist/jds_carwash .
     
       - name: Configurar SSH
         run: |
