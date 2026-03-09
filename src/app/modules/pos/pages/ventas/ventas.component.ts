@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { loading } from 'src/app/models/app.loading'; 
 import { DocumentosModel } from 'src/app/models/ventas/documento.model';
 import { DocumentoService } from 'src/app/services/documento.service';
@@ -36,7 +36,7 @@ import { IngresoServicioVehiculoComponent } from '../../modals/ingreso_servicio_
 import { CustomConsole } from 'src/app/models/CustomConsole';
 
 @Component({
-  selector: 'app-ventas',
+  selector: 'app-ventas', 
   templateUrl: './ventas.component.html',
   styleUrls: ['./ventas.component.css']
 })
