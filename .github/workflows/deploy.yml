@@ -1,88 +1,88 @@
 name: Deploy to Multiple Domains via SSH
 
 on:
-push:
-branches:
-- main
+  push:
+    branches:
+      - main
 
 jobs:
-deploy:
-runs-on: ubuntu-latest 
+  deploy:
+    runs-on: ubuntu-latest 
 
-steps:
-  - name: Checkout código
-    uses: actions/checkout@v4
-
-  - name: Instalar Node
-    uses: actions/setup-node@v4
-    with:
-      node-version: 20
-
-  - name: Instalar dependencias
-    run: npm ci
-
-  - name: Construir proyecto Angular
-    run: npm run build
-
-  - name: Comprimir build
-    run: |
-      tar -czf build.tar.gz -C dist/jds-carwash .
-
-  - name: Configurar SSH
-    run: |
-      mkdir -p ~/.ssh
-      echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-      chmod 600 ~/.ssh/id_rsa
-      ssh-keyscan -H ssh.us.stackcp.com >> ~/.ssh/known_hosts
-
-  - name: Subir build comprimido
-    run: |
-      scp build.tar.gz sofdla.com.co@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/
-
-  ###############################################################
-  # DEPLOY carwash.sofdla.com.co
-  ###############################################################
-
-  - name: Deploy carwash
-    run: |
-      ssh sofdla.com.co@ssh.us.stackcp.com '
-        DEST="/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co";
-
-        if [ -d "$DEST" ]; then
-          mv "$DEST" "$DEST.old";
-        fi;
-
-        mkdir -p "$DEST";
-
-        tar -xzf /home/sites/36a/2/2d8ca11770/build.tar.gz -C "$DEST";
-
-        if [ -d "$DEST.old" ]; then
-          [ -d "$DEST.old/bk.service" ] && cp -r "$DEST.old/bk.service" "$DEST/";
-          [ -f "$DEST.old/assets/config.json" ] && cp "$DEST.old/assets/config.json" "$DEST/assets/config.json";
-          rm -rf "$DEST.old";
-        fi;
-      '
-
-  ###############################################################
-  # DEPLOY distrimedjl.sofdla.com.co
-  ###############################################################
-
-  - name: Deploy distrimedjl
-    run: |
-      ssh sofdla.com.co@ssh.us.stackcp.com '
-        DEST="/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co";
-
-        if [ -d "$DEST" ]; then
-          mv "$DEST" "$DEST.old";
-        fi;
-
-        mkdir -p "$DEST";
-
-        tar -xzf /home/sites/36a/2/2d8ca11770/build.tar.gz -C "$DEST";
-
-        if [ -d "$DEST.old" ]; then
-          [ -d "$DEST.old/bk.service" ] && cp -r "$DEST.old/bk.service" "$DEST/";
-          [ -f "$DEST.old/assets/config.json" ] && cp "$DEST.old/assets/config.json" "$DEST/assets/config.json";
-          rm -rf "$DEST.old";
-        fi;
-      '
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+    
+      - name: Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+    
+      - name: Instalar dependencias
+        run: npm ci
+    
+      - name: Construir proyecto Angular
+        run: npm run build
+    
+      - name: Comprimir build
+        run: |
+          tar -czf build.tar.gz -C dist/jds-carwash .
+    
+      - name: Configurar SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ssh.us.stackcp.com >> ~/.ssh/known_hosts
+    
+      - name: Subir build comprimido
+        run: |
+          scp build.tar.gz sofdla.com.co@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/
+    
+      ###############################################################
+      # DEPLOY carwash.sofdla.com.co
+      ###############################################################
+    
+      - name: Deploy carwash
+        run: |
+          ssh sofdla.com.co@ssh.us.stackcp.com '
+            DEST="/home/sites/36a/2/2d8ca11770/carwash.sofdla.com.co";
+    
+            if [ -d "$DEST" ]; then
+              mv "$DEST" "$DEST.old";
+            fi;
+    
+            mkdir -p "$DEST";
+    
+            tar -xzf /home/sites/36a/2/2d8ca11770/build.tar.gz -C "$DEST";
+    
+            if [ -d "$DEST.old" ]; then
+              [ -d "$DEST.old/bk.service" ] && cp -r "$DEST.old/bk.service" "$DEST/";
+              [ -f "$DEST.old/assets/config.json" ] && cp "$DEST.old/assets/config.json" "$DEST/assets/config.json";
+              rm -rf "$DEST.old";
+            fi;
+          '
+    
+      ###############################################################
+      # DEPLOY distrimedjl.sofdla.com.co
+      ###############################################################
+    
+      - name: Deploy distrimedjl
+        run: |
+          ssh sofdla.com.co@ssh.us.stackcp.com '
+            DEST="/home/sites/36a/2/2d8ca11770/distrimedjl.sofdla.com.co";
+    
+            if [ -d "$DEST" ]; then
+              mv "$DEST" "$DEST.old";
+            fi;
+    
+            mkdir -p "$DEST";
+    
+            tar -xzf /home/sites/36a/2/2d8ca11770/build.tar.gz -C "$DEST";
+    
+            if [ -d "$DEST.old" ]; then
+              [ -d "$DEST.old/bk.service" ] && cp -r "$DEST.old/bk.service" "$DEST/";
+              [ -f "$DEST.old/assets/config.json" ] && cp "$DEST.old/assets/config.json" "$DEST/assets/config.json";
+              rm -rf "$DEST.old";
+            fi;
+          '
