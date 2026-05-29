@@ -37,7 +37,7 @@ jobs:
     
       - name: Subir build comprimido
         run: |
-          scp build.tar.gz sofdla.com.co@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/
+          scp build.tar.gz sofdla.net@ssh.us.stackcp.com:/home/sites/36a/2/2d8ca11770/
     
       ###############################################################
       # DEPLOY carwash.sofdla.com.co
